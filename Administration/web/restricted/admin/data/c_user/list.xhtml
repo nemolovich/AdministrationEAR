@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <f:view>
+            <h:form>
+                <p:dataTable value="#{cUserView.entries}"
+                             var="item"
+                             emptyMessage="Aucun utilisateur n'a été trouvé"   
+                             widgetVar="cUserTable"
+                             rows="10"
+                             rowKey="#{item.id}"
+                             paginator="true">
+                    <f:facet name="header">
+                        <p:outputPanel>
+                            <h2><h:outputText value="Liste des utilisateurs"/></h2>
+                        </p:outputPanel>
+                    </f:facet>
+                    <p:column headerText="Identifiant"
+                              sortBy="#{item.id}"
+                              filterBy="#{item.id}"
+                              filterMatchMode="exact">
+                        <h:outputText value="#{item.id}"/>
+                    </p:column>
+                    <p:column headerText="Référence de société"
+                              sortBy="#{item.societyName}"
+                              filterBy="#{item.societyName}"
+                              filterMatchMode="contains">
+                        <h:commandLink action="#{clientView.entityView(item.idClient)}"
+                                       value="#{item.societyName}"/>
+                    </p:column>
+                    <p:column headerText="Nom de l'utilisateur"
+                              sortBy="#{item.name}"
+                              filterBy="#{item.name}"
+                              filterMatchMode="contains">
+                        <h:outputText value="#{item.name}"/>
+                    </p:column>
+                    <p:column headerText="Téléphone"
+                              sortBy="#{item.phone}"
+                              filterBy="#{item.phone}"
+                              filterMatchMode="contains">
+                        <h:outputText value="#{item.phone}"/>
+                    </p:column>
+                    <p:column headerText="Observations"
+                              sortBy="#{item.observations}"
+                              filterBy="#{item.observations}"
+                              filterMatchMode="contains">
+                        <h:outputText value="#{item.observations}"/>
+                    </p:column>
+                    <f:facet name="footer">
+                        <p:outputPanel style="float:left">
+                            <h:outputText value="Rechercher:"/>
+                            <p:inputText id="globalFilter" onkeyup="cUserTable.filter();"
+                                         style="width:150px;margin-left:20px" />
+                        </p:outputPanel>
+                    </f:facet>
+                </p:dataTable>
+            </h:form>
+        </f:view>
+
+    </h:body>
+</html>
+
