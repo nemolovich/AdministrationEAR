@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Ajouter un utilisateur</title>
+    </h:head>
+    <h:body>       
+    	<ui:composition template="/templates/admin.xhtml">
+            <ui:define name="content">
+                <f:view>
+                    <h:form>
+                        <p:panelGrid columns="3" columnClasses="label,field,message">
+                            <f:facet name="header">
+                                <p:outputPanel>
+                                    <h2><h:outputText value="Création d'un utilisateur"/></h2>
+                                </p:outputPanel>
+                            </f:facet>
+                            <h:outputLabel value="Id:" for="id" />
+                            <h:inputText id="id" value="#{cUserView.entity.id}" title="Id" required="true" requiredMessage="The Id field is required."/>
+                            <p:message for="id"/>
+                            
+                            <h:outputLabel value="Name:" for="name" />
+                            <h:inputText id="name" value="#{cUserView.entity.name}" title="Name" required="true" requiredMessage="The Name field is required."/>
+                            <p:message for="name"/>
+                            
+                            <h:outputLabel value="Phone:" for="phone" />
+                            <h:inputText id="phone" value="#{cUserView.entity.phone}" title="Phone" required="true" requiredMessage="The Phone field is required."/>
+                            <p:message for="phone"/>
+                            
+                            <h:outputLabel value="Observations:" for="observations" />
+                            <h:inputText id="observations" value="#{cUserView.entity.observations}" title="Observations" />
+                            <p:message for="observations"/>
+                            
+                            <h:outputLabel value="IdClient:" for="idClient" />
+                            <h:selectOneMenu id="idClient" value="#{cUserView.entity.idClient}" title="IdClient" required="true" requiredMessage="The IdClient field is required.">
+                                <f:selectItems value="#{clientView.list}"/>
+                            </h:selectOneMenu>
+                            <p:message for="idClient"/>
+                            
+                            <f:facet name="footer">
+                                <p:outputPanel>
+                                    <p:commandButton id="create" value="Créer"
+                                                     action="#{tUserView.create()}"
+                                                     ajax="false"/>
+                                    <p:commandButton id="back" value="Annuler"
+                                                     action="#{tUserView.list()}"
+                                                     ajax="false" immediate="true">
+                                    </p:commandButton>
+                                </p:outputPanel>
+                            </f:facet>
+                        </p:panelGrid>
+                    </h:form>
+                </f:view>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

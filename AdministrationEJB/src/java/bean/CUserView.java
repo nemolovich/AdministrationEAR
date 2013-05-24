@@ -5,8 +5,9 @@
 package bean;
 
 import bean.facade.CUserFacade;
+import bean.viewStruct.EntityView;
 import entity.CUser;
-import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
@@ -18,30 +19,43 @@ import javax.inject.Named;
  */
 @Named(value = "cUserView")
 @SessionScoped
-public class CUserView implements Serializable
+public class CUserView extends EntityView<CUser, CUserFacade>
 {
     private static final long serialVersionUID = 1L;
     @EJB
     private CUserFacade cUserFacade;
-    private CUser cUser;
-    private final String webFolder="/restricted/admin/data/c_user/";
     
-    public CUserView() {
-    }
-    
-    public CUser getCUser()
+    public CUserView()
     {
-        return this.cUser;
+        super(CUser.class,"c_user");
     }
 
-    public String cUserView(CUser cUser)
-    {  
-        this.cUser = cUser;  
-        return this.webFolder+"view";
+    @Override
+    public void setFacade()
+    {
+        super.setEntityFacade(this.cUserFacade);
     }
-    
+
+    @Override
     public List<CUser> getEntries()
     {
-        return this.cUserFacade.findAll();
+        return super.findAll();
+    }
+
+    @Override
+    public CUser getEntity()
+    {
+        return super.getInstance();
+    }
+
+    @Override
+    public List<String> getList()
+    {
+        List<String> list=new ArrayList<String>();
+        for(CUser user:this.getEntries())
+        {
+            list.add(user.getName());
+        }
+        return list;
     }
 }

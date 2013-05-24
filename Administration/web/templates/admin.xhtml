@@ -15,12 +15,14 @@
     <h:body>
         <div id="top">
             <ui:insert name="top">
-                <ui:include src="./../templates/header.xhtml"/>
+                <ui:include src="/templates/header.xhtml"/>
             </ui:insert>
         </div>
         <div>
             <div id="left">
-                <ui:insert name="left">Left</ui:insert>
+                <ui:insert name="left">
+                    <ui:include src="/templates/menu.xhtml"/>
+                </ui:insert>
             </div>
             <div id="content" class="left_content">
                 <ui:insert name="content">Content</ui:insert>
