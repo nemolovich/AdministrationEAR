@@ -5,6 +5,7 @@
 package bean;
 
 import bean.facade.TUserFacade;
+import bean.viewStruct.EntityView;
 import entity.TUser;
 import java.io.Serializable;
 import java.util.List;
@@ -18,85 +19,36 @@ import javax.inject.Named;
  */
 @Named(value = "tUserView")
 @SessionScoped
-public class TUserView implements Serializable
+public class TUserView extends EntityView<TUser, TUserFacade>
 {
     private static final long serialVersionUID = 1L;
     @EJB
     private TUserFacade tUserFacade;
-    private TUser user;
 
-    /**
-     * Constructor
-     */
     public TUserView()
     {
+        super(TUser.class,"");
+        super.setWebFolder("/restricted/admin/user/");
     }
     
-    public TUser getUser()
-    {  
-        return this.user;  
-    }
-
-    public String userView(TUser user)
-    {  
-        this.user = user;  
-        return "view";
-    }
-
-    public String userUpdate(TUser user)
-    {  
-        this.user = user;  
-        return "update"; 
-    }
-    
-    public String userDelete(TUser user)
+    @Override
+    public String entityUpdate(TUser entity)
     {
-        this.tUserFacade.remove(user);
-        return "list";
-    }
-    
-    public String getDeleteMessage(TUser user)
-    {
-        return "Vous êtes sur le point de supprimer définitivement"
-                + " cet utilisateur ("+user.getFirstname()+" "+user.getName()
-                + " id="+user.getId()+"). Cette action est irreversible,"
-                + " êtes-vous certain(e) de vouloir continuer?";
-    }
-
-    public String userCreate()
-    {  
-        this.user = new TUser();
-        return "create"; 
-    }
-    
-    public String create()
-    {
-        this.tUserFacade.persist(this.user);
-        return "list";
-    }
-    
-    public String delete()
-    {
-        this.tUserFacade.remove(this.user);
-        return "list";
+        super.entityUpdate(entity);
+        return "/restricted/user/user/update";
     }
     
     public String update(UserLogin currentUser)
     {
-        this.user = this.tUserFacade.update(this.user);
+        this.setEntity(this.tUserFacade.update(this.getEntity()));
         // Si on est en mode utilisateur
         if(currentUser!=null)
         {
-            currentUser.setUser(this.user);
+            currentUser.setUser(this.getEntity());
             return "view";
         }
         // Si on est en mode administrateur
         return "list";
-    }
-  
-    public String list()
-    {
-        return "list";  
     }
     
     public String getAdmin_Rights()
@@ -109,13 +61,35 @@ public class TUserView implements Serializable
         return TUser.USER_RIGHTS;
     }
     
+    @Override
+    public String getDeleteMessage(TUser entity)
+    {
+        return "Vous êtes sur le point de supprimer définitivement"
+                + " cet utilisateur ("+entity.getFirstname()+" "+entity.getName()
+                + " id="+entity.getId()+"). Cette action est irreversible,"
+                + " êtes-vous certain(e) de vouloir continuer?";
+    }
+    
     public String getUnknown_Rights()
     {
         return TUser.UNKNOWN_RIGHTS;
     }
     
+    @Override
     public List<TUser> getEntries()
     {
-        return this.tUserFacade.findAll();
+        return super.findAll();
+    }
+
+    @Override
+    public void setFacade()
+    {
+        super.setEntityFacade(this.tUserFacade);
+    }
+
+    @Override
+    public TUser getEntity()
+    {
+        return super.getInstance();
     }
 }

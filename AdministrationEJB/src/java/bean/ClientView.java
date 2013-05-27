@@ -8,7 +8,6 @@ package bean;
 import bean.facade.ClientFacade;
 import bean.viewStruct.EntityView;
 import entity.Client;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -51,13 +50,11 @@ public class ClientView extends EntityView<Client, ClientFacade>
     }
 
     @Override
-    public List<String> getList()
+    public String getDeleteMessage(Client entity)
     {
-        List<String> list=new ArrayList<String>();
-        for(Client client:this.getEntries())
-        {
-            list.add(client.getName());
-        }
-        return list;
+        return "Vous êtes sur le point de supprimer définitivement"
+                + " cette société ("+entity.getName()
+                + " id="+entity.getId()+"). Cette action est irreversible,"
+                + " êtes-vous certain(e) de vouloir continuer?";
     }
 }

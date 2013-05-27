@@ -7,7 +7,6 @@ package bean;
 import bean.facade.CUserFacade;
 import bean.viewStruct.EntityView;
 import entity.CUser;
-import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
@@ -49,13 +48,11 @@ public class CUserView extends EntityView<CUser, CUserFacade>
     }
 
     @Override
-    public List<String> getList()
+    public String getDeleteMessage(CUser entity)
     {
-        List<String> list=new ArrayList<String>();
-        for(CUser user:this.getEntries())
-        {
-            list.add(user.getName());
-        }
-        return list;
+        return "Vous êtes sur le point de supprimer définitivement"
+                + " cet utilisateur ("+entity.getName()
+                + " id="+entity.getId()+"). Cette action est irreversible,"
+                + " êtes-vous certain(e) de vouloir continuer?";
     }
 }

@@ -4,6 +4,7 @@
  */
 package filter;
 
+import filter.struct.AccessFilter;
 import entity.TUser;
 import java.util.Arrays;
 

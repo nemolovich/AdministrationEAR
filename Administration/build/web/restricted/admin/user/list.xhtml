@@ -9,7 +9,7 @@
         <title>Liste des utilisateurs</title>
     </h:head>
     <h:body>
-    	<ui:composition template="/templates/admin.xhtml">
+    	<ui:composition template="/templates/#{userLogin.template}.xhtml">
             <ui:define name="content">
                 <f:view>
                     <h:form id="displayUsers">
@@ -56,10 +56,10 @@
                                 <h:outputText value="#{item.rights}"/>
                             </p:column>
                             <p:column headerText="Actions">
-                                <h:commandLink action="#{tUserView.userView(item)}" value="détails"/>&nbsp;
-                                <h:commandLink action="#{tUserView.userUpdate(item)}" value="modifier"/>&nbsp;
+                                <h:commandLink action="#{tUserView.entityView(item)}" value="détails"/>&nbsp;
+                                <h:commandLink action="#{tUserView.entityUpdate(item)}" value="modifier"/>&nbsp;
                                 <h:commandLink onclick="return (confirm('#{tUserView.getDeleteMessage(item)}'));"
-                                               action="#{tUserView.userDelete(item)}" value="Supprimer"/>
+                                               action="#{tUserView.entityDelete(item)}" value="Supprimer"/>
                             </p:column>
                             <f:facet name="footer">
                                 <p:outputPanel style="float:left">
@@ -68,7 +68,7 @@
                                                  style="width:150px;margin-left:20px" />
                                 </p:outputPanel>
                                 <p:commandButton id="create" value="Ajouter une entrée"
-                                                 action="#{tUserView.userCreate()}"
+                                                 action="#{tUserView.entityCreate()}"
                                                  ajax="false" immediate="true"
                                                  style="margin-left:20px">
                                 </p:commandButton>

@@ -9,7 +9,7 @@
         <title>Modification d'utilisateur</title>
     </h:head>
     <h:body>
-    	<ui:composition template="./../../../templates/admin.xhtml">
+    	<ui:composition template="/templates/#{userLogin.template}.xhtml">
             <ui:define name="content">
                 <f:view>
                     <h:form id="userUpdate">
@@ -20,32 +20,32 @@
                                 </p:outputPanel>
                             </f:facet>
                             <h:outputLabel value="Mail:" for="mail"/>
-                            <h:inputText id="mail" value="#{tUserView.user.mail}" title="Mail" required="true" requiredMessage="Le champs 'Mail' ne peut être vide">
+                            <h:inputText id="mail" value="#{tUserView.entity.mail}" title="Mail" required="true" requiredMessage="Le champs 'Mail' ne peut être vide">
                                 <f:validator binding="#{userUniqueFieldValidator}"/>
                                 <f:attribute name="fieldName" value="Mail" />
-                                <f:attribute name="update_id" value="#{tUserView.user.id}" />
+                                <f:attribute name="update_id" value="#{tUserView.entity.id}" />
                             </h:inputText>
                             <p:message for="mail"/>
 
                             <h:outputLabel value="Nom:" for="name" />
-                            <h:inputText id="name" value="#{tUserView.user.name}" title="Name" required="true" requiredMessage="Le champs 'Nom' ne peut être vide"/>
+                            <h:inputText id="name" value="#{tUserView.entity.name}" title="Name" required="true" requiredMessage="Le champs 'Nom' ne peut être vide"/>
                             <p:message for="name"/>
 
                             <h:outputLabel value="Prénom:" for="firstname" />
-                            <h:inputText id="firstname" value="#{tUserView.user.firstname}" title="Firstname" required="true" requiredMessage="Le champs 'Prénom' ne peut être vide"/>
+                            <h:inputText id="firstname" value="#{tUserView.entity.firstname}" title="Firstname" required="true" requiredMessage="Le champs 'Prénom' ne peut être vide"/>
                             <p:message for="firstname"/>
 
                             <h:outputLabel value="Droits:" for="rights" />
-                            <h:selectOneMenu id="rights" value="#{tUserView.user.rights}">
-                                <f:selectItems value="#{tUserView.user.enumRights}"/>
+                            <h:selectOneMenu id="rights" value="#{tUserView.entity.rights}">
+                                <f:selectItems value="#{tUserView.entity.enumRights}"/>
                             </h:selectOneMenu>
                             <p:message for="rights"/>
 
                             <h:outputLabel for="password" value="Mot de passe" />
-                            <h:inputSecret id="password" value="#{tUserView.user.password}">
+                            <h:inputSecret id="password" value="#{tUserView.entity.password}">
                                 <f:validator binding="#{passwordValidator}" />
                                 <f:attribute name="confirm" value="#{confirm}" />
-                                <f:attribute name="update_id" value="#{tUserView.user.id}" />
+                                <f:attribute name="update_id" value="#{tUserView.entity.id}" />
                             </h:inputSecret>
                             <p:message for="password"/>
 
@@ -59,11 +59,11 @@
                                                      action="#{tUserView.update(null)}"
                                                      ajax="false"/>
                                     <p:commandButton id="delete"  value="Supprimer"
-                                                     onclick="return (confirm('#{tUserView.getDeleteMessage(tUserView.user)}'));"
-                                                     action="#{tUserView.userDelete(tUserView.user)}"
+                                                     onclick="return (confirm('#{tUserView.getDeleteMessage(tUserView.entity)}'));"
+                                                     action="#{tUserView.entityDelete(tUserView.entity)}"
                                                      ajax="false"/>
                                     <p:commandButton id="back" value="Annuler"
-                                                     action="#{tUserView.list()}"
+                                                     action="list"
                                                      ajax="false" immediate="true">
                                     </p:commandButton>
                                 </p:outputPanel>

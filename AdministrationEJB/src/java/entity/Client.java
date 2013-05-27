@@ -58,14 +58,14 @@ public class Client implements Serializable {
     @Size(min = 5, max = 100)
     @Column(name = "ADDRESS")
     private String address;
-    // @Pattern(regexp="^\\(?(\\d{2})\\)?[. ]?(\\d{2})?[. ]?(\\d{2})?[. ]?(\\d{2})[. ]?(\\d{2)$", message="Invalid phone/fax format, should be as xxx-xxx-xxxx")//if the field contains phone or fax number consider using this annotation to enforce field validation
+    // @Pattern(regexp="^\\(?(\\d{2})\\)?[. ]?(\\d{2})?[. ]?(\\d{2})?[. ]?(\\d{2})[. ]?(\\d{2})$", message="Invalid phone/fax format, should be as xxx-xxx-xxxx")//if the field contains phone or fax number consider using this annotation to enforce field validation
     @Basic(optional = false)
     @NotNull
-    @Size(min = 15, max = 15)
+    @Size(min = 14, max = 14)
     @Column(name = "PHONE")
     private String phone;
     // @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message="Invalid phone/fax format, should be as xxx-xxx-xxxx")//if the field contains phone or fax number consider using this annotation to enforce field validation
-    @Size(max = 15)
+    @Size(max = 14)
     @Column(name = "FAX")
     private String fax;
     @Basic(optional = false)
@@ -206,8 +206,8 @@ public class Client implements Serializable {
     }
 
     @Override
-    public String toString() {
-        return "entity.Client[ id=" + id + " ]";
+    public String toString()
+    {
+        return this.name;
     }
-    
 }

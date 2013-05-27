@@ -5,6 +5,7 @@
 package bean.viewStruct;
 
 import bean.facade.abstracts.AbstractFacade;
+import entity.TUser;
 import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Level;
@@ -20,10 +21,20 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> implements Seria
     private C entity;
     private Class<C> entityClass;
     private  String webFolder=null;
-    protected F entityFacade;
+    private F entityFacade;
     
     public EntityView()
     {
+    }
+    
+    public void setEntity(C entity)
+    {
+        this.entity = entity;
+    }
+    
+    protected void setWebFolder(String webFolder)
+    {
+        this.webFolder=webFolder;
     }
     
     public EntityView(Class<C> entityClass,String webFolder)
@@ -32,12 +43,42 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> implements Seria
         this.entityClass=entityClass;
     }
     
-    public C getInstance()
+    public String create()
     {
-        return this.entity;
+        this.entityFacade.create(this.entity);
+        return this.webFolder+"list";
     }
     
-    @SuppressWarnings("unchecked")
+    public String delete()
+    {
+        this.entityFacade.remove(this.entity);
+        return this.webFolder+"list";
+    }
+    
+    public String update()
+    {
+        this.entityFacade.edit(this.entity);
+        return this.webFolder+"list";
+    }
+
+    public String entityView(C entity)
+    {
+        this.entity = entity;
+        return this.webFolder+"view";
+    }
+    
+    public String entityUpdate(C entity)
+    {
+        this.entity = entity;
+        return this.webFolder+"update";
+    }
+    
+    public String entityDelete(C entity)
+    {
+        this.entityFacade.remove(entity);
+        return this.webFolder+"list";
+    }
+    
     public String entityCreate()
     {
         try
@@ -52,13 +93,12 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> implements Seria
         {
             Logger.getLogger(EntityView.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return "create";
+        return this.webFolder+"create";
     }
-
-    public String entityView(C entity)
+    
+    public C getInstance()
     {
-        this.entity = entity;
-        return this.webFolder+"view";
+        return this.entity;
     }
 
     public void setEntityFacade(F entityFacade)
@@ -95,9 +135,12 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> implements Seria
      */
     public abstract C getEntity();
     /**
-     * Permet de récupérer une liste des ces objets sous forme de noms
+     * Renvoi le message d'avertissement avant la suppression
+     * de cette entité
+     * @param entity {@link C} - L'entité à supprimer
+     * @return {@link String}, Le message d'avertissement
      */
-    public abstract List<String> getList();
+    public abstract String getDeleteMessage(C entity);
     
     // </editor-fold>
 }

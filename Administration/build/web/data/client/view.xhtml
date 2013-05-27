@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <f:view>
+            <h:form>
+                <p:panelGrid columns="2" columnClasses="label,field">
+                    <f:facet name="header">
+                        <p:outputPanel>
+                            <h2><h:outputText value="Détails de la société"/></h2>
+                        </p:outputPanel>
+                    </f:facet>
+                    <h:outputText value="Identifiant:"/>
+                    <h:outputText value="#{clientView.client.id}" title="Identifiant"/>
+                    <h:outputText value="Nom de la société:"/>
+                    <h:outputText value="#{clientView.client.name}" title="Nom de la socité"/>
+                    <h:outputText value="Adresse:"/>
+                    <h:outputText value="#{clientView.client.address}" title="Adresse"/>
+                    <h:outputText value="Téléphone:"/>
+                    <h:outputText value="#{clientView.client.phone}" title="Téléhone"/>
+                    <h:outputText value="Fax:"/>
+                    <h:outputText value="#{clientView.client.fax}" title="Fax"/>
+                    <h:outputText value="Mail:"/>
+                    <h:outputText value="#{clientView.client.mail}" title="Mail"/>
+                    <h:outputText value="Interlocuteur:"/>
+                    <h:outputText value="#{clientView.client.userName}" title="Nom de l'interlocuteur"/>
+                    <h:outputText value="InterventionType:"/>
+                    <h:outputText value="#{clientView.client.interventionType}" title="InterventionType"/>
+                    <h:outputText value="Observations:"/>
+                    <h:outputText value="#{clientView.client.observations}" title="Observations"/>
+                </p:panelGrid>
+            </h:form>
+        </f:view>
+
+    </h:body>
+</html>
+

@@ -9,7 +9,7 @@
         <title>Détails d'utilisateur</title>
     </h:head>
     <h:body>
-    	<ui:composition template="/templates/user.xhtml">
+    	<ui:composition template="/templates/#{userLogin.template}.xhtml">
             <ui:define name="content">
                 <f:view>
                     <h:form>
@@ -20,19 +20,19 @@
                                 </p:outputPanel>
                             </f:facet>
                             <h:outputText value="Id:"/>
-                            <h:outputText value="#{tUserView.user.id}" title="Identifiant"/>
+                            <h:outputText value="#{tUserView.entity.id}" title="Identifiant"/>
                             <h:outputText value="Mail:"/>
-                            <h:outputText value="#{tUserView.user.mail}" title="Mail"/>
+                            <h:outputText value="#{tUserView.entity.mail}" title="Mail"/>
                             <h:outputText value="Nom:"/>
-                            <h:outputText value="#{tUserView.user.name}" title="Nom"/>
+                            <h:outputText value="#{tUserView.entity.name}" title="Nom"/>
                             <h:outputText value="Prénom:"/>
-                            <h:outputText value="#{tUserView.user.firstname}" title="Prénom"/>
+                            <h:outputText value="#{tUserView.entity.firstname}" title="Prénom"/>
                             <h:outputText value="Droits:"/>
-                            <h:outputText value="#{tUserView.user.rights}" title="Droits"/>
+                            <h:outputText value="#{tUserView.entity.rights}" title="Droits"/>
                             <f:facet name="footer">
                                 <p:outputPanel>
                                     <p:commandButton id="update" value="Modifier"
-                                                     action="#{tUserView.userUpdate(tUserView.user)}"
+                                                     action="#{tUserView.entityUpdate(tUserView.entity)}"
                                                      ajax="false" immediate="true"/>
                                     <p:commandButton id="back" value="Retour"
                                                      action="list"

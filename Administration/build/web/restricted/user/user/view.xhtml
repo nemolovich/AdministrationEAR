@@ -9,7 +9,7 @@
         <title>Détails d'utilisateur</title>
     </h:head>
     <h:body>
-    	<ui:composition template="/templates/user.xhtml">
+    	<ui:composition template="/templates/#{userLogin.template}.xhtml">
             <ui:define name="content">
                 <f:view>
                     <h:form>
@@ -28,10 +28,10 @@
                             <f:facet name="footer">
                                 <p:outputPanel>
                                     <p:commandButton id="update" value="Modifier"
-                                                     action="#{tUserView.userUpdate(userLogin.user)}"
+                                                     action="#{tUserView.entityUpdate(userLogin.user)}"
                                                      ajax="false" immediate="true"/>
                                     <p:commandButton id="back" value="Retour"
-                                                     action="/index"
+                                                     action="/restricted/user/index"
                                                      ajax="false" immediate="true">
                                     </p:commandButton>
                                 </p:outputPanel>

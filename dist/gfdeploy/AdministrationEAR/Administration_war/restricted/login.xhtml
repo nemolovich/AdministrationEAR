@@ -3,45 +3,49 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
     <h:head>
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-        Utilisateur:
-        <h:outputText value="#{userLogin.name}"/>
-        <f:view>
-            <h:form>
-                <p:panelGrid columns="2" columnClasses="label,field">
-                    <f:facet name="header">
-                        <p:outputPanel>
-                            <h2><h:outputText value="Identification"/></h2>
-                            <p:messages />
-                        </p:outputPanel>
-                    </f:facet>
-                    <h:outputLabel value="Mail:" for="mail" />
-                    <h:inputText id="mail" value="#{userLogin.loginMail}" title="Mail">
-                        <f:validator binding="#{userLoginValidator}"/>
-                        <f:attribute name="password" value="#{password}" />
-                    </h:inputText>
-                    
-                    <h:outputLabel for="password" value="Mot de passe:" />
-                    <h:inputSecret id="password" binding="#{password}"/>
-                    
-                    <f:facet name="footer">
-                        <p:outputPanel>
-                            <p:commandButton id="login" value="Valider"
-                                             action="#{userLogin.login()}"
-                                             ajax="false"/>
-                            <p:commandButton id="back" value="Annuler"
-                                             action="/index"
-                                             immediate="true"
-                                             ajax="false"/>
-                        </p:outputPanel>
-                    </f:facet>
-                </p:panelGrid>
-            </h:form>
-        </f:view>
+        
+        <ui:composition template="/templates/#{userLogin.template}.xhtml">
+            <ui:define name="content">
+                <f:view>
+                    <h:form>
+                        <p:panelGrid columns="2" columnClasses="label,field">
+                            <f:facet name="header">
+                                <p:outputPanel>
+                                    <h2><h:outputText value="Identification"/></h2>
+                                    <p:messages />
+                                </p:outputPanel>
+                            </f:facet>
+                            <h:outputLabel value="Mail:" for="mail" />
+                            <h:inputText id="mail" value="#{userLogin.loginMail}" title="Mail">
+                                <f:validator binding="#{userLoginValidator}"/>
+                                <f:attribute name="password" value="#{password}" />
+                            </h:inputText>
+
+                            <h:outputLabel for="password" value="Mot de passe:" />
+                            <h:inputSecret id="password" binding="#{password}"/>
+
+                            <f:facet name="footer">
+                                <p:outputPanel>
+                                    <p:commandButton id="login" value="Valider"
+                                                     action="#{userLogin.login()}"
+                                                     ajax="false"/>
+                                    <p:commandButton id="back" value="Annuler"
+                                                     action="/index"
+                                                     immediate="true"
+                                                     ajax="false"/>
+                                </p:outputPanel>
+                            </f:facet>
+                        </p:panelGrid>
+                    </h:form>
+                </f:view>
+            </ui:define>
+        </ui:composition>
     </h:body>
 </html>
 

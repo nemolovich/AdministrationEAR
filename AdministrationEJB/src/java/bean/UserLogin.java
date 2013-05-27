@@ -13,6 +13,7 @@ import javax.ejb.Stateless;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -29,9 +30,45 @@ public class UserLogin implements Serializable
     @EJB
     private TUserFacade tUserFacade;
     private String loginMail="";
+    private String template="unknown";
     
     public UserLogin()
     {
+//        FacesContext context = FacesContext.getCurrentInstance();
+//        HttpSession session;
+//        if(context!=null)
+//        {
+//            session = (HttpSession) context.getExternalContext().getSession(false);
+//        }
+//        else
+//        {
+//            return;
+//        }
+//        String sessionId;
+//        if(session==null)
+//        {
+//            System.out.println("Create session");
+//            session=(HttpSession) context.getExternalContext().getSession(true);
+//        }
+//        if(session==null)
+//        {
+//            System.err.println("NO SESSION");
+//        }
+//        else
+//        {
+//            sessionId=session.getId();
+//            System.out.println("Session ID: "+sessionId);
+//        }
+    }
+    
+    public void setTemplate(String template)
+    {
+        this.template = template;
+    }
+    
+    public String getTemplate()
+    {
+        return this.template;
     }
     
     public void setLoginMail(String loginMail)
@@ -124,9 +161,10 @@ public class UserLogin implements Serializable
     
     public String login()
     {
+        this.setTemplate(this.user.getRights().toLowerCase());
         return (this.user==null?null:
-                (this.user.getRights().equals(TUser.ADMIN_RIGHTS)?"admin/index":
-                (this.user.getRights().equals(TUser.USER_RIGHTS)?"user/index":
+                (this.user.getRights().equals(TUser.ADMIN_RIGHTS)?"/restricted/admin/index":
+                (this.user.getRights().equals(TUser.USER_RIGHTS)?"/restricted/user/index":
                 "/index")));
     }
     

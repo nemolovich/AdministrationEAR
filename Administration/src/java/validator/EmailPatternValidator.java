@@ -17,9 +17,9 @@ import javax.faces.validator.ValidatorException;
 
 /**
  *
- * @author Windows 7
+ * @author Brian GOHIER
  */
-@FacesValidator("EmailPatternValidator")
+@FacesValidator("emailPatternValidator")
 @ManagedBean
 @RequestScoped
 public class EmailPatternValidator implements Validator
