@@ -39,7 +39,7 @@ a:link:hover, a:visited:hover
 
 #javax_faces_developmentstage_messages
 {
-    /*display:                    none;*/
+    display:                    none;
 }
 
 .textarea-field

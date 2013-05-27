@@ -8,12 +8,12 @@ import bean.facade.TUserFacade;
 import entity.TUser;
 import entity.User;
 import java.io.Serializable;
+import java.util.Calendar;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -31,6 +31,9 @@ public class UserLogin implements Serializable
     private TUserFacade tUserFacade;
     private String loginMail="";
     private String template="unknown";
+    private int loginTry=0;
+    private long nextTryTime;
+    private boolean blocked=false;
     
     public UserLogin()
     {
@@ -59,6 +62,49 @@ public class UserLogin implements Serializable
 //            sessionId=session.getId();
 //            System.out.println("Session ID: "+sessionId);
 //        }
+    }
+    
+    public void setLoginTry(int tryNumber)
+    {
+        this.loginTry = tryNumber;
+    }
+    
+    public int getLoginTry()
+    {
+        return this.loginTry;
+    }
+    
+    public void sessionBlockFor(int minutes)
+    {
+        long currentTime=Calendar.getInstance().getTimeInMillis();
+        this.nextTryTime=currentTime+600*minutes;
+        System.out.println(currentTime+" - "+this.nextTryTime);
+        this.blocked=true;
+    }
+    
+    public int getWaitTime()
+    {
+        long currentTime=Calendar.getInstance().getTimeInMillis();
+        long remainingTime=this.nextTryTime-currentTime;
+        if(remainingTime>0)
+        {
+            return (int)remainingTime/60000;
+        }
+        else
+        {
+            this.blocked=false;
+            return -1;
+        }
+    }
+    
+    public boolean isBlocked()
+    {
+        return this.blocked;
+    }
+    
+    public void unLock()
+    {
+        this.blocked=false;
     }
     
     public void setTemplate(String template)

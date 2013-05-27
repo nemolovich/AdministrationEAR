@@ -27,11 +27,6 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> implements Seria
     {
     }
     
-    public void setEntity(C entity)
-    {
-        this.entity = entity;
-    }
-    
     protected void setWebFolder(String webFolder)
     {
         this.webFolder=webFolder;
@@ -96,6 +91,12 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> implements Seria
         return this.webFolder+"create";
     }
     
+    public String setInstance(C entity)
+    {
+        this.entity = entity;
+        return null;
+    }
+    
     public C getInstance()
     {
         return this.entity;
@@ -134,6 +135,14 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> implements Seria
      * </code>
      */
     public abstract C getEntity();
+    /**
+     * Insérer le code:
+     * <code>
+     * super.setInstance(C entity);
+     * </code>
+     * @param entity 
+     */
+    public abstract void setEntity(C entity);
     /**
      * Renvoi le message d'avertissement avant la suppression
      * de cette entité

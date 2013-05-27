@@ -56,10 +56,22 @@
                                 <h:outputText value="#{item.rights}"/>
                             </p:column>
                             <p:column headerText="Actions">
-                                <h:commandLink action="#{tUserView.entityView(item)}" value="détails"/>&nbsp;
-                                <h:commandLink action="#{tUserView.entityUpdate(item)}" value="modifier"/>&nbsp;
-                                <h:commandLink onclick="return (confirm('#{tUserView.getDeleteMessage(item)}'));"
-                                               action="#{tUserView.entityDelete(item)}" value="Supprimer"/>
+                                <p:commandButton action="#{tUserView.entityView(item)}"
+                                                 title="Afficher les détails"
+                                                 icon="ui-icon-search"
+                                                 ajax="false"
+                                                 immediate="true"/>&nbsp;
+                                <p:commandButton action="#{tUserView.entityUpdate(item,userLogin)}"
+                                                 title="Modifier"
+                                                 icon="ui-icon-pencil"
+                                                 ajax="false"
+                                                 immediate="true"/>&nbsp;
+                                <p:commandButton onclick="return (confirm('#{tUserView.getDeleteMessage(item)}'));"
+                                                 action="#{tUserView.entityDelete(item)}"
+                                                 title="Supprimer"
+                                                 icon="ui-icon-trash"
+                                                 ajax="false"
+                                                 immediate="true"/>
                             </p:column>
                             <f:facet name="footer">
                                 <p:outputPanel style="float:left">

@@ -57,4 +57,10 @@ public class ClientView extends EntityView<Client, ClientFacade>
                 + " id="+entity.getId()+"). Cette action est irreversible,"
                 + " êtes-vous certain(e) de vouloir continuer?";
     }
+
+    @Override
+    public void setEntity(Client entity)
+    {
+        super.setInstance(entity);
+    }
 }

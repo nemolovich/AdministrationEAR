@@ -7,7 +7,6 @@ package bean;
 import bean.facade.TUserFacade;
 import bean.viewStruct.EntityView;
 import entity.TUser;
-import java.io.Serializable;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
@@ -31,10 +30,13 @@ public class TUserView extends EntityView<TUser, TUserFacade>
         super.setWebFolder("/restricted/admin/user/");
     }
     
-    @Override
-    public String entityUpdate(TUser entity)
+    public String entityUpdate(TUser entity, UserLogin currentUser)
     {
         super.entityUpdate(entity);
+        if(currentUser!=null)
+        {
+            return "/restricted/admin/user/update";
+        }
         return "/restricted/user/user/update";
     }
     
@@ -91,5 +93,11 @@ public class TUserView extends EntityView<TUser, TUserFacade>
     public TUser getEntity()
     {
         return super.getInstance();
+    }
+
+    @Override
+    public void setEntity(TUser entity)
+    {
+        super.setInstance(entity);
     }
 }

@@ -5,9 +5,6 @@
 package validator;
 
 import bean.facade.TUserFacade;
-import entity.TUser;
-import java.io.UnsupportedEncodingException;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -53,21 +50,24 @@ public class PasswordValidator implements Validator
                     + "pour identifiant 1 (-1 pour la création).");
             return;
         }
+        
+        FacesMessage message1=new FacesMessage("Mot de passe incorrect","Le mot de passe doit contenir entre 8 et 32 caractères");
+        message1.setSeverity(FacesMessage.SEVERITY_ERROR);
+        FacesMessage message2=new FacesMessage("Mot de passe non confirmé","Veuillez confirmer le mot de passe");
+        message2.setSeverity(FacesMessage.SEVERITY_ERROR);
 
         if (this.update_id==-1 && (password == null || password.isEmpty() ||
                 password.length()<8 || password.length()>32))
         {
-            FacesMessage message=new FacesMessage("Le mot de passe doit contenir entre 8 et 32 caractères");
-            message.setSeverity(FacesMessage.SEVERITY_ERROR);
-            throw new ValidatorException(message);
+            
+            throw new ValidatorException(message1);
         }
         
         if(this.update_id==-1 && (confirm == null || confirm.isEmpty()))
         {
             confirmComponent.setValid(false);
-            FacesMessage message=new FacesMessage("Veuillez confirmer le mot de passe");
-            message.setSeverity(FacesMessage.SEVERITY_ERROR);
-            throw new ValidatorException(message);
+            
+            throw new ValidatorException(message2);
         }
         
         if(this.update_id!=-1 && confirm.isEmpty() && password.isEmpty())
@@ -79,22 +79,18 @@ public class PasswordValidator implements Validator
             if(password == null || password.isEmpty() ||
                 password.length()<2 || password.length()>32)
             {
-                FacesMessage message=new FacesMessage("Le mot de passe doit contenir entre 8 et 32 caractères");
-                message.setSeverity(FacesMessage.SEVERITY_ERROR);
-                throw new ValidatorException(message);
+                throw new ValidatorException(message1);
             }
             if(confirm == null || confirm.isEmpty())
             {
                 confirmComponent.setValid(false);
-                FacesMessage message=new FacesMessage("Veuillez confirmer le mot de passe");
-                message.setSeverity(FacesMessage.SEVERITY_ERROR);
-                throw new ValidatorException(message);
+                throw new ValidatorException(message2);
             }
         }
         if (!password.equals(confirm))
         {
             confirmComponent.setValid(false);
-            FacesMessage message=new FacesMessage("Les mots de passes ne correspondent pas");
+            FacesMessage message=new FacesMessage("Confirmation du mot de pass échouée","Les mots de passes ne correspondent pas");
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
             throw new ValidatorException(message);
         }

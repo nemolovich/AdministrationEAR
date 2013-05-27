@@ -52,7 +52,6 @@ public class CUser implements Serializable
     // @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message="Invalid phone/fax format, should be as xxx-xxx-xxxx")//if the field contains phone or fax number consider using this annotation to enforce field validation
     @Basic(optional = false)
     @NotNull
-    @Size(min = 14, max = 14)
     @Column(name = "PHONE")
     private String phone;
     @Size(max = 250)
@@ -78,7 +77,7 @@ public class CUser implements Serializable
     }
 
     public Integer getId() {
-        return id;
+        return this.id==null?-1:this.id;
     }
 
     public void setId(Integer id) {

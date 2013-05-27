@@ -38,7 +38,7 @@ public class EmailPatternValidator implements Validator
     {
         if (value == null || "".equals((String)value))
         {
-            FacesMessage msg = new FacesMessage("Le champs 'mail' ne peut être vide", "Mail vide");
+            FacesMessage msg = new FacesMessage("Mail invalide","Le champs 'mail' ne peut être vide");
             msg.setSeverity(FacesMessage.SEVERITY_ERROR);
             throw new ValidatorException(msg);
         }
@@ -47,7 +47,7 @@ public class EmailPatternValidator implements Validator
          
         if (!matcher.matches())
         {
-            FacesMessage msg = new FacesMessage("Mail invalide","Adresse mail invalide");
+            FacesMessage msg = new FacesMessage("Mail invalide","Le format de l'adresse mail est invalide");
             msg.setSeverity(FacesMessage.SEVERITY_ERROR);
             throw new ValidatorException(msg);
         }

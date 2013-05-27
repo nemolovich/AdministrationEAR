@@ -21,7 +21,11 @@
                             </f:facet>
                             
                             <h:outputLabel value="Nom:" for="name" />
-                            <h:inputText id="name" value="#{cUserView.entity.name}" title="Nom" required="true" requiredMessage="Le champs 'Nom' ne peut être vide"/>
+                            <h:inputText id="name" value="#{cUserView.entity.name}" title="Nom" required="true" requiredMessage="Le champs 'Nom' ne peut être vide">
+                                <f:validator binding="#{cUserUniqueFieldValidator}"/>
+                                <f:attribute name="fieldName" value="Name" />
+                                <f:attribute name="update_id" value="#{cUserView.entity.id}" />
+                            </h:inputText>
                             <p:message for="name"/>
                             
                             <h:outputLabel value="Phone:" for="phone" />

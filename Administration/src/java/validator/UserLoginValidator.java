@@ -51,13 +51,13 @@ public class UserLoginValidator implements Validator
 
         if (mail == null || mail.isEmpty())
         {
-            FacesMessage message=new FacesMessage("Veuillez entrer votre adresse mail");
+            FacesMessage message=new FacesMessage("Champs 'Mail' vide","Veuillez entrer votre adresse mail");
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
             throw new ValidatorException(message);
         }
         if (password == null || password.isEmpty())
         {
-            FacesMessage message=new FacesMessage("Veuillez entrer votre mot de passe");
+            FacesMessage message=new FacesMessage("Champs 'Mot de passe' vide","Veuillez entrer votre mot de passe");
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
             throw new ValidatorException(message);
         }
@@ -68,6 +68,30 @@ public class UserLoginValidator implements Validator
         {
             if(user.getMail().equals(mail))
             {
+                if(this.userLogin.isBlocked())
+                {
+                    String timeToWait="";
+                    int remainingTime=this.userLogin.getWaitTime();
+                    if(remainingTime>=0)
+                    {
+                        if(remainingTime>0)
+                        {
+                            timeToWait=remainingTime+" minutes";
+                        }
+                        else if(remainingTime==0)
+                        {
+                            timeToWait="moins d'une minute";                        
+                        }
+                        FacesMessage message=new FacesMessage("Session bloquée",
+                                "Votre session est bloquée. Prochain essai dans: "+timeToWait);
+                        message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                        throw new ValidatorException(message);
+                    }
+                    else
+                    {
+                        this.userLogin.unLock();
+                    }
+                }
                 MessageDigest md;
                 try
                 {
@@ -84,17 +108,33 @@ public class UserLoginValidator implements Validator
                 
                 if(!user.getPassword().equals(passwordEncrypted))
                 {
+                    this.userLogin.setLoginTry(this.userLogin.getLoginTry()+1);
+                    if(this.userLogin.getLoginTry()==3)
+                    {
+                        int blockTime=10;
+                        this.userLogin.sessionBlockFor(blockTime);
+                        FacesMessage message=new FacesMessage("Session bloquée","Votre mot de passe est incorrect, "
+                                + "votre session sera bloquée pendant "+blockTime+" minutes");
+                        message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                        throw new ValidatorException(message);
+                    }
                     passwordComponent.setValid(false);
-                    FacesMessage message=new FacesMessage("Votre mot de passe est incorrect");
+                    FacesMessage message=new FacesMessage("Erreur d'autentification","Votre mot de passe est incorrect");
                     message.setSeverity(FacesMessage.SEVERITY_ERROR);
                     throw new ValidatorException(message);
                 }
                 
+                this.userLogin.setLoginTry(0);
                 this.userLogin.setUser(user);
+                FacesMessage message=new FacesMessage("Autentification réussie","Bienvenue "+this.userLogin.getFirstname()+
+                        " "+this.userLogin.getName());
+                message.setSeverity(FacesMessage.SEVERITY_INFO);
+                context.getExternalContext().getFlash().setKeepMessages(true);
+                context.addMessage(null, message);
                 return;
             }
         }
-        FacesMessage message=new FacesMessage("Votre adresse mail n'a pas été reconnue");
+        FacesMessage message=new FacesMessage("Login inconnu","Votre adresse mail n'a pas été reconnue");
         message.setSeverity(FacesMessage.SEVERITY_ERROR);
         throw new ValidatorException(message);
     }

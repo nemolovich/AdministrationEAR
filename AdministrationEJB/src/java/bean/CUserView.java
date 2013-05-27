@@ -11,6 +11,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
+import org.jboss.weld.context.RequestContext;
 
 /**
  *
@@ -27,6 +28,12 @@ public class CUserView extends EntityView<CUser, CUserFacade>
     public CUserView()
     {
         super(CUser.class,"c_user");
+    }
+    
+    @Override
+    public void setEntity(CUser entity)
+    {
+        super.setInstance(entity);
     }
 
     @Override

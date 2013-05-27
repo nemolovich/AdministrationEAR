@@ -11,14 +11,15 @@
     <h:body>
     	<ui:composition template="/templates/#{userLogin.template}.xhtml">
             <ui:define name="content">
+                <div id="messages_container" class="ui-growl ui-widget" style="z-index: 1010;"></div>
                 <f:view>
                     <h:form id="displayCUsers">
                         
-                        <p:growl id="growl" showDetail="true"/>
-                        <h:messages id="messages"/>
-                        <p:dataTable value="#{cUserView.entries}"
+                        <p:growl id="growl" showDetail="true" life="3000" />
+                        <p:dataTable id="cUserDataTable"
+                                     value="#{cUserView.entries}"
                                      var="item"
-                                     emptyMessage="Aucun utilisateur n'a été trouvé"   
+                                     emptyMessage="Aucun utilisateur n'a été trouvé"
                                      widgetVar="cUserTable"
                                      selectionMode="single"
                                      selection="#{cUserView.entity}"
@@ -29,8 +30,9 @@
                                      paginator="true">
                             
                             <p:ajax event="rowSelect"  
-                                    update=":displayCUsers:clientDetails :displayCUsers:growl"/>
-<!--                                    oncomplete="entityDialog.show()" />  -->
+                                    update=":displayCUsers:clientDetails :displayCUsers:growl">
+                                    <!--oncomplete="entityDialog.show();">-->
+                            </p:ajax>
                             <p:ajax event="rowUnselect" update=":displayCUsers:growl"/>
                         
                             <f:facet name="header">
@@ -44,25 +46,26 @@
                                       filterMatchMode="exact">
                                 <h:outputText value="#{item.id}"/>
                             </p:column>
+                            <p:column headerText="Nom de l'utilisateur"
+                                      sortBy="#{item.name}"
+                                      filterBy="#{item.name}"
+                                      filterMatchMode="contains">
+                                <h:outputText value="#{item.name}"/>
+                            </p:column>
                             <p:column headerText="Référence de société"
                                       sortBy="#{item.societyName}"
                                       filterBy="#{item.societyName}"
                                       filterMatchMode="contains">
 <!--                                <h:commandLink action="#{clientView.entityView(item.idClient)}"
                                                value="#{item.societyName}">-->
-                                <h:commandLink value="#{item.societyName}"
-                                               onclick="cUserTable.unselectAllRows(); cUserTable.selectRow(#{index-(cUserTable.getPaginator().getCurrentPage()*4)});">
+                                <h:outputText value="#{item.societyName}"/><br />
+                                <h:commandLink value="Afficher les détails"
+                                               onclick="cUserTable.unselectAllRows(); cUserTable.selectRow((#{index}-cUserTable.getPaginator().getCurrentPage()*4));
+                                                   ">
                                     <p:ajax event="click"
                                             update=":displayCUsers:clientDetails :displayCUsers:growl"
                                             oncomplete="entityDialog.show()" />
                                 </h:commandLink>
-                                <h:outputText value=" value: #{cUserTable.getPaginator().getPage()}" />
-                            </p:column>
-                            <p:column headerText="Nom de l'utilisateur"
-                                      sortBy="#{item.name}"
-                                      filterBy="#{item.name}"
-                                      filterMatchMode="contains">
-                                <h:outputText value="#{item.name}"/>
                             </p:column>
                             <p:column headerText="Téléphone"
                                       sortBy="#{item.phone}"
@@ -81,12 +84,12 @@
                                     <h:outputText value="Rechercher:"/>
                                     <p:inputText id="globalFilter" onkeyup="cUserTable.filter();"
                                                  style="width:150px;margin-left:20px" />
+                                    <p:commandButton id="create" value="Ajouter un utilisateur"
+                                                     action="#{cUserView.entityCreate()}"
+                                                     ajax="false" immediate="true"
+                                                     style="margin-left:20px;">
+                                    </p:commandButton>
                                 </p:outputPanel>
-                                <p:commandButton id="create" value="Ajouter un utilisateur"
-                                                 action="#{cUserView.entityCreate()}"
-                                                 ajax="false" immediate="true"
-                                                 style="margin-left:20px;">
-                                </p:commandButton>
                             </f:facet>
                         </p:dataTable>
                         <p:dialog id="dialog"
@@ -95,8 +98,8 @@
                                   resizable="false"
                                   draggable="false"
                                   modal="true"
-                                  showEffect="fade"
-                                  hideEffect="fade">
+                                  showEffect="clip"
+                                  hideEffect="clip">
                             <p:panelGrid id="clientDetails" columns="2" columnClasses="label,field">
                                 <h:outputText value="Identifiant:"/>
                                 <h:outputText value="#{cUserView.entity.idClient.id}" title="Identifiant"/>
@@ -118,7 +121,74 @@
                                 <h:outputText value="#{cUserView.entity.idClient.observations}" title="Observations"/>
                             </p:panelGrid>
                         </p:dialog>
-                    </h:form> 
+                        
+                    </h:form>
+                    <h:outputLink id="loginLink" value="javascript:void(0)" onclick="createCUser.show()" title="login">     
+                        <h:outputText value="Créer!!" />
+                    </h:outputLink>
+                    <h:form>
+                    <p:dialog id="dialog"
+                              header="Création d'un utilisateur"
+                              widgetVar="createCUser"
+                              resizable="false"
+                              draggable="false"
+                              modal="true"
+                              showEffect="clip"
+                              hideEffect="clip"> 
+                            <p:growl id="growl" showDetail="true" life="3000" /> 
+                            <p:panelGrid columns="3" columnClasses="label,field,message">
+
+                                <h:outputLabel value="Nom:" for="name" />
+                                <h:inputText id="name" value="#{cUserView.entity.name}" title="Nom" required="true" requiredMessage="Le champs 'Nom' ne peut être vide">
+                                    <f:validator binding="#{cUserUniqueFieldValidator}"/>
+                                    <f:attribute name="fieldName" value="Name" />
+                                    <f:attribute name="update_id" value="#{cUserView.entity.id}" />
+                                </h:inputText>
+                                <p:message for="name"/>
+
+                                <h:outputLabel value="Phone:" for="phone" />
+                                <h:inputText id="phone" value="#{cUserView.entity.phone}" title="Téléphone">
+                                    <f:validator binding="#{phonePatternValidator}"/>
+                                </h:inputText>
+                                <p:message for="phone"/>
+
+                                <h:outputLabel value="Observations:" for="observations" />
+                                <h:inputTextarea class="textarea-field" id="observations"
+                                                 value="#{cUserView.entity.observations}"
+                                                 title="Observations" />
+                                <p:message for="observations"/>
+
+                                <h:outputLabel value="Société:" for="idClient" />
+                                <h:selectOneMenu id="idClient" value="#{cUserView.entity.idClient}" title="Société">
+                                    <f:selectItems value="#{clientView.entries}"/>
+                                    <f:converter binding="#{clientConverter}"/>
+                                </h:selectOneMenu>
+                                <p:message for="idClient"/>
+
+                                <f:facet name="footer">
+                                    <p:commandButton id="create" value="Créer"
+                                                     update="growl"   
+                                                     actionListener="#{cUserView.create()}"
+                                                     oncomplete="createRequest(xhr, status, args);"
+                                                     />
+                                    <p:commandButton id="back" value="Annuler"
+                                                     action="list"
+                                                     oncomplete="createCUser.hide()">
+                                    </p:commandButton>
+                                </f:facet>
+                            </p:panelGrid>
+                        </p:dialog>
+                    </h:form>
+                    <script type="text/javascript">  
+                        function createRequest(xhr, status, args) {  
+                            if(args.validationFailed) {  
+                                createCUser.jq.effect("shake", { times:2 }, 100);  
+                            }
+                            else {  
+                                createCUser.hide(); 
+                            }  
+                        }  
+                    </script>
                 </f:view>
             </ui:define>
         </ui:composition>
