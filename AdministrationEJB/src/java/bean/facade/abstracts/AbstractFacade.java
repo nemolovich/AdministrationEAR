@@ -5,6 +5,8 @@
 package bean.facade.abstracts;
 
 import java.util.List;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 
 /**
@@ -25,6 +27,10 @@ public abstract class AbstractFacade<T>
     public void create(T entity)
     {
         getEntityManager().persist(entity);
+        FacesMessage message=new FacesMessage("Ajout de la donnée réussie",
+                "L'enregistrement s'est correctement déroulé");
+        message.setSeverity(FacesMessage.SEVERITY_INFO);
+        FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
     public void edit(T entity)

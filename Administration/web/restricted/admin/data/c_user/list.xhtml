@@ -123,7 +123,8 @@
                         </p:dialog>
                         
                     </h:form>
-                    <h:outputLink id="loginLink" value="javascript:void(0)" onclick="createCUser.show()" title="login">     
+                    <h:outputLink id="loginLink" value="javascript:void(0)"
+                                  onclick="console.log('#{cUserView.entityCreate()}');createCUser.show()" title="login">
                         <h:outputText value="Créer!!" />
                     </h:outputLink>
                     <h:form>
@@ -139,7 +140,10 @@
                             <p:panelGrid columns="3" columnClasses="label,field,message">
 
                                 <h:outputLabel value="Nom:" for="name" />
-                                <h:inputText id="name" value="#{cUserView.entity.name}" title="Nom" required="true" requiredMessage="Le champs 'Nom' ne peut être vide">
+                                <h:inputText id="name" value="#{cUserView.entity.name}"
+                                             title="Nom"
+                                             required="true"
+                                             requiredMessage="Le champs 'Nom' ne peut être vide">
                                     <f:validator binding="#{cUserUniqueFieldValidator}"/>
                                     <f:attribute name="fieldName" value="Name" />
                                     <f:attribute name="update_id" value="#{cUserView.entity.id}" />

@@ -83,7 +83,7 @@ public class UserLoginValidator implements Validator
                             timeToWait="moins d'une minute";                        
                         }
                         FacesMessage message=new FacesMessage("Session bloquée",
-                                "Votre session est bloquée. Prochain essai dans: "+timeToWait);
+                                "Votre session est bloquée.\nProchain essai dans: "+timeToWait);
                         message.setSeverity(FacesMessage.SEVERITY_ERROR);
                         throw new ValidatorException(message);
                     }
@@ -109,24 +109,39 @@ public class UserLoginValidator implements Validator
                 if(!user.getPassword().equals(passwordEncrypted))
                 {
                     this.userLogin.setLoginTry(this.userLogin.getLoginTry()+1);
-                    if(this.userLogin.getLoginTry()==3)
+                    if(this.userLogin.getLoginTry()>=3)
                     {
-                        int blockTime=10;
+                        int blockTime=0;
+                        if(this.userLogin.getLoginTry()==3)
+                        {
+                            blockTime=5;
+                        }
+                        else if(this.userLogin.getLoginTry()==4)
+                        {
+                            blockTime=10;
+                        }
+                        else if(this.userLogin.getLoginTry()>=5)
+                        {
+                            blockTime=15;                            
+                        }
                         this.userLogin.sessionBlockFor(blockTime);
-                        FacesMessage message=new FacesMessage("Session bloquée","Votre mot de passe est incorrect, "
+                        FacesMessage message=new FacesMessage("Session bloquée",
+                                "Votre mot de passe est incorrect, "
                                 + "votre session sera bloquée pendant "+blockTime+" minutes");
                         message.setSeverity(FacesMessage.SEVERITY_ERROR);
                         throw new ValidatorException(message);
                     }
                     passwordComponent.setValid(false);
-                    FacesMessage message=new FacesMessage("Erreur d'autentification","Votre mot de passe est incorrect");
+                    FacesMessage message=new FacesMessage("Erreur d'autentification",
+                            "Votre mot de passe est incorrect");
                     message.setSeverity(FacesMessage.SEVERITY_ERROR);
                     throw new ValidatorException(message);
                 }
                 
                 this.userLogin.setLoginTry(0);
                 this.userLogin.setUser(user);
-                FacesMessage message=new FacesMessage("Autentification réussie","Bienvenue "+this.userLogin.getFirstname()+
+                FacesMessage message=new FacesMessage("Autentification réussie",
+                        "Bienvenue "+this.userLogin.getFirstname()+
                         " "+this.userLogin.getName());
                 message.setSeverity(FacesMessage.SEVERITY_INFO);
                 context.getExternalContext().getFlash().setKeepMessages(true);
@@ -134,7 +149,8 @@ public class UserLoginValidator implements Validator
                 return;
             }
         }
-        FacesMessage message=new FacesMessage("Login inconnu","Votre adresse mail n'a pas été reconnue");
+        FacesMessage message=new FacesMessage("Login inconnu",
+                "Votre adresse mail n'a pas été reconnue");
         message.setSeverity(FacesMessage.SEVERITY_ERROR);
         throw new ValidatorException(message);
     }
