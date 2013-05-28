@@ -10,7 +10,7 @@
     </h:head>
     <h:body>
         
-        <ui:composition template="/templates/#{userLogin.template}.xhtml">
+        <ui:composition template="/templates/page_template.xhtml">
             <ui:define name="content">
                 <f:view>
                     <h:form>
@@ -35,9 +35,11 @@
                                 <p:outputPanel>
                                     <p:commandButton id="login" value="Valider"
                                                      action="#{userLogin.login()}"
+                                                     icon="ui-icon-key"
                                                      ajax="false"/>
                                     <p:commandButton id="back" value="Annuler"
                                                      action="/index"
+                                                     icon="ui-icon-closethick"
                                                      immediate="true"
                                                      ajax="false"/>
                                 </p:outputPanel>

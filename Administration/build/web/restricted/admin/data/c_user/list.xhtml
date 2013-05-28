@@ -9,13 +9,11 @@
         <title>Liste des utilisateurs</title>
     </h:head>
     <h:body>
-    	<ui:composition template="/templates/#{userLogin.template}.xhtml">
+    	<ui:composition template="/templates/page_template.xhtml">
             <ui:define name="content">
-                <div id="messages_container" class="ui-growl ui-widget" style="z-index: 1010;"></div>
                 <f:view>
                     <h:form id="displayCUsers">
                         
-                        <p:growl id="growl" showDetail="true" life="3000" />
                         <p:dataTable id="cUserDataTable"
                                      value="#{cUserView.entries}"
                                      var="item"
@@ -30,10 +28,10 @@
                                      paginator="true">
                             
                             <p:ajax event="rowSelect"  
-                                    update=":displayCUsers:clientDetails :displayCUsers:growl">
+                                    update=":displayCUsers:displayClientDetails:clientDetails">
                                     <!--oncomplete="entityDialog.show();">-->
                             </p:ajax>
-                            <p:ajax event="rowUnselect" update=":displayCUsers:growl"/>
+                            <p:ajax event="rowUnselect"/>
                         
                             <f:facet name="header">
                                 <p:outputPanel>
@@ -63,7 +61,6 @@
                                                onclick="cUserTable.unselectAllRows(); cUserTable.selectRow((#{index}-cUserTable.getPaginator().getCurrentPage()*4));
                                                    ">
                                     <p:ajax event="click"
-                                            update=":displayCUsers:clientDetails :displayCUsers:growl"
                                             oncomplete="entityDialog.show()" />
                                 </h:commandLink>
                             </p:column>
@@ -93,50 +90,60 @@
                             </f:facet>
                         </p:dataTable>
                         <p:dialog id="dialog"
+                                  appendToBody="true"
                                   header="Détails de la société"
                                   widgetVar="entityDialog"
                                   resizable="false"
                                   draggable="false"
                                   modal="true"
                                   showEffect="clip"
-                                  hideEffect="clip">
-                            <p:panelGrid id="clientDetails" columns="2" columnClasses="label,field">
-                                <h:outputText value="Identifiant:"/>
-                                <h:outputText value="#{cUserView.entity.idClient.id}" title="Identifiant"/>
-                                <h:outputText value="Nom de la société:"/>
-                                <h:outputText value="#{cUserView.entity.idClient.name}" title="Nom de la socité"/>
-                                <h:outputText value="Adresse:"/>
-                                <h:outputText value="#{cUserView.entity.idClient.address}" title="Adresse"/>
-                                <h:outputText value="Téléphone:"/>
-                                <h:outputText value="#{cUserView.entity.idClient.phone}" title="Téléhone"/>
-                                <h:outputText value="Fax:"/>
-                                <h:outputText value="#{cUserView.entity.idClient.fax}" title="Fax"/>
-                                <h:outputText value="Mail:"/>
-                                <h:outputText value="#{cUserView.entity.idClient.mail}" title="Mail"/>
-                                <h:outputText value="Interlocuteur:"/>
-                                <h:outputText value="#{cUserView.entity.idClient.userName}"/>
-                                <h:outputText value="InterventionType:"/>
-                                <h:outputText value="#{cUserView.entity.idClient.interventionType}" title="InterventionType"/>
-                                <h:outputText value="Observations:"/>
-                                <h:outputText value="#{cUserView.entity.idClient.observations}" title="Observations"/>
-                            </p:panelGrid>
+                                  hideEffect="clip"
+                                  rendered="#{cUserView.entity!=null}">
+                            <h:form id="displayClientDetails">
+                                <p:panelGrid id="clientDetails" columns="2" columnClasses="label,field">
+                                    <h:outputText value="Identifiant:"/>
+                                    <h:outputText value="#{cUserView.entity.idClient.id}" title="Identifiant"/>
+                                    <h:outputText value="Nom de la société:"/>
+                                    <h:outputText value="#{cUserView.entity.idClient.name}" title="Nom de la socité"/>
+                                    <h:outputText value="Adresse:"/>
+                                    <h:outputText value="#{cUserView.entity.idClient.address}" title="Adresse"/>
+                                    <h:outputText value="Téléphone:"/>
+                                    <h:outputText value="#{cUserView.entity.idClient.phone}" title="Téléhone"/>
+                                    <h:outputText value="Fax:"/>
+                                    <h:outputText value="#{cUserView.entity.idClient.fax}" title="Fax"/>
+                                    <h:outputText value="Mail:"/>
+                                    <h:outputText value="#{cUserView.entity.idClient.mail}" title="Mail"/>
+                                    <h:outputText value="Interlocuteur:"/>
+                                    <h:outputText value="#{cUserView.entity.idClient.userName}"/>
+                                    <h:outputText value="InterventionType:"/>
+                                    <h:outputText value="#{cUserView.entity.idClient.interventionType}" title="InterventionType"/>
+                                    <h:outputText value="Observations:"/>
+                                    <h:outputText value="#{cUserView.entity.idClient.observations}" title="Observations"/>
+                                </p:panelGrid>
+                                <center>
+                                    <p:commandButton id="close" value="Fermer"
+                                                     action="javascript:void(0);"
+                                                     oncomplete="entityDialog.hide()"/>
+                                </center>
+                            </h:form>
                         </p:dialog>
                         
                     </h:form>
-                    <h:outputLink id="loginLink" value="javascript:void(0)"
-                                  onclick="console.log('#{cUserView.entityCreate()}');createCUser.show()" title="login">
+                    <h:outputLink id="create" value="javascript:void(0)"
+                                  onclick="console.log('#{cUserView.entityCreate()}');createCUser.show();" title="Créer un utilisateur">
                         <h:outputText value="Créer!!" />
                     </h:outputLink>
-                    <h:form>
                     <p:dialog id="dialog"
+                              appendToBody="true"
                               header="Création d'un utilisateur"
                               widgetVar="createCUser"
                               resizable="false"
                               draggable="false"
                               modal="true"
                               showEffect="clip"
-                              hideEffect="clip"> 
-                            <p:growl id="growl" showDetail="true" life="3000" /> 
+                              hideEffect="clip">
+                        <h:form>
+                            <p:growl id="growl" showDetail="true" life="100000" /> 
                             <p:panelGrid columns="3" columnClasses="label,field,message">
 
                                 <h:outputLabel value="Nom:" for="name" />
@@ -173,26 +180,16 @@
                                     <p:commandButton id="create" value="Créer"
                                                      update="growl"   
                                                      actionListener="#{cUserView.create()}"
-                                                     oncomplete="createRequest(xhr, status, args);"
+                                                     oncomplete="createRequest(createCUser, xhr, status, args);"
                                                      />
                                     <p:commandButton id="back" value="Annuler"
-                                                     action="list"
+                                                     action="javascript:void(0);"
                                                      oncomplete="createCUser.hide()">
                                     </p:commandButton>
                                 </f:facet>
                             </p:panelGrid>
-                        </p:dialog>
-                    </h:form>
-                    <script type="text/javascript">  
-                        function createRequest(xhr, status, args) {  
-                            if(args.validationFailed) {  
-                                createCUser.jq.effect("shake", { times:2 }, 100);  
-                            }
-                            else {  
-                                createCUser.hide(); 
-                            }  
-                        }  
-                    </script>
+                        </h:form>
+                    </p:dialog>
                 </f:view>
             </ui:define>
         </ui:composition>

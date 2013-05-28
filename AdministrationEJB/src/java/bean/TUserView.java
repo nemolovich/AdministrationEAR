@@ -30,10 +30,18 @@ public class TUserView extends EntityView<TUser, TUserFacade>
         super.setWebFolder("/restricted/admin/user/");
     }
     
+    @Override
+    public String entityUpdate(TUser entity)
+    {
+        super.entityUpdate(entity);
+        return "/restricted/user/user/update";
+    }
+    
     public String entityUpdate(TUser entity, UserLogin currentUser)
     {
         super.entityUpdate(entity);
-        if(currentUser!=null)
+        System.err.println("CurrentUser: "+(currentUser!=null));
+        if(currentUser.getRights().equals(TUser.ADMIN_RIGHTS))
         {
             return "/restricted/admin/user/update";
         }

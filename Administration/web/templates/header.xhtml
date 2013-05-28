@@ -7,20 +7,47 @@
         <title></title>
     </h:head>
     <h:body>
-        <div class="header">
+        <div id="messages_container" class="ui-growl ui-widget" style="z-index: 1010;"></div>
+        <h:form>
+            <p:growl id="growl" showDetail="true" life="3000" />
+            <img src="/Administration/resources/img/logoAS.png" id="logo"/>
+            <h1>
+                <center>
+                    Admin-Services
+                </center>
+            </h1>
             <p:outputPanel>
-                <h:outputText value="#{userLogin.loggedHeader}" />
-                <br />
-                <h:link outcome="/restricted/login" title="Se connecter"
-                        value="Se connecter"
-                        rendered="#{!userLogin.logged}"/>
-                <h:form>
-                    <h:commandLink action="#{userLogin.logout()}" title="Se déconnecter"
-                                   value="Se déconnecter"
-                                   rendered="#{userLogin.logged}"/>
-                </h:form>
+                <p:panel rendered="#{userLogin.logged}">
+                    <h:outputText value="Vous êtes connecté en tant que:"
+                                  style="font-size: 85%;"/>
+                    <br />
+                    <p:commandButton action="#{tUserView.entityUpdate(userLogin.user)}"
+                                     icon="ui-icon-wrench"
+                                     style="font-size: 50%;padding-top:0px;"
+                                     title="Modifier mes informations"
+                                     ajax="false"
+                                     immediate="true"/>
+                    <h:outputText value="#{userLogin.firstname} #{userLogin.name}"
+                                  style="font-size: 90%;font-weight:bold;margin-left:5px;vertical-align: bottom;"/>
+                    <br />
+                    <p:commandButton icon="ui-icon-power"
+                                     title="Se déconnecter"
+                                     value="Se déconnecter"
+                                     style="font-size: 75%;float:right;margin:5px;"
+                                     action="#{userLogin.logout()}"/>
+                </p:panel>
+                <p:panel rendered="#{!userLogin.logged}" style="float:right;">
+                    <h:outputText value="Vous n'êtes pas connecté"
+                                  style="font-size: 85%;"/>
+                    <br />
+                    <p:commandButton icon="ui-icon-key"
+                                     title="Se connecter"
+                                     value="Se connecter"
+                                     style="font-size: 75%;float:right;margin:5px;"
+                                     action="/restricted/login"/>
+                </p:panel>
             </p:outputPanel>
-        </div>
+        </h:form>
     </h:body>
 </html>
 

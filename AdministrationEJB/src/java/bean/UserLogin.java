@@ -220,20 +220,6 @@ public class UserLogin implements Serializable
         return null;
     }
     
-    public String getLoggedHeader()
-    {
-        if(this.getLogged())
-        {
-            return "Vous êtes connecté en tant que:\n"
-                    + this.user.getFirstname()+" "
-                    + this.user.getName();
-        }
-        else
-        {
-            return "Vous n'êtes pas connecté";
-        }
-    }
-    
     public boolean getLogged()
     {
         return (this.user!=null&&this.user.getId()!=null&&this.user.getName()!=null);
@@ -242,6 +228,7 @@ public class UserLogin implements Serializable
     public String logout()
     {
         this.user=null;
+        this.template="unknown";
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
         return "/index";
     }
