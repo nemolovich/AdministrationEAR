@@ -32,7 +32,7 @@
                             <f:facet name="footer">
                                 <p:outputPanel>
                                     <p:commandButton id="update" value="Modifier"
-                                                     action="#{tUserView.entityUpdate(tUserView.entity)}"
+                                                     action="#{tUserView.entityUpdate(tUserView.entity,userLogin)}"
                                                      ajax="false" immediate="true"/>
                                     <p:commandButton id="back" value="Retour"
                                                      action="list"

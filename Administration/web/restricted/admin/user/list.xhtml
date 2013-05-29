@@ -59,17 +59,21 @@
                                 <p:commandButton action="#{tUserView.entityView(item)}"
                                                  title="Afficher les détails"
                                                  icon="ui-icon-search"
+                                                 style="font-size: 75%;"
                                                  ajax="false"
                                                  immediate="true"/>&nbsp;
                                 <p:commandButton action="#{tUserView.entityUpdate(item,userLogin)}"
                                                  title="Modifier"
                                                  icon="ui-icon-pencil"
+                                                 style="font-size: 75%;"
                                                  ajax="false"
                                                  immediate="true"/>&nbsp;
                                 <p:commandButton onclick="return (confirm('#{tUserView.getDeleteMessage(item)}'));"
                                                  action="#{tUserView.entityDelete(item)}"
                                                  title="Supprimer"
                                                  icon="ui-icon-trash"
+                                                 style="font-size: 75%;"
+                                                 styleClass="red_icon"
                                                  ajax="false"
                                                  immediate="true"/>
                             </p:column>

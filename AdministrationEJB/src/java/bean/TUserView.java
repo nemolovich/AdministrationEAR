@@ -51,6 +51,7 @@ public class TUserView extends EntityView<TUser, TUserFacade>
     public String update(UserLogin currentUser)
     {
         this.setEntity(this.tUserFacade.update(this.getEntity()));
+        System.out.println("CurrentUser: "+(currentUser!=null));
         // Si on est en mode utilisateur
         if(currentUser!=null)
         {

@@ -36,11 +36,19 @@ public abstract class AbstractFacade<T>
     public void edit(T entity)
     {
         getEntityManager().merge(entity);
+        FacesMessage message=new FacesMessage("Modification de la donnée réussie",
+                "La mise-à-jour s'est correctement déroulée");
+        message.setSeverity(FacesMessage.SEVERITY_INFO);
+        FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
     public void remove(T entity)
     {
         getEntityManager().remove(getEntityManager().merge(entity));
+        FacesMessage message=new FacesMessage("Supression de la donnée réussie",
+                "La suppression s'est correctement déroulée");
+        message.setSeverity(FacesMessage.SEVERITY_INFO);
+        FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
     public T find(Object id)

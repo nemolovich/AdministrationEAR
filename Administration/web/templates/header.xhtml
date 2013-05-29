@@ -42,17 +42,19 @@
                                      value="Se déconnecter"
                                      immediate="true"
                                      ajax="false"
-                                     style="font-size: 75%;float:right;margin:5px;"
+                                     style="font-size:75%;float:right;margin:5px;"
+                                     styleClass="red_icon"
                                      action="#{userLogin.logout()}"
-                                     onclick="reloadInterval(10);"/>
+                                     onclick="reloadInterval(1);"/>
                 </p:panel>
                 <p:panel rendered="#{!userLogin.logged}" style="float:right;">
                     <h:outputText value="Vous n'êtes pas connecté"
                                   style="font-size: 85%;"/>
                     <br />
                     <p:commandButton id="login_command"
-                                     action="javascript:void(0);"
+                                     action="#{userLogin.login()}"
                                      icon="ui-icon-key"
+                                     styleClass="blue_icon"
                                      style="font-size: 75%;float:right;margin:5px;"
                                      title="Se connecter"
                                      value="Se connecter"
@@ -74,9 +76,10 @@
                 <h:panelGrid columns="2" cellpadding="5" columnClasses="label,field">
                     <h:outputLabel value="Mail:" for="mail_popup" />
                     <h:inputText id="mail_popup" value="#{userLogin.loginMail}" title="Mail">
-                <p:hotkey bind="esc" handler="console.log('testm?');"/>
                         <f:validator binding="#{userLoginValidator}"/>
                         <f:attribute name="password" value="#{password_popup}" />
+                        <p:ajax event="keyup"
+                                oncomplete="handleEvent(autentification,event);"/>
                     </h:inputText>
 
                     <h:outputLabel for="password_popup" value="Mot&nbsp;de&nbsp;passe:" />
@@ -88,9 +91,11 @@
                                  update=":growl :authDialogForm:password_popup"
                                  oncomplete="if(createRequest(autentification, xhr, status, args)){
                                  reloadInterval(1);}"
+                                 styleClass="blue_icon"
                                  icon="ui-icon-key"/>
                 <p:commandButton id="close_button" value="Annuler"
                                  action="javascript:void(0);"
+                                 styleClass="red_icon"
                                  onclick="autentification.hide();"
                                  icon="ui-icon-closethick"/>
             </h:form>

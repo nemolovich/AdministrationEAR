@@ -11,10 +11,11 @@
     <h:body>
         
         <ui:composition template="/templates/page_template.xhtml">
+            <ui:define name="title">
+                | Connexion
+            </ui:define>
             <ui:define name="content">
-                <ui:define name="content_panel" id="content_panel">
-                    <ui:param name="header" value="Truc"/>
-                </ui:define>
+                <f:attribute name="header" value="Connexion" />
                 <f:view>
                     <h:form id="loginForm">
                          
@@ -37,7 +38,11 @@
                                 <p:outputPanel>
                                     <p:commandButton id="login_validate" value="Valider"
                                                      action="#{userLogin.login()}"
+                                                     onclick="//reloadInterval(1);"
                                                      update=":growl :loginForm:password"
+                                                     ajax="true"
+                                                     immediate="false"
+                                                     styleClass="blue_icon"
                                                      icon="ui-icon-key"/>
                                 </p:outputPanel>
                             </f:facet>

@@ -22,11 +22,32 @@ function createRequest(form, xhr, status, args)
 }
 
 /**
+ * Permet de récupérer les évènements venant du clavier via une
+ * balise <p:ajax> sur un attribut 'oncomplete' et d'en modifier
+ * un objet donné
+ * @param {c} item, l'objet à faire intéragir
+ * @param {keyboardEvents} event, L'évènement à récupérer
+ * @returns {void}
+ */
+function handleEvent(item, event)
+{
+    /**
+     * Si la touche est 'ESC'
+     */
+    if(event.keyCode==27)
+    {
+        item.hide();
+    }
+}
+
+/**
  * Recharge la page après le nombre de secondes indiquées
  * @param {int} secondes, le temps d'attente avant rafraichissement
  * @returns {void}
  */
 function reloadInterval(secondes)
 {
-    setTimeout('location.reload(true);',1000*secondes);
+//    setTimeout('location.reload(true);',1000*secondes);
+    setTimeout('this.document.location.href=window.location.href',1000*secondes);
+    
 }

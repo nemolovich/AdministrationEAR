@@ -54,7 +54,7 @@ public class UserLogin implements Serializable
     public void addKonami(char c)
     {
         long currentTime=Calendar.getInstance().getTimeInMillis();
-        if(!this.konami.isEmpty()&&currentTime-this.previousHit>1000)
+        if(!this.konami.isEmpty()&&currentTime-this.previousHit>500)
         {
             this.konami="";
         }
@@ -66,17 +66,26 @@ public class UserLogin implements Serializable
         }
         else if(UserLogin.konamiCode.equals(this.konami))
         {
+            FacesContext context=FacesContext.getCurrentInstance();
+            context.getExternalContext().getFlash().setKeepMessages(true);
+            FacesMessage message=new FacesMessage("Code Konami");
             if(this.blocked)
             {
                 this.unLock();
-                FacesMessage message=new FacesMessage("Code Konami",
-                        "Votre session a été débloquée");
                 message.setSeverity(FacesMessage.SEVERITY_INFO);
-                FacesContext context=FacesContext.getCurrentInstance();
-                context.getExternalContext().getFlash().setKeepMessages(true);
-                context.addMessage(null, message);
-                System.err.println("Session débloquée via code konami");
+                message.setDetail("Votre session a été débloquée");
             }
+            else
+            {
+                if(this.getLogged())
+                {
+                    this.logout();
+                }
+                this.sessionBlockFor(60);
+                message.setSeverity(FacesMessage.SEVERITY_FATAL);
+                message.setDetail("Vous avez bloqué votre session pour une heure!!!");
+            }
+            context.addMessage(null, message);
             this.konami="";
         }
     }
@@ -227,7 +236,7 @@ public class UserLogin implements Serializable
         return (this.user==null?null:
                 (this.user.getRights().equals(TUser.ADMIN_RIGHTS)?"/restricted/admin/index":
                 (this.user.getRights().equals(TUser.USER_RIGHTS)?"/restricted/user/index":
-                "/index")));
+                "/restricted/login")));
     }
     
     public String saveAccount()

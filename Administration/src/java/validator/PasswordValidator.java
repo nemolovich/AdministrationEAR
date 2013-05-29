@@ -74,7 +74,7 @@ public class PasswordValidator implements Validator
         else
         {
             if(password == null || password.isEmpty() ||
-                password.length()<2 || password.length()>32)
+                password.length()<8 || password.length()>32)
             {
                 throw new ValidatorException(message1);
             }
