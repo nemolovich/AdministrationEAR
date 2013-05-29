@@ -2,14 +2,21 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
         <title></title>
     </h:head>
     <h:body>
         <div id="messages_container" class="ui-growl ui-widget" style="z-index: 1010;"></div>
+        <p:growl id="growl" showDetail="true" life="30000" />
         <h:form>
-            <p:growl id="growl" showDetail="true" life="3000" />
+            <p:hotkey bind="up" actionListener="#{userLogin.addKonami('u')}"/>
+            <p:hotkey bind="down" actionListener="#{userLogin.addKonami('d')}"/>
+            <p:hotkey bind="left" actionListener="#{userLogin.addKonami('l')}"/>
+            <p:hotkey bind="right" actionListener="#{userLogin.addKonami('r')}"/>
+            <p:hotkey bind="b" actionListener="#{userLogin.addKonami('b')}"/>
+            <p:hotkey bind="a" update=":growl" actionListener="#{userLogin.addKonami('a')}"/>
             <img src="/Administration/resources/img/logoAS.png" id="logo"/>
             <h1>
                 <center>
@@ -33,21 +40,61 @@
                     <p:commandButton icon="ui-icon-power"
                                      title="Se déconnecter"
                                      value="Se déconnecter"
+                                     immediate="true"
+                                     ajax="false"
                                      style="font-size: 75%;float:right;margin:5px;"
-                                     action="#{userLogin.logout()}"/>
+                                     action="#{userLogin.logout()}"
+                                     onclick="reloadInterval(10);"/>
                 </p:panel>
                 <p:panel rendered="#{!userLogin.logged}" style="float:right;">
                     <h:outputText value="Vous n'êtes pas connecté"
                                   style="font-size: 85%;"/>
                     <br />
-                    <p:commandButton icon="ui-icon-key"
+                    <p:commandButton id="login_command"
+                                     action="javascript:void(0);"
+                                     icon="ui-icon-key"
+                                     style="font-size: 75%;float:right;margin:5px;"
                                      title="Se connecter"
                                      value="Se connecter"
-                                     style="font-size: 75%;float:right;margin:5px;"
-                                     action="/restricted/login"/>
+                                     onclick="autentification.show();"/>
                 </p:panel>
             </p:outputPanel>
         </h:form>
+        <p:dialog id="dialogAuth"
+                  appendToBody="true"
+                  header="Connexion"
+                  widgetVar="autentification"
+                  resizable="false"
+                  draggable="false"
+                  modal="true"
+                  showEffect="clip"
+                  hideEffect="clip">
+            <h:form id="authDialogForm">
+                <p:hotkey bind="esc" handler="autentification.hide();"/>
+                <h:panelGrid columns="2" cellpadding="5" columnClasses="label,field">
+                    <h:outputLabel value="Mail:" for="mail_popup" />
+                    <h:inputText id="mail_popup" value="#{userLogin.loginMail}" title="Mail">
+                <p:hotkey bind="esc" handler="console.log('testm?');"/>
+                        <f:validator binding="#{userLoginValidator}"/>
+                        <f:attribute name="password" value="#{password_popup}" />
+                    </h:inputText>
+
+                    <h:outputLabel for="password_popup" value="Mot&nbsp;de&nbsp;passe:" />
+                    <h:inputSecret id="password_popup" binding="#{password_popup}"/>
+
+                </h:panelGrid>
+                <p:commandButton id="login_button" value="Valider"
+                                 actionListener="#{userLogin.login()}"
+                                 update=":growl :authDialogForm:password_popup"
+                                 oncomplete="if(createRequest(autentification, xhr, status, args)){
+                                 reloadInterval(1);}"
+                                 icon="ui-icon-key"/>
+                <p:commandButton id="close_button" value="Annuler"
+                                 action="javascript:void(0);"
+                                 onclick="autentification.hide();"
+                                 icon="ui-icon-closethick"/>
+            </h:form>
+        </p:dialog>
     </h:body>
 </html>
 

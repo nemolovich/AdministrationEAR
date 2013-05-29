@@ -6,16 +6,18 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://java.sun.com/jsf/facelets">
     <h:head>
-        <title>Facelet Title</title>
+        <title>Connexion</title>
     </h:head>
     <h:body>
         
         <ui:composition template="/templates/page_template.xhtml">
             <ui:define name="content">
+                <ui:define name="content_panel" id="content_panel">
+                    <ui:param name="header" value="Truc"/>
+                </ui:define>
                 <f:view>
-                    <h:form>
-                        
-                        <p:growl id="growl" showDetail="true" life="30000" /> 
+                    <h:form id="loginForm">
+                         
                         <p:panelGrid columns="2" columnClasses="label,field">
                             <f:facet name="header">
                                 <p:outputPanel>
@@ -33,15 +35,10 @@
 
                             <f:facet name="footer">
                                 <p:outputPanel>
-                                    <p:commandButton id="login" value="Valider"
+                                    <p:commandButton id="login_validate" value="Valider"
                                                      action="#{userLogin.login()}"
-                                                     icon="ui-icon-key"
-                                                     ajax="false"/>
-                                    <p:commandButton id="back" value="Annuler"
-                                                     action="/index"
-                                                     icon="ui-icon-closethick"
-                                                     immediate="true"
-                                                     ajax="false"/>
+                                                     update=":growl :loginForm:password"
+                                                     icon="ui-icon-key"/>
                                 </p:outputPanel>
                             </f:facet>
                         </p:panelGrid>

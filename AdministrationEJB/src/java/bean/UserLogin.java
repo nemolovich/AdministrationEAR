@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.util.Calendar;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -34,34 +35,50 @@ public class UserLogin implements Serializable
     private int loginTry=0;
     private long nextTryTime;
     private boolean blocked=false;
+    /**
+     * Code konami: UP UP DOWN DOWN LEFT RIGHT LEFT RIGHT B A
+     */
+    private static final String konamiCode="uuddlrlrba";
+    private String konami="";
+    private long previousHit=Calendar.getInstance().getTimeInMillis();
     
     public UserLogin()
     {
-//        FacesContext context = FacesContext.getCurrentInstance();
-//        HttpSession session;
-//        if(context!=null)
-//        {
-//            session = (HttpSession) context.getExternalContext().getSession(false);
-//        }
-//        else
-//        {
-//            return;
-//        }
-//        String sessionId;
-//        if(session==null)
-//        {
-//            System.out.println("Create session");
-//            session=(HttpSession) context.getExternalContext().getSession(true);
-//        }
-//        if(session==null)
-//        {
-//            System.err.println("NO SESSION");
-//        }
-//        else
-//        {
-//            sessionId=session.getId();
-//            System.out.println("Session ID: "+sessionId);
-//        }
+    }
+    
+    public String getKonami()
+    {
+        return this.konami;
+    }
+    
+    public void addKonami(char c)
+    {
+        long currentTime=Calendar.getInstance().getTimeInMillis();
+        if(!this.konami.isEmpty()&&currentTime-this.previousHit>1000)
+        {
+            this.konami="";
+        }
+        this.previousHit=currentTime;
+        this.konami+=c;
+        if(!UserLogin.konamiCode.startsWith(this.konami))
+        {
+            this.konami="";
+        }
+        else if(UserLogin.konamiCode.equals(this.konami))
+        {
+            if(this.blocked)
+            {
+                this.unLock();
+                FacesMessage message=new FacesMessage("Code Konami",
+                        "Votre session a été débloquée");
+                message.setSeverity(FacesMessage.SEVERITY_INFO);
+                FacesContext context=FacesContext.getCurrentInstance();
+                context.getExternalContext().getFlash().setKeepMessages(true);
+                context.addMessage(null, message);
+                System.err.println("Session débloquée via code konami");
+            }
+            this.konami="";
+        }
     }
     
     public void setLoginTry(int tryNumber)
@@ -77,8 +94,7 @@ public class UserLogin implements Serializable
     public void sessionBlockFor(int minutes)
     {
         long currentTime=Calendar.getInstance().getTimeInMillis();
-        this.nextTryTime=currentTime+600*minutes;
-        System.out.println(currentTime+" - "+this.nextTryTime);
+        this.nextTryTime=currentTime+60000*minutes;
         this.blocked=true;
     }
     
@@ -230,7 +246,11 @@ public class UserLogin implements Serializable
         this.user=null;
         this.template="unknown";
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-        return "/index";
+        FacesMessage message=new FacesMessage("Déconnecté",
+                "Vous avez été déconnecté de votre session");
+        message.setSeverity(FacesMessage.SEVERITY_INFO);
+        FacesContext.getCurrentInstance().addMessage(null,message);
+                
+        return "/restricted/login";
     }
-
 }

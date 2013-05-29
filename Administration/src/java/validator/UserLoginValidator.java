@@ -22,6 +22,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.FacesValidator;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -45,6 +46,7 @@ public class UserLoginValidator implements Validator
     public void validate(FacesContext context, UIComponent component, Object value)
             throws ValidatorException
     {
+//        System.err.println("VALIDATING AUTH");
         String mail = (String) value;
         UIInput passwordComponent = (UIInput) component.getAttributes().get("password");
         String password = (String)passwordComponent.getSubmittedValue();
@@ -83,7 +85,7 @@ public class UserLoginValidator implements Validator
                             timeToWait="moins d'une minute";                        
                         }
                         FacesMessage message=new FacesMessage("Session bloquée",
-                                "Votre session est bloquée.\nProchain essai dans: "+timeToWait);
+                                "Votre session est bloquée. Prochain essai dans: "+timeToWait);
                         message.setSeverity(FacesMessage.SEVERITY_ERROR);
                         throw new ValidatorException(message);
                     }
@@ -132,6 +134,19 @@ public class UserLoginValidator implements Validator
                         throw new ValidatorException(message);
                     }
                     passwordComponent.setValid(false);
+                    FacesMessage moreDetails=null;
+                    if(this.userLogin.getLoginTry()==2)
+                    {
+                        moreDetails=new FacesMessage("Erreur d'autentification",
+                                "Attention il ne vous reste qu'un essai avant de "
+                                + "bloquer votre session");
+                        moreDetails.setSeverity(FacesMessage.SEVERITY_ERROR);
+                    }
+                    if(moreDetails!=null)
+                    {
+                        FacesContext.getCurrentInstance().addMessage(null,
+                                moreDetails);
+                    }
                     FacesMessage message=new FacesMessage("Erreur d'autentification",
                             "Votre mot de passe est incorrect");
                     message.setSeverity(FacesMessage.SEVERITY_ERROR);

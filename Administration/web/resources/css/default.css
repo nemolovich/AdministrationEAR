@@ -107,19 +107,38 @@ a:link:hover, a:visited:hover
     float:                      right;
     position:                   relative;
     margin-right:               20px;
-    /*#c4c4c4 -webkit-gradient(linear, left top, left bottom, from(rgba(255,255,255,0.8)), to(rgba(255,255,255,0)))*/
-    background: #c4c4c4; /* Old browsers */
-    background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(255,255,255,1) 1%, rgba(216,216,216,0.8) 79%, rgba(188,188,188,0.77) 90%, rgba(150,150,150,0.75) 100%); /* FF3.6+ */
-background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(1%,rgba(255,255,255,1)), color-stop(79%,rgba(216,216,216,0.8)), color-stop(90%,rgba(188,188,188,0.77)), color-stop(100%,rgba(150,150,150,0.75))); /* Chrome,Safari4+ */
-background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(255,255,255,1) 1%,rgba(216,216,216,0.8) 79%,rgba(188,188,188,0.77) 90%,rgba(150,150,150,0.75) 100%); /* Chrome10+,Safari5.1+ */
-background: -o-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(255,255,255,1) 1%,rgba(216,216,216,0.8) 79%,rgba(188,188,188,0.77) 90%,rgba(150,150,150,0.75) 100%); /* Opera 11.10+ */
-background: -ms-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(255,255,255,1) 1%,rgba(216,216,216,0.8) 79%,rgba(188,188,188,0.77) 90%,rgba(150,150,150,0.75) 100%); /* IE10+ */
-background: linear-gradient(to bottom,  rgba(255,255,255,1) 0%,rgba(255,255,255,1) 1%,rgba(216,216,216,0.8) 79%,rgba(188,188,188,0.77) 90%,rgba(150,150,150,0.75) 100%); /* W3C */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#bf969696',GradientType=0 ); /* IE6-9 */
+    background:                 #c4c4c4; /* Old browsers */
+    background:                 -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(255,255,255,1) 1%, rgba(216,216,216,0.8) 79%, rgba(188,188,188,0.77) 90%, rgba(150,150,150,0.75) 100%); /* FF3.6+ */
+    background:                 -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(1%,rgba(255,255,255,1)), color-stop(79%,rgba(216,216,216,0.8)), color-stop(90%,rgba(188,188,188,0.77)), color-stop(100%,rgba(150,150,150,0.75))); /* Chrome,Safari4+ */
+    background:                 -webkit-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(255,255,255,1) 1%,rgba(216,216,216,0.8) 79%,rgba(188,188,188,0.77) 90%,rgba(150,150,150,0.75) 100%); /* Chrome10+,Safari5.1+ */
+    background:                 -o-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(255,255,255,1) 1%,rgba(216,216,216,0.8) 79%,rgba(188,188,188,0.77) 90%,rgba(150,150,150,0.75) 100%); /* Opera 11.10+ */
+    background:                 -ms-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(255,255,255,1) 1%,rgba(216,216,216,0.8) 79%,rgba(188,188,188,0.77) 90%,rgba(150,150,150,0.75) 100%); /* IE10+ */
+    background:                 linear-gradient(to bottom,  rgba(255,255,255,1) 0%,rgba(255,255,255,1) 1%,rgba(216,216,216,0.8) 79%,rgba(188,188,188,0.77) 90%,rgba(150,150,150,0.75) 100%); /* W3C */
+    filter:                     progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#bf969696',GradientType=0 ); /* IE6-9 */
 
 }
 
-.ui-state-highlight .ui-icon
+.ui-state-default .ui-icon
 {
-    background: #FFFFFF !important;
+	background-image:url("/Administration/javax.faces.resource/images/ui-icons_cd0a0a_256x240.png.xhtml?ln=primefaces-aristo");
+}
+
+.ui-state-hover .ui-icon, .ui-state-focus .ui-icon
+{
+	background-image:url("/Administration/javax.faces.resource/images/ui-icons_cd0a0a_256x240.png.xhtml?ln=primefaces-aristo");
+}
+
+.ui-state-active .ui-icon
+{
+	background-image:url("/Administration/javax.faces.resource/images/ui-icons_cd0a0a_256x240.png.xhtml?ln=primefaces-aristo");
+}
+
+.ui-state-highlight .ui-icon, .ui-state-highlight .ui-icon:hover, .ui-state-highlight .ui-icon:focus, .ui-state-highlight .ui-icon:selected 
+{
+	background-image:url("/Administration/javax.faces.resource/images/ui-icons_cd0a0a_256x240.png.xhtml?ln=primefaces-aristo");
+}
+
+.ui-state-error .ui-icon, .ui-state-error-text .ui-icon
+{
+	background-image:url("/Administration/javax.faces.resource/images/ui-icons_cd0a0a_256x240.png.xhtml?ln=primefaces-aristo");
 }
