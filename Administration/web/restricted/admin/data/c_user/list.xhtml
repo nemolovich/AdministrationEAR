@@ -13,7 +13,6 @@
             <ui:define name="content">
                 <f:view>
                     <h:form id="displayCUsers">
-                        
                         <p:dataTable id="cUserDataTable"
                                      value="#{cUserView.entries}"
                                      var="item"
@@ -28,7 +27,8 @@
                                      paginator="true">
                             
                             <p:ajax event="rowSelect"  
-                                    update=":displayCUsers:displayClientDetails:clientDetails">
+                                    update=":displayCUsers:displayClientDetails:clientDetails"
+                                    oncomplete="console.log('name :-#{cUserView.entity.getName()}-');">
                                     <!--oncomplete="entityDialog.show();">-->
                             </p:ajax>
                             <p:ajax event="rowUnselect"/>
@@ -59,9 +59,9 @@
                                 <h:outputText value="#{item.societyName}"/><br />
                                 <h:commandLink value="Afficher les détails"
                                                onclick="cUserTable.unselectAllRows(); cUserTable.selectRow((#{index}-cUserTable.getPaginator().getCurrentPage()*4));
-                                                   ">
+                                                   console.log('selected');">
                                     <p:ajax event="click"
-                                            oncomplete="entityDialog.show()" />
+                                            oncomplete="setTimeout('entityDialog.show();',1000);" />
                                 </h:commandLink>
                             </p:column>
                             <p:column headerText="Téléphone"
@@ -89,7 +89,68 @@
                                 </p:outputPanel>
                             </f:facet>
                         </p:dataTable>
+                        <h:outputLink id="create" value="javascript:void(0)"
+                                      onclick="console.log('#{cUserView.entityCreate()}');createCUser.show();" title="Créer un utilisateur">
+                            <h:outputText value="Créer!!" />
+                        </h:outputLink>
                         <p:dialog id="dialog"
+                                  appendToBody="true"
+                                  header="Création d'un utilisateur"
+                                  widgetVar="createCUser"
+                                  resizable="false"
+                                  draggable="false"
+                                  modal="true"
+                                  showEffect="clip"
+                                  hideEffect="clip">
+                            <h:form>
+                                <p:growl id="growl" showDetail="true" life="100000" /> 
+                                <p:panelGrid columns="3" columnClasses="label,field,message">
+
+                                    <h:outputLabel value="Nom:" for="name" />
+                                    <h:inputText id="name" value="#{cUserView.entity.name}"
+                                                 title="Nom"
+                                                 required="true"
+                                                 requiredMessage="Le champs 'Nom' ne peut être vide">
+                                        <f:validator binding="#{cUserUniqueFieldValidator}"/>
+                                        <f:attribute name="fieldName" value="Name" />
+                                        <f:attribute name="update_id" value="#{cUserView.entity.id}" />
+                                    </h:inputText>
+                                    <p:message for="name"/>
+
+                                    <h:outputLabel value="Phone:" for="phone" />
+                                    <h:inputText id="phone" value="#{cUserView.entity.phone}" title="Téléphone">
+                                        <f:validator binding="#{phonePatternValidator}"/>
+                                    </h:inputText>
+                                    <p:message for="phone"/>
+
+                                    <h:outputLabel value="Observations:" for="observations" />
+                                    <h:inputTextarea class="textarea-field" id="observations"
+                                                     value="#{cUserView.entity.observations}"
+                                                     title="Observations" />
+                                    <p:message for="observations"/>
+
+                                    <h:outputLabel value="Société:" for="idClient" />
+                                    <h:selectOneMenu id="idClient" value="#{cUserView.entity.idClient}" title="Société">
+                                        <f:selectItems value="#{clientView.entries}"/>
+                                        <f:converter binding="#{clientConverter}"/>
+                                    </h:selectOneMenu>
+                                    <p:message for="idClient"/>
+
+                                    <f:facet name="footer">
+                                        <p:commandButton id="create" value="Créer"
+                                                         update="growl"   
+                                                         actionListener="#{cUserView.create()}"
+                                                         oncomplete="createRequest(createCUser, xhr, status, args);"
+                                                         />
+                                        <p:commandButton id="back" value="Annuler"
+                                                         action="javascript:void(0);"
+                                                         oncomplete="createCUser.hide()">
+                                        </p:commandButton>
+                                    </f:facet>
+                                </p:panelGrid>
+                            </h:form>
+                        </p:dialog>
+                        <p:dialog id="dialogClient"
                                   appendToBody="true"
                                   header="Détails de la société"
                                   widgetVar="entityDialog"
@@ -123,73 +184,11 @@
                                 <center>
                                     <p:commandButton id="close" value="Fermer"
                                                      action="javascript:void(0);"
-                                                     oncomplete="entityDialog.hide()"/>
+                                                     oncomplete="entityDialog.hide();"/>
                                 </center>
                             </h:form>
                         </p:dialog>
-                        
                     </h:form>
-                    <h:outputLink id="create" value="javascript:void(0)"
-                                  onclick="console.log('#{cUserView.entityCreate()}');createCUser.show();" title="Créer un utilisateur">
-                        <h:outputText value="Créer!!" />
-                    </h:outputLink>
-                    <p:dialog id="dialog"
-                              appendToBody="true"
-                              header="Création d'un utilisateur"
-                              widgetVar="createCUser"
-                              resizable="false"
-                              draggable="false"
-                              modal="true"
-                              showEffect="clip"
-                              hideEffect="clip">
-                        <h:form>
-                            <p:growl id="growl" showDetail="true" life="100000" /> 
-                            <p:panelGrid columns="3" columnClasses="label,field,message">
-
-                                <h:outputLabel value="Nom:" for="name" />
-                                <h:inputText id="name" value="#{cUserView.entity.name}"
-                                             title="Nom"
-                                             required="true"
-                                             requiredMessage="Le champs 'Nom' ne peut être vide">
-                                    <f:validator binding="#{cUserUniqueFieldValidator}"/>
-                                    <f:attribute name="fieldName" value="Name" />
-                                    <f:attribute name="update_id" value="#{cUserView.entity.id}" />
-                                </h:inputText>
-                                <p:message for="name"/>
-
-                                <h:outputLabel value="Phone:" for="phone" />
-                                <h:inputText id="phone" value="#{cUserView.entity.phone}" title="Téléphone">
-                                    <f:validator binding="#{phonePatternValidator}"/>
-                                </h:inputText>
-                                <p:message for="phone"/>
-
-                                <h:outputLabel value="Observations:" for="observations" />
-                                <h:inputTextarea class="textarea-field" id="observations"
-                                                 value="#{cUserView.entity.observations}"
-                                                 title="Observations" />
-                                <p:message for="observations"/>
-
-                                <h:outputLabel value="Société:" for="idClient" />
-                                <h:selectOneMenu id="idClient" value="#{cUserView.entity.idClient}" title="Société">
-                                    <f:selectItems value="#{clientView.entries}"/>
-                                    <f:converter binding="#{clientConverter}"/>
-                                </h:selectOneMenu>
-                                <p:message for="idClient"/>
-
-                                <f:facet name="footer">
-                                    <p:commandButton id="create" value="Créer"
-                                                     update="growl"   
-                                                     actionListener="#{cUserView.create()}"
-                                                     oncomplete="createRequest(createCUser, xhr, status, args);"
-                                                     />
-                                    <p:commandButton id="back" value="Annuler"
-                                                     action="javascript:void(0);"
-                                                     oncomplete="createCUser.hide()">
-                                    </p:commandButton>
-                                </f:facet>
-                            </p:panelGrid>
-                        </h:form>
-                    </p:dialog>
                 </f:view>
             </ui:define>
         </ui:composition>

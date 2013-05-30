@@ -5,7 +5,6 @@
 package bean.viewStruct;
 
 import bean.facade.abstracts.AbstractFacade;
-import entity.TUser;
 import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Level;

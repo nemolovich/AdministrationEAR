@@ -15,6 +15,10 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.primefaces.event.CloseEvent;
+import org.primefaces.event.ResizeEvent; 
+import org.primefaces.event.ToggleEvent;
+import org.primefaces.model.Visibility;
 
 /**
  *
@@ -41,9 +45,89 @@ public class UserLogin implements Serializable
     private static final String konamiCode="uuddlrlrba";
     private String konami="";
     private long previousHit=Calendar.getInstance().getTimeInMillis();
+    /**
+     * Stateful infos pour les menus
+     */
+    private static final String menuLeftID="menu";
+    private static final String menuRightID="menu_right";
+    private int menuLeftSize=200;
+    private int menuRightSize=300;
+    private boolean menuLeftClosed=false;
+    private boolean menuRightClosed=true;
     
     public UserLogin()
     {
+    }
+    
+    public void handleToggle(ToggleEvent event)
+    {
+        if(event.getComponent().getAttributes().get("id").equals(UserLogin.menuLeftID))
+        {
+            this.menuLeftClosed=event.getVisibility().equals(Visibility.HIDDEN);
+        }
+        else if(event.getComponent().getAttributes().get("id").equals(UserLogin.menuRightID))
+        {
+            this.menuRightClosed=event.getVisibility().equals(Visibility.HIDDEN);
+        }
+    }
+    
+    public void handleResize(ResizeEvent event)
+    {
+        try
+        {
+            if(event.getComponent().getAttributes().get("id").equals(UserLogin.menuLeftID))
+            {
+                this.menuLeftSize=Integer.valueOf((String)event.getComponent().getAttributes().get("size"))+5;
+            }
+            else if(event.getComponent().getAttributes().get("id").equals(UserLogin.menuRightID))
+            {
+                this.menuRightSize=Integer.valueOf((String)event.getComponent().getAttributes().get("size"))+5;
+            }
+        }
+        catch(NumberFormatException nfe)
+        {
+            // Si la taille est à "auto"
+        }
+    }
+
+    public int getMenuLeftSize()
+    {
+        return menuLeftSize;
+    }
+
+    public void setMenuLeftSize(int menuLeftSize)
+    {
+        this.menuLeftSize = menuLeftSize;
+    }
+
+    public int getMenuRightSize()
+    {
+        return menuRightSize;
+    }
+
+    public void setMenuRightSize(int menuRightSize)
+    {
+        this.menuRightSize = menuRightSize;
+    }
+
+    public boolean isMenuLeftClosed()
+    {
+        return this.menuLeftClosed;
+    }
+
+    public void setMenuLeftClosed(boolean menuLeftClosed)
+    {
+        this.menuLeftClosed = menuLeftClosed;
+    }
+
+    public boolean isMenuRightClosed()
+    {
+        return this.menuRightClosed;
+    }
+
+    public void setMenuRightClosed(boolean menuRightClosed)
+    {
+        this.menuRightClosed = menuRightClosed;
     }
     
     public String getKonami()

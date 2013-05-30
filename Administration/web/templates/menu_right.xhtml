@@ -3,10 +3,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>Liste des utilisateurs</title>
+        <script type="text/javascript">
+            $(document).ready(function()
+            {
+                setLayoutButtonsTooltips("menu_right","la liste des tâches");
+                setLayoutButtonsTooltips("menu","le menu");
+            });
+        </script>
     </h:head>
     <h:body>
         <f:view>
@@ -18,11 +24,6 @@
                              rows="10"
                              rowKey="#{item.id}"
                              paginator="true">
-                    <f:facet name="header">
-                        <p:outputPanel>
-                            <h2><h:outputText value="Liste des utilisateurs"/></h2>
-                        </p:outputPanel>
-                    </f:facet>
                     <p:column headerText="Identifiant"
                               sortBy="#{item.id}"
                               filterBy="#{item.id}"

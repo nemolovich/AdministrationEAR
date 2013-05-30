@@ -19,9 +19,11 @@
     </h:head>
 
     <h:body>
-        <p:layout fullPage="true"
-                  stateful="false">
-                  <!--stateful="true">-->
+        <p:layout fullPage="true">
+            <p:ajax event="resize"
+                    listener="#{userLogin.handleResize}"/>
+            <p:ajax event="toggle"
+                    listener="#{userLogin.handleToggle}"/>
             <p:layoutUnit id="header"
                           size="120"
                           position="north"
@@ -34,21 +36,26 @@
             </p:layoutUnit>
             <p:layoutUnit id="menu"
                           position="west"
-                          size="200"
+                          size="#{userLogin.menuLeftSize}"
+                          collapsed="#{userLogin.menuLeftClosed}"
                           header="Menu"
                           resizable="true"
-                          collapsible="true">  
+                          collapsible="true"
+                          effect="drop"
+                          effectSpeed="slow">  
                 <ui:insert name="left">
                     <ui:include src="/templates/menu_#{userLogin.template}.xhtml"/>
                 </ui:insert>
             </p:layoutUnit>
             <p:layoutUnit id="menu_right"
                           position="east"
-                          size="300" 
-                          collapsed="true"
+                          size="#{userLogin.menuRightSize}"
+                          collapsed="#{userLogin.menuRightClosed}"
                           header="Liste des utilisateurs"
                           resizable="true"
-                          collapsible="true">  
+                          collapsible="true"
+                          effect="drop"
+                          effectSpeed="slow">
                 <ui:insert name="right">
                     <ui:include src="/templates/menu_right.xhtml"/>
                 </ui:insert>
@@ -61,7 +68,7 @@
                         Content
                     </ui:insert>
                 </div>
-                
+
             </p:layoutUnit>
             <p:layoutUnit id="footer"
                           position="south"
