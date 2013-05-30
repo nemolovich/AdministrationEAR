@@ -17,7 +17,10 @@
             <p:hotkey bind="right" actionListener="#{userLogin.addKonami('r')}"/>
             <p:hotkey bind="b" actionListener="#{userLogin.addKonami('b')}"/>
             <p:hotkey bind="a" update=":growl" actionListener="#{userLogin.addKonami('a')}"/>
-            <img src="/Administration/resources/img/logoAS.png" id="logo"/>
+            <h:link outcome="/index">
+                <img src="/Administration/resources/img/logoAS.png" id="logo"
+                     title="Retour à l'accueil"/>
+            </h:link>
             <h1>
                 <center>
                     Admin-Services

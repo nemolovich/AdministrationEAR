@@ -32,12 +32,30 @@
                     <ui:include src="/templates/header.xhtml"/>
                 </ui:insert>
             </p:layoutUnit>
-            <p:layoutUnit id="menu" position="west" size="200" header="Menu" resizable="true" collapsible="true">  
+            <p:layoutUnit id="menu"
+                          position="west"
+                          size="200"
+                          header="Menu"
+                          resizable="true"
+                          collapsible="true">  
                 <ui:insert name="left">
                     <ui:include src="/templates/menu_#{userLogin.template}.xhtml"/>
                 </ui:insert>
             </p:layoutUnit>
-            <p:layoutUnit id="content_panel" header="Admin-Services" position="center">
+            <p:layoutUnit id="menu_right"
+                          position="east"
+                          size="300" 
+                          collapsed="true"
+                          header="Liste des utilisateurs"
+                          resizable="true"
+                          collapsible="true">  
+                <ui:insert name="right">
+                    <ui:include src="/templates/menu_right.xhtml"/>
+                </ui:insert>
+            </p:layoutUnit>
+            <p:layoutUnit id="content_panel"
+                          header="Admin-Services"
+                          position="center">
                 <div class="insert-content">
                     <ui:insert name="content">
                         Content
@@ -45,7 +63,9 @@
                 </div>
                 
             </p:layoutUnit>
-            <p:layoutUnit id="footer" position="south" size="35"> 
+            <p:layoutUnit id="footer"
+                          position="south"
+                          size="35">
                 <ui:insert name="bottom">
                     <ui:include src="/templates/footer.xhtml"/>
                 </ui:insert>
