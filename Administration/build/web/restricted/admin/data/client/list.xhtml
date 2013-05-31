@@ -62,11 +62,11 @@
                                 <h:outputText value="#{item.mail}"/>
                             </p:column>
                             <p:column headerText="Interlocuteur"
-                                      sortBy="#{item.userName}"
-                                      filterBy="#{item.userName}"
+                                      sortBy="#{item.idUser.name}"
+                                      filterBy="#{item.idUser.name}"
                                       filterMatchMode="contains">
                                 <h:commandLink action="#{cUserView.entityView(item.idUser)}"
-                                               value="#{item.userName}"/>
+                                               value="#{item.idUser.name}"/>
                             </p:column>
                             <p:column headerText="Type d'intervention"
                                       sortBy="#{item.interventionType}"

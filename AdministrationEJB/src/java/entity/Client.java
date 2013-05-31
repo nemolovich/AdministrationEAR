@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Stage
+ * @author Brian GOHIER
  */
 @Entity
 @Table(name = "CLIENT")
@@ -36,8 +36,11 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Client.findById", query = "SELECT c FROM Client c WHERE c.id = :id"),
     @NamedQuery(name = "Client.findByName", query = "SELECT c FROM Client c WHERE c.name = :name"),
     @NamedQuery(name = "Client.findByAddress", query = "SELECT c FROM Client c WHERE c.address = :address"),
+    @NamedQuery(name = "Client.findByPostalcode", query = "SELECT c FROM Client c WHERE c.postalcode = :postalcode"),
     @NamedQuery(name = "Client.findByPhone", query = "SELECT c FROM Client c WHERE c.phone = :phone"),
     @NamedQuery(name = "Client.findByFax", query = "SELECT c FROM Client c WHERE c.fax = :fax"),
+    @NamedQuery(name = "Client.findByTarif", query = "SELECT c FROM Client c WHERE c.tarif = :tarif"),
+    @NamedQuery(name = "Client.findByDeplacement", query = "SELECT c FROM Client c WHERE c.deplacement = :deplacement"),
     @NamedQuery(name = "Client.findByMail", query = "SELECT c FROM Client c WHERE c.mail = :mail"),
     @NamedQuery(name = "Client.findByInterventionType", query = "SELECT c FROM Client c WHERE c.interventionType = :interventionType"),
     @NamedQuery(name = "Client.findByObservations", query = "SELECT c FROM Client c WHERE c.observations = :observations")})
@@ -55,10 +58,14 @@ public class Client implements Serializable {
     private String name;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 5, max = 100)
+    @Size(min = 1, max = 100)
     @Column(name = "ADDRESS")
     private String address;
-    // @Pattern(regexp="^\\(?(\\d{2})\\)?[. ]?(\\d{2})?[. ]?(\\d{2})?[. ]?(\\d{2})[. ]?(\\d{2})$", message="Invalid phone/fax format, should be as xxx-xxx-xxxx")//if the field contains phone or fax number consider using this annotation to enforce field validation
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "POSTALCODE")
+    private int postalcode;
+    // @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message="Invalid phone/fax format, should be as xxx-xxx-xxxx")//if the field contains phone or fax number consider using this annotation to enforce field validation
     @Basic(optional = false)
     @NotNull
     @Size(min = 14, max = 14)
@@ -68,8 +75,14 @@ public class Client implements Serializable {
     @Size(max = 14)
     @Column(name = "FAX")
     private String fax;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "TARIF")
+    private Double tarif;
+    @Column(name = "DEPLACEMENT")
+    private Double deplacement;
     @Basic(optional = false)
     @NotNull
+    @Size(min = 5, max = 30)
     @Column(name = "MAIL")
     private String mail;
     @Size(max = 250)
@@ -91,16 +104,18 @@ public class Client implements Serializable {
         this.id = id;
     }
 
-    public Client(Integer id, String name, String address, String phone, String mail) {
+    public Client(Integer id, String name, String address, int postalcode, String phone, String mail) {
         this.id = id;
         this.name = name;
         this.address = address;
+        this.postalcode = postalcode;
         this.phone = phone;
         this.mail = mail;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getId()
+    {
+        return this.id==null?-1:this.id;
     }
 
     public void setId(Integer id) {
@@ -108,7 +123,7 @@ public class Client implements Serializable {
     }
 
     public String getName() {
-        return name;
+        return this.name==null?"":this.name;
     }
 
     public void setName(String name) {
@@ -121,6 +136,14 @@ public class Client implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public int getPostalcode() {
+        return postalcode;
+    }
+
+    public void setPostalcode(int postalcode) {
+        this.postalcode = postalcode;
     }
 
     public String getPhone() {
@@ -137,6 +160,22 @@ public class Client implements Serializable {
 
     public void setFax(String fax) {
         this.fax = fax;
+    }
+
+    public Double getTarif() {
+        return tarif;
+    }
+
+    public void setTarif(Double tarif) {
+        this.tarif = tarif;
+    }
+
+    public Double getDeplacement() {
+        return deplacement;
+    }
+
+    public void setDeplacement(Double deplacement) {
+        this.deplacement = deplacement;
     }
 
     public String getMail() {
@@ -179,11 +218,6 @@ public class Client implements Serializable {
     public void setCUserList(List<CUser> cUserList) {
         this.cUserList = cUserList;
     }
-    
-    public String getUserName()
-    {
-        return this.idUser.getName();
-    }
 
     @Override
     public int hashCode() {
@@ -206,8 +240,8 @@ public class Client implements Serializable {
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return this.name;
     }
+    
 }

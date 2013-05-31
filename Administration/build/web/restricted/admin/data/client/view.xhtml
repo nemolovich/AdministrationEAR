@@ -33,7 +33,7 @@
                             <h:outputText value="#{clientView.entity.mail}" title="Mail"/>
                             <h:outputText value="Interlocuteur:"/>
                             <h:commandLink action="#{cUserView.entityView(clientView.entity.idUser)}"
-                                           value="#{clientView.entity.userName}"/>
+                                           value="#{clientView.entity.idUser.name}"/>
                             <h:outputText value="InterventionType:"/>
                             <h:outputText value="#{clientView.entity.interventionType}" title="InterventionType"/>
                             <h:outputText value="Observations:"/>

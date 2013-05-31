@@ -51,12 +51,12 @@
                                 <h:outputText value="#{item.name}"/>
                             </p:column>
                             <p:column headerText="Référence de société"
-                                      sortBy="#{item.societyName}"
-                                      filterBy="#{item.societyName}"
+                                      sortBy="#{item.idClient.name}"
+                                      filterBy="#{item.idClient.name}"
                                       filterMatchMode="contains">
 <!--                                <h:commandLink action="#{clientView.entityView(item.idClient)}"
-                                               value="#{item.societyName}">-->
-                                <h:outputText value="#{item.societyName}"/><br />
+                                               value="#{item.idClient.name}">-->
+                                <h:outputText value="#{item.idClient.name}"/><br />
                                 <h:commandLink value="Afficher les détails"
                                                onclick="cUserTable.unselectAllRows(); cUserTable.selectRow((#{index}-cUserTable.getPaginator().getCurrentPage()*4));
                                                    console.log('selected');">
@@ -93,7 +93,7 @@
                                       onclick="console.log('#{cUserView.entityCreate()}');createCUser.show();" title="Créer un utilisateur">
                             <h:outputText value="Créer!!" />
                         </h:outputLink>
-                        <p:dialog id="dialog"
+                        <p:dialog id="dialogUser"
                                   appendToBody="true"
                                   header="Création d'un utilisateur"
                                   widgetVar="createCUser"

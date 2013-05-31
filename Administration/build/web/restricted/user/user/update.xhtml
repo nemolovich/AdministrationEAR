@@ -37,7 +37,12 @@
                             <p:inputText id="firstname" value="#{tUserView.entity.firstname}" title="Firstname" required="true" requiredMessage="Le champs 'Prénom' ne peut être vide"/>
 
                             <p:outputLabel for="password" value="Mot de passe" />
-                            <p:password id="password" value="#{tUserView.entity.password}">
+                            <p:password id="password" value="#{tUserView.entity.password}"
+                                        feedback="true"
+                                        strongLabel="Sécurité forte"
+                                        goodLabel="Sécurité bonne"
+                                        weakLabel="Sécurité faible"
+                                        promptLabel="Entrez un mot de passe">
                                 <f:validator binding="#{passwordValidator}" />
                                 <f:attribute name="confirm" value="#{confirm}" />
                                 <f:attribute name="update_id" value="#{tUserView.entity.id}" />

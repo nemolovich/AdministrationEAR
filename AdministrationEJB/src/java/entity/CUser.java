@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Stage
+ * @author Brian GOHIER
  */
 @Entity
 @Table(name = "C_USER")
@@ -36,8 +36,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "CUser.findByName", query = "SELECT c FROM CUser c WHERE c.name = :name"),
     @NamedQuery(name = "CUser.findByPhone", query = "SELECT c FROM CUser c WHERE c.phone = :phone"),
     @NamedQuery(name = "CUser.findByObservations", query = "SELECT c FROM CUser c WHERE c.observations = :observations")})
-public class CUser implements Serializable
-{
+public class CUser implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,12 +45,13 @@ public class CUser implements Serializable
     private Integer id;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 45)
+    @Size(min = 2, max = 45)
     @Column(name = "NAME")
     private String name;
     // @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message="Invalid phone/fax format, should be as xxx-xxx-xxxx")//if the field contains phone or fax number consider using this annotation to enforce field validation
     @Basic(optional = false)
     @NotNull
+    @Size(min = 15, max = 15)
     @Column(name = "PHONE")
     private String phone;
     @Size(max = 250)
@@ -76,7 +76,8 @@ public class CUser implements Serializable
         this.phone = phone;
     }
 
-    public Integer getId() {
+    public Integer getId()
+    {
         return this.id==null?-1:this.id;
     }
 
@@ -124,11 +125,6 @@ public class CUser implements Serializable
     public void setIdClient(Client idClient) {
         this.idClient = idClient;
     }
-    
-    public String getSocietyName()
-    {
-        return this.idClient.getName();
-    }
 
     @Override
     public int hashCode() {
@@ -152,7 +148,7 @@ public class CUser implements Serializable
 
     @Override
     public String toString() {
-        return this.getName();
+        return this.name;
     }
     
 }

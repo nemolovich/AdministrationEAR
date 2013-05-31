@@ -10,13 +10,13 @@
     <h:body>
         <div id="messages_container" class="ui-growl ui-widget" style="z-index: 1010;"></div>
         <p:growl id="growl" showDetail="true" life="30000" />
-        <h:form>
-            <p:hotkey bind="up" actionListener="#{userLogin.addKonami('u')}"/>
+        <h:form id="header_form">
+<!--            <p:hotkey bind="up" actionListener="#{userLogin.addKonami('u')}"/>
             <p:hotkey bind="down" actionListener="#{userLogin.addKonami('d')}"/>
             <p:hotkey bind="left" actionListener="#{userLogin.addKonami('l')}"/>
             <p:hotkey bind="right" actionListener="#{userLogin.addKonami('r')}"/>
             <p:hotkey bind="b" actionListener="#{userLogin.addKonami('b')}"/>
-            <p:hotkey bind="a" update=":growl" actionListener="#{userLogin.addKonami('a')}"/>
+            <p:hotkey bind="a" update=":growl" actionListener="#{userLogin.addKonami('a')}"/>-->
             <h:link outcome="/index">
                 <img src="/Administration/resources/img/logoAS.png" id="logo"
                      title="Retour à l'accueil"/>

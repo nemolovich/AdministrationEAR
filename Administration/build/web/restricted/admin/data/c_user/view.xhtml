@@ -30,7 +30,7 @@
                             <h:outputText value="#{cUserView.entity.observations}" title="Observations"/>
                             <h:outputText value="Société:"/>
                             <h:commandLink action="#{clientView.entityView(cUserView.entity.idClient)}"
-                                           value="#{cUserView.entity.societyName}"/>
+                                           value="#{cUserView.entity.idClient.name}"/>
                         </p:panelGrid>
                     </h:form>
                 </f:view>

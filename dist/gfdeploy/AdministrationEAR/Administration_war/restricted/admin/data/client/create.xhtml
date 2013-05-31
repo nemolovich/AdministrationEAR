@@ -1,0 +1,154 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        
+    	<ui:composition template="/templates/page_template.xhtml">
+            <ui:define name="title">
+                | Création société
+            </ui:define>
+            <ui:define name="content">
+                <f:attribute name="header" value="Cration d'une société"/>
+                <f:view>
+                    <h:form id="clientCreate">
+                        <p:wizard id="clientCreateWIzard"
+                                  backLabel="Retour"
+                                  nextLabel="Suivant"
+                                  widgetVar="clientWizard"
+                                  flowListener="#{clientCreateListener.onFlowProcess}"
+                                  >
+                            
+                            <p:tab id="general" title="Informations">
+                                
+                                <p:fieldset legend="Informations générales">
+                                    <p>
+                                        Veuillez renseigner les informations générales
+                                        de la société.
+                                        <br />
+                                        (<span class="red-star">*</span>: champs requis)
+                                    </p>
+                                    <h:panelGrid columns="2" columnClasses="label,fields">
+                                        
+                                        <p:outputLabel value="Nom de la société" for="name"/>
+                                        <p:inputText id="name" value="#{clientView.entity.name}" maxlength="45"
+                                                     title="Nom de la société"
+                                                     required="true"
+                                                     requiredMessage="Le nom de la société ne peut être vide">
+                                            <f:validator binding="#{clientUniqueFieldValidator}"/>
+                                            <f:attribute name="fieldName" value="Name" />
+                                            <f:attribute name="update_id" value="#{clientView.entity.id}" />
+                                        </p:inputText>
+                                        
+                                        <p:outputLabel value="Adresse:" for="address"/>
+                                        <p:inputText id="address" value="#{clientView.entity.address}" maxlength="100"
+                                                     title="Adresse de la société"
+                                                     required="true"
+                                                     requiredMessage="Veuillez indiquer l'adresse de la société"/>
+
+                                        <p:outputLabel value="Code postal:" for="postalcode" />
+                                        <p:inputMask id="postalcode" value="#{clientView.entity.postalcode}" mask="99999"
+                                                     title="Code postal de la société"
+                                                     required="true"
+                                                     requiredMessage="Veuillez indiquer le code postal de la société"/>
+
+                                        <p:outputLabel value="Téléphone:" for="phone" />
+                                        <p:inputText id="phone" value="#{clientView.entity.phone}" maxlength="15"
+                                                     title="Numéro de téléphone de la société"
+                                                     required="true"
+                                                     requiredMessage="Veuillez indiquer le numéro de téléphone de la société">
+                                            <f:validator binding="#{phonePatternValidator}"/>
+                                        </p:inputText>
+
+                                        <p:outputLabel value="Fax:" for="fax" />
+                                        <p:inputText id="fax" value="#{clientView.entity.fax}" maxlength="15"
+                                                     title="Fax de la société">
+                                            <f:validator binding="#{faxPatternValidator}"/>
+                                        </p:inputText>
+                                        
+                                        <p:outputLabel value="Adresse mail:" for="mail" />
+                                        <p:inputText id="mail" value="#{clientView.entity.mail}" maxlength="30"
+                                                     title="Adresse mail de la société">
+                                            <f:validator binding="#{emailPatternValidator}"/>
+                                        </p:inputText>
+                                        
+                                        <p:outputLabel value="Tarif d'intervention:" for="tarif" />
+                                        <p:inputText id="tarif" value="#{clientView.entity.tarif}" maxlength="20"
+                                                     title="Tarif" />
+                                        
+                                        <p:outputLabel value="Frais de déplacement:" for="deplacement" />
+                                        <p:inputText id="deplacement" value="#{clientView.entity.deplacement}" maxlength="20"
+                                                     title="Frais de déplacement" />
+                                        
+                                        <p:outputLabel value="Type d'intervention:" for="interventionType" />
+                                        <p:inputText id="interventionType" value="#{clientView.entity.interventionType}" maxlength="250"
+                                                     title="InterventionType"/>
+                                        
+                                        <p:outputLabel value="Observations:" for="observations" />
+                                        <p:inputText id="observations" value="#{clientView.entity.observations}"  maxlength="250"
+                                                     title="Observations" />
+                                    </h:panelGrid>
+                                </p:fieldset>
+                            </p:tab>
+                            
+                            <p:tab id="details" title="Détails">
+                                <p:fieldset legend="Tarifs">
+                                    Tarifs
+                                </p:fieldset>
+                                <p:fieldset legend="Connexion internet">
+                                    Internet
+                                </p:fieldset>
+                                <p:fieldset legend="Observations">
+                                    Observations
+                                </p:fieldset>
+                            </p:tab>
+                            
+                            <p:tab id="postes" title="Postes">
+                                <p:fieldset legend="Postes">
+                                    Postes
+                                </p:fieldset>
+                            </p:tab>
+                            
+                            <p:tab id="emails" title="E-Mails">
+                                <p:fieldset legend="E-Mails">
+                                    E-Mails
+                                </p:fieldset>
+                            </p:tab>
+                            
+                            <p:tab id="users" title="Utilisateurs">
+                                <p:fieldset legend="Utilisateurs">
+                                    Utilisateurs
+                                </p:fieldset>
+                            </p:tab>
+                            
+                            <p:tab id="finish" title="Récapitulatif">
+                                <p:fieldset legend="Informations générales">
+                                    Infos
+                                </p:fieldset>
+                                <p:fieldset legend="Tarifs">
+                                    Tarifs
+                                </p:fieldset>
+                                <p:fieldset legend="Connexion internet">
+                                    Internet
+                                </p:fieldset>
+                                <p:fieldset legend="Observations">
+                                    Observations
+                                </p:fieldset>
+                                
+                                <p:commandButton value="Submit" update=":growl" action="create" />
+                            </p:tab>
+                            
+                        </p:wizard>
+                    </h:form>
+                </f:view>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

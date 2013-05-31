@@ -73,6 +73,7 @@ public class PasswordValidator implements Validator
         }
         else
         {
+            System.out.println(password+": "+password.length());
             if(password == null || password.isEmpty() ||
                 password.length()<8 || password.length()>32)
             {
