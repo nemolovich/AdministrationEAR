@@ -24,7 +24,7 @@ import javax.faces.validator.ValidatorException;
 @RequestScoped
 public class PhonePatternValidator implements Validator
 {
-    private final static String PHONE_PATTERN = "^\\(?(\\d{2})\\)?[. ]?(\\d{2})?[. ]?(\\d{2})?[. ]?(\\d{2})[. ]?(\\d{2})$";
+    private final static String PHONE_PATTERN = "^\\(?(\\d{2})\\)?([. ]?(\\d{2})){3}?[. ]?(\\d{2})$";
      
     private final static Pattern PHONE_COMPILED_PATTERN = Pattern.compile(PHONE_PATTERN);
 

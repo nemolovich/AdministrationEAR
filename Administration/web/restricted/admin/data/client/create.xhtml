@@ -18,14 +18,14 @@
                 <f:attribute name="header" value="Cration d'une société"/>
                 <f:view>
                     <h:form id="clientCreate">
-                        <p:wizard id="clientCreateWIzard"
+                        <p:growl id="growlWizard" showDetail="true" life="30000" autoUpdate="true"/>
+                        <p:wizard id="clientCreateWizard"
                                   backLabel="Retour"
-                                  showNavBar="false"
                                   nextLabel="Suivant"
                                   widgetVar="clientWizard"
-                                  flowListener="#{clientCreateListener.onFlowProcess}"
+                                  showNavBar="true"
                                   step="general"
-                                  >
+                                  flowListener="#{clientCreateListener.onFlowProcess}">
                             <p:tab id="general" title="Informations">
                                 
                                 <p:fieldset legend="Informations générales">
@@ -60,54 +60,91 @@
                                                      requiredMessage="Veuillez indiquer le code postal de la société"/>
 
                                         <p:outputLabel value="Téléphone:" for="phone" />
-                                        <p:inputText id="phone" value="#{clientView.entity.phone}" maxlength="15"
+                                        <p:inputMask id="phone" value="#{clientView.entity.phone}" mask="99.99.99.99.99"
                                                      title="Numéro de téléphone de la société"
                                                      required="true"
                                                      requiredMessage="Veuillez indiquer le numéro de téléphone de la société">
                                             <f:validator binding="#{phonePatternValidator}"/>
-                                        </p:inputText>
+                                        </p:inputMask>
 
                                         <p:outputLabel value="Fax:" for="fax" />
-                                        <p:inputText id="fax" value="#{clientView.entity.fax}" maxlength="15"
-                                                     title="Fax de la société">
+                                        <p:inputMask id="fax" value="#{clientView.entity.fax}"  mask="99.99.99.99.99"
+                                                     title="Numéro de fax de la société">
                                             <f:validator binding="#{faxPatternValidator}"/>
-                                        </p:inputText>
+                                        </p:inputMask>
                                         
                                         <p:outputLabel value="Adresse mail:" for="mail" />
                                         <p:inputText id="mail" value="#{clientView.entity.mail}" maxlength="30"
-                                                     title="Adresse mail de la société">
+                                                     title="Adresse mail de la société"
+                                                     required="true"
+                                                     requiredMessage="Veuillez indiquer l'adresse mail de la société">
                                             <f:validator binding="#{emailPatternValidator}"/>
                                         </p:inputText>
-                                        
-                                        <p:outputLabel value="Tarif d'intervention:" for="tarif" />
-                                        <p:inputText id="tarif" value="#{clientView.entity.tarif}" maxlength="20"
-                                                     title="Tarif" />
-                                        
-                                        <p:outputLabel value="Frais de déplacement:" for="deplacement" />
-                                        <p:inputText id="deplacement" value="#{clientView.entity.deplacement}" maxlength="20"
-                                                     title="Frais de déplacement" />
-                                        
+                                    
                                         <p:outputLabel value="Type d'intervention:" for="interventionType" />
                                         <p:inputText id="interventionType" value="#{clientView.entity.interventionType}" maxlength="250"
                                                      title="InterventionType"/>
-                                        
-                                        <p:outputLabel value="Observations:" for="observations" />
-                                        <p:inputText id="observations" value="#{clientView.entity.observations}"  maxlength="250"
-                                                     title="Observations" />
+                                    
                                     </h:panelGrid>
                                 </p:fieldset>
                             </p:tab>
                             
                             <p:tab id="details" title="Détails">
-                                <p:fieldset legend="Tarifs">
-                                    Tarifs
-                                </p:fieldset>
-                                <p:fieldset legend="Connexion internet">
-                                    Internet
-                                </p:fieldset>
-                                <p:fieldset legend="Observations">
-                                    Observations
-                                </p:fieldset>
+                                <table>
+                                    <tr>
+                                        <td style="vertical-align: top !important;">
+                                            <p:fieldset legend="Tarifs">
+                                                <h:panelGrid columns="3" columnClasses="label,fields,label">
+
+                                                    <p:outputLabel value="Tarif d'intervention:" for="tarif" />
+                                                    <p:inputText id="tarif" value="#{clientView.entity.tarif}" maxlength="20"
+                                                                 title="Tarif" size="10"/>
+                                                    <h:outputText value="€"/>
+
+                                                    <p:outputLabel value="Frais de déplacement:" for="deplacement" />
+                                                    <p:inputText id="deplacement" value="#{clientView.entity.deplacement}" maxlength="20"
+                                                                 title="Frais de déplacement" size="10"/>
+                                                    <h:outputText value="€"/>
+
+                                                </h:panelGrid>
+                                            </p:fieldset>
+                                            <p:fieldset legend="Connexion internet">
+                                                <h:panelGrid columns="2" columnClasses="label,fields">
+
+                                                    <p:outputLabel value="Opérateur:" for="operator"/>
+                                                    <p:inputText id="operator" value="#{clientCreateListener.operator}"
+                                                                 title="Opérateur Internet" maxlength="50"/>
+
+                                                    <p:outputLabel value="Identifiant:" for="internet_login"/>
+                                                    <p:inputText id="internet_login" value="#{clientCreateListener.internetLogin}"
+                                                                 title="Opérateur Internet" maxlength="50"/>
+
+                                                    <h:outputLabel for="internet_password" value="Mot de passe:" />
+                                                    <p:password id="internet_password" value="#{clientCreateListener.internetPassword}">
+                                                        <f:validator binding="#{passwordValidator}"/>
+                                                        <f:attribute name="update_id" value='#{clientView.entity.id}' />
+                                                        <f:attribute name="confirm" value="#{internet_confirm}" />
+                                                    </p:password>
+
+                                                    <h:outputLabel for="internet_confirm" value="Confirmation:" />
+                                                    <p:password id="internet_confirm" binding="#{internet_confirm}"/>
+
+                                                </h:panelGrid>
+                                            </p:fieldset>
+                                        </td>
+                                        <td style="vertical-align: top !important;">
+                                            <p:fieldset legend="Observations">
+
+                                                <p:outputLabel value="Observations:" for="observations"/>
+                                                <br />
+                                                <h:inputTextarea id="observations" value="#{clientView.entity.observations}"
+                                                                 styleClass="textarea_primefaces_display"
+                                                                 rows="4"
+                                                                 title="Observations"/>
+                                            </p:fieldset>
+                                        </td>
+                                    </tr>
+                                </table>
                             </p:tab>
                             
                             <p:tab id="postes" title="Postes">
@@ -145,21 +182,6 @@
                                 <p:commandButton value="Submit" update=":growl" action="create" />
                             </p:tab>
                         </p:wizard>
-<!--                        <p:commandButton value="Précédent"
-                                         process="@this"
-                                         immediate="true"
-                                         update=":growl"
-                                         icon="ui-icon-arrowthick-1-w"
-                                         onclick="clientWizard.back();"/>
-                        <p:commandButton value="Suivant"
-                                         process="@this"
-                                         immediate="true"
-                                         update=":growl"
-                                         icon="ui-icon-arrowthick-1-e"
-                                         onclick="clientWizard.next();"/>-->
-                        <h:commandButton onclick="cllientWizard.back();" value="Précédent" 
-                                         rendered="#{clientCreateListener.stepNumber eq 1 ? false : true}"/>
-                        <h:commandButton onclick="cllientWizard.next();" value="Suivant" />
                     </h:form>
                 </f:view>
             </ui:define>

@@ -163,12 +163,11 @@ a:link:hover, a:visited:hover
     background-image:           url("/Administration/javax.faces.resource/images/ui-icons_cd0a0a_256x240.png.xhtml?ln=primefaces-aristo");
 }
 
-#growl_container 
+#growl_container,
+#clientCreate\:growlWizard_container
 {
     margin:                     0 auto;
-    /*margin-top:                 120px;*/
-    margin-right:               30px;
-    /*margin-right:               10%;*/
+    margin-right:               200px;
 }
 
 #growl_container .ui-growl-icon-close:hover,
@@ -229,4 +228,35 @@ a:link:hover, a:visited:hover
 {
     background:                 0;
     border:                     none;
+}
+
+.textarea_primefaces_display
+{
+    color:                      #313131 !important;
+    padding:                    4px !important;
+    border:                     1px solid #a8a8a8;
+    box-shadow:                 inset 0 2px 2px #8f8f8f;
+    -moz-box-shadow:            inset 0 2px 2px #8f8f8f;
+    -webkit-box-shadow:         inset 0 2px 2px #8f8f8f;
+    font-weight:                bold !important;
+    text-shadow:                rgba(255, 255, 255, 0.7) 0px 1px 0px;
+    word-wrap:                  normal !important;
+    border-radius:              3px !important;
+    min-width:                  147px;
+    max-width:                  500px;
+    width:                      90%;
+    min-height:                 200px;
+    max-height:                 500px;
+}
+
+.textarea_primefaces_display:hover
+{
+    border:                     1px solid #7096ab !important;
+}
+
+.textarea_primefaces_display:focus
+{
+    box-shadow:                 0 0 5px #85b2cb,inset 0 2px 2px #8f8f8f;
+    -moz-box-shadow:            0 0 5px #85b2cb,inset 0 2px 2px #8f8f8f;
+    -webkit-box-shadow:         0 0 5px #85b2cb,inset 0 2px 2px #8f8f8f;
 }

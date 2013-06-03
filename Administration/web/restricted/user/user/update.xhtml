@@ -46,6 +46,7 @@
                                 <f:validator binding="#{passwordValidator}" />
                                 <f:attribute name="confirm" value="#{confirm}" />
                                 <f:attribute name="update_id" value="#{tUserView.entity.id}" />
+                                <f:attribute name="min_length" value="#{true}" />
                             </p:password>
 
                             <p:outputLabel for="confirm" value="Confirmation" />

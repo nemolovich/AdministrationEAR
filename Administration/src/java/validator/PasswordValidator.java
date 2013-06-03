@@ -36,6 +36,25 @@ public class PasswordValidator implements Validator
         UIInput confirmComponent = (UIInput) component.getAttributes().get("confirm");
         String confirm = (String)confirmComponent.getSubmittedValue();
         this.update_id = (Integer)component.getAttributes().get("update_id");
+        Boolean passwordMinLength = (Boolean)component.getAttributes().get("min_length");
+        if(passwordMinLength==null)
+        {
+            String warning="La taille minimum du mot de passe n'est pas requise dans "+
+                    "le validateur '"+PasswordValidator.class.getName()+"'";
+            Logger.getLogger(PasswordValidator.class.getName()).log(Level.WARNING, 
+                    warning);
+            passwordMinLength=false;
+        }
+        
+        if(confirm==null)
+        {
+            System.err.println("Dans le validateur '"+this.getClass().getName()+
+                    "'. Vous devez spécifier un champs avec l'id 'confirm'. "
+                    + "Exemple: <h:inputSecret id=\"confirm\" binding=\"#{confirm}\"/> "
+                    + "si vous ajouter e attribut pour ce validateur: "
+                    + "<f:attribute name=\"confirm\" value=\"#{confirm}\" />");
+            return;
+        }
         
         if(this.update_id==null)
         {
@@ -53,45 +72,57 @@ public class PasswordValidator implements Validator
         FacesMessage message2=new FacesMessage("Mot de passe non confirmé",
                 "Veuillez confirmer le mot de passe");
         message2.setSeverity(FacesMessage.SEVERITY_ERROR);
+        
+        System.err.println("Status: ID="+this.update_id+" - password='"+password+"' - confirmation='"+
+                confirm+"' minLength="+passwordMinLength);
 
-        if (this.update_id==-1 && (password == null || password.isEmpty() ||
-                password.length()<8 || password.length()>32))
+        if (this.update_id==-1 && (password == null || (passwordMinLength &&
+                (password.isEmpty() || password.length()<8)) ||
+                password.length()>32))
         {
+            System.err.println("ERROR1");
             throw new ValidatorException(message1);
         }
         
-        if(this.update_id==-1 && (confirm == null || confirm.isEmpty()))
+        if(this.update_id==-1 && (confirm == null || confirm.isEmpty()) &&(passwordMinLength))
         {
+            System.err.println("ERROR2");
             confirmComponent.setValid(false);
             throw new ValidatorException(message2);
         }
         
-        if(this.update_id!=-1 && confirm.isEmpty() && password.isEmpty())
+        if(this.update_id!=-1 && (confirm == null || confirm.isEmpty()) && password.isEmpty())
         {
+            System.err.println("ERROR3");
             Logger.getLogger(PasswordValidator.class.getName()).log(Level.WARNING, 
                     "Le mot de passe n'a pas été modifié");
         }
         else
         {
-            System.out.println(password+": "+password.length());
-            if(password == null || password.isEmpty() ||
-                password.length()<8 || password.length()>32)
+            System.err.println("ERROR4");
+            if(password == null || (passwordMinLength &&
+                (password.isEmpty() || password.length()<8)) ||
+                password.length()>32)
             {
+                System.err.println("ERROR41");
                 throw new ValidatorException(message1);
             }
-            if(confirm == null || confirm.isEmpty())
+            if((confirm == null || confirm.isEmpty()) && passwordMinLength)
             {
+                System.err.println("ERROR42");
                 confirmComponent.setValid(false);
                 throw new ValidatorException(message2);
             }
         }
-        if (!password.equals(confirm))
+        if (!password.equals(confirm)&&(passwordMinLength))
         {
+            System.err.println("ERROR5");
             confirmComponent.setValid(false);
             FacesMessage message=new FacesMessage("Confirmation du mot de passe échouée",
                     "Les mots de passes ne correspondent pas");
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
             throw new ValidatorException(message);
         }
+        System.err.println("NOERROR");
     }
 }

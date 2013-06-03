@@ -22,7 +22,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.FacesValidator;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
-import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -59,6 +58,7 @@ public class UserLoginValidator implements Validator
         }
         if (password == null || password.isEmpty())
         {
+            passwordComponent.setValid(false);
             FacesMessage message=new FacesMessage("Champs 'Mot de passe' vide","Veuillez entrer votre mot de passe");
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
             throw new ValidatorException(message);

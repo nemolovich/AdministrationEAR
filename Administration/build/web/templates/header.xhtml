@@ -78,7 +78,7 @@
                   showEffect="clip"
                   hideEffect="clip">
             <h:form id="authDialogForm">
-                <p:hotkey bind="esc" handler="autentification.hide();"/>
+                <p:hotkey bind="esc" handler="authDialogForm.reset();autentification.hide();"/>
                 <h:panelGrid columns="2" cellpadding="5" columnClasses="label,field">
                     <h:outputLabel value="Mail:" for="mail_popup" />
                     <h:inputText id="mail_popup" value="#{userLogin.loginMail}" title="Mail">
@@ -92,20 +92,24 @@
                     <h:inputSecret id="password_popup" binding="#{password_popup}"/>
 
                 </h:panelGrid>
-                <p:commandButton id="login_button" value="Valider"
-                                 actionListener="#{userLogin.login()}"
-                                 update=":growl :authDialogForm:password_popup"
-                                 oncomplete="if(createRequest(autentification, xhr, status, args)){
-                                 reloadInterval(1);}"
-                                 styleClass="blue_icon"
-                                 icon="ui-icon-key"/>
-                <p:commandButton id="close_button" value="Annuler"
-                                 action="javascript:void(0)"
-                                 styleClass="red_icon"
-                                 immediate="true"
-                                 ajax="true"
-                                 onclick="autentification.hide();"
-                                 icon="ui-icon-closethick"/>
+                <p:outputPanel style="float: right;margin-top: 20px;">
+                    <p:commandButton id="close_button" value="Annuler"
+                                     action="javascript:void(0)"
+                                     styleClass="red_icon"
+                                     type="reset"
+                                     immediate="true"
+                                     ajax="true"
+                                     onclick="autentification.hide();"
+                                     icon="ui-icon-closethick"/>
+                    <p:commandButton id="login_button" value="Valider"
+                                     actionListener="#{userLogin.login()}"
+                                     type="submit"
+                                     update=":growl :authDialogForm:password_popup"
+                                     oncomplete="if(createRequest(autentification, xhr, status, args)){
+                                     reloadInterval(1);}"
+                                     styleClass="blue_icon"
+                                     icon="ui-icon-key"/>
+                </p:outputPanel>
             </h:form>
         </p:dialog>
     </h:body>

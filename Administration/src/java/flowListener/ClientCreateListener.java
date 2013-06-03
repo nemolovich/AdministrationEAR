@@ -23,6 +23,9 @@ public class ClientCreateListener
     @Inject
     private ClientView clientView;
     private int stepNumber;
+    private String internetPassword;
+    private String internetLogin;
+    private String operator;
 
     public ClientCreateListener()
     {
@@ -34,14 +37,39 @@ public class ClientCreateListener
     {
         return this.stepNumber;
     }
+
+    public String getInternetPassword() {
+        return internetPassword;
+    }
+
+    public void setInternetPassword(String internetPassword) {
+        this.internetPassword = internetPassword;
+    }
+
+    public String getInternetLogin() {
+        return internetLogin;
+    }
+
+    public void setInternetLogin(String internetLogin) {
+        this.internetLogin = internetLogin;
+    }
+
+    public String getOperator() {
+        return operator;
+    }
+
+    public void setOperator(String operator) {
+        this.operator = operator;
+    }
     
     public String onFlowProcess(FlowEvent event)
     {
-        System.out.println("alors?: "+(this.clientView!=null&&this.clientView.getEntity()!=null));
-        System.err.print("Next ID: "+event.getNewStep());
+//        System.out.println("alors?: "+(this.clientView!=null&&this.clientView.getEntity()!=null));
+        System.err.print("New Step: "+event.getNewStep());
+        System.err.print("Old Step: "+event.getOldStep());
         System.err.print("Current ID: "+event.getComponent().getClientId());
-        FacesContext context = FacesContext.getCurrentInstance();
-        context.addMessage(null, new FacesMessage("Update called", "updated by user"));
+//        FacesContext context = FacesContext.getCurrentInstance();
+//        context.addMessage(null, new FacesMessage("Update called", "updated by user"));
         return event.getNewStep(); 
     }  
 }
