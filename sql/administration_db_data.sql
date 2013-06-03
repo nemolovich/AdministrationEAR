@@ -10,7 +10,7 @@
 -- DATE:			2013-05-22 22:05
 -------------------------------------------------------------
 
------ Pour supprimer toutes les entrées dans les tables -----
+----- Pour supprimer toutes les entrÃ©es dans les tables -----
 -- DELETE FROM ROOT.T_USER;
 -- ALTER TABLE ROOT.T_USER ALTER COLUMN ID RESTART WITH 1;
 ALTER TABLE ROOT.CLIENT DROP CONSTRAINT client_c_user_id_fk;
@@ -29,31 +29,30 @@ ALTER TABLE ROOT.CLIENT ADD CONSTRAINT client_c_user_id_fk
                 REFERENCES ROOT.C_USER(id);
 
 ------- Permet de ne laisser l'identifiant '1' libre --------
--- Redémarre le compteur à '0', création d'admin temporaire
---  prenant alors en ID '0', prochaine entrée à '1'
+-- RedÃ©marre le compteur Ã  '0', crÃ©ation d'admin temporaire
+--  prenant alors en ID '0', prochaine entrÃ©e Ã  '1'
 -- ALTER TABLE ROOT.T_USER ALTER COLUMN ID RESTART WITH 0;
 
----------- Création d'un administrateur par défaut ----------
+---------- CrÃ©ation d'un administrateur par dÃ©faut ----------
 -- LOGIN (mail):		admin
 -- PASSWORD:			admin
--- /!\ Ne pas oublier de supprimer cette entrée après  /!\ --
--- /!\ avoir créé votre administrateur via l'interface /!\ --
+-- /!\ Ne pas oublier de supprimer cette entrÃ©e aprÃ¨s  /!\ --
+-- /!\ avoir crÃ©Ã© votre administrateur via l'interface /!\ --
 -- /!\ principale                                      /!\ --
 -- INSERT INTO ROOT.T_USER
--- 	(MAIL, "NAME", FIRSTNAME, RIGHTS, PASSWORD) 
+-- 		(MAIL, "NAME", FIRSTNAME, RIGHTS, PASSWORD) 
 -- 	VALUES ('admin', '', '', 'ADMIN',
--- 	'!#/)zW¥§C‰JJ€Ã                ');
-
-
+-- 				'!#/)zWÂ¥Â§Câ€°JJâ‚¬Ãƒ                ');
 
 ---------------------- INITIALISATION -----------------------
 INSERT INTO ROOT.CLIENT
-		(ID_USER, "NAME", ADDRESS, PHONE, FAX, MAIL,
-		INTERVENTION_TYPE, OBSERVATIONS) 
+		(ID_USER, "NAME", ADDRESS, POSTALCODE, PHONE, 
+                FAX, MAIL, INTERVENTION_TYPE, OBSERVATIONS) 
 	VALUES (
 		NULL,
 		'Admin Services',
-		'37700 La Ville aux Dames',
+		'La Ville aux Dames',
+                37700,
 		'02.47.44.77.11',
 		NULL,
 		'contact@admin-services.fr',
@@ -68,12 +67,13 @@ UPDATE ROOT.CLIENT SET "ID_USER" = 1 WHERE ID = 1;
 
 ------------------------- CLIENT 2 --------------------------
 INSERT INTO ROOT.CLIENT
-		(ID_USER, "NAME", ADDRESS, PHONE, FAX, MAIL,
-		INTERVENTION_TYPE, OBSERVATIONS) 
+		(ID_USER, "NAME", ADDRESS, POSTALCODE, PHONE, 
+                FAX, MAIL, INTERVENTION_TYPE, OBSERVATIONS) 
 	VALUES (
 		NULL,
 		'SOCIETY2',
-		'22222 SOCIETY CITY 2',
+		'SOCIETY CITY 2',
+                22222,
 		'02.00.00.00.02',
 		NULL,
 		'society_2@society.fr',
@@ -93,12 +93,13 @@ INSERT INTO ROOT.C_USER (ID_CLIENT, "NAME", PHONE, OBSERVATIONS)
 
 ------------------------- CLIENT 3 --------------------------
 INSERT INTO ROOT.CLIENT
-		(ID_USER, "NAME", ADDRESS, PHONE, FAX, MAIL,
-		INTERVENTION_TYPE, OBSERVATIONS) 
+		(ID_USER, "NAME", ADDRESS, POSTALCODE, PHONE, 
+                FAX, MAIL, INTERVENTION_TYPE, OBSERVATIONS) 
 	VALUES (
 		NULL,
 		'SOCIETY3',
-		'33333 SOCIETY CITY 3',
+		'SOCIETY CITY 3',
+                33333,
 		'02.00.00.00.03',
 		NULL,
 		'society_3@society.fr',
@@ -118,12 +119,13 @@ INSERT INTO ROOT.C_USER (ID_CLIENT, "NAME", PHONE, OBSERVATIONS)
 
 ------------------------- CLIENT 4 --------------------------
 INSERT INTO ROOT.CLIENT
-		(ID_USER, "NAME", ADDRESS, PHONE, FAX, MAIL,
-		INTERVENTION_TYPE, OBSERVATIONS) 
+		(ID_USER, "NAME", ADDRESS, POSTALCODE, PHONE, 
+                FAX, MAIL, INTERVENTION_TYPE, OBSERVATIONS) 
 	VALUES (
 		NULL,
 		'SOCIETY4',
-		'44444 SOCIETY CITY 4',
+		'SOCIETY CITY 4',
+                44444,
 		'02.00.00.00.04',
 		NULL,
 		'society_4@society.fr',
@@ -142,12 +144,13 @@ INSERT INTO ROOT.C_USER (ID_CLIENT, "NAME", PHONE, OBSERVATIONS)
 
 ------------------------- CLIENT 5 --------------------------
 INSERT INTO ROOT.CLIENT
-		(ID_USER, "NAME", ADDRESS, PHONE, FAX, MAIL,
-		INTERVENTION_TYPE, OBSERVATIONS) 
+		(ID_USER, "NAME", ADDRESS, POSTALCODE, PHONE, 
+                FAX, MAIL, INTERVENTION_TYPE, OBSERVATIONS) 
 	VALUES (
 		NULL,
 		'SOCIETY5',
-		'55555 SOCIETY CITY 5',
+		'SOCIETY CITY 5',
+                55555,
 		'02.00.00.00.05',
 		NULL,
 		'society_5@society.fr',

@@ -12,16 +12,16 @@
 
 --- Supprime les tables si elles existent, sinon commenter --
 -- DROP TABLE ROOT.T_USER;
-ALTER TABLE ROOT.CLIENT DROP CONSTRAINT client_c_user_id_fk;
-ALTER TABLE ROOT.MAIL DROP CONSTRAINT mail_c_user_id_fk;
-DROP TABLE ROOT.MAIL;
-ALTER TABLE ROOT.WORKSTATION DROP CONSTRAINT workstation_c_user_id_fk;
-DROP TABLE ROOT.WORKSTATION;
-ALTER TABLE ROOT.SOFTWARE DROP CONSTRAINT software_c_user_id_fk;
-DROP TABLE ROOT.SOFTWARE;
-ALTER TABLE ROOT.C_USER DROP CONSTRAINT user_client_id_fk;
-DROP TABLE ROOT.CLIENT;
-DROP TABLE ROOT.C_USER;
+-- ALTER TABLE ROOT.CLIENT DROP CONSTRAINT client_c_user_id_fk;
+-- ALTER TABLE ROOT.MAIL DROP CONSTRAINT mail_c_user_id_fk;
+-- DROP TABLE ROOT.MAIL;
+-- ALTER TABLE ROOT.WORKSTATION DROP CONSTRAINT workstation_c_user_id_fk;
+-- DROP TABLE ROOT.WORKSTATION;
+-- ALTER TABLE ROOT.SOFTWARE DROP CONSTRAINT software_c_user_id_fk;
+-- DROP TABLE ROOT.SOFTWARE;
+-- ALTER TABLE ROOT.C_USER DROP CONSTRAINT user_client_id_fk;
+-- DROP TABLE ROOT.CLIENT;
+-- DROP TABLE ROOT.C_USER;
 
 ---------------- Création de la table T_USER ----------------
 -- TABLE:			T_USER
@@ -50,8 +50,11 @@ CREATE TABLE ROOT.CLIENT (
         id_user INTEGER,
         name VARCHAR(45) NOT NULL DEFAULT 'unknown' UNIQUE,
         address VARCHAR(100) NOT NULL,
+		postalCode INTEGER NOT NULL,
         phone VARCHAR(14) NOT NULL,
         fax VARCHAR(14),
+		tarif DOUBLE,
+		deplacement DOUBLE,
         mail VARCHAR(30) NOT NULL,
         intervention_type VARCHAR(250),
         observations VARCHAR(250));
