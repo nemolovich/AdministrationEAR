@@ -22,15 +22,24 @@ public class ClientCreateListener
 {
     @Inject
     private ClientView clientView;
+    private int stepNumber;
 
     public ClientCreateListener()
     {
+        this.stepNumber = 1;
         System.err.println("called");
+    }
+    
+    public int getStepNumber()
+    {
+        return this.stepNumber;
     }
     
     public String onFlowProcess(FlowEvent event)
     {
-        System.out.println("alors?: "+(this.clientView.getEntity()!=null));
+        System.out.println("alors?: "+(this.clientView!=null&&this.clientView.getEntity()!=null));
+        System.err.print("Next ID: "+event.getNewStep());
+        System.err.print("Current ID: "+event.getComponent().getClientId());
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(null, new FacesMessage("Update called", "updated by user"));
         return event.getNewStep(); 

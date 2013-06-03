@@ -6,7 +6,7 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>Facelet Title</title>
+        <title>Création société</title>
     </h:head>
     <h:body>
         
@@ -20,11 +20,12 @@
                     <h:form id="clientCreate">
                         <p:wizard id="clientCreateWIzard"
                                   backLabel="Retour"
+                                  showNavBar="false"
                                   nextLabel="Suivant"
                                   widgetVar="clientWizard"
                                   flowListener="#{clientCreateListener.onFlowProcess}"
+                                  step="general"
                                   >
-                            
                             <p:tab id="general" title="Informations">
                                 
                                 <p:fieldset legend="Informations générales">
@@ -143,8 +144,22 @@
                                 
                                 <p:commandButton value="Submit" update=":growl" action="create" />
                             </p:tab>
-                            
                         </p:wizard>
+<!--                        <p:commandButton value="Précédent"
+                                         process="@this"
+                                         immediate="true"
+                                         update=":growl"
+                                         icon="ui-icon-arrowthick-1-w"
+                                         onclick="clientWizard.back();"/>
+                        <p:commandButton value="Suivant"
+                                         process="@this"
+                                         immediate="true"
+                                         update=":growl"
+                                         icon="ui-icon-arrowthick-1-e"
+                                         onclick="clientWizard.next();"/>-->
+                        <h:commandButton onclick="cllientWizard.back();" value="Précédent" 
+                                         rendered="#{clientCreateListener.stepNumber eq 1 ? false : true}"/>
+                        <h:commandButton onclick="cllientWizard.next();" value="Suivant" />
                     </h:form>
                 </f:view>
             </ui:define>

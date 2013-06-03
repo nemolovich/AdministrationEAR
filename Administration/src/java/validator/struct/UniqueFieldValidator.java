@@ -88,12 +88,10 @@ public abstract class UniqueFieldValidator<C, F extends AbstractFacade<C>> imple
             try
             {
                 boolean equals=false;
-                System.out.println(m.getReturnType());
                 if(m.getReturnType()==String.class)
                 {
                     equals=((String)m.invoke(entity)).equalsIgnoreCase(field);
                 }
-                System.out.println("Equals ID ("+getId.invoke(entity)+" - "+this.update_ID+"): "+(getId.invoke(entity)==this.update_ID));
                 if((equals||m.invoke(entity).equals(field))&&((Integer)getId.invoke(entity))!=this.update_ID)
                 {
                     FacesMessage message=new FacesMessage("Champs '"+fieldName+"' incorrect",

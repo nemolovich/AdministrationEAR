@@ -13,12 +13,14 @@
         <title>
             Admin service
             <ui:insert name="title">
-                Panneau administrateur
+                | Panneau administrateur
             </ui:insert>
         </title>
     </h:head>
 
     <h:body>
+        <div id="messages_container" class="ui-growl ui-widget" style="z-index: 1010;"></div>
+        <p:growl id="growl" showDetail="true" life="30000" />
         <p:layout fullPage="true">
             <p:ajax event="resize"
                     listener="#{userLogin.handleResize}"/>

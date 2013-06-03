@@ -68,11 +68,9 @@ public class Client implements Serializable {
     // @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message="Invalid phone/fax format, should be as xxx-xxx-xxxx")//if the field contains phone or fax number consider using this annotation to enforce field validation
     @Basic(optional = false)
     @NotNull
-    @Size(min = 14, max = 14)
     @Column(name = "PHONE")
     private String phone;
     // @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message="Invalid phone/fax format, should be as xxx-xxx-xxxx")//if the field contains phone or fax number consider using this annotation to enforce field validation
-    @Size(max = 14)
     @Column(name = "FAX")
     private String fax;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -82,7 +80,6 @@ public class Client implements Serializable {
     private Double deplacement;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 5, max = 30)
     @Column(name = "MAIL")
     private String mail;
     @Size(max = 250)

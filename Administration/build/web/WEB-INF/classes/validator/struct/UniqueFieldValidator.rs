@@ -1,2 +1,0 @@
-validator.CUserUniqueFieldValidator
-validator.UniqueFieldValidator

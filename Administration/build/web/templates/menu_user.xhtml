@@ -5,16 +5,16 @@
     <h:head>
     </h:head>
     <h:body>
-        <div class="menu">
-            <h:link outcome="/restricted/user/index" value="Panneau utilisateur" title="Afficher la vue utilisateur" />
-            <br />
-                <h:link outcome="/restricted/user/user/view" value="Afficher mon profil" title="Afficher mes informations" />
+        <h:form id="menuForm">
+            <div class="menu">
+                <h:link outcome="/restricted/user/index" value="Panneau utilisateur" title="Afficher la vue utilisateur" />
                 <br />
-                <h:form>
+                    <h:link outcome="/restricted/user/user/view" value="Afficher mon profil" title="Afficher mes informations" />
+                    <br />
                     <h:commandLink action="#{tUserView.entityUpdate(userLogin.user)}" value="Modifier mon profil"
                                    title="Modifier mes informations"/>
-                </h:form>
-        </div>
+            </div>
+        </h:form>
     </h:body>
 </html>
 

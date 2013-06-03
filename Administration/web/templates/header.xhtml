@@ -5,11 +5,15 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
-        <title></title>
+        <script type="text/javascript">
+            $(document).ready(function()
+            {
+                setLayoutButtonsTooltips("menu_right","la liste des tâches");
+                setLayoutButtonsTooltips("menu","le menu");
+            });
+        </script>
     </h:head>
     <h:body>
-        <div id="messages_container" class="ui-growl ui-widget" style="z-index: 1010;"></div>
-        <p:growl id="growl" showDetail="true" life="30000" />
         <h:form id="header_form">
 <!--            <p:hotkey bind="up" actionListener="#{userLogin.addKonami('u')}"/>
             <p:hotkey bind="down" actionListener="#{userLogin.addKonami('d')}"/>
@@ -55,7 +59,6 @@
                                   style="font-size: 85%;"/>
                     <br />
                     <p:commandButton id="login_command"
-                                     action="#{userLogin.login()}"
                                      icon="ui-icon-key"
                                      styleClass="blue_icon"
                                      style="font-size: 75%;float:right;margin:5px;"
@@ -97,8 +100,10 @@
                                  styleClass="blue_icon"
                                  icon="ui-icon-key"/>
                 <p:commandButton id="close_button" value="Annuler"
-                                 action="javascript:void(0);"
+                                 action="javascript:void(0)"
                                  styleClass="red_icon"
+                                 immediate="true"
+                                 ajax="true"
                                  onclick="autentification.hide();"
                                  icon="ui-icon-closethick"/>
             </h:form>
