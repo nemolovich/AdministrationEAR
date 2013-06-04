@@ -15,7 +15,7 @@
                 | Création société
             </ui:define>
             <ui:define name="content">
-                <f:attribute name="header" value="Cration d'une société"/>
+                <f:attribute name="header" value="Création d'une société"/>
                 <f:view>
                     <h:form id="clientCreate">
                         <p:growl id="growlWizard" showDetail="true" life="30000" autoUpdate="true"/>
@@ -90,7 +90,7 @@
                             </p:tab>
                             
                             <p:tab id="details" title="Détails">
-                                <table>
+                                <table width="100%">
                                     <tr>
                                         <td style="vertical-align: top !important;">
                                             <p:fieldset legend="Tarifs">
@@ -166,18 +166,82 @@
                             </p:tab>
                             
                             <p:tab id="finish" title="Récapitulatif">
-                                <p:fieldset legend="Informations générales">
-                                    Infos
-                                </p:fieldset>
-                                <p:fieldset legend="Tarifs">
-                                    Tarifs
-                                </p:fieldset>
-                                <p:fieldset legend="Connexion internet">
-                                    Internet
-                                </p:fieldset>
-                                <p:fieldset legend="Observations">
-                                    Observations
-                                </p:fieldset>
+                                <table width="100%">
+                                    <tr>
+                                        <td style="vertical-align: top !important;">
+                                            <p:fieldset legend="Informations générales">
+                                                <h:panelGrid columns="2" columnClasses="label,fields">
+
+                                                    <h:outputText value="Nom de la société"/>
+                                                    <h:outputText value="#{clientView.entity.name}"/>
+
+                                                    <h:outputText value="Adresse:"/>
+                                                    <h:outputText value="#{clientView.entity.address}"/>
+
+                                                    <h:outputText value="Code postal:" />
+                                                    <h:outputText value="#{clientView.entity.postalcode}"/>
+
+                                                    <h:outputText value="Téléphone:" />
+                                                    <h:outputText value="#{clientView.entity.phone}"/>
+
+                                                    <h:outputText value="Fax:" />
+                                                    <h:outputText value="#{clientView.entity.fax}"/>
+
+                                                    <h:outputText value="Adresse mail:" />
+                                                    <h:outputText value="#{clientView.entity.mail}"/>
+
+                                                    <h:outputText value="Type d'intervention:" />
+                                                    <h:outputText value="#{clientView.entity.interventionType}"/>
+
+                                                </h:panelGrid>
+                                            </p:fieldset>
+                                            <p:fieldset legend="Connexion internet">
+                                                <h:panelGrid columns="2" columnClasses="label,fields">
+
+                                                    <h:outputText value="Opérateur:"/>
+                                                    <h:outputText value="#{clientCreateListener.operator}"/>
+
+                                                    <h:outputText value="Identifiant:"/>
+                                                    <h:outputText value="#{clientCreateListener.internetLogin}"/>
+
+                                                    <h:outputText value="Mot de passe:" />
+                                                    <h:outputText value="#{clientCreateListener.internetPassword}"/>
+
+                                                </h:panelGrid>
+                                            </p:fieldset>
+                                        </td>
+                                        <td style="vertical-align: top !important;">
+                                            <p:fieldset legend="Tarifs">
+                                                <h:panelGrid columns="2" columnClasses="label,fields">
+
+                                                    <h:outputText value="Tarif d'intervention:" />
+                                                    <h:outputText value="#{clientView.entity.tarif} €"
+                                                                  rendered="#{not empty clientView.entity.tarif}"/>
+                                                    <h:outputText value="aucun"
+                                                                  rendered="#{empty clientView.entity.tarif}"/>
+
+                                                    <h:outputText value="Frais de déplacement:" />
+                                                    <h:outputText value="#{clientView.entity.deplacement} €"
+                                                                  rendered="#{not empty clientView.entity.deplacement}"/>
+                                                    <h:outputText value="aucun"
+                                                                  rendered="#{empty clientView.entity.deplacement}"/>
+
+                                                </h:panelGrid>
+                                            </p:fieldset>
+                                            <p:fieldset legend="Observations">
+                                                <h:inputTextarea value="#{clientView.entity.observations}"
+                                                                 readonly="true"
+                                                                 rows="4"
+                                                                 styleClass="textarea_primefaces_display textarea_auto"
+                                                                 title="Observations"/>
+                                            </p:fieldset>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="vertical-align: top !important;">
+                                        </td>
+                                    </tr>
+                                </table>
                                 
                                 <p:commandButton value="Submit" update=":growl" action="create" />
                             </p:tab>

@@ -130,6 +130,7 @@ a:link:hover, a:visited:hover
     -moz-border-radius:         5px;
     border-radius:              5px;
     z-index:                    1;
+    opacity:                    0.95 !important;
 }
 
 #header div .ui-panel
@@ -158,7 +159,8 @@ a:link:hover, a:visited:hover
     background-image:           url("/Administration/javax.faces.resource/images/ui-icons_cd0a0a_256x240.png.xhtml?ln=primefaces-aristo") !important;
 }
 
-#growl_container .ui-growl-icon-close
+#growl_container .ui-growl-icon-close,
+#clientCreate\:growlWizard_container .ui-growl-icon-close
 {
     background-image:           url("/Administration/javax.faces.resource/images/ui-icons_cd0a0a_256x240.png.xhtml?ln=primefaces-aristo");
 }
@@ -166,18 +168,21 @@ a:link:hover, a:visited:hover
 #growl_container,
 #clientCreate\:growlWizard_container
 {
-    margin:                     0 auto;
-    margin-right:               200px;
+    /*margin:                     0 auto;*/
+    margin-right:               0px;
 }
 
 #growl_container .ui-growl-icon-close:hover,
-#growl_container .ui-growl-icon-close:focus
-{    
+#growl_container .ui-growl-icon-close:focus,
+#clientCreate\:growlWizard_container .ui-growl-icon-close:hover,
+#clientCreate\:growlWizard_container .ui-growl-icon-close:focus
+{
     background-color:           rgba(100,0,0,0.6);
 }
 
-#growl_container .ui-growl-icon-close:active
-{    
+#growl_container .ui-growl-icon-close:active,
+#clientCreate\:growlWizard_container .ui-growl-icon-close:active
+{
     background-color:           rgba(255,100,100,0.8);
 }
 
@@ -230,6 +235,20 @@ a:link:hover, a:visited:hover
     border:                     none;
 }
 
+.ui-widget-content .fields
+{
+    color:                      #313131 !important;
+    font-weight:                bold !important;
+}
+
+
+.textarea_auto
+{
+    width:                      100% !important;
+    min-height:                 75px;
+    height:                     auto !important;
+}
+
 .textarea_primefaces_display
 {
     color:                      #313131 !important;
@@ -244,7 +263,7 @@ a:link:hover, a:visited:hover
     border-radius:              3px !important;
     min-width:                  147px;
     max-width:                  500px;
-    width:                      90%;
+    width:                      100% !important;
     min-height:                 200px;
     max-height:                 500px;
 }

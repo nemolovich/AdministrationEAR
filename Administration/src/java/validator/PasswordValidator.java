@@ -73,56 +73,48 @@ public class PasswordValidator implements Validator
                 "Veuillez confirmer le mot de passe");
         message2.setSeverity(FacesMessage.SEVERITY_ERROR);
         
-        System.err.println("Status: ID="+this.update_id+" - password='"+password+"' - confirmation='"+
-                confirm+"' minLength="+passwordMinLength);
+//        System.err.println("Status: ID="+this.update_id+" - password='"+password+"' - confirmation='"+
+//                confirm+"' minLength="+passwordMinLength);
 
         if (this.update_id==-1 && (password == null || (passwordMinLength &&
                 (password.isEmpty() || password.length()<8)) ||
                 password.length()>32))
         {
-            System.err.println("ERROR1");
             throw new ValidatorException(message1);
         }
         
         if(this.update_id==-1 && (confirm == null || confirm.isEmpty()) &&(passwordMinLength))
         {
-            System.err.println("ERROR2");
             confirmComponent.setValid(false);
             throw new ValidatorException(message2);
         }
         
         if(this.update_id!=-1 && (confirm == null || confirm.isEmpty()) && password.isEmpty())
         {
-            System.err.println("ERROR3");
             Logger.getLogger(PasswordValidator.class.getName()).log(Level.WARNING, 
                     "Le mot de passe n'a pas été modifié");
         }
         else
         {
-            System.err.println("ERROR4");
             if(password == null || (passwordMinLength &&
                 (password.isEmpty() || password.length()<8)) ||
                 password.length()>32)
             {
-                System.err.println("ERROR41");
                 throw new ValidatorException(message1);
             }
             if((confirm == null || confirm.isEmpty()) && passwordMinLength)
             {
-                System.err.println("ERROR42");
                 confirmComponent.setValid(false);
                 throw new ValidatorException(message2);
             }
         }
-        if (!password.equals(confirm)&&(passwordMinLength))
+        if (!password.equals(confirm)&&!password.isEmpty())
         {
-            System.err.println("ERROR5");
             confirmComponent.setValid(false);
             FacesMessage message=new FacesMessage("Confirmation du mot de passe échouée",
                     "Les mots de passes ne correspondent pas");
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
             throw new ValidatorException(message);
         }
-        System.err.println("NOERROR");
     }
 }
