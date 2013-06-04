@@ -11,7 +11,7 @@ import javax.persistence.EntityManager;
 
 /**
  *
- * @author Stage
+ * @author Brian GOHIER
  */
 public abstract class AbstractFacade<T>
 {

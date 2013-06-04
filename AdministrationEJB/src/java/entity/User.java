@@ -10,7 +10,7 @@ import javax.inject.Named;
 
 /**
  *
- * @author Windows 7
+ * @author Brian GOHIER
  */
 @Named
 @SessionScoped

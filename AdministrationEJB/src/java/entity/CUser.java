@@ -7,6 +7,7 @@ package entity;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -48,10 +49,8 @@ public class CUser implements Serializable {
     @Size(min = 2, max = 45)
     @Column(name = "NAME")
     private String name;
-    // @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message="Invalid phone/fax format, should be as xxx-xxx-xxxx")//if the field contains phone or fax number consider using this annotation to enforce field validation
     @Basic(optional = false)
     @NotNull
-    @Size(min = 15, max = 15)
     @Column(name = "PHONE")
     private String phone;
     @Size(max = 250)
@@ -62,6 +61,10 @@ public class CUser implements Serializable {
     @JoinColumn(name = "ID_CLIENT", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Client idClient;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idClient")
+    private List<Workstation> workstationList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idClient")
+    private List<Mail> mailList;
 
     public CUser() {
     }
@@ -124,6 +127,24 @@ public class CUser implements Serializable {
 
     public void setIdClient(Client idClient) {
         this.idClient = idClient;
+    }
+
+    @XmlTransient
+    public List<Workstation> getWorkstationList() {
+        return workstationList;
+    }
+
+    public void setWorkstationList(List<Workstation> workstationList) {
+        this.workstationList = workstationList;
+    }
+
+    @XmlTransient
+    public List<Mail> getMailList() {
+        return mailList;
+    }
+
+    public void setMailList(List<Mail> mailList) {
+        this.mailList = mailList;
     }
 
     @Override

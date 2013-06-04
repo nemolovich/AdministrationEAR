@@ -89,3 +89,13 @@ function setTooltips(id,tips)
     $("#"+id+" .ui-layout-unit-header-icon.ui-state-default.ui-corner-all").attr('title',"Masquer "+tips);
     $("#"+id+" .ui-layout-unit-header-icon.ui-state-default.ui-corner-all .ui-icon-close").attr('title',"Fermer "+tips);
 }
+
+function showHidden(form,id,value)
+{
+    $("#"+form+"\\:"+id).html(value);
+}
+
+function hideHidden(form,id,value)
+{
+    $("#"+form+"\\:"+id).html(value);
+}

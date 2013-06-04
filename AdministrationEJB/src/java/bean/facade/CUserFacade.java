@@ -6,14 +6,13 @@ package bean.facade;
 
 import bean.facade.abstracts.AbstractFacade;
 import entity.CUser;
-import entity.Client;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
  *
- * @author Stage
+ * @author Brian GOHIER
  */
 @Stateless
 public class CUserFacade extends AbstractFacade<CUser> {

@@ -14,7 +14,7 @@ import javax.inject.Named;
 
 /**
  *
- * @author Stage
+ * @author Brian GOHIER
  */
 @Named(value = "cUserView")
 @SessionScoped

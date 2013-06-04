@@ -43,6 +43,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Client.findByDeplacement", query = "SELECT c FROM Client c WHERE c.deplacement = :deplacement"),
     @NamedQuery(name = "Client.findByMail", query = "SELECT c FROM Client c WHERE c.mail = :mail"),
     @NamedQuery(name = "Client.findByInterventionType", query = "SELECT c FROM Client c WHERE c.interventionType = :interventionType"),
+    @NamedQuery(name = "Client.findByOperator", query = "SELECT c FROM Client c WHERE c.operator = :operator"),
+    @NamedQuery(name = "Client.findByInternetLogin", query = "SELECT c FROM Client c WHERE c.internetLogin = :internetLogin"),
+    @NamedQuery(name = "Client.findByInternetPassword", query = "SELECT c FROM Client c WHERE c.internetPassword = :internetPassword"),
     @NamedQuery(name = "Client.findByObservations", query = "SELECT c FROM Client c WHERE c.observations = :observations")})
 public class Client implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -65,15 +68,12 @@ public class Client implements Serializable {
     @NotNull
     @Column(name = "POSTALCODE")
     private int postalcode;
-    // @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message="Invalid phone/fax format, should be as xxx-xxx-xxxx")//if the field contains phone or fax number consider using this annotation to enforce field validation
     @Basic(optional = false)
     @NotNull
     @Column(name = "PHONE")
     private String phone;
-    // @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message="Invalid phone/fax format, should be as xxx-xxx-xxxx")//if the field contains phone or fax number consider using this annotation to enforce field validation
     @Column(name = "FAX")
     private String fax;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "TARIF")
     private Double tarif;
     @Column(name = "DEPLACEMENT")
@@ -85,6 +85,15 @@ public class Client implements Serializable {
     @Size(max = 250)
     @Column(name = "INTERVENTION_TYPE")
     private String interventionType;
+    @Size(max = 30)
+    @Column(name = "OPERATOR")
+    private String operator;
+    @Size(max = 30)
+    @Column(name = "INTERNET_LOGIN")
+    private String internetLogin;
+    @Size(max = 64)
+    @Column(name = "INTERNET_PASSWORD")
+    private String internetPassword;
     @Size(max = 250)
     @Column(name = "OBSERVATIONS")
     private String observations;
@@ -93,6 +102,8 @@ public class Client implements Serializable {
     private CUser idUser;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idClient")
     private List<CUser> cUserList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idClient")
+    private List<Software> softwareList;
 
     public Client() {
     }
@@ -120,7 +131,7 @@ public class Client implements Serializable {
     }
 
     public String getName() {
-        return this.name==null?"":this.name;
+        return name;
     }
 
     public void setName(String name) {
@@ -191,6 +202,30 @@ public class Client implements Serializable {
         this.interventionType = interventionType;
     }
 
+    public String getOperator() {
+        return operator;
+    }
+
+    public void setOperator(String operator) {
+        this.operator = operator;
+    }
+
+    public String getInternetLogin() {
+        return internetLogin;
+    }
+
+    public void setInternetLogin(String internetLogin) {
+        this.internetLogin = internetLogin;
+    }
+
+    public String getInternetPassword() {
+        return internetPassword;
+    }
+
+    public void setInternetPassword(String internetPassword) {
+        this.internetPassword = internetPassword;
+    }
+
     public String getObservations() {
         return observations;
     }
@@ -216,6 +251,15 @@ public class Client implements Serializable {
         this.cUserList = cUserList;
     }
 
+    @XmlTransient
+    public List<Software> getSoftwareList() {
+        return softwareList;
+    }
+
+    public void setSoftwareList(List<Software> softwareList) {
+        this.softwareList = softwareList;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -238,7 +282,7 @@ public class Client implements Serializable {
 
     @Override
     public String toString() {
-        return this.name;
+        return "entity.Client[ id=" + id + " ]";
     }
     
 }

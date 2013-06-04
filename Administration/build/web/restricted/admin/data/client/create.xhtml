@@ -112,22 +112,24 @@
                                                 <h:panelGrid columns="2" columnClasses="label,fields">
 
                                                     <p:outputLabel value="Opérateur:" for="operator"/>
-                                                    <p:inputText id="operator" value="#{clientCreateListener.operator}"
+                                                    <p:inputText id="operator" value="#{clientView.entity.operator}"
                                                                  title="Opérateur Internet" maxlength="50"/>
 
                                                     <p:outputLabel value="Identifiant:" for="internet_login"/>
-                                                    <p:inputText id="internet_login" value="#{clientCreateListener.internetLogin}"
-                                                                 title="Opérateur Internet" maxlength="50"/>
+                                                    <p:inputText id="internet_login" value="#{clientView.entity.internetLogin}"
+                                                                 title="Identifiant Internet" maxlength="50"/>
 
                                                     <h:outputLabel for="internet_password" value="Mot de passe:" />
-                                                    <p:password id="internet_password" value="#{clientCreateListener.internetPassword}">
+                                                    <p:password id="internet_password" value="#{clientView.entity.internetPassword}"
+                                                                redisplay="true" title="Mot de passe Internet" maxlength="64">
                                                         <f:validator binding="#{passwordValidator}"/>
                                                         <f:attribute name="update_id" value='#{clientView.entity.id}' />
                                                         <f:attribute name="confirm" value="#{internet_confirm}" />
                                                     </p:password>
 
                                                     <h:outputLabel for="internet_confirm" value="Confirmation:" />
-                                                    <p:password id="internet_confirm" binding="#{internet_confirm}"/>
+                                                    <p:password id="internet_confirm" binding="#{internet_confirm}"
+                                                                redisplay="true" title="Confirmation du mot de passe Internet" maxlength="64"/>
 
                                                 </h:panelGrid>
                                             </p:fieldset>
@@ -149,7 +151,11 @@
                             
                             <p:tab id="postes" title="Postes">
                                 <p:fieldset legend="Postes">
-                                    Postes
+                                    
+                                    <p:dataList value="#{clientView.entity.}" var="poste" itemType="Postes de travail">  
+                                        <h:outputText value="#{poste.toString}"/>
+                                    </p:dataList> 
+                                    
                                 </p:fieldset>
                             </p:tab>
                             
@@ -199,13 +205,28 @@
                                                 <h:panelGrid columns="2" columnClasses="label,fields">
 
                                                     <h:outputText value="Opérateur:"/>
-                                                    <h:outputText value="#{clientCreateListener.operator}"/>
+                                                    <h:outputText value="#{clientView.entity.operator}"/>
 
                                                     <h:outputText value="Identifiant:"/>
-                                                    <h:outputText value="#{clientCreateListener.internetLogin}"/>
+                                                    <h:outputText value="#{clientView.entity.internetLogin}"/>
 
                                                     <h:outputText value="Mot de passe:" />
-                                                    <h:outputText value="#{clientCreateListener.internetPassword}"/>
+                                                    <p:outputPanel rendered="#{not empty clientView.entity.internetPassword}">
+                                                        <p:commandButton
+                                                            onmousedown="showHidden('clientCreate','internetPasswordView',
+                                                                        '#{clientView.entity.internetPassword}');"
+                                                            onmouseup="hideHidden('clientCreate','internetPasswordView',
+                                                                     '#{clientView.entity.internetPasswordHidden}');"
+                                                            onmouseout="hideHidden('clientCreate','internetPasswordView',
+                                                                     '#{clientView.entity.internetPasswordHidden}');"
+                                                            id="password_unlocker"
+                                                            icon="ui-icon-unlocked"
+                                                            title="Afficher le mot de passe"
+                                                            style="font-size:50%;vertical-align: bottom;"/>
+                                                        <h:outputText id="internetPasswordView"
+                                                                      value="#{clientView.entity.internetPasswordHidden}"/>
+                                                    </p:outputPanel>
+                                                    <h:outputText value="" rendered="#{empty clientView.entity.internetPassword}"/>
 
                                                 </h:panelGrid>
                                             </p:fieldset>
@@ -232,7 +253,7 @@
                                                 <h:inputTextarea value="#{clientView.entity.observations}"
                                                                  readonly="true"
                                                                  rows="4"
-                                                                 styleClass="textarea_primefaces_display textarea_auto"
+                                                                 styleClass="textarea_auto"
                                                                  title="Observations"/>
                                             </p:fieldset>
                                         </td>

@@ -17,7 +17,7 @@ import javax.faces.validator.ValidatorException;
 
 /**
  *
- * @author Windows 7
+ * @author Brian GOHIER
  */
 @FacesValidator("phonePatternValidator")
 @ManagedBean

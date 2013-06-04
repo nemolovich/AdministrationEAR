@@ -14,7 +14,7 @@ import javax.faces.convert.FacesConverter;
 
 /**
  *
- * @author Windows 7
+ * @author Brian GOHIER
  */
 @FacesConverter("cUserConverter")
 public class CUserConverter extends EntityConverter<CUser, CUserFacade>

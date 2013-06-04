@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package validator;
+package validator.struct;
 
 import bean.facade.abstracts.AbstractFacade;
 import java.lang.reflect.InvocationTargetException;
@@ -17,10 +17,11 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
+import validator.EmailPatternValidator;
 
 /**
  *
- * @author Windows 7
+ * @author Brian GOHIER
  */
 @ManagedBean
 @RequestScoped
@@ -75,12 +76,12 @@ public abstract class UniqueFieldValidator<C, F extends AbstractFacade<C>> imple
         }
         catch (NoSuchMethodException ex)
         {
-            Logger.getLogger(CUserUniqueFieldValidator.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UniqueFieldValidator.class.getName()).log(Level.SEVERE, null, ex);
             return;
         }
         catch (SecurityException ex)
         {
-            Logger.getLogger(CUserUniqueFieldValidator.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UniqueFieldValidator.class.getName()).log(Level.SEVERE, null, ex);
             return;
         }
         for(C entity:entities)
@@ -103,15 +104,15 @@ public abstract class UniqueFieldValidator<C, F extends AbstractFacade<C>> imple
             }
             catch (IllegalAccessException ex)
             {
-                Logger.getLogger(CUserUniqueFieldValidator.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(UniqueFieldValidator.class.getName()).log(Level.SEVERE, null, ex);
             }
             catch (IllegalArgumentException ex)
             {
-                Logger.getLogger(CUserUniqueFieldValidator.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(UniqueFieldValidator.class.getName()).log(Level.SEVERE, null, ex);
             }
             catch (InvocationTargetException ex)
             {
-                Logger.getLogger(CUserUniqueFieldValidator.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(UniqueFieldValidator.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         if(this.fieldName.equalsIgnoreCase("Mail"))

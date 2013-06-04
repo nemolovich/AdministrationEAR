@@ -5,7 +5,6 @@
 package filter.struct;
 
 import bean.UserLogin;
-import entity.TUser;
 import static filter.AdminAccessFilter.getStackTrace;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -24,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author Stage
+ * @author Brian GOHIER
  */
 public class AccessFilter implements Filter
 {

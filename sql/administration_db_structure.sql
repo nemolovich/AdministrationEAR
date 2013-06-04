@@ -15,9 +15,9 @@
 -- ALTER TABLE ROOT.CLIENT DROP CONSTRAINT client_c_user_id_fk;
 -- ALTER TABLE ROOT.MAIL DROP CONSTRAINT mail_c_user_id_fk;
 -- DROP TABLE ROOT.MAIL;
--- ALTER TABLE ROOT.WORKSTATION DROP CONSTRAINT workstation_c_user_id_fk;
+-- ALTER TABLE ROOT.WORKSTATION DROP CONSTRAINT workstation_client_id_fk;
 -- DROP TABLE ROOT.WORKSTATION;
--- ALTER TABLE ROOT.SOFTWARE DROP CONSTRAINT software_c_user_id_fk;
+-- ALTER TABLE ROOT.SOFTWARE DROP CONSTRAINT software_client_id_fk;
 -- DROP TABLE ROOT.SOFTWARE;
 -- ALTER TABLE ROOT.C_USER DROP CONSTRAINT user_client_id_fk;
 -- DROP TABLE ROOT.CLIENT;
@@ -117,9 +117,9 @@ CREATE TABLE ROOT.WORKSTATION (
 		ram VARCHAR(64),
 		hard_drive VARCHAR(64),
         observations VARCHAR(250),
-        CONSTRAINT workstation_c_user_id_fk
-                FOREIGN KEY (id_user)
-                REFERENCES ROOT.C_USER(id));
+        CONSTRAINT workstation_client_id_fk
+                FOREIGN KEY (id_client)
+                REFERENCES ROOT.CLIENT(id));
 
 --------------- Création de la table SOFTWARE ---------------
 -- TABLE:			SOFTWARE
@@ -135,7 +135,7 @@ CREATE TABLE ROOT.SOFTWARE (
 		editor VARCHAR(64),
 		station_number INTEGER,
         observations VARCHAR(250),
-        CONSTRAINT software_c_user_id_fk
+        CONSTRAINT software_client_id_fk
                 FOREIGN KEY (id_client)
                 REFERENCES ROOT.CLIENT(id));
 

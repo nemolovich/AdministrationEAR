@@ -10,7 +10,7 @@ import java.util.Arrays;
 
 /**
  *
- * @author Stage
+ * @author Brian GOHIER
  */
 public class AdminAccessFilter extends AccessFilter
 {

@@ -6,13 +6,14 @@ package bean.viewStruct;
 
 import bean.facade.abstracts.AbstractFacade;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
  *
- * @author Stage
+ * @author Brian GOHIER
  */
 public abstract class EntityView<C,F extends AbstractFacade<C>> implements Serializable
 {
@@ -109,7 +110,12 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> implements Seria
     public List<C> findAll()
     {
         this.setFacade();
-        return this.entityFacade.findAll();
+        List<C> result=this.entityFacade.findAll();
+        if(result==null)
+        {
+            result=new ArrayList<C>();
+        }
+        return result;
     }
     
     // <editor-fold defaultstate="collapsed" desc="Les methodes abstraites">

@@ -12,10 +12,11 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.FacesValidator;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
+import validator.struct.UniqueFieldValidator;
 
 /**
  *
- * @author Windows 7
+ * @author Brian GOHIER
  */
 @FacesValidator("userUniqueFieldValidator")
 public class UserUniqueFieldValidator extends UniqueFieldValidator<TUser, TUserFacade>implements Validator

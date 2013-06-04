@@ -23,9 +23,6 @@ public class ClientCreateListener
 //    @EJB
 //    private ClientView clientView;
     private int stepNumber;
-    private String internetPassword;
-    private String internetLogin;
-    private String operator;
 
     public ClientCreateListener()
     {
@@ -37,36 +34,11 @@ public class ClientCreateListener
     {
         return this.stepNumber;
     }
-
-    public String getInternetPassword() {
-        return internetPassword;
-    }
-
-    public void setInternetPassword(String internetPassword) {
-        this.internetPassword = internetPassword;
-    }
-
-    public String getInternetLogin() {
-        return internetLogin;
-    }
-
-    public void setInternetLogin(String internetLogin) {
-        this.internetLogin = internetLogin;
-    }
-
-    public String getOperator() {
-        return operator;
-    }
-
-    public void setOperator(String operator) {
-        this.operator = operator;
-    }
     
     @Override
     public String toString()
     {
-        return ClientCreateListener.class.getName()+"[operator = "+this.operator+
-                ", login = "+this.internetLogin+", password = "+this.internetPassword+"]";
+        return ClientCreateListener.class.getName()+"[step="+this.stepNumber+"]";
     }
     
     public String onFlowProcess(FlowEvent event)
