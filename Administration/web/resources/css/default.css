@@ -58,6 +58,24 @@ h1
     color:                      #D20005;
 }
 
+.tabheader
+{
+    
+    font-family:                Arial, "Arial CE",
+                                "Lucida Grande CE", lucida,
+                                "Helvetica CE", sans-serif;
+    border-bottom:              1px solid #AFAFAF; 
+    font-size:                  1em;
+    font-weight:                bold;
+    padding:                    0px;
+    padding-left:               8px;
+    padding-bottom:             2px;
+    border-bottom-left-radius:  10px;
+    color:                      #620005;
+    display:                    block;
+    margin:                     5px 0 !important;
+}
+
 a:link, a:visited
 {
   color:                        #045491;
@@ -211,8 +229,9 @@ a:link:hover, a:visited:hover
 
 .buttons_panel
 {
-    padding-top:                 25px;
-    display:                     block;
+    padding-top:                25px;
+    padding-bottom:             25px;
+    display:                    block;
 }
 
 .ui-outputlabel-rfi,
@@ -241,6 +260,21 @@ a:link:hover, a:visited:hover
     font-weight:                bold !important;
 }
 
+.ui-widget-content .label
+{
+    vertical-align:             top !important;
+}
+
+.full_table
+{
+    width:                      100%;   
+}
+
+.full_table tr td
+{
+    vertical-align:             top !important;
+}
+
 .textarea_primefaces_display
 {
     color:                      #313131 !important;
@@ -261,17 +295,38 @@ a:link:hover, a:visited:hover
 }
 
 .textarea_primefaces_display:hover,
+.textarea_min:hover,
 .textarea_auto:hover
 {
     border:                     1px solid #7096ab !important;
 }
 
 .textarea_primefaces_display:focus,
+.textarea_min:focus,
 .textarea_auto:focus
 {
     box-shadow:                 0 0 5px #85b2cb,inset 0 2px 2px #8f8f8f;
     -moz-box-shadow:            0 0 5px #85b2cb,inset 0 2px 2px #8f8f8f;
     -webkit-box-shadow:         0 0 5px #85b2cb,inset 0 2px 2px #8f8f8f;
+}
+
+.textarea_min
+{
+    color:                      #313131 !important;
+    padding:                    4px !important;
+    border:                     1px solid #a8a8a8;
+    box-shadow:                 inset 0 2px 2px #8f8f8f;
+    -moz-box-shadow:            inset 0 2px 2px #8f8f8f;
+    -webkit-box-shadow:         inset 0 2px 2px #8f8f8f;
+    font-weight:                bold !important;
+    text-shadow:                rgba(255, 255, 255, 0.7) 0px 1px 0px;
+    word-wrap:                  normal !important;
+    border-radius:              3px !important;
+    min-width:                  100px !important;
+    max-width:                  500px !important;
+    min-height:                 30px !important;
+    max-height:                 500px !important;
+    width:                      80% !important;
 }
 
 .textarea_auto
@@ -287,7 +342,7 @@ a:link:hover, a:visited:hover
     word-wrap:                  normal !important;
     border-radius:              3px !important;
     min-width:                  147px !important;
-    max-width:                  none !important;
+    max-width:                  500px !important;
     min-height:                 147px !important;
     max-height:                 500px !important;
     width:                      100% !important;

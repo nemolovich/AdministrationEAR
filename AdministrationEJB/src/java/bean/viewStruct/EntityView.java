@@ -64,6 +64,7 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> implements Seria
     public String entityView(C entity)
     {
         this.entity = entity;
+        System.err.println("entity: "+this.entity);
         return this.webFolder+"view";
     }
     

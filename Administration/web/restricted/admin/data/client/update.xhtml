@@ -16,6 +16,69 @@
             </ui:define>
             <ui:define name="content">
                 <f:attribute name="header" value="Création d'une société"/>
+                <p:dialog id="dialogWorkstation"
+                          appendToBody="true"
+                          header="Création d'un poste"
+                          widgetVar="createWorstation"
+                          resizable="false"
+                          draggable="false"
+                          modal="true"
+                          showEffect="clip"
+                          hideEffect="clip">
+                    <h:form id="createWorkstationForm">
+                        <h:panelGrid columns="2" columnClasses="label,fields">
+
+                            <p:outputLabel value="Marque:" for="wbrand" />
+                            <p:inputText id="wbrand" value="#{workstationView.entity.brand}"
+                                         title="Marque de la machine"
+                                         required="true"
+                                         requiredMessage="Le champs 'Marque' ne peut être vide"/>
+                            
+                            <p:outputLabel value="Type de station:" for="wwsType" />
+                            <p:inputText id="wwsType" value="#{workstationView.entity.wsType}"
+                                         title="Type de station" />
+                            
+                            <p:outputLabel value="Date de mise en service:" for="wstartDate" />
+                            <p:inputText id="wstartDate" value="#{workstationView.entity.startDate}" title="StartDate" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </p:inputText>
+                            
+                            <p:outputLabel value="Processeur:" for="wprocessor" />
+                            <p:inputText id="wprocessor" value="#{workstationView.entity.processor}" title="Processor" />
+                            
+                            <p:outputLabel value="Moniteur:" for="wmonitor" />
+                            <p:inputText id="wmonitor" value="#{workstationView.entity.monitor}" title="Monitor" />
+                            
+                            <p:outputLabel value="Carte graphique:" for="wvideoCard" />
+                            <p:inputText id="wvideoCard" value="#{workstationView.entity.videoCard}" title="VideoCard" />
+                            
+                            <p:outputLabel value="Système d'exploitation:" for="woperatingSystem" />
+                            <p:inputText id="woperatingSystem" value="#{workstationView.entity.operatingSystem}" title="OperatingSystem" />
+                            
+                            <p:outputLabel value="Mémoire vive:" for="wram" />
+                            <p:inputText id="wram" value="#{workstationView.entity.ram}" title="Ram" />
+                            
+                            <p:outputLabel value="Disque dur:" for="whardDrive" />
+                            <p:inputText id="whardDrive" value="#{workstationView.entity.hardDrive}" title="HardDrive" />
+                            
+                            <p:outputLabel value="Observations:" for="wobservations" />
+                            <p:inputText id="wobservations" value="#{workstationView.entity.observations}" title="Observations" />
+
+                        </h:panelGrid>
+                        <p:outputPanel>
+                            <p:commandButton id="createWorkstation" value="Créer"
+                                             type="submit"
+                                             update=":growl :createWorkstationForm"
+                                             actionListener="#{workstationView.create()}"
+                                             oncomplete="createRequest(createWorstation, xhr, status, args);"
+                                             />
+                            <p:commandButton id="backWorkstation" value="Annuler"
+                                             action="javascript:void(0);"
+                                             oncomplete="createWorstation.hide();">
+                            </p:commandButton>
+                        </p:outputPanel>
+                    </h:form>
+                </p:dialog>
                 <f:view>
                     <h:form id="clientCreate">
                         <p:growl id="growlWizard" showDetail="true" life="30000" autoUpdate="true"/>
@@ -81,10 +144,8 @@
                                         </p:inputText>
                                     
                                         <p:outputLabel value="Type d'intervention:" for="interventionType" />
-                                        <h:inputTextarea id="interventionType" value="#{clientView.entity.interventionType}"
-                                                         title="Type d'interventions"
-                                                         styleClass="textarea_min"
-                                                         rows="4"/>
+                                        <p:inputText id="interventionType" value="#{clientView.entity.interventionType}" maxlength="250"
+                                                     title="InterventionType"/>
                                     
                                     </h:panelGrid>
                                 </p:fieldset>
@@ -148,6 +209,33 @@
                                         </td>
                                     </tr>
                                 </table>
+                            </p:tab>
+                            
+                            <p:tab id="postes" title="Postes">
+                                <p:fieldset legend="Postes">
+                                    
+                                    <p:dataList value="#{clientView.entity.workstationList}"
+                                                var="poste" itemType="Postes de travail">  
+                                        <h:outputText value="#{poste.toString}"/>
+                                    </p:dataList>
+                                    <p:commandButton value="Ajouter un poste"
+                                                     title="Ajouter un poste à cette société"
+                                                     actionListener="#{workstationView.entityCreate(clientView.entity)}"
+                                                     onclick="createWorstation.show();"/>
+                                    
+                                </p:fieldset>
+                            </p:tab>
+                            
+                            <p:tab id="emails" title="E-Mails">
+                                <p:fieldset legend="E-Mails">
+                                    E-Mails
+                                </p:fieldset>
+                            </p:tab>
+                            
+                            <p:tab id="users" title="Utilisateurs">
+                                <p:fieldset legend="Utilisateurs">
+                                    Utilisateurs
+                                </p:fieldset>
                             </p:tab>
                             
                             <p:tab id="finish" title="Récapitulatif">
@@ -242,19 +330,8 @@
                                         </td>
                                     </tr>
                                 </table>
-                                <p:outputPanel styleClass="buttons_panel">
-                                    <p:commandButton value="Confirmer"
-                                                     title="Veuillez lire les informations avant de valider"
-                                                     actionListener="#{clientView.create()}"
-                                                     type="submit"
-                                                     update=":growl"
-                                                     action="update"/>
-                                    <p:commandButton
-                                        action="javascript:void(0);"
-                                        title="Si vous confirmez vous créez cette nouvelle société et vous serez redirigé vers la finalisation de celle-ci"
-                                        style="cursor:pointer;font-size: 30%;"
-                                        icon="ui-icon-info"/>
-                                </p:outputPanel>
+                                
+                                <p:commandButton value="Submit" update=":growl" action="create" />
                             </p:tab>
                         </p:wizard>
                     </h:form>

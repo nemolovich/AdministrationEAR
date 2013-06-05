@@ -10,27 +10,71 @@
     </h:head>
     <h:body>
     	<ui:composition template="/templates/page_template.xhtml">
+            <ui:define name="title">
+                | Liste Sociétés
+            </ui:define>
             <ui:define name="content">
+                <f:attribute name="header" value="Liste des sociétés"/>
+                <p:dialog id="clientViewPopup"
+                          dynamic="true"
+                          appendToBody="true"
+                          header="Détails de la société"
+                          widgetVar="clientViewDialog"
+                          resizable="true"
+                          draggable="true"
+                          maximizable="true"
+                          modal="true"
+                          showEffect="clip"
+                          hideEffect="clip">
+                    <h:form id="clientDialogHeader">
+                        <h3>Détails de la société #{clientView.entity.name}:</h3>
+                    </h:form>
+                    <ui:include src="/restricted/admin/data/client/popupView.xhtml"/>
+                    <h:form>
+                        <p:outputPanel styleClass="buttons_panel">
+                            <center>
+                                <p:commandButton title="Fermer la fenêtre"
+                                                 action="javascript:void(0);"
+                                                 onclick="clientViewDialog.hide();"
+                                                 value="Fermer"/>
+                            </center>
+                        </p:outputPanel>
+                    </h:form>
+                </p:dialog>
+                <p:dialog id="cuserViewPopup"
+                          dynamic="true"
+                          appendToBody="true"
+                          header="Détails de l'utilisateur"
+                          widgetVar="cuserViewDialog"
+                          resizable="false"
+                          draggable="false"
+                          maximizable="false"
+                          modal="true"
+                          showEffect="clip"
+                          hideEffect="clip">
+                    <h:form id="cuserDialogHeader">
+                        <h3>Détails de l'utilisateur #{cUserView.entity.name}:</h3>
+                    </h:form>
+                    <ui:include src="/restricted/admin/data/c_user/popupView.xhtml"/>
+                    <h:form>
+                        <p:outputPanel styleClass="buttons_panel">
+                            <center>
+                                <p:commandButton title="Fermer la fenêtre"
+                                                 action="javascript:void(0);"
+                                                 onclick="cuserViewDialog.hide();"
+                                                 value="Fermer"/>
+                            </center>
+                        </p:outputPanel>
+                    </h:form>
+                </p:dialog>
                 <f:view>
                     <h:form>
                         <p:dataTable value="#{clientView.entries}"
                                      var="item"
-                                     emptyMessage="Aucune société n'a été trouvée"   
-                                     widgetVar="clientTable"
                                      rows="10"
-                                     rowKey="#{item.id}"
-                                     paginator="true">
-                            <f:facet name="header">
-                                <p:outputPanel>
-                                    <h2><h:outputText value="Liste des sociétés"/></h2>
-                                </p:outputPanel>
-                            </f:facet>
-                            <p:column headerText="Identifiant"
-                                      sortBy="#{item.id}"
-                                      filterBy="#{item.id}"
-                                      filterMatchMode="exact">
-                                <h:outputText value="#{item.id}"/>
-                            </p:column>
+                                     paginator="true"
+                                     emptyMessage="Aucune société n'a été trouvée"   
+                                     widgetVar="clientTable">
                             <p:column headerText="Nom de la société"
                                       sortBy="#{item.name}"
                                       filterBy="#{item.name}"
@@ -43,30 +87,23 @@
                                       filterMatchMode="contains">
                                 <h:outputText value="#{item.address}"/>
                             </p:column>
-                            <p:column headerText="Téléphone"
-                                      sortBy="#{item.phone}"
-                                      filterBy="#{item.phone}"
-                                      filterMatchMode="contains">
+                            <p:column headerText="Téléphone">
                                 <h:outputText value="#{item.phone}"/>
                             </p:column>
-                            <p:column headerText="Fax"
-                                      sortBy="#{item.fax}"
-                                      filterBy="#{item.fax}"
-                                      filterMatchMode="contains">
-                                <h:outputText value="#{item.fax}"/>
-                            </p:column>
-                            <p:column headerText="Mail"
-                                      sortBy="#{item.mail}"
-                                      filterBy="#{item.mail}"
-                                      filterMatchMode="contains">
-                                <h:outputText value="#{item.mail}"/>
-                            </p:column>
                             <p:column headerText="Interlocuteur"
-                                      sortBy="#{item.idUser.name}"
-                                      filterBy="#{item.idUser.name}"
+                                      sortBy="#{item.idUser}"
+                                      filterBy="#{item.idUser}"
                                       filterMatchMode="contains">
-                                <h:commandLink action="#{cUserView.entityView(item.idUser)}"
-                                               value="#{item.idUser.name}"/>
+                                <p:commandButton actionListener="#{cUserView.entityView(item.idUser)}"
+                                                 icon="ui-icon-search"
+                                                 update=":cuserViewForm :cuserDialogHeader"
+                                                 style="font-size: 40%;vertical-align: top !important;"
+                                                 oncomplete="cuserViewDialog.show();"
+                                                 action="javascript:void(0);"
+                                                 title="Afficher les détails de l'interlocuteur"
+                                                 rendered="#{not empty item.idUser}"/>
+                                <p:spacer width="10px"/>
+                                <h:outputText value="#{item.idUser}"/>
                             </p:column>
                             <p:column headerText="Type d'intervention"
                                       sortBy="#{item.interventionType}"
@@ -75,16 +112,39 @@
                                 <h:outputText value="#{item.interventionType}"/>
                             </p:column>
                             <p:column headerText="Observations"
-                                      sortBy="#{item.observations}"
-                                      filterBy="#{item.observations}"
                                       filterMatchMode="contains">
-                                <h:outputText value="#{item.observations}"/>
+                                <h:outputText value="#{utils.getBreakLinesString(
+                                                       utils.getShortString(item.observations,40))}"
+                                              escape="false"/>
+                            </p:column>
+                            <p:column headerText="Actions">
+                                <p:commandButton actionListener="#{clientView.entityView(item)}"
+                                                 icon="ui-icon-search"
+                                                 update=":clientViewForm :clientDialogHeader"
+                                                 style="font-size: 60%;"
+                                                 oncomplete="clientViewDialog.show();"
+                                                 action="javascript:void(0);"
+                                                 title="Afficher les détails de cette société"/>
+                                <p:commandButton actionListener="#{clientView.entityDelete(item)}"
+                                                 icon="ui-icon-trash"
+                                                 update=":clientViewForm :clientDialogHeader"
+                                                 style="font-size: 60%;"
+                                                 styleClass="red_icon"
+                                                 oncomplete="clientViewDialog.show();"
+                                                 action="javascript:void(0);"
+                                                 onclick="return (confirm('#{clientView.getDeleteMessage(item)}'));"
+                                                 title="Supprimer cette société"/>
                             </p:column>
                             <f:facet name="footer">
                                 <p:outputPanel style="float:left">
                                     <h:outputText value="Rechercher:"/>
                                     <p:inputText id="globalFilter" onkeyup="clientTable.filter();"
                                                  style="width:150px;margin-left:20px" />
+                                    <p:commandButton value="Ajouter une société"
+                                                     action="#{clientView.entityCreate()}"
+                                                     title="Ajouter une société"
+                                                     immediate="true"
+                                                     ajax="false"/>
                                 </p:outputPanel>
                             </f:facet>
                         </p:dataTable>

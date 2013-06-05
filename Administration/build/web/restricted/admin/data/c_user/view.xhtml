@@ -6,34 +6,30 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://java.sun.com/jsf/facelets">
     <h:head>
-        <title>Détails de l'utilisateur</title>
+        <title>Détail de l'utilisateur</title>
     </h:head>
     <h:body>
-        
     	<ui:composition template="/templates/page_template.xhtml">
+            <ui:define name="title">
+                | Détails Utilisateur
+            </ui:define>
             <ui:define name="content">
+                <f:attribute name="header" value="Détails de l'utilisateur"/>
                 <f:view>
+                    <p:fieldset legend="Utilisateur #{cUserView.entity.name}">
+                        <ui:include src="/restricted/admin/data/c_user/popupView.xhtml"/>
+                    </p:fieldset>
                     <h:form>
-                        <p:panelGrid id="cUserDetails" columns="2" columnClasses="label,field">
-                            <f:facet name="header">
-                                <p:outputPanel>
-                                    <h2><h:outputText value="Détails de l'utilisateur"/></h2>
-                                </p:outputPanel>
-                            </f:facet>
-                            <h:outputText value="Identifiant:"/>
-                            <h:outputText value="#{cUserView.entity.id}" title="Id"/>
-                            <h:outputText value="Nom de l'utilisateur:"/>
-                            <h:outputText value="#{cUserView.entity.name}" title="Name"/>
-                            <h:outputText value="Téléhone:"/>
-                            <h:outputText value="#{cUserView.entity.phone}" title="Phone"/>
-                            <h:outputText value="Observations:"/>
-                            <h:outputText value="#{cUserView.entity.observations}" title="Observations"/>
-                            <h:outputText value="Société:"/>
-                            <h:commandLink action="#{clientView.entityView(cUserView.entity.idClient)}"
-                                           value="#{cUserView.entity.idClient.name}"/>
-                        </p:panelGrid>
+                        <p:outputPanel styleClass="buttons_panel">
+                            <p:commandButton value="Retour"
+                                             immediate="true"
+                                             title="Retour à la liste des utilisateurs"
+                                             ajax="false"
+                                             action="list"/>
+                        </p:outputPanel>
                     </h:form>
                 </f:view>
+
             </ui:define>
         </ui:composition>
     </h:body>
