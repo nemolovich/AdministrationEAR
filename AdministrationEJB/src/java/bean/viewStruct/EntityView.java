@@ -40,18 +40,23 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> implements Seria
     
     public String create()
     {
+        this.setFacade();
+        System.err.println(this.entityFacade);
         this.entityFacade.create(this.entity);
-        return this.webFolder+"list";
+        return "/";
+//        return this.webFolder+"list";
     }
     
     public String delete()
     {
+        this.setFacade();
         this.entityFacade.remove(this.entity);
         return this.webFolder+"list";
     }
     
     public String update()
     {
+        this.setFacade();
         this.entityFacade.edit(this.entity);
         return this.webFolder+"list";
     }
@@ -70,12 +75,16 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> implements Seria
     
     public String entityDelete(C entity)
     {
+        this.setFacade();
         this.entityFacade.remove(entity);
         return this.webFolder+"list";
     }
     
     public String entityCreate()
     {
+        String message="Création d'une entité de la classe '"+this.entityClass.getName()+"'";
+        Logger.getLogger(EntityView.class.getName()).log(Level.INFO,
+                message);
         try
         {
             this.entity = this.entityClass.newInstance();

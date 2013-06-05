@@ -4,8 +4,6 @@
  */
 package flowListener;
 
-import bean.ClientView;
-import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;

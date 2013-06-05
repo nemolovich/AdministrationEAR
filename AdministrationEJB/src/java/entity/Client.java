@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Brian GOHIER
+ * @author Windows 7
  */
 @Entity
 @Table(name = "CLIENT")
@@ -80,6 +80,7 @@ public class Client implements Serializable {
     private Double deplacement;
     @Basic(optional = false)
     @NotNull
+    @Size(max = 30)
     @Column(name = "MAIL")
     private String mail;
     @Size(max = 250)
@@ -103,6 +104,10 @@ public class Client implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idClient")
     private List<CUser> cUserList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idClient")
+    private List<Workstation> workstationList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idClient")
+    private List<Mail> mailList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idClient")
     private List<Software> softwareList;
 
     public Client() {
@@ -121,8 +126,7 @@ public class Client implements Serializable {
         this.mail = mail;
     }
 
-    public Integer getId()
-    {
+    public Integer getId() {
         return this.id==null?-1:this.id;
     }
 
@@ -252,6 +256,24 @@ public class Client implements Serializable {
     }
 
     @XmlTransient
+    public List<Workstation> getWorkstationList() {
+        return workstationList;
+    }
+
+    public void setWorkstationList(List<Workstation> workstationList) {
+        this.workstationList = workstationList;
+    }
+
+    @XmlTransient
+    public List<Mail> getMailList() {
+        return mailList;
+    }
+
+    public void setMailList(List<Mail> mailList) {
+        this.mailList = mailList;
+    }
+
+    @XmlTransient
     public List<Software> getSoftwareList() {
         return softwareList;
     }
@@ -282,7 +304,7 @@ public class Client implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.Client[ id=" + id + " ]";
+        return this.name;
     }
     
 }

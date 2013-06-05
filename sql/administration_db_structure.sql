@@ -13,7 +13,7 @@
 --- Supprime les tables si elles existent, sinon commenter --
 -- DROP TABLE ROOT.T_USER;
 -- ALTER TABLE ROOT.CLIENT DROP CONSTRAINT client_c_user_id_fk;
--- ALTER TABLE ROOT.MAIL DROP CONSTRAINT mail_c_user_id_fk;
+-- ALTER TABLE ROOT.MAIL DROP CONSTRAINT mail_client_id_fk;
 -- DROP TABLE ROOT.MAIL;
 -- ALTER TABLE ROOT.WORKSTATION DROP CONSTRAINT workstation_client_id_fk;
 -- DROP TABLE ROOT.WORKSTATION;
@@ -57,6 +57,9 @@ CREATE TABLE ROOT.CLIENT (
 		deplacement DOUBLE,
         mail VARCHAR(30) NOT NULL,
         intervention_type VARCHAR(250),
+		operator VARCHAR(30),
+		internet_login VARCHAR(30),
+		internet_password VARCHAR(64),
         observations VARCHAR(250));
 
 ---------------- Création de la table C_USER ----------------
@@ -89,15 +92,15 @@ ALTER TABLE ROOT.CLIENT ADD CONSTRAINT client_c_user_id_fk
 CREATE TABLE ROOT.MAIL (
         id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY
 		(START WITH 1, INCREMENT BY 1),
-		id_user INTEGER NOT NULL,
+		id_client INTEGER NOT NULL,
 		mail VARCHAR(64) NOT NULL UNIQUE,
         pop VARCHAR(64),
         pop_password VARCHAR(64),
         smtp VARCHAR(64),
         smtp_password VARCHAR(64),
-        CONSTRAINT mail_c_user_id_fk
-                FOREIGN KEY (id_user)
-                REFERENCES ROOT.C_USER(id));
+        CONSTRAINT mail_client_id_fk
+                FOREIGN KEY (id_client)
+                REFERENCES ROOT.CLIENT(id));
 
 ------------- Création de la table WORKSTATION --------------
 -- TABLE:			WORKSTATION
@@ -106,7 +109,7 @@ CREATE TABLE ROOT.MAIL (
 CREATE TABLE ROOT.WORKSTATION (
         id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY
 		(START WITH 1, INCREMENT BY 1),
-		id_user INTEGER NOT NULL,
+		id_client INTEGER NOT NULL,
 		ws_type VARCHAR(64),
         brand VARCHAR(64),
         start_date DATE,

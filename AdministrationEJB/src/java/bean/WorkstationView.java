@@ -7,6 +7,7 @@ package bean;
 
 import bean.facade.WorkstationFacade;
 import bean.viewStruct.EntityView;
+import entity.Client;
 import entity.Workstation;
 import java.util.List;
 import javax.ejb.EJB;
@@ -28,6 +29,13 @@ public class WorkstationView extends EntityView<Workstation, WorkstationFacade>
     public WorkstationView()
     {
         super(Workstation.class,"workstation");
+    }
+    
+    public String entityCreate(Client client)
+    {
+        super.entityCreate();
+        this.getEntity().setIdClient(client);
+        return "create";
     }
 
     @Override

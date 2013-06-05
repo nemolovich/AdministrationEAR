@@ -1,12 +1,12 @@
 package entity;
 
-import entity.CUser;
+import entity.Client;
 import java.util.Date;
 import javax.annotation.Generated;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.3.2.v20111125-r10461", date="2013-06-04T18:05:44")
+@Generated(value="EclipseLink-2.3.2.v20111125-r10461", date="2013-06-05T11:28:03")
 @StaticMetamodel(Workstation.class)
 public class Workstation_ { 
 
@@ -18,7 +18,7 @@ public class Workstation_ {
     public static volatile SingularAttribute<Workstation, String> hardDrive;
     public static volatile SingularAttribute<Workstation, String> wsType;
     public static volatile SingularAttribute<Workstation, String> videoCard;
-    public static volatile SingularAttribute<Workstation, CUser> idClient;
+    public static volatile SingularAttribute<Workstation, Client> idClient;
     public static volatile SingularAttribute<Workstation, String> brand;
     public static volatile SingularAttribute<Workstation, String> processor;
     public static volatile SingularAttribute<Workstation, String> observations;

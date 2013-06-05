@@ -1,21 +1,17 @@
 package entity;
 
 import entity.Client;
-import entity.Mail;
-import entity.Workstation;
 import javax.annotation.Generated;
 import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.3.2.v20111125-r10461", date="2013-06-04T18:05:44")
+@Generated(value="EclipseLink-2.3.2.v20111125-r10461", date="2013-06-05T11:28:03")
 @StaticMetamodel(CUser.class)
 public class CUser_ { 
 
     public static volatile SingularAttribute<CUser, Integer> id;
-    public static volatile ListAttribute<CUser, Mail> mailList;
     public static volatile SingularAttribute<CUser, String> phone;
-    public static volatile ListAttribute<CUser, Workstation> workstationList;
     public static volatile SingularAttribute<CUser, String> name;
     public static volatile SingularAttribute<CUser, Client> idClient;
     public static volatile ListAttribute<CUser, Client> clientList;

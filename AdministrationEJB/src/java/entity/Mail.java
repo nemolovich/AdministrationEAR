@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Brian GOHIER
+ * @author Windows 7
  */
 @Entity
 @Table(name = "MAIL")
@@ -61,7 +61,7 @@ public class Mail implements Serializable {
     private String smtpPassword;
     @JoinColumn(name = "ID_CLIENT", referencedColumnName = "ID")
     @ManyToOne(optional = false)
-    private CUser idClient;
+    private Client idClient;
 
     public Mail() {
     }
@@ -75,8 +75,7 @@ public class Mail implements Serializable {
         this.mail = mail;
     }
 
-    public Integer getId()
-    {
+    public Integer getId() {
         return this.id==null?-1:this.id;
     }
 
@@ -124,11 +123,11 @@ public class Mail implements Serializable {
         this.smtpPassword = smtpPassword;
     }
 
-    public CUser getIdClient() {
+    public Client getIdClient() {
         return idClient;
     }
 
-    public void setIdClient(CUser idClient) {
+    public void setIdClient(Client idClient) {
         this.idClient = idClient;
     }
 
@@ -154,7 +153,7 @@ public class Mail implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.Mail[ id=" + id + " ]";
+        return this.mail;
     }
     
 }

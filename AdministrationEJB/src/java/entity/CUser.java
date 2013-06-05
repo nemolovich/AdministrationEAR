@@ -7,7 +7,6 @@ package entity;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,7 +25,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Brian GOHIER
+ * @author Windows 7
  */
 @Entity
 @Table(name = "C_USER")
@@ -61,10 +60,6 @@ public class CUser implements Serializable {
     @JoinColumn(name = "ID_CLIENT", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Client idClient;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idClient")
-    private List<Workstation> workstationList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idClient")
-    private List<Mail> mailList;
 
     public CUser() {
     }
@@ -79,8 +74,7 @@ public class CUser implements Serializable {
         this.phone = phone;
     }
 
-    public Integer getId()
-    {
+    public Integer getId() {
         return this.id==null?-1:this.id;
     }
 
@@ -127,24 +121,6 @@ public class CUser implements Serializable {
 
     public void setIdClient(Client idClient) {
         this.idClient = idClient;
-    }
-
-    @XmlTransient
-    public List<Workstation> getWorkstationList() {
-        return workstationList;
-    }
-
-    public void setWorkstationList(List<Workstation> workstationList) {
-        this.workstationList = workstationList;
-    }
-
-    @XmlTransient
-    public List<Mail> getMailList() {
-        return mailList;
-    }
-
-    public void setMailList(List<Mail> mailList) {
-        this.mailList = mailList;
     }
 
     @Override

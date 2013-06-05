@@ -5,6 +5,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.text.DateFormat;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -24,7 +25,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Brian GOHIER
+ * @author Windows 7
  */
 @Entity
 @Table(name = "WORKSTATION")
@@ -81,7 +82,7 @@ public class Workstation implements Serializable {
     private String observations;
     @JoinColumn(name = "ID_CLIENT", referencedColumnName = "ID")
     @ManyToOne(optional = false)
-    private CUser idClient;
+    private Client idClient;
 
     public Workstation() {
     }
@@ -90,8 +91,7 @@ public class Workstation implements Serializable {
         this.id = id;
     }
 
-    public Integer getId()
-    {
+    public Integer getId() {
         return this.id==null?-1:this.id;
     }
 
@@ -179,11 +179,11 @@ public class Workstation implements Serializable {
         this.observations = observations;
     }
 
-    public CUser getIdClient() {
+    public Client getIdClient() {
         return idClient;
     }
 
-    public void setIdClient(CUser idClient) {
+    public void setIdClient(Client idClient) {
         this.idClient = idClient;
     }
 
@@ -209,7 +209,10 @@ public class Workstation implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.Workstation[ id=" + id + " ]";
+        return this.brand+" on "+this.operatingSystem+" [P:"+
+                this.processor+",RAM:"+this.ram+"]["
+                + DateFormat.getDateInstance().format(this.startDate)+"]["
+                + this.idClient+"]";
     }
     
 }

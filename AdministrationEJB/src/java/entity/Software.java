@@ -21,7 +21,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Brian GOHIER
+ * @author Windows 7
  */
 @Entity
 @Table(name = "SOFTWARE")
@@ -70,8 +70,7 @@ public class Software implements Serializable {
         this.id = id;
     }
 
-    public Integer getId()
-    {
+    public Integer getId() {
         return this.id==null?-1:this.id;
     }
 
