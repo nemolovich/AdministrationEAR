@@ -79,11 +79,11 @@
                                         <h:outputText value="Mot&nbsp;de&nbsp;passe&nbsp;Internet:"/>
                                         <p:outputPanel rendered="#{not empty clientView.entity.internetPassword}">
                                             <p:commandButton
-                                                onmousedown="showHidden('clientViewForm','internetPasswordView',
+                                                onmousedown="setFormFieldValue('clientViewForm','internetPasswordView',
                                                             '#{clientView.entity.internetPassword}');"
-                                                onmouseup="hideHidden('clientViewForm','internetPasswordView',
+                                                onmouseup="setFormFieldValue('clientViewForm','internetPasswordView',
                                                          '#{utils.getHiddenString(clientView.entity.internetPassword)}');"
-                                                onmouseout="hideHidden('clientViewForm','internetPasswordView',
+                                                onmouseout="setFormFieldValue('clientViewForm','internetPasswordView',
                                                          '#{utils.getHiddenString(clientView.entity.internetPassword)}');"
                                                 id="password_unlocker"
                                                 icon="ui-icon-unlocked"

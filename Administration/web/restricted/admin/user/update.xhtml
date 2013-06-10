@@ -12,7 +12,7 @@
     	<ui:composition template="/templates/page_template.xhtml">
             <ui:define name="content">
                 <f:view>
-                    <h:form id="userUpdate">
+                    <h:form id="userUpdate" rendered="#{not empty tUserView.entity}">
                         <p:panelGrid columns="3" columnClasses="label,field,message">
                             <f:facet name="header">
                                 <p:outputPanel>
@@ -70,6 +70,31 @@
                                 </p:outputPanel>
                             </f:facet>
                         </p:panelGrid>
+                    </h:form>
+                    <h:form id="emptyDataErrorForm" rendered="#{empty tUserView.entity}">
+                        <div class="ui-messages">
+                            <div class="ui-messages-error">
+                                <span class="ui-messages-error-icon"/>
+                                <ul>
+                                    <li>
+                                        <span class="ui-messages-error-summary">
+                                            Aucun utilisateur n'est sélectionné pour la modification
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <p>
+                            Vous allez être redirigez vers l'accueil dans
+                            <h:outputText id="countDown" value="5"/> secondes
+                        </p>
+                        <script type="text/javascript">
+                            $(document).ready(function(){
+                                setTimer(5);
+                            });
+                        </script>
+                        <p:poll interval="1" update="emptyDataErrorForm:countDown"
+                                oncomplete="updateTimer('emptyDataErrorForm','countDown');"/>
                     </h:form>
                 </f:view>
             </ui:define>

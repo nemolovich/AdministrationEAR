@@ -7,6 +7,7 @@ package bean;
 
 import bean.facade.MailFacade;
 import bean.viewStruct.EntityView;
+import entity.Client;
 import entity.Mail;
 import java.util.List;
 import javax.ejb.EJB;
@@ -28,6 +29,13 @@ public class MailView extends EntityView<Mail, MailFacade>
     public MailView()
     {
         super(Mail.class,"mail");
+    }
+    
+    public String entityCreate(Client client)
+    {
+        super.entityCreate();
+        super.getInstance().setIdClient(client);
+        return null;
     }
 
     @Override

@@ -6,7 +6,7 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>Création société</title>
+        <title>Modification société</title>
     </h:head>
     <h:body>
         
@@ -16,89 +16,16 @@
             </ui:define>
             <ui:define name="content">
                 <f:attribute name="header" value="Modification d'une société"/>
-                <p:dialog id="dialogWorkstation"
-                          appendToBody="true"
-                          header="Création d'un poste"
-                          widgetVar="createWorstation"
-                          resizable="false"
-                          draggable="false"
-                          modal="true"
-                          showEffect="clip"
-                          hideEffect="clip">
-                    <h:form id="createWorkstationForm">
-                        <h:panelGrid columns="2" columnClasses="label,fields">
-
-                            <p:outputLabel value="Marque:" for="wbrand" />
-                            <p:inputText id="wbrand" value="#{workstationView.entity.brand}"
-                                         title="Marque de la machine"
-                                         required="true"
-                                         requiredMessage="Le champs 'Marque' ne peut être vide"/>
-                            
-                            <p:outputLabel value="Type de station:" for="wwsType" />
-                            <p:inputText id="wwsType" value="#{workstationView.entity.wsType}"
-                                         title="Type de station" />
-                            
-                            <p:outputLabel value="Date de mise en service:" for="wstartDate" />
-                            <p:inputMask id="wstartDate" value="#{workstationView.entity.startDate}"
-                                         title="Date de mise en service de la machine"
-                                         mask="99/99/9999">
-                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                            </p:inputMask>
-                            
-                            <p:outputLabel value="Processeur:" for="wprocessor" />
-                            <p:inputText id="wprocessor" value="#{workstationView.entity.processor}" title="Processor" />
-                            
-                            <p:outputLabel value="Moniteur:" for="wmonitor" />
-                            <p:inputText id="wmonitor" value="#{workstationView.entity.monitor}" title="Monitor" />
-                            
-                            <p:outputLabel value="Carte graphique:" for="wvideoCard" />
-                            <p:inputText id="wvideoCard" value="#{workstationView.entity.videoCard}" title="VideoCard" />
-                            
-                            <p:outputLabel value="Système d'exploitation:" for="woperatingSystem" />
-                            <p:inputText id="woperatingSystem" value="#{workstationView.entity.operatingSystem}" title="OperatingSystem" />
-                            
-                            <p:outputLabel value="Mémoire vive:" for="wram" />
-                            <p:inputText id="wram" value="#{workstationView.entity.ram}" title="Ram" />
-                            
-                            <p:outputLabel value="Disque dur:" for="whardDrive" />
-                            <p:inputText id="whardDrive" value="#{workstationView.entity.hardDrive}" title="HardDrive" />
-                            
-                            <p:outputLabel value="Observations:" for="wobservations" />
-                            <p:inputText id="wobservations" value="#{workstationView.entity.observations}" title="Observations" />
-
-                        </h:panelGrid>
-                        (<span class="red-star">*</span>: champs requis)<br />
-                        <p:outputPanel>
-                            <p:commandButton id="createWorkstation" value="Ajouter"
-                                             type="submit"
-                                             actionListener="#{workstationView.create(clientView.entity)}"
-                                             icon="ui-icon-check"
-                                             update=":createWorkstationForm :clientUpdate:ClientWorkstationList"
-                                             styleClass="blue_icon"
-                                             oncomplete="if(createRequest(createWorstation, xhr, status, args)){
-                                                setConfirmUnload(true);}"
-                                             />
-                            <p:commandButton id="backWorkstation" value="Annuler"
-                                             action="javascript:void(0);"
-                                             styleClass="red_icon"
-                                             type="reset"
-                                             immediate="true"
-                                             ajax="true"
-                                             icon="ui-icon-closethick"
-                                             onclick="createWorstation.hide();"
-                                             />
-                        </p:outputPanel>
-                    </h:form>
-                </p:dialog>
                 <f:view>
-                    <h:form id="clientUpdate">
+                    <h:form id="clientUpdate" rendered="#{not empty clientView.entity}">
                         <p:growl id="growlWizard" showDetail="true" life="30000" autoUpdate="true"/>
                         <p:wizard id="clientUpdateWizard"
                                   backLabel="Retour"
                                   nextLabel="Suivant"
                                   widgetVar="clientWizard"
-                                  showNavBar="true">
-                            <p:tab id="general" title="Informations" rendered="#{not clientView.isCreating}">
+                                  showNavBar="true"
+                                  step="general">
+                            <p:tab id="general" title="Informations">
                                 
                                 <p:fieldset legend="Informations générales">
                                     <p>
@@ -163,7 +90,7 @@
                                 </p:fieldset>
                             </p:tab>
                             
-                            <p:tab id="details" title="Détails" rendered="#{not clientView.isCreating}">
+                            <p:tab id="details" title="Détails">
                                 <table width="100%">
                                     <tr>
                                         <td style="vertical-align: top !important;">
@@ -194,16 +121,23 @@
                                                                  title="Identifiant Internet" maxlength="50"/>
 
                                                     <h:outputLabel for="internet_password" value="Mot de passe:" />
-                                                    <p:password id="internet_password" value="#{clientView.entity.internetPassword}"
-                                                                redisplay="true" title="Mot de passe Internet" maxlength="64">
+                                                    <p:password id="internet_password"
+                                                                value="#{clientView.entity.internetPassword}"
+                                                                redisplay="true"
+                                                                title="Mot de passe Internet"
+                                                                maxlength="64">
                                                         <f:validator binding="#{passwordValidator}"/>
                                                         <f:attribute name="update_id" value='#{clientView.entity.id}' />
                                                         <f:attribute name="confirm" value="#{internet_confirm}" />
                                                     </p:password>
 
                                                     <h:outputLabel for="internet_confirm" value="Confirmation:" />
-                                                    <p:password id="internet_confirm" binding="#{internet_confirm}"
-                                                                redisplay="true" title="Confirmation du mot de passe Internet" maxlength="64"/>
+                                                    <p:password id="internet_confirm"
+                                                                value="#{clientView.entity.internetPassword}"                                                                
+                                                                binding="#{internet_confirm}"
+                                                                redisplay="true"
+                                                                title="Confirmation du mot de passe Internet"
+                                                                maxlength="64"/>
 
                                                 </h:panelGrid>
                                             </p:fieldset>
@@ -221,35 +155,6 @@
                                         </td>
                                     </tr>
                                 </table>
-                            </p:tab>
-                            
-                            <p:tab id="postes" title="Postes">
-                                <p:fieldset legend="Postes">
-                                    
-                                    <p:dataList id="ClientWorkstationList"
-                                                value="#{clientView.entity.workstationList}"
-                                                var="poste">
-                                        <p:column>
-                                            <h:outputText value="#{poste}"/>
-                                        </p:column>
-                                    </p:dataList>
-                                    <p:commandButton value="Ajouter un poste"
-                                                     title="Ajouter un poste à cette société"
-                                                     actionListener="#{workstationView.entityCreate(clientView.entity)}"
-                                                     onclick="createWorstation.show();"/>
-                                </p:fieldset>
-                            </p:tab>
-                            
-                            <p:tab id="emails" title="E-Mails">
-                                <p:fieldset legend="E-Mails">
-                                    E-Mails
-                                </p:fieldset>
-                            </p:tab>
-                            
-                            <p:tab id="users" title="Utilisateurs">
-                                <p:fieldset legend="Utilisateurs">
-                                    Utilisateurs
-                                </p:fieldset>
                             </p:tab>
                             
                             <p:tab id="finish" title="Récapitulatif">
@@ -294,11 +199,11 @@
                                                     <h:outputText value="Mot de passe:" />
                                                     <p:outputPanel rendered="#{not empty clientView.entity.internetPassword}">
                                                         <p:commandButton
-                                                            onmousedown="showHidden('clientCreate','internetPasswordView',
+                                                            onmousedown="setFormFieldValue('clientUpdate','internetPasswordView',
                                                                         '#{clientView.entity.internetPassword}');"
-                                                            onmouseup="hideHidden('clientCreate','internetPasswordView',
+                                                            onmouseup="setFormFieldValue('clientUpdate','internetPasswordView',
                                                                      '#{utils.getHiddenString(clientView.entity.internetPassword)}');"
-                                                            onmouseout="hideHidden('clientCreate','internetPasswordView',
+                                                            onmouseout="setFormFieldValue('clientUpdate','internetPasswordView',
                                                                      '#{utils.getHiddenString(clientView.entity.internetPassword)}');"
                                                             id="password_unlocker"
                                                             icon="ui-icon-unlocked"
@@ -353,6 +258,31 @@
                                 </p:outputPanel>
                             </p:tab>
                         </p:wizard>
+                    </h:form>
+                    <h:form id="emptyDataErrorForm" rendered="#{empty clientView.entity}">
+                        <div class="ui-messages">
+                            <div class="ui-messages-error">
+                                <span class="ui-messages-error-icon"/>
+                                <ul>
+                                    <li>
+                                        <span class="ui-messages-error-summary">
+                                            Aucune société n'est séléectionnée pour la modification
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <p>
+                            Vous allez être redirigez vers l'accueil dans
+                            <h:outputText id="countDown" value="5"/> secondes
+                        </p>
+                        <script type="text/javascript">
+                            $(document).ready(function(){
+                                setTimer(5);
+                            });
+                        </script>
+                        <p:poll interval="1" update="emptyDataErrorForm:countDown"
+                                oncomplete="updateTimer('emptyDataErrorForm','countDown');"/>
                     </h:form>
                 </f:view>
             </ui:define>

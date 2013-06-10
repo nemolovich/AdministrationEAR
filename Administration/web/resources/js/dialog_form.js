@@ -1,10 +1,17 @@
 /**
+ * 
+ * Nom de l'application (notamment pour l'URL de navigation)
+ * @type String
+ */
+var appName='Administration';
+
+/**
  * Inspecte le formulaire contenu dans un <p:dialog> pour
  * vérifier s'il est correct.
  * @param {c} form - La boite de dialogue contenant le formulaire
  * @param {Object} xhr - HttpRequest 
  * @param {Object} status - Etat du formulaire
- * @param {string} args - Retour du formulaire
+ * @param {String} args - Retour du formulaire
  * @returns {Boolean} - vrai si le formulaire est correcte
  */
 function createRequest(form, xhr, status, args)
@@ -42,7 +49,7 @@ function handleEvent(item, event)
 
 /**
  * Recharge la page après le nombre de secondes indiquées
- * @param {int} secondes - le temps d'attente avant rafraichissement
+ * @param {Number} secondes - le temps d'attente avant rafraichissement
  * @returns {void}
  */
 function reloadInterval(secondes)
@@ -55,8 +62,8 @@ function reloadInterval(secondes)
 /**
  * Permet de donner un nom aux données contenues dans un layout (<p:layoutUnit>)
  * pour les titre des leurs boutons d'action
- * @param {string} id - Identifiant du layout
- * @param {string} tips - Nom à afficher en tooltip
+ * @param {String} id - Identifiant du layout
+ * @param {String} tips - Nom à afficher en tooltip
  * @returns {void}
  */
 function setLayoutButtonsTooltips(id,tips)
@@ -76,9 +83,9 @@ function setLayoutButtonsTooltips(id,tips)
 }
 
 /**
- * Dfinie le titre des éléments d'action des layouts
- * @param {string} id - Identifiant du layout
- * @param {string} tips - Nom à afficher en tooltip
+ * Définie le titre des éléments d'action des layouts
+ * @param {String} id - Identifiant du layout
+ * @param {String} tips - Nom à afficher en tooltip
  * @returns {void}
  */
 function setTooltips(id,tips)
@@ -90,37 +97,46 @@ function setTooltips(id,tips)
     $("#"+id+" .ui-layout-unit-header-icon.ui-state-default.ui-corner-all .ui-icon-close").attr('title',"Fermer "+tips);
 }
 
-function showHidden(form,id,value)
+/**
+ * Remplace la valeur d'un champs dans un formulaire
+ * par la valeur donnée
+ * @param {String} form - Identifiant du formulaire
+ * @param {String} id - Identifiant du champs
+ * @param {String} value - Valeur à afficher
+ * @returns {void}
+ */
+function setFormFieldValue(form,id,value)
 {
     $("#"+form+"\\:"+id).html(value);
 }
 
-function hideHidden(form,id,value)
+/**
+ * Variable de Timer
+ * @type Number
+ */
+var counter=5;
+
+/**
+ * Remonte le timer pour le temps donné
+ * @param {Number} time - Temps en secondes
+ * @returns {void}
+ */
+function setTimer(time)
 {
-    $("#"+form+"\\:"+id).html(value);
+    counter=time;
 }
 
-
-$(function()
+/**
+ * Met à jour le timer en le décrémentant de 1 seconde
+ * @param {String} form - Identifiant du formulaire
+ * @param {String} id - Identifiant du champs
+ * @returns {void}
+ */
+function updateTimer(form,id)
 {
-    // Set the unload message whenever any input element get changed.
-    $('#ClientWorkstationList').on('change', function()
+    setFormFieldValue(form,id,--counter);
+    if(counter<=0)
     {
-        console.log('change!');
-        setConfirmUnload(true);
-    });
-
-    // Turn off the unload message whenever a form get submitted properly.
-    $('#clientUpdate').on('submit', function()
-    {
-        console.log('submit!');
-        setConfirmUnload(false);
-    });
-});
-
-function setConfirmUnload(on)
-{
-    console.log('Called!');
-    var message = "You have unsaved data. Are you sure to leave the page?";
-    window.onbeforeunload = (on) ? function() { confirm(message); } : null;
+        window.location='/'+appName;
+    }
 }

@@ -22,6 +22,7 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> implements Seria
     private Class<C> entityClass;
     private  String webFolder=null;
     private F entityFacade;
+    private boolean creating=false;
     
     public EntityView()
     {
@@ -31,6 +32,16 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> implements Seria
     {
         this.webFolder="/restricted/admin/data/"+webFolder+"/";
         this.entityClass=entityClass;
+    }
+
+    public boolean isCreating()
+    {
+        return this.creating;
+    }
+
+    public void setCreating(boolean creating)
+    {
+        this.creating = creating;
     }
     
     protected void setWebFolder(String webFolder)
@@ -68,6 +79,7 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> implements Seria
     
     public String entityUpdate(C entity)
     {
+        this.creating = false;
         this.entity = entity;
         return this.webFolder+"update";
     }
@@ -81,6 +93,7 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> implements Seria
     
     public String entityCreate()
     {
+        this.creating = true;
         String message="Création d'une entité de la classe '"+this.entityClass.getName()+"'";
         Logger.getLogger(EntityView.class.getName()).log(Level.INFO,
                 message);
@@ -113,6 +126,11 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> implements Seria
     public void setEntityFacade(F entityFacade)
     {
         this.entityFacade=entityFacade;
+    }
+
+    protected F getEntityFacade()
+    {
+        return this.entityFacade;
     }
     
     public List<C> findAll()

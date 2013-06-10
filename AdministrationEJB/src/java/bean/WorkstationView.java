@@ -6,7 +6,7 @@
 package bean;
 
 import bean.facade.WorkstationFacade;
-import bean.viewStruct.EntityView;
+import bean.viewStruct.EmbdedDataListView;
 import entity.Client;
 import entity.Workstation;
 import java.util.List;
@@ -20,28 +20,17 @@ import javax.inject.Named;
  */
 @Named(value = "workstationView")
 @SessionScoped
-public class WorkstationView extends EntityView<Workstation, WorkstationFacade>
+public class WorkstationView extends EmbdedDataListView<Client, Workstation, WorkstationFacade>
 {
     private static final long serialVersionUID = 1L;
     @EJB
     private WorkstationFacade workstationFacade;
     
-    public WorkstationView()
+    public WorkstationView() throws NoSuchMethodException
     {
-        super(Workstation.class,"workstation");
-    }
-    
-    public String entityCreate(Client client)
-    {
-        super.entityCreate();
-        this.getInstance().setIdClient(client);
-        return "create";
-    }
-    
-    public String create(Client entity)
-    {
-        this.workstationFacade.updateWorkstationList(entity,this.getInstance());
-        return super.create();
+        super(Workstation.class,"workstation",
+                Workstation.class.getMethod("setIdClient",
+                                            new Class<?>[]{Client.class}));
     }
 
     @Override

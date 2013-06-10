@@ -24,17 +24,21 @@
                           draggable="true"
                           maximizable="true"
                           modal="true"
+                          minWidth="650"
+                          minHeight="400"
                           showEffect="clip"
                           hideEffect="clip">
                     <h:form id="clientDialogHeader">
                         <h3 class="tabheader">Détails de la société #{clientView.entity.name}:</h3>
                     </h:form>
                     <ui:include src="/restricted/admin/data/client/popupView.xhtml"/>
+                    <p:hotkey bind="esc" handler="clientViewDialog.hide();"/>
                     <h:form>
                         <p:outputPanel styleClass="buttons_panel">
                             <center>
                                 <p:commandButton title="Fermer la fenêtre"
                                                  action="javascript:void(0);"
+                                                 update=":clientViewForm"
                                                  onclick="clientViewDialog.hide();"
                                                  value="Fermer"/>
                             </center>
@@ -56,6 +60,7 @@
                         <h3>Détails de l'utilisateur #{cUserView.entity.name}:</h3>
                     </h:form>
                     <ui:include src="/restricted/admin/data/c_user/popupView.xhtml"/>
+                    <p:hotkey bind="esc" handler="cuserViewDialog.hide();"/>
                     <h:form>
                         <p:outputPanel styleClass="buttons_panel">
                             <center>
@@ -103,7 +108,7 @@
                                                  title="Afficher les détails de l'interlocuteur"
                                                  rendered="#{not empty item.idUser}"/>
                                 <p:spacer width="10px"/>
-                                <h:outputText value="#{item.idUser}"/>
+                                <h:outputText value="#{item.idUser}" rendered="#{not empty item.idUser}"/>
                             </p:column>
                             <p:column headerText="Type d'intervention"
                                       sortBy="#{item.interventionType}"
@@ -125,12 +130,18 @@
                                                  oncomplete="clientViewDialog.show();"
                                                  action="javascript:void(0);"
                                                  title="Afficher les détails de cette société"/>
-                                <p:commandButton action="#{clientView.entityUpdate(item,true)}"
+                                <p:commandButton action="#{clientView.entityUpdate(item)}"
                                                  icon="ui-icon-pencil"
                                                  immediate="true"
                                                  ajax="false"
                                                  style="font-size: 60%;"
                                                  title="Modifier cette société"/>
+                                <p:commandButton action="#{clientView.entityParameter(item)}"
+                                                 icon="ui-icon-wrench"
+                                                 immediate="true"
+                                                 ajax="false"
+                                                 style="font-size: 60%;"
+                                                 title="Paramétrer cette société"/>
                                 <p:commandButton actionListener="#{clientView.entityDelete(item)}"
                                                  icon="ui-icon-trash"
                                                  update=":clientViewForm :clientDialogHeader"

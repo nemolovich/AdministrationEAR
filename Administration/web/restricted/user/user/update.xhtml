@@ -16,12 +16,12 @@
             <ui:define name="content">
                 <f:attribute name="header" value="Modification des paramètres"/>
                 <f:view>
-                    <p>
-                        Veuillez compléter les informations ci-dessous et valider por modifier vos paramètres.
-                        <br />
-                        (<span class="red-star">*</span>: Champs obligatoires)
-                    </p>
-                    <h:form id="userUpdate">
+                    <h:form id="userUpdate" rendered="#{not empty tUserView.entity}">
+                        <p>
+                            Veuillez compléter les informations ci-dessous et valider por modifier vos paramètres.
+                            <br />
+                            (<span class="red-star">*</span>: Champs obligatoires)
+                        </p>
                         <h:panelGrid columns="2" columnClasses="label,field">
                             <p:outputLabel value="Mail:" for="mail"/>
                             <p:inputText id="mail" value="#{tUserView.entity.mail}" title="Mail" required="true" requiredMessage="Le champs 'Mail' ne peut être vide">
@@ -66,6 +66,31 @@
                                              ajax="false" immediate="true">
                             </p:commandButton>
                         </p:outputPanel>
+                    </h:form>
+                    <h:form id="emptyDataErrorForm" rendered="#{empty tUserView.entity}">
+                        <div class="ui-messages">
+                            <div class="ui-messages-error">
+                                <span class="ui-messages-error-icon"/>
+                                <ul>
+                                    <li>
+                                        <span class="ui-messages-error-summary">
+                                            Aucun utilisateur n'est sélectionné pour la modification
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <p>
+                            Vous allez être redirigez vers l'accueil dans
+                            <h:outputText id="countDown" value="5"/> secondes
+                        </p>
+                        <script type="text/javascript">
+                            $(document).ready(function(){
+                                setTimer(5);
+                            });
+                        </script>
+                        <p:poll interval="1" update="emptyDataErrorForm:countDown"
+                                oncomplete="updateTimer('emptyDataErrorForm','countDown');"/>
                     </h:form>
                 </f:view>
             </ui:define>

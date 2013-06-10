@@ -1,0 +1,189 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Paramètres société</title>
+    </h:head>
+    <h:body>
+        
+    	<ui:composition template="/templates/page_template.xhtml">
+            <ui:define name="title">
+                | Paramètres société
+            </ui:define>
+            <ui:define name="content">
+                <f:attribute name="header" value="Modification des paramètres d'une société"/>
+                <p:dialog id="dialogWorkstation"
+                          appendToBody="true"
+                          header="Création d'un poste"
+                          widgetVar="createWorstation"
+                          resizable="false"
+                          draggable="false"
+                          modal="true"
+                          showEffect="clip"
+                          hideEffect="clip">
+                    <h:form id="createWorkstationForm">
+                        <h:panelGrid columns="2" columnClasses="label,fields">
+
+                            <p:outputLabel value="Marque:" for="wbrand" />
+                            <p:inputText id="wbrand" value="#{workstationView.entity.brand}"
+                                         title="Marque de la machine"
+                                         required="true"
+                                         requiredMessage="Le champs 'Marque' ne peut être vide"/>
+                            
+                            <p:outputLabel value="Type de station:" for="wwsType" />
+                            <p:inputText id="wwsType" value="#{workstationView.entity.wsType}"
+                                         title="Type de station" />
+                            
+                            <p:outputLabel value="Date de mise en service:" for="wstartDate" />
+                            <p:inputMask id="wstartDate" value="#{workstationView.entity.startDate}"
+                                         title="Date de mise en service de la machine"
+                                         mask="99/99/9999">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </p:inputMask>
+                            
+                            <p:outputLabel value="Processeur:" for="wprocessor" />
+                            <p:inputText id="wprocessor" value="#{workstationView.entity.processor}" title="Processor" />
+                            
+                            <p:outputLabel value="Moniteur:" for="wmonitor" />
+                            <p:inputText id="wmonitor" value="#{workstationView.entity.monitor}" title="Monitor" />
+                            
+                            <p:outputLabel value="Carte graphique:" for="wvideoCard" />
+                            <p:inputText id="wvideoCard" value="#{workstationView.entity.videoCard}" title="VideoCard" />
+                            
+                            <p:outputLabel value="Système d'exploitation:" for="woperatingSystem" />
+                            <p:inputText id="woperatingSystem" value="#{workstationView.entity.operatingSystem}" title="OperatingSystem" />
+                            
+                            <p:outputLabel value="Mémoire vive:" for="wram" />
+                            <p:inputText id="wram" value="#{workstationView.entity.ram}" title="Ram" />
+                            
+                            <p:outputLabel value="Disque dur:" for="whardDrive" />
+                            <p:inputText id="whardDrive" value="#{workstationView.entity.hardDrive}" title="HardDrive" />
+                            
+                            <p:outputLabel value="Observations:" for="wobservations" />
+                            <p:inputText id="wobservations" value="#{workstationView.entity.observations}" title="Observations" />
+
+                        </h:panelGrid>
+                        (<span class="red-star">*</span>: champs requis)<br />
+                        <p:outputPanel>
+                            <p:commandButton id="createWorkstation" value="Ajouter"
+                                             type="submit"
+                                             actionListener="#{workstationView.create(clientView.entity)}"
+                                             icon="ui-icon-check"
+                                             update=":createWorkstationForm :clientUpdate:ClientWorkstationList"
+                                             styleClass="blue_icon"
+                                             oncomplete="createRequest(createWorstation, xhr, status, args);"
+                                             />
+                            <p:commandButton id="backWorkstation" value="Annuler"
+                                             action="javascript:void(0);"
+                                             styleClass="red_icon"
+                                             type="reset"
+                                             immediate="true"
+                                             ajax="true"
+                                             icon="ui-icon-closethick"
+                                             onclick="createWorstation.hide();"
+                                             />
+                        </p:outputPanel>
+                    </h:form>
+                </p:dialog>
+                <p:dialog id="dialogEmail"
+                          appendToBody="true"
+                          header="Création d'une adresse mail"
+                          widgetVar="createEmail"
+                          resizable="false"
+                          draggable="false"
+                          modal="true"
+                          showEffect="clip"
+                          hideEffect="clip">
+                    <h:form id="createEmailForm">
+                        <h:panelGrid columns="2" columnClasses="label,fields">
+
+                            <p:outputLabel value="Adresse:" for="email" />
+                            <p:inputText id="email" value="#{mailView.entity.mail}"
+                                         title="Adresse mail"
+                                         required="true"
+                                         requiredMessage="Le champs 'Adresse' ne peut être vide"/>
+                            
+                        </h:panelGrid>
+                        (<span class="red-star">*</span>: champs requis)<br />
+                        <p:outputPanel>
+                            <p:commandButton id="createEmail" value="Ajouter"
+                                             type="submit"
+                                             actionListener="#{mailView.create(clientView.entity)}"
+                                             icon="ui-icon-check"
+                                             update=":createWorkstationForm :clientUpdate:ClientWorkstationList"
+                                             styleClass="blue_icon"
+                                             oncomplete="createRequest(createWorstation, xhr, status, args);"
+                                             />
+                            <p:commandButton id="backWorkstation" value="Annuler"
+                                             action="javascript:void(0);"
+                                             styleClass="red_icon"
+                                             type="reset"
+                                             immediate="true"
+                                             ajax="true"
+                                             icon="ui-icon-closethick"
+                                             onclick="createWorstation.hide();"
+                                             />
+                        </p:outputPanel>
+                    </h:form>
+                </p:dialog>
+                <f:view>
+                    <h:form id="clientUpdate">
+                        <p:growl id="growlWizard" showDetail="true" life="30000" autoUpdate="true"/>
+                        <p:wizard id="clientUpdateWizard"
+                                  backLabel="Retour"
+                                  nextLabel="Suivant"
+                                  widgetVar="clientWizard"
+                                  showNavBar="true">
+                            
+                            <p:tab id="postes" title="Postes">
+                                <p:fieldset legend="Postes">
+                                    <div class="ui-messages ui-widget">
+                                        <div class="ui-messages-warn ui-corner-all">
+                                            <span class="ui-messages-warn-icon"/>
+                                            <ul>
+                                                <li>
+                                                    <span class="ui-messages-warn-summary">
+                                                        Attention! L'ajout de ces données est instantané.
+                                                    </span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <p:dataList id="ClientWorkstationList"
+                                                value="#{clientView.entity.workstationList}"
+                                                var="poste">
+                                        <p:column>
+                                            <h:outputText value="#{poste}"/>
+                                        </p:column>
+                                    </p:dataList>
+                                    <p:commandButton value="Ajouter un poste"
+                                                     title="Ajouter un poste à cette société"
+                                                     actionListener="#{workstationView.entityCreate(clientView.entity)}"
+                                                     onclick="createWorstation.show();"/>
+                                </p:fieldset>
+                            </p:tab>
+                            
+                            <p:tab id="emails" title="E-Mails">
+                                <p:fieldset legend="E-Mails">
+                                    E-Mails
+                                </p:fieldset>
+                            </p:tab>
+                            
+                            <p:tab id="users" title="Utilisateurs">
+                                <p:fieldset legend="Utilisateurs">
+                                    Utilisateurs
+                                </p:fieldset>
+                            </p:tab>
+                            
+                        </p:wizard>
+                    </h:form>
+                </f:view>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+
