@@ -27,24 +27,22 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> implements Seria
     {
     }
     
-    protected void setWebFolder(String webFolder)
-    {
-        this.webFolder=webFolder;
-    }
-    
     public EntityView(Class<C> entityClass,String webFolder)
     {
         this.webFolder="/restricted/admin/data/"+webFolder+"/";
         this.entityClass=entityClass;
     }
     
+    protected void setWebFolder(String webFolder)
+    {
+        this.webFolder=webFolder;
+    }
+    
     public String create()
     {
         this.setFacade();
-        System.err.println(this.entityFacade);
         this.entityFacade.create(this.entity);
-        return "/";
-//        return this.webFolder+"list";
+        return this.webFolder+"list";
     }
     
     public String delete()

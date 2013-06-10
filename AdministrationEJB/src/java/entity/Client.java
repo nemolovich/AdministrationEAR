@@ -109,6 +109,9 @@ public class Client implements Serializable {
     private List<Mail> mailList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idClient")
     private List<Software> softwareList;
+    
+    private boolean needSave=false;
+    private List<Workstation> oldWorkstationList;
 
     public Client() {
     }
@@ -245,6 +248,16 @@ public class Client implements Serializable {
     public void setIdUser(CUser idUser) {
         this.idUser = idUser;
     }
+    
+    public void setNeedSave(boolean needSave)
+    {
+        this.needSave = needSave;
+    }
+    
+    public boolean getNeedSave()
+    {
+        return this.needSave;
+    }
 
     @XmlTransient
     public List<CUser> getCUserList() {
@@ -262,6 +275,20 @@ public class Client implements Serializable {
 
     public void setWorkstationList(List<Workstation> workstationList) {
         this.workstationList = workstationList;
+    }
+    
+    public void setOldWorkstationList(List<Workstation> workstationList)
+    {
+        if(!this.getNeedSave())
+        {
+            this.oldWorkstationList = workstationList;
+            this.setNeedSave(true);
+        }
+    }
+    
+    public List<Workstation> getOldWorkstationList()
+    {
+        return this.oldWorkstationList;
     }
 
     @XmlTransient

@@ -33,7 +33,7 @@ public class TUserFacade extends AbstractFacade<TUser>
     
     public TUser update(TUser user)
     {  
-        return this.em.merge(user);  
+        return this.em.merge(user);
     }
   
     public void persist(Object object)

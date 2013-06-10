@@ -5,7 +5,9 @@
 package bean.facade;
 
 import bean.facade.abstracts.AbstractFacade;
+import entity.Client;
 import entity.Workstation;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -26,6 +28,15 @@ public class WorkstationFacade extends AbstractFacade<Workstation> {
 
     public WorkstationFacade() {
         super(Workstation.class);
+    }
+    
+    @SuppressWarnings("unchecked")
+    public void updateWorkstationList(Client entity, Workstation workstation)
+    {
+        List<Workstation> list=entity.getWorkstationList();
+        entity.setOldWorkstationList(list);
+        list.add(workstation);
+        entity.setWorkstationList(list);
     }
     
 }

@@ -8,6 +8,7 @@ package bean;
 import bean.facade.ClientFacade;
 import bean.viewStruct.EntityView;
 import entity.Client;
+import entity.Workstation;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -25,10 +26,34 @@ public class ClientView extends EntityView<Client, ClientFacade>
     private static final long serialVersionUID = 1L;
     @EJB
     private ClientFacade clientFacade;
+    private boolean creating=false;
     
     public ClientView()
     {
         super(Client.class,"client");
+    }
+
+    public boolean getIsCreating()
+    {
+        return this.creating;
+    }
+
+    public void setIsCreating(boolean creating)
+    {
+        this.creating = creating;
+    }
+    
+    @Override
+    public String entityUpdate(Client entity)
+    {
+        this.creating=false;
+        return super.entityUpdate(entity);
+    }
+    
+    public String entityUpdate(Client entity, boolean creating)
+    {
+        this.creating=creating;
+        return super.entityUpdate(entity);
     }
 
     @Override

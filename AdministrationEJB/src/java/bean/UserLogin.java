@@ -53,6 +53,10 @@ public class UserLogin implements Serializable
     private int menuRightSize=300;
     private boolean menuLeftClosed=false;
     private boolean menuRightClosed=true;
+    /**
+     * URL demandée
+     */
+    private String askedURL=null;
     
     public UserLogin()
     {
@@ -87,6 +91,16 @@ public class UserLogin implements Serializable
         {
             // Si la taille est à "auto"
         }
+    }
+
+    public String getAskedURL()
+    {
+        return askedURL;
+    }
+
+    public void setAskedURL(String askedURL)
+    {
+        this.askedURL = askedURL;
     }
 
     public int getMenuLeftSize()
@@ -316,6 +330,10 @@ public class UserLogin implements Serializable
     public String login()
     {
         this.setTemplate(this.user.getRights().toLowerCase());
+        if(this.askedURL!=null)
+        {
+            return this.askedURL;
+        }
         return (this.user==null?null:
                 (this.user.getRights().equals(TUser.ADMIN_RIGHTS)?"/restricted/admin/index":
                 (this.user.getRights().equals(TUser.USER_RIGHTS)?"/restricted/user/index":

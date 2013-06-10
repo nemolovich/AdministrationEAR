@@ -12,10 +12,10 @@
         
     	<ui:composition template="/templates/page_template.xhtml">
             <ui:define name="title">
-                | Création société
+                | Modification société
             </ui:define>
             <ui:define name="content">
-                <f:attribute name="header" value="Création d'une société"/>
+                <f:attribute name="header" value="Modification d'une société"/>
                 <p:dialog id="dialogWorkstation"
                           appendToBody="true"
                           header="Création d'un poste"
@@ -39,9 +39,11 @@
                                          title="Type de station" />
                             
                             <p:outputLabel value="Date de mise en service:" for="wstartDate" />
-                            <p:inputText id="wstartDate" value="#{workstationView.entity.startDate}" title="StartDate" >
+                            <p:inputMask id="wstartDate" value="#{workstationView.entity.startDate}"
+                                         title="Date de mise en service de la machine"
+                                         mask="99/99/9999">
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
-                            </p:inputText>
+                            </p:inputMask>
                             
                             <p:outputLabel value="Processeur:" for="wprocessor" />
                             <p:inputText id="wprocessor" value="#{workstationView.entity.processor}" title="Processor" />
@@ -65,30 +67,38 @@
                             <p:inputText id="wobservations" value="#{workstationView.entity.observations}" title="Observations" />
 
                         </h:panelGrid>
+                        (<span class="red-star">*</span>: champs requis)<br />
                         <p:outputPanel>
-                            <p:commandButton id="createWorkstation" value="Créer"
+                            <p:commandButton id="createWorkstation" value="Ajouter"
                                              type="submit"
-                                             update=":growl :createWorkstationForm"
-                                             actionListener="#{workstationView.create()}"
-                                             oncomplete="createRequest(createWorstation, xhr, status, args);"
+                                             actionListener="#{workstationView.create(clientView.entity)}"
+                                             icon="ui-icon-check"
+                                             update=":createWorkstationForm :clientUpdate:ClientWorkstationList"
+                                             styleClass="blue_icon"
+                                             oncomplete="if(createRequest(createWorstation, xhr, status, args)){
+                                                setConfirmUnload(true);}"
                                              />
                             <p:commandButton id="backWorkstation" value="Annuler"
                                              action="javascript:void(0);"
-                                             oncomplete="createWorstation.hide();">
-                            </p:commandButton>
+                                             styleClass="red_icon"
+                                             type="reset"
+                                             immediate="true"
+                                             ajax="true"
+                                             icon="ui-icon-closethick"
+                                             onclick="createWorstation.hide();"
+                                             />
                         </p:outputPanel>
                     </h:form>
                 </p:dialog>
                 <f:view>
-                    <h:form id="clientCreate">
+                    <h:form id="clientUpdate">
                         <p:growl id="growlWizard" showDetail="true" life="30000" autoUpdate="true"/>
-                        <p:wizard id="clientCreateWizard"
+                        <p:wizard id="clientUpdateWizard"
                                   backLabel="Retour"
                                   nextLabel="Suivant"
                                   widgetVar="clientWizard"
-                                  showNavBar="true"
-                                  step="general">
-                            <p:tab id="general" title="Informations">
+                                  showNavBar="true">
+                            <p:tab id="general" title="Informations" rendered="#{not clientView.isCreating}">
                                 
                                 <p:fieldset legend="Informations générales">
                                     <p>
@@ -144,14 +154,16 @@
                                         </p:inputText>
                                     
                                         <p:outputLabel value="Type d'intervention:" for="interventionType" />
-                                        <p:inputText id="interventionType" value="#{clientView.entity.interventionType}" maxlength="250"
-                                                     title="InterventionType"/>
+                                        <h:inputTextarea id="interventionType" value="#{clientView.entity.interventionType}"
+                                                         title="Type d'interventions"
+                                                         styleClass="textarea_min"
+                                                         rows="4"/>
                                     
                                     </h:panelGrid>
                                 </p:fieldset>
                             </p:tab>
                             
-                            <p:tab id="details" title="Détails">
+                            <p:tab id="details" title="Détails" rendered="#{not clientView.isCreating}">
                                 <table width="100%">
                                     <tr>
                                         <td style="vertical-align: top !important;">
@@ -214,15 +226,17 @@
                             <p:tab id="postes" title="Postes">
                                 <p:fieldset legend="Postes">
                                     
-                                    <p:dataList value="#{clientView.entity.workstationList}"
-                                                var="poste" itemType="Postes de travail">  
-                                        <h:outputText value="#{poste.toString}"/>
+                                    <p:dataList id="ClientWorkstationList"
+                                                value="#{clientView.entity.workstationList}"
+                                                var="poste">
+                                        <p:column>
+                                            <h:outputText value="#{poste}"/>
+                                        </p:column>
                                     </p:dataList>
                                     <p:commandButton value="Ajouter un poste"
                                                      title="Ajouter un poste à cette société"
                                                      actionListener="#{workstationView.entityCreate(clientView.entity)}"
                                                      onclick="createWorstation.show();"/>
-                                    
                                 </p:fieldset>
                             </p:tab>
                             
@@ -330,8 +344,13 @@
                                         </td>
                                     </tr>
                                 </table>
-                                
-                                <p:commandButton value="Submit" update=":growl" action="create" />
+                                <p:outputPanel styleClass="buttons_panel">
+                                    <p:commandButton value="Confirmer"
+                                                     title="Enregistrer les changements"
+                                                     type="submit"
+                                                     update=":growl"
+                                                     action="#{clientView.update()}"/>
+                                </p:outputPanel>
                             </p:tab>
                         </p:wizard>
                     </h:form>

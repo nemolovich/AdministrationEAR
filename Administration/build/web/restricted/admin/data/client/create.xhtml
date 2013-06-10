@@ -248,7 +248,7 @@
                                                      actionListener="#{clientView.create()}"
                                                      type="submit"
                                                      update=":growl"
-                                                     action="update"/>
+                                                     action="#{clientView.entityUpdate(clientView.entity,true)}"/>
                                     <p:commandButton
                                         action="javascript:void(0);"
                                         title="Si vous confirmez vous créez cette nouvelle société et vous serez redirigé vers la finalisation de celle-ci"

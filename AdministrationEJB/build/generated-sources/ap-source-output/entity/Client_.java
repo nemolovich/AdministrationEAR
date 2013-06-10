@@ -9,7 +9,7 @@ import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.3.2.v20111125-r10461", date="2013-06-05T18:07:48")
+@Generated(value="EclipseLink-2.3.2.v20111125-r10461", date="2013-06-10T11:37:15")
 @StaticMetamodel(Client.class)
 public class Client_ { 
 
@@ -20,6 +20,7 @@ public class Client_ {
     public static volatile SingularAttribute<Client, String> phone;
     public static volatile SingularAttribute<Client, String> fax;
     public static volatile ListAttribute<Client, Workstation> workstationList;
+    public static volatile SingularAttribute<Client, Boolean> needSave;
     public static volatile SingularAttribute<Client, String> operator;
     public static volatile SingularAttribute<Client, String> observations;
     public static volatile ListAttribute<Client, Software> softwareList;
@@ -27,6 +28,7 @@ public class Client_ {
     public static volatile SingularAttribute<Client, String> address;
     public static volatile ListAttribute<Client, CUser> cUserList;
     public static volatile SingularAttribute<Client, String> name;
+    public static volatile ListAttribute<Client, Workstation> oldWorkstationList;
     public static volatile SingularAttribute<Client, CUser> idUser;
     public static volatile SingularAttribute<Client, Double> deplacement;
     public static volatile SingularAttribute<Client, String> internetPassword;

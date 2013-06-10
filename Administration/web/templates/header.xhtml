@@ -93,15 +93,7 @@
                                 autocomplete="true"/>
 
                 </h:panelGrid>
-                <p:outputPanel style="float: right;margin-top: 20px;">
-                    <p:commandButton id="close_button" value="Annuler"
-                                     action="javascript:void(0)"
-                                     styleClass="red_icon"
-                                     type="reset"
-                                     immediate="true"
-                                     ajax="true"
-                                     onclick="autentification.hide();"
-                                     icon="ui-icon-closethick"/>
+                <p:outputPanel style="margin-top: 20px;">
                     <p:commandButton id="login_button" value="Valider"
                                      actionListener="#{userLogin.login()}"
                                      type="submit"
@@ -110,6 +102,14 @@
                                      reloadInterval(1);}"
                                      styleClass="blue_icon"
                                      icon="ui-icon-key"/>
+                    <p:commandButton id="close_button" value="Annuler"
+                                     action="javascript:void(0)"
+                                     styleClass="red_icon"
+                                     type="reset"
+                                     immediate="true"
+                                     ajax="true"
+                                     onclick="autentification.hide();"
+                                     icon="ui-icon-closethick"/>
                 </p:outputPanel>
             </h:form>
         </p:dialog>

@@ -34,8 +34,14 @@ public class WorkstationView extends EntityView<Workstation, WorkstationFacade>
     public String entityCreate(Client client)
     {
         super.entityCreate();
-        this.getEntity().setIdClient(client);
+        this.getInstance().setIdClient(client);
         return "create";
+    }
+    
+    public String create(Client entity)
+    {
+        this.workstationFacade.updateWorkstationList(entity,this.getInstance());
+        return super.create();
     }
 
     @Override

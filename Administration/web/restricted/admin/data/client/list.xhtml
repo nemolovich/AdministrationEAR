@@ -27,7 +27,7 @@
                           showEffect="clip"
                           hideEffect="clip">
                     <h:form id="clientDialogHeader">
-                        <h3>Détails de la société #{clientView.entity.name}:</h3>
+                        <h3 class="tabheader">Détails de la société #{clientView.entity.name}:</h3>
                     </h:form>
                     <ui:include src="/restricted/admin/data/client/popupView.xhtml"/>
                     <h:form>
@@ -125,6 +125,12 @@
                                                  oncomplete="clientViewDialog.show();"
                                                  action="javascript:void(0);"
                                                  title="Afficher les détails de cette société"/>
+                                <p:commandButton action="#{clientView.entityUpdate(item,true)}"
+                                                 icon="ui-icon-pencil"
+                                                 immediate="true"
+                                                 ajax="false"
+                                                 style="font-size: 60%;"
+                                                 title="Modifier cette société"/>
                                 <p:commandButton actionListener="#{clientView.entityDelete(item)}"
                                                  icon="ui-icon-trash"
                                                  update=":clientViewForm :clientDialogHeader"

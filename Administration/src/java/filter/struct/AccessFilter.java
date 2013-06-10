@@ -231,6 +231,10 @@ public class AccessFilter implements Filter
         try
         {
 //            System.out.println("Vos droits sont: "+this.userLogin.getRights());
+            String uri=((HttpServletRequest)request).getRequestURI().toString();
+            uri=uri.substring(1,uri.lastIndexOf('.'));
+            uri=uri.substring(uri.indexOf('/'));
+            this.userLogin.setAskedURL(uri);
             this.userLogin.setTemplate(this.userLogin.getRights().toLowerCase());
             if(!this.allowedRights.contains(this.userLogin.getRights()))
             {

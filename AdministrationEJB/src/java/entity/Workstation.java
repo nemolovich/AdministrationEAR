@@ -10,6 +10,7 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -58,7 +59,7 @@ public class Workstation implements Serializable {
     private String brand;
     @Column(name = "START_DATE")
     @Temporal(TemporalType.DATE)
-    private Date startDate;
+    private Date startDate=null;
     @Size(max = 64)
     @Column(name = "PROCESSOR")
     private String processor;
@@ -208,11 +209,16 @@ public class Workstation implements Serializable {
     }
 
     @Override
-    public String toString() {
-        return this.brand+" on "+this.operatingSystem+" [P:"+
-                this.processor+",RAM:"+this.ram+"]["
-                + DateFormat.getDateInstance().format(this.startDate)+"]["
-                + this.idClient+"]";
+    public String toString()
+    {
+        String out=this.brand+" on "+this.operatingSystem+" [P:"+
+                this.processor+",RAM:"+this.ram+"][";
+        if(this.startDate!=null)
+        {
+            out+=DateFormat.getDateInstance().format(this.startDate)+"][";
+        }
+        out+=this.idClient+"]";
+        return out;
     }
     
 }

@@ -99,3 +99,28 @@ function hideHidden(form,id,value)
 {
     $("#"+form+"\\:"+id).html(value);
 }
+
+
+$(function()
+{
+    // Set the unload message whenever any input element get changed.
+    $('#ClientWorkstationList').on('change', function()
+    {
+        console.log('change!');
+        setConfirmUnload(true);
+    });
+
+    // Turn off the unload message whenever a form get submitted properly.
+    $('#clientUpdate').on('submit', function()
+    {
+        console.log('submit!');
+        setConfirmUnload(false);
+    });
+});
+
+function setConfirmUnload(on)
+{
+    console.log('Called!');
+    var message = "You have unsaved data. Are you sure to leave the page?";
+    window.onbeforeunload = (on) ? function() { confirm(message); } : null;
+}
