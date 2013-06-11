@@ -33,7 +33,7 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> implements Seria
         this.webFolder="/restricted/admin/data/"+webFolder+"/";
         this.entityClass=entityClass;
     }
-
+    
     public boolean isCreating()
     {
         return this.creating;

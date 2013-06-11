@@ -5,10 +5,8 @@
 package bean.facade;
 
 import bean.facade.abstracts.AbstractEmbdedDataList;
-import bean.facade.abstracts.AbstractFacade;
 import entity.Client;
 import entity.Workstation;
-import java.util.Arrays;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;

@@ -118,7 +118,7 @@
                                              styleClass="blue_icon"
                                              oncomplete="createRequest(createWorstation, xhr, status, args);"
                                              />
-                            <p:commandButton id="backWorkstation" value="Annuler"
+                            <p:commandButton id="backMail" value="Annuler"
                                              action="javascript:void(0);"
                                              styleClass="red_icon"
                                              type="reset"
@@ -132,6 +132,18 @@
                 </p:dialog>
                 <f:view>
                     <h:form id="clientUpdate">
+                        <div class="ui-messages ui-widget">
+                            <div class="ui-messages-warn ui-corner-all">
+                                <span class="ui-messages-warn-icon"/>
+                                <ul>
+                                    <li>
+                                        <span class="ui-messages-warn-summary">
+                                            Attention! L'ajout de ces données est instantané.
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                         <p:growl id="growlWizard" showDetail="true" life="30000" autoUpdate="true"/>
                         <p:wizard id="clientUpdateWizard"
                                   backLabel="Retour"
@@ -141,29 +153,30 @@
                             
                             <p:tab id="postes" title="Postes">
                                 <p:fieldset legend="Postes">
-                                    <div class="ui-messages ui-widget">
-                                        <div class="ui-messages-warn ui-corner-all">
-                                            <span class="ui-messages-warn-icon"/>
-                                            <ul>
-                                                <li>
-                                                    <span class="ui-messages-warn-summary">
-                                                        Attention! L'ajout de ces données est instantané.
-                                                    </span>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <p:dataList id="ClientWorkstationList"
-                                                value="#{clientView.entity.workstationList}"
-                                                var="poste">
+                                    <p:dataTable id="ClientWorkstationList"
+                                                 var="poste"
+                                                 value="#{workstationMultiView.getData(clientView.entity.workstationList)}"
+                                                 paginator="true"
+                                                 rows="10"
+                                                 selection="#{workstationMultiView.multiSelection}">
+                                        
+                                        <p:column selectionMode="multiple" style="width:2%" />
+                                        
                                         <p:column>
                                             <h:outputText value="#{poste}"/>
                                         </p:column>
-                                    </p:dataList>
-                                    <p:commandButton value="Ajouter un poste"
-                                                     title="Ajouter un poste à cette société"
-                                                     actionListener="#{workstationView.entityCreate(clientView.entity)}"
-                                                     onclick="createWorstation.show();"/>
+                                        
+                                    </p:dataTable>
+                                    <f:facet name="footer"> 
+                                        <p:commandButton value="Ajouter un poste"
+                                                         title="Ajouter un poste à cette société"
+                                                         actionListener="#{workstationView.entityCreate(clientView.entity)}"
+                                                         onclick="createWorstation.show();"/>
+<!--                                        <p:commandButton value="Détails"
+                                                         title="Afficher les détails"
+                                                         actionListener="#{workstationView.entityView(workstationView.entity)}"
+                                                         onclick="createWorstation.show();"/>-->
+                                    </f:facet>
                                 </p:fieldset>
                             </p:tab>
                             

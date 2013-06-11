@@ -10,39 +10,39 @@
 -- DATE:			2013-05-22 22:05
 -------------------------------------------------------------
 
------ Pour supprimer toutes les entrÃ©es dans les tables -----
+----- Pour supprimer toutes les entrées dans les tables -----
 -- DELETE FROM ROOT.T_USER;
 -- ALTER TABLE ROOT.T_USER ALTER COLUMN ID RESTART WITH 1;
-ALTER TABLE ROOT.CLIENT DROP CONSTRAINT client_c_user_id_fk;
-DELETE FROM ROOT.C_USER;
-ALTER TABLE ROOT.C_USER ALTER COLUMN ID RESTART WITH 1;
-DELETE FROM ROOT.MAIL;
-ALTER TABLE ROOT.MAIL ALTER COLUMN ID RESTART WITH 1;
-DELETE FROM ROOT.WORKSTATION;
-ALTER TABLE ROOT.WORKSTATION ALTER COLUMN ID RESTART WITH 1;
-DELETE FROM ROOT.SOFTWARE;
-ALTER TABLE ROOT.SOFTWARE ALTER COLUMN ID RESTART WITH 1;
-DELETE FROM ROOT.CLIENT;
-ALTER TABLE ROOT.CLIENT ALTER COLUMN ID RESTART WITH 1;
-ALTER TABLE ROOT.CLIENT ADD CONSTRAINT client_c_user_id_fk
-                FOREIGN KEY (id_user)
-                REFERENCES ROOT.C_USER(id);
+-- ALTER TABLE ROOT.CLIENT DROP CONSTRAINT client_c_user_id_fk;
+-- DELETE FROM ROOT.C_USER;
+-- ALTER TABLE ROOT.C_USER ALTER COLUMN ID RESTART WITH 1;
+-- DELETE FROM ROOT.MAIL;
+-- ALTER TABLE ROOT.MAIL ALTER COLUMN ID RESTART WITH 1;
+-- DELETE FROM ROOT.WORKSTATION;
+-- ALTER TABLE ROOT.WORKSTATION ALTER COLUMN ID RESTART WITH 1;
+-- DELETE FROM ROOT.SOFTWARE;
+-- ALTER TABLE ROOT.SOFTWARE ALTER COLUMN ID RESTART WITH 1;
+-- DELETE FROM ROOT.CLIENT;
+-- ALTER TABLE ROOT.CLIENT ALTER COLUMN ID RESTART WITH 1;
+-- ALTER TABLE ROOT.CLIENT ADD CONSTRAINT client_c_user_id_fk
+--                 FOREIGN KEY (id_user)
+--                 REFERENCES ROOT.C_USER(id);
 
 ------- Permet de ne laisser l'identifiant '1' libre --------
--- RedÃ©marre le compteur Ã  '0', crÃ©ation d'admin temporaire
---  prenant alors en ID '0', prochaine entrÃ©e Ã  '1'
--- ALTER TABLE ROOT.T_USER ALTER COLUMN ID RESTART WITH 0;
+-- Redémarre le compteur à '0', création d'admin temporaire
+--  prenant alors en ID '0', prochaine entrée à '1'
+ALTER TABLE ROOT.T_USER ALTER COLUMN ID RESTART WITH 0;
 
----------- CrÃ©ation d'un administrateur par dÃ©faut ----------
+---------- Création d'un administrateur par défaut ----------
 -- LOGIN (mail):		admin
 -- PASSWORD:			admin
--- /!\ Ne pas oublier de supprimer cette entrÃ©e aprÃ¨s  /!\ --
--- /!\ avoir crÃ©Ã© votre administrateur via l'interface /!\ --
+-- /!\ Ne pas oublier de supprimer cette entrée après  /!\ --
+-- /!\ avoir créé votre administrateur via l'interface /!\ --
 -- /!\ principale                                      /!\ --
--- INSERT INTO ROOT.T_USER
--- 		(MAIL, "NAME", FIRSTNAME, RIGHTS, PASSWORD) 
--- 	VALUES ('admin', '', '', 'ADMIN',
--- 				'!#/)zWÂ¥Â§Câ€°JJâ‚¬Ãƒ                ');
+INSERT INTO ROOT.T_USER
+		(MAIL, "NAME", FIRSTNAME, RIGHTS, PASSWORD) 
+	VALUES ('admin', '', '', 'ADMIN',
+				'!#/)zW¥§C‰JJ€Ã                ');
 
 ---------------------- INITIALISATION -----------------------
 INSERT INTO ROOT.CLIENT

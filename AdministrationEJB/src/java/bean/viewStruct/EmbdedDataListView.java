@@ -4,11 +4,9 @@
  */
 package bean.viewStruct;
 
+import bean.Utils;
 import bean.facade.abstracts.AbstractEmbdedDataList;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -30,34 +28,18 @@ public abstract class EmbdedDataListView<C,O,F extends AbstractEmbdedDataList<C,
     
     public String entityCreate(C entity)
     {
-        try
-        {
-            super.entityCreate();
-            Logger.getLogger(EmbdedDataListView.class.getName()).log(Level.INFO,
-                    "Appel de la méthode de reférencement");
-            this.setReferenceMethod.invoke(this.getInstance(),entity);
-            return "create";
-        }
-        catch (IllegalAccessException ex)
-        {
-            Logger.getLogger(EmbdedDataListView.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch (IllegalArgumentException ex)
-        {
-            Logger.getLogger(EmbdedDataListView.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch (InvocationTargetException ex)
-        {
-            Logger.getLogger(EmbdedDataListView.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
+        super.entityCreate();
+        Utils.callMethod(this.setReferenceMethod,
+                "méthode de récupération des données",this.getInstance(),
+                entity);
+        return "create";
     }
     
     public String create(C entity)
     {
         this.setFacade();
         super.getEntityFacade().updateDataList(entity,this.getInstance());
-        return null;
+        return "list";
     }
     
     @Override
