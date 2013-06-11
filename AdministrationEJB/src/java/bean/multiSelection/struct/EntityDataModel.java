@@ -35,13 +35,22 @@ public abstract class EntityDataModel<C> extends ListDataModel<C>
     @SuppressWarnings("unchecked")
     public C getRowData(String rowKey)
     {
+//        System.out.println("Row: '"+rowKey+"'");
+//        int minCompare=Integer.MAX_VALUE;
+        C res=null;
         for(C c:(List<C>)this.getWrappedData())
         {
+//            System.out.println("toString: '"+c.toString()+"'");
             if(c.toString().equalsIgnoreCase(rowKey))
             {
                 return c;
             }
+//            else if(c.toString().compareTo(rowKey)<minCompare)
+//            {
+//                minCompare=c.toString().compareTo(rowKey);
+//                res=c;
+//            }
         }
-        return null;
+        return res;
     }
 }

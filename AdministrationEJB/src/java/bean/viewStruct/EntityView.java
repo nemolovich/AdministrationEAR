@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 
 /**
  *
@@ -51,6 +53,7 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> implements Seria
     
     public String create()
     {
+        this.creating=false;
         this.setFacade();
         this.entityFacade.create(this.entity);
         return this.webFolder+"list";
@@ -58,6 +61,7 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> implements Seria
     
     public String delete()
     {
+        this.creating=false;
         this.setFacade();
         this.entityFacade.remove(this.entity);
         return this.webFolder+"list";
@@ -65,6 +69,7 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> implements Seria
     
     public String update()
     {
+        this.creating=false;
         this.setFacade();
         this.entityFacade.edit(this.entity);
         return this.webFolder+"list";
@@ -72,9 +77,23 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> implements Seria
 
     public String entityView(C entity)
     {
+        this.creating = false;
         this.entity = entity;
-        System.err.println("entity: "+this.entity);
         return this.webFolder+"view";
+    }
+    
+    public C checkSingle(C[] entities)
+    {
+        if(entities!=null&&entities.length!=1)
+        {
+            FacesMessage message=new FacesMessage("Sélection invalide",
+                    "Vous devez sélectionner un et un seul élément "
+                    + "pour effectuer cette tâche");
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            return null;
+        }
+        return entities[0];
     }
     
     public String entityUpdate(C entity)
@@ -86,6 +105,7 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> implements Seria
     
     public String entityDelete(C entity)
     {
+        this.creating = false;
         this.setFacade();
         this.entityFacade.remove(entity);
         return this.webFolder+"list";

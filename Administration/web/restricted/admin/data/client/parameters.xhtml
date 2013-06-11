@@ -26,54 +26,109 @@
                           showEffect="clip"
                           hideEffect="clip">
                     <h:form id="createWorkstationForm">
-                        <h:panelGrid columns="2" columnClasses="label,fields">
+                            <h:panelGrid columns="2" columnClasses="label,fields"
+                                         rendered="#{workstationView.creating or 
+                                                     workstationMultiView.singleSelected}">
 
-                            <p:outputLabel value="Marque:" for="wbrand" />
-                            <p:inputText id="wbrand" value="#{workstationView.entity.brand}"
-                                         title="Marque de la machine"
-                                         required="true"
-                                         requiredMessage="Le champs 'Marque' ne peut être vide"/>
-                            
-                            <p:outputLabel value="Type de station:" for="wwsType" />
-                            <p:inputText id="wwsType" value="#{workstationView.entity.wsType}"
-                                         title="Type de station" />
-                            
-                            <p:outputLabel value="Date de mise en service:" for="wstartDate" />
-                            <p:inputMask id="wstartDate" value="#{workstationView.entity.startDate}"
-                                         title="Date de mise en service de la machine"
-                                         mask="99/99/9999">
-                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                            </p:inputMask>
-                            
-                            <p:outputLabel value="Processeur:" for="wprocessor" />
-                            <p:inputText id="wprocessor" value="#{workstationView.entity.processor}" title="Processor" />
-                            
-                            <p:outputLabel value="Moniteur:" for="wmonitor" />
-                            <p:inputText id="wmonitor" value="#{workstationView.entity.monitor}" title="Monitor" />
-                            
-                            <p:outputLabel value="Carte graphique:" for="wvideoCard" />
-                            <p:inputText id="wvideoCard" value="#{workstationView.entity.videoCard}" title="VideoCard" />
-                            
-                            <p:outputLabel value="Système d'exploitation:" for="woperatingSystem" />
-                            <p:inputText id="woperatingSystem" value="#{workstationView.entity.operatingSystem}" title="OperatingSystem" />
-                            
-                            <p:outputLabel value="Mémoire vive:" for="wram" />
-                            <p:inputText id="wram" value="#{workstationView.entity.ram}" title="Ram" />
-                            
-                            <p:outputLabel value="Disque dur:" for="whardDrive" />
-                            <p:inputText id="whardDrive" value="#{workstationView.entity.hardDrive}" title="HardDrive" />
-                            
-                            <p:outputLabel value="Observations:" for="wobservations" />
-                            <p:inputText id="wobservations" value="#{workstationView.entity.observations}" title="Observations" />
+                                    <p:outputLabel value="Marque:" for="wbrand" />
+                                    <p:inputText id="wbrand" value="#{workstationView.entity.brand}"
+                                                 title="Marque de la machine"
+                                                 required="true"
+                                                 requiredMessage="Le champs 'Marque' ne peut être vide"
+                                                 rendered="#{workstationView.creating}">
+                                        <f:validator binding="#{workstationUniqueFieldValidator}"/>
+                                        <f:attribute name="fieldName" value="Brand" />
+                                        <f:attribute name="update_id" value="#{workstationView.entity.id}" />
+                                    </p:inputText>
+                                    <h:outputText id="wbrandV" value="#{workstationView.entity.brand}"
+                                                  title="Marque de la machine"
+                                                  rendered="#{not workstationView.creating}"/>
 
-                        </h:panelGrid>
-                        (<span class="red-star">*</span>: champs requis)<br />
-                        <p:outputPanel>
+                                    <p:outputLabel value="Type de station:" for="wwsType" />
+                                    <p:inputText id="wwsType" value="#{workstationView.entity.wsType}"
+                                                 title="Type de station"
+                                                 rendered="#{workstationView.creating}"/>
+                                    <h:outputText id="wwsTypeV" value="#{workstationView.entity.wsType}"
+                                                  title="Type de station"
+                                                  rendered="#{not workstationView.creating}"/>
+
+                                    <p:outputLabel value="Date de mise en service:" for="wstartDate" />
+                                    <p:inputMask id="wstartDate" value="#{workstationView.entity.startDate}"
+                                                 title="Date de mise en service de la machine"
+                                                 mask="99/99/9999"
+                                                 rendered="#{workstationView.creating}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                                    </p:inputMask>
+                                    <h:outputText id="wstartDateV" value="#{workstationView.entity.startDate}"
+                                                  title="Date de mise en service de la machine"
+                                                  rendered="#{not workstationView.creating}"/>
+
+                                    <p:outputLabel value="Processeur:" for="wprocessor" />
+                                    <p:inputText id="wprocessor" value="#{workstationView.entity.processor}"
+                                                 title="Processeur"
+                                                 rendered="#{workstationView.creating}"/>
+                                    <h:outputText id="wprocessorV" value="#{workstationView.entity.processor}"
+                                                  title="Processeur"
+                                                 rendered="#{not workstationView.creating}"/>
+
+                                    <p:outputLabel value="Moniteur:" for="wmonitor" />
+                                    <p:inputText id="wmonitor" value="#{workstationView.entity.monitor}"
+                                                 title="Moniteur"
+                                                 rendered="#{workstationView.creating}"/>
+                                    <h:outputText id="wmonitorV" value="#{workstationView.entity.monitor}"
+                                                  title="Moniteur"
+                                                  rendered="#{not workstationView.creating}"/>
+
+                                    <p:outputLabel value="Carte graphique:" for="wvideoCard" />
+                                    <p:inputText id="wvideoCard" value="#{workstationView.entity.videoCard}"
+                                                 title="Carte graphique"
+                                                 rendered="#{workstationView.creating}"/>
+                                    <h:outputText id="wvideoCardV" value="#{workstationView.entity.videoCard}"
+                                                  title="Carte graphique"
+                                                  rendered="#{not workstationView.creating}"/>
+
+                                    <p:outputLabel value="Système d'exploitation:" for="woperatingSystem" />
+                                    <p:inputText id="woperatingSystem" value="#{workstationView.entity.operatingSystem}"
+                                                 title="Système d'exploitation"
+                                                 rendered="#{workstationView.creating}"/>
+                                    <h:outputText id="woperatingSystemV" value="#{workstationView.entity.operatingSystem}"
+                                                  title="Système d'exploitation"
+                                                  rendered="#{not workstationView.creating}"/>
+
+                                    <p:outputLabel value="Mémoire vive:" for="wram" />
+                                    <p:inputText id="wram" value="#{workstationView.entity.ram}"
+                                                 title="Mémoire vive"
+                                                 rendered="#{workstationView.creating}"/>
+                                    <h:outputText id="wramV" value="#{workstationView.entity.ram}"
+                                                  title="Mémoire vive"
+                                                  rendered="#{not workstationView.creating}"/>
+
+                                    <p:outputLabel value="Disque dur:" for="whardDrive" />
+                                    <p:inputText id="whardDrive" value="#{workstationView.entity.hardDrive}"
+                                                 title="Dique dur"
+                                                 rendered="#{workstationView.creating}"/>
+                                    <h:outputText id="whardDriveV" value="#{workstationView.entity.hardDrive}"
+                                                  title="Disque dur"
+                                                  rendered="#{not workstationView.creating}"/>
+
+                                    <p:outputLabel value="Observations:" for="wobservations" />
+                                    <p:inputText id="wobservations" value="#{workstationView.entity.observations}"
+                                                 title="Observations"
+                                                 rendered="#{workstationView.creating}"/>
+                                    <h:outputText id="wobservationsV" value="#{workstationView.entity.observations}"
+                                                  title="Observations"
+                                                  rendered="#{not workstationView.creating}"/>
+
+                            </h:panelGrid>
+                        <p:outputPanel rendered="#{workstationView.creating}">
+                            (<span class="red-star">*</span>: champs requis)<br />
+                        </p:outputPanel>
+                        <p:outputPanel rendered="#{workstationView.creating}">
                             <p:commandButton id="createWorkstation" value="Ajouter"
                                              type="submit"
                                              actionListener="#{workstationView.create(clientView.entity)}"
                                              icon="ui-icon-check"
-                                             update=":createWorkstationForm :clientUpdate:ClientWorkstationList"
+                                             update=":createWorkstationForm :clientUpdate:clientWorkstationList"
                                              styleClass="blue_icon"
                                              oncomplete="createRequest(createWorstation, xhr, status, args);"
                                              />
@@ -87,6 +142,25 @@
                                              onclick="createWorstation.hide();"
                                              />
                         </p:outputPanel>
+                        <p:outputPanel id="selectionDataError" 
+                                       rendered="#{not workstationView.creating and
+                                                   not workstationMultiView.singleSelected}">
+                            <div class="ui-messages ui-widget">
+                                <div class="ui-messages-error ui-corner-all">
+                                    <span class="ui-messages-error-icon"/>
+                                    <ul>
+                                        <li>
+                                            <span class="ui-messages-error-summary">
+                                                Sélection incorrecte!
+                                                <script type="text/javascript">
+//                                                    createWorstation.hide();
+                                                </script>
+                                            </span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                    </p:outputPanel>
                     </h:form>
                 </p:dialog>
                 <p:dialog id="dialogEmail"
@@ -114,7 +188,7 @@
                                              type="submit"
                                              actionListener="#{mailView.create(clientView.entity)}"
                                              icon="ui-icon-check"
-                                             update=":createWorkstationForm :clientUpdate:ClientWorkstationList"
+                                             update=":createWorkstationForm :clientUpdate:clientWorkstationList"
                                              styleClass="blue_icon"
                                              oncomplete="createRequest(createWorstation, xhr, status, args);"
                                              />
@@ -132,6 +206,7 @@
                 </p:dialog>
                 <f:view>
                     <h:form id="clientUpdate">
+                        
                         <div class="ui-messages ui-widget">
                             <div class="ui-messages-warn ui-corner-all">
                                 <span class="ui-messages-warn-icon"/>
@@ -152,32 +227,67 @@
                                   showNavBar="true">
                             
                             <p:tab id="postes" title="Postes">
-                                <p:fieldset legend="Postes">
-                                    <p:dataTable id="ClientWorkstationList"
-                                                 var="poste"
-                                                 value="#{workstationMultiView.getData(clientView.entity.workstationList)}"
-                                                 paginator="true"
-                                                 rows="10"
-                                                 selection="#{workstationMultiView.multiSelection}">
-                                        
-                                        <p:column selectionMode="multiple" style="width:2%" />
-                                        
-                                        <p:column>
-                                            <h:outputText value="#{poste}"/>
-                                        </p:column>
-                                        
-                                    </p:dataTable>
+                                <p:dataTable id="clientWorkstationList"
+                                             var="poste"
+                                             emptyMessage="Aucun poste n'a été trouvé"
+                                             value="#{workstationMultiView.getData(clientView.entity.workstationList)}"
+                                             paginator="true"
+                                             rows="10"
+                                             selection="#{workstationMultiView.multiSelection}">
+                                    
+                                    <p:ajax event="rowSelectCheckbox"
+                                            process="@this"
+                                            update=":createWorkstationForm clientWorkstationList:posteDetails
+                                             clientWorkstationList:posteDelete" />
+                                    <p:ajax event="rowUnselectCheckbox"
+                                            process="@this"
+                                            update=":createWorkstationForm clientWorkstationList:posteDetails
+                                             clientWorkstationList:posteDelete" />
+                                    <p:ajax event="toggleSelect"
+                                            process="@this"
+                                            update=":createWorkstationForm clientWorkstationList:posteDetails
+                                             clientWorkstationList:posteDelete" />
+
+                                    <p:column selectionMode="multiple" style="width:2%">
+                                    </p:column>
+
+                                    <p:column>
+                                        <h:outputText value="#{poste}"/>
+                                    </p:column>
                                     <f:facet name="footer"> 
                                         <p:commandButton value="Ajouter un poste"
+                                                         style="float:left;"
+                                                         icon="ui-icon-circle-plus"
+                                                         styleClass="blue_icon"
                                                          title="Ajouter un poste à cette société"
+                                                         update=":createWorkstationForm"
                                                          actionListener="#{workstationView.entityCreate(clientView.entity)}"
                                                          onclick="createWorstation.show();"/>
-<!--                                        <p:commandButton value="Détails"
+                                        <p:commandButton id="posteDetails"
+                                                         value="Détails"
+                                                         style="float:left;"
+                                                         icon="ui-icon-search"
                                                          title="Afficher les détails"
-                                                         actionListener="#{workstationView.entityView(workstationView.entity)}"
-                                                         onclick="createWorstation.show();"/>-->
+                                                         update=":createWorkstationForm"
+                                                         actionListener="#{workstationView.entityView(
+                                                                           workstationView.checkSingle(workstationMultiView.multiSelection))}"
+                                                         oncomplete="if(#{workstationMultiView.singleSelected})
+                                                                {createWorstation.show();}"/>
+                                        <p:commandButton id="posteDelete"
+                                                         value="Supprimer"
+                                                         style="float:left;"
+                                                         icon="ui-icon-trash"
+                                                         styleClass="red_icon"
+                                                         title="Afficher les détails"
+                                                         update=":createWorkstationForm"
+                                                         actionListener="#{workstationView.remove(workstationMultiView.multiSelection,
+                                                                           clientView.entity)}"
+                                                         onclick="if(#{workstationMultiView.checkEmptySelection()})
+                                                            {return false;}
+                                                            else{return confirm('#{workstationView.deleteMessages}');}"/>
                                     </f:facet>
-                                </p:fieldset>
+
+                                </p:dataTable>
                             </p:tab>
                             
                             <p:tab id="emails" title="E-Mails">

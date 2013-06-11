@@ -16,6 +16,8 @@ var appName='Administration';
  */
 function createRequest(form, xhr, status, args)
 {
+    console.log(status);
+    console.log(args);
     if(args.validationFailed)
     {
         form.jq.effect("shake", { times:2 }, 100);

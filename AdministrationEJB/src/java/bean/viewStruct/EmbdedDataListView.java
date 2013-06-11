@@ -7,6 +7,8 @@ package bean.viewStruct;
 import bean.Utils;
 import bean.facade.abstracts.AbstractEmbdedDataList;
 import java.lang.reflect.Method;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 
 /**
  *
@@ -38,10 +40,32 @@ public abstract class EmbdedDataListView<C,O,F extends AbstractEmbdedDataList<C,
     public String create(C entity)
     {
         this.setFacade();
-        super.getEntityFacade().updateDataList(entity,this.getInstance());
+        super.getEntityFacade().addToDataList(entity,this.getInstance());
         return "list";
     }
     
+    public String remove(O[] instances, C entity)
+    {
+        this.setFacade();
+        super.getEntityFacade().removeToDataList(entity,instances);
+        return "list";
+    }
+    
+    // <editor-fold defaultstate="collapsed" desc="Les methodes abstraites">
+    /**
+     * Insérer le code:
+     * <code>
+     * super.entityFacade=this.[VotreEJBFacade];
+     * </code>
+     */
     @Override
     public abstract void setFacade();
+    /**
+     * Renvoi le message d'avertissement avant la suppression
+     * de toutes ces entités sélectionnées
+     * @return {@link String}, Le message d'avertissement
+     */
+    public abstract String getDeleteMessages();
+    
+    // </editor-fold>
 }

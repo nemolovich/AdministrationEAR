@@ -212,7 +212,8 @@ public class Workstation implements Serializable {
     public String toString()
     {
         String out=this.brand+" on "+this.operatingSystem+" [P:"+
-                this.processor+",RAM:"+this.ram+"][";
+                (this.processor!=null&&!this.processor.isEmpty()?this.processor:"null")+
+                "|RAM:"+(this.ram!=null&&!this.ram.isEmpty()?this.ram:"null")+"][";
         if(this.startDate!=null)
         {
             out+=DateFormat.getDateInstance().format(this.startDate)+"][";
