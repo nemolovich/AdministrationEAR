@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package bean.viewStruct;
+package bean.view.struct;
 
 import bean.Utils;
 import bean.facade.abstracts.AbstractEmbdedDataList;

@@ -3,11 +3,12 @@
  * and open the template in the editor.
  */
 
-package bean;
+package bean.view;
 
-import bean.facade.SoftwareFacade;
-import bean.viewStruct.EntityView;
-import entity.Software;
+import bean.facade.MailFacade;
+import bean.view.struct.EntityView;
+import entity.Client;
+import entity.Mail;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
@@ -17,49 +18,56 @@ import javax.inject.Named;
  *
  * @author Brian GOHIER
  */
-@Named(value = "softwareView")
+@Named(value = "mailView")
 @SessionScoped
-public class SoftwareView extends EntityView<Software, SoftwareFacade>
+public class MailView extends EntityView<Mail, MailFacade>
 {
     private static final long serialVersionUID = 1L;
     @EJB
-    private SoftwareFacade softwareFacade;
+    private MailFacade mailFacade;
     
-    public SoftwareView()
+    public MailView()
     {
-        super(Software.class,"software");
+        super(Mail.class,"mail");
+    }
+    
+    public String entityCreate(Client client)
+    {
+        super.entityCreate();
+        super.getInstance().setIdClient(client);
+        return null;
     }
 
     @Override
     public void setFacade()
     {
-        super.setEntityFacade(this.softwareFacade);
+        super.setEntityFacade(this.mailFacade);
     }
 
     @Override
-    public List<Software> getEntries()
+    public List<Mail> getEntries()
     {
         return super.findAll();
     }
 
     @Override
-    public Software getEntity()
+    public Mail getEntity()
     {
         return super.getInstance();
     }
 
     @Override
-    public String getDeleteMessage(Software entity)
+    public String getDeleteMessage(Mail entity)
     {
         return "Vous êtes sur le point de supprimer définitivement"
-                + " ce logiciel ("+entity.toString()
+                + " cette adresse mail ("+entity.getMail()
                 + " id="+entity.getId()+"). Cette action est irreversible,"
                 + " êtes-vous certain(e) de vouloir continuer?";
     }
 
     @Override
-    public void setEntity(Software software)
+    public void setEntity(Mail mail)
     {
-        super.setInstance(software);
+        super.setInstance(mail);
     }
 }

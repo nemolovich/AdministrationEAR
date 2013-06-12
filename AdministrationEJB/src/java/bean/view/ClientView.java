@@ -3,10 +3,10 @@
  * and open the template in the editor.
  */
 
-package bean;
+package bean.view;
 
 import bean.facade.ClientFacade;
-import bean.viewStruct.EntityView;
+import bean.view.struct.EntityView;
 import entity.Client;
 import java.util.List;
 

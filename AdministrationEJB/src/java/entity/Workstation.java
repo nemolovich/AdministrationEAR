@@ -219,7 +219,7 @@ public class Workstation implements Serializable {
             out+=DateFormat.getDateInstance().format(this.startDate)+"][";
         }
         out+=this.idClient+"]";
-        return out;
+        return out.replaceAll(",",".");
     }
     
 }

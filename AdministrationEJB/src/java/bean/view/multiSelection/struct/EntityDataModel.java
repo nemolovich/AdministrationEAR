@@ -2,8 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package bean.multiSelection.struct;
+package bean.view.multiSelection.struct;
 
+import bean.Utils;
 import java.util.List;
 import javax.faces.model.ListDataModel;
 import org.primefaces.model.SelectableDataModel;
@@ -28,6 +29,7 @@ public abstract class EntityDataModel<C> extends ListDataModel<C>
     @Override
     public Object getRowKey(C c)
     {
+        System.err.println("On m'a appellé?");
         return c.toString();
     }
 
@@ -40,8 +42,8 @@ public abstract class EntityDataModel<C> extends ListDataModel<C>
         C res=null;
         for(C c:(List<C>)this.getWrappedData())
         {
-//            System.out.println("toString: '"+c.toString()+"'");
-            if(c.toString().equalsIgnoreCase(rowKey))
+//            System.out.println("toString: '"+Utils.getDataModelFormat(c.toString())+"'");
+            if(Utils.getDataModelFormat(c.toString()).equalsIgnoreCase(rowKey))
             {
                 return c;
             }

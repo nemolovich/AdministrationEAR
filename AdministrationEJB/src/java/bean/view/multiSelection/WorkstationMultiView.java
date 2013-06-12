@@ -2,10 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package bean.multiSelection;
+package bean.view.multiSelection;
 
-import bean.multiSelection.struct.EntityDataModel;
-import bean.multiSelection.struct.EntityMultiView;
+import bean.view.multiSelection.struct.EntityDataModel;
+import bean.view.multiSelection.struct.EntityMultiView;
 import entity.Workstation;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;

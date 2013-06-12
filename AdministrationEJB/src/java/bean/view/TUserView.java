@@ -2,10 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package bean;
+package bean.view;
 
+import bean.UserLogin;
 import bean.facade.TUserFacade;
-import bean.viewStruct.EntityView;
+import bean.view.struct.EntityView;
 import entity.TUser;
 import java.util.List;
 import javax.ejb.EJB;
