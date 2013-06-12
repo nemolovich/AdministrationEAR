@@ -389,3 +389,15 @@ a:link:hover, a:visited:hover
     border-top-left-radius:     10px !important;
     border-top-right-radius:    10px !important;
 }
+
+.ui-datatable-even.sleeping_elmt
+{
+    color:                      #4f4f4f !important;
+    background-color:           #AFAFBF !important;
+}
+
+.ui-datatable-odd.sleeping_elmt
+{
+    color:                      #4f4f4f !important;
+    background-color:           #AFAFAF !important;
+}

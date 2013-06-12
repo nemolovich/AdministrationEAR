@@ -61,11 +61,30 @@ public class WorkstationView extends EmbdedDataListView<Client, Workstation, Wor
     }
 
     @Override
-    public String getDeleteMessages()
+    public String deleteMessages(List<Workstation> entities)
     {
-        return "Vous êtes sur le point de supprimer définitivement tous les "
-                + "postes de travails sélectionnés. Cette action est irreversible, "
+        if(entities!=null)
+        {
+            String out="Vous êtes sur le point de supprimer définitivement tous les "
+                + "postes de travails sélectionnés (";
+            boolean first=true;
+            for(Workstation workstation:entities)
+            {
+                if(first)
+                {
+                    first=false;
+                }
+                else
+                {
+                    out+=", ";
+                }
+                out+=workstation.getBrand()+" id="+workstation.getId();
+            }
+            out+="). Cette action est irreversible, "
                 + "êtes-vous certain(e) de vouloir continuer?";
+            return out;
+        }
+        return "Erreur!";
     }
 
     @Override

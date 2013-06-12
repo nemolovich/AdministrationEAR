@@ -6,7 +6,7 @@ import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.3.2.v20111125-r10461", date="2013-06-12T10:59:55")
+@Generated(value="EclipseLink-2.3.2.v20111125-r10461", date="2013-06-12T18:09:25")
 @StaticMetamodel(CUser.class)
 public class CUser_ { 
 
@@ -15,6 +15,7 @@ public class CUser_ {
     public static volatile SingularAttribute<CUser, String> name;
     public static volatile SingularAttribute<CUser, Client> idClient;
     public static volatile ListAttribute<CUser, Client> clientList;
+    public static volatile SingularAttribute<CUser, Boolean> sleeping;
     public static volatile SingularAttribute<CUser, String> observations;
 
 }

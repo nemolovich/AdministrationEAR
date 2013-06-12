@@ -356,9 +356,9 @@ public class UserLogin implements Serializable
         this.user=null;
         this.template="unknown";
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-        FacesMessage message=new FacesMessage("Déconnecté",
+        FacesMessage message=new FacesMessage(FacesMessage.SEVERITY_INFO,
+                "Déconnecté",
                 "Vous avez été déconnecté de votre session");
-        message.setSeverity(FacesMessage.SEVERITY_INFO);
         FacesContext.getCurrentInstance().addMessage(null,message);
                 
         return "/restricted/login";

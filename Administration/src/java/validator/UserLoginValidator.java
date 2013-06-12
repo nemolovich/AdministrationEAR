@@ -52,15 +52,15 @@ public class UserLoginValidator implements Validator
 
         if (mail == null || mail.isEmpty())
         {
-            FacesMessage message=new FacesMessage("Champs 'Mail' vide","Veuillez entrer votre adresse mail");
-            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            FacesMessage message=new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                    "Champs 'Mail' vide","Veuillez entrer votre adresse mail");
             throw new ValidatorException(message);
         }
         if (password == null || password.isEmpty())
         {
             passwordComponent.setValid(false);
-            FacesMessage message=new FacesMessage("Champs 'Mot de passe' vide","Veuillez entrer votre mot de passe");
-            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            FacesMessage message=new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                    "Champs 'Mot de passe' vide","Veuillez entrer votre mot de passe");
             throw new ValidatorException(message);
         }
         
@@ -84,9 +84,9 @@ public class UserLoginValidator implements Validator
                         {
                             timeToWait="moins d'une minute";                        
                         }
-                        FacesMessage message=new FacesMessage("Session bloquée",
+                        FacesMessage message=new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                                "Session bloquée",
                                 "Votre session est bloquée. Prochain essai dans: "+timeToWait);
-                        message.setSeverity(FacesMessage.SEVERITY_ERROR);
                         throw new ValidatorException(message);
                     }
                     else
@@ -127,46 +127,46 @@ public class UserLoginValidator implements Validator
                             blockTime=15;                            
                         }
                         this.userLogin.sessionBlockFor(blockTime);
-                        FacesMessage message=new FacesMessage("Session bloquée",
+                        FacesMessage message=new FacesMessage(FacesMessage.SEVERITY_FATAL,
+                                "Session bloquée",
                                 "Votre mot de passe est incorrect, "
                                 + "votre session sera bloquée pendant "+blockTime+" minutes");
-                        message.setSeverity(FacesMessage.SEVERITY_ERROR);
                         throw new ValidatorException(message);
                     }
                     passwordComponent.setValid(false);
                     FacesMessage moreDetails=null;
                     if(this.userLogin.getLoginTry()==2)
                     {
-                        moreDetails=new FacesMessage("Erreur d'autentification",
+                        moreDetails=new FacesMessage(FacesMessage.SEVERITY_WARN,
+                                "Erreur d'autentification",
                                 "Attention il ne vous reste qu'un essai avant de "
                                 + "bloquer votre session");
-                        moreDetails.setSeverity(FacesMessage.SEVERITY_ERROR);
                     }
                     if(moreDetails!=null)
                     {
                         FacesContext.getCurrentInstance().addMessage(null,
                                 moreDetails);
                     }
-                    FacesMessage message=new FacesMessage("Erreur d'autentification",
+                    FacesMessage message=new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                            "Erreur d'autentification",
                             "Votre mot de passe est incorrect");
-                    message.setSeverity(FacesMessage.SEVERITY_ERROR);
                     throw new ValidatorException(message);
                 }
                 
                 this.userLogin.setLoginTry(0);
                 this.userLogin.setUser(user);
-                FacesMessage message=new FacesMessage("Autentification réussie",
+                FacesMessage message=new FacesMessage(FacesMessage.SEVERITY_INFO,
+                        "Autentification réussie",
                         "Bienvenue "+this.userLogin.getFirstname()+
                         " "+this.userLogin.getName());
-                message.setSeverity(FacesMessage.SEVERITY_INFO);
                 context.getExternalContext().getFlash().setKeepMessages(true);
                 context.addMessage(null, message);
                 return;
             }
         }
-        FacesMessage message=new FacesMessage("Login inconnu",
+        FacesMessage message=new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                "Login inconnu",
                 "Votre adresse mail n'a pas été reconnue");
-        message.setSeverity(FacesMessage.SEVERITY_ERROR);
         throw new ValidatorException(message);
     }
 }

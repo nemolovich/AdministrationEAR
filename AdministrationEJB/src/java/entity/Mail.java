@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Windows 7
+ * @author Brian GOHIER
  */
 @Entity
 @Table(name = "MAIL")
@@ -34,8 +34,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Mail.findByPop", query = "SELECT m FROM Mail m WHERE m.pop = :pop"),
     @NamedQuery(name = "Mail.findByPopPassword", query = "SELECT m FROM Mail m WHERE m.popPassword = :popPassword"),
     @NamedQuery(name = "Mail.findBySmtp", query = "SELECT m FROM Mail m WHERE m.smtp = :smtp"),
-    @NamedQuery(name = "Mail.findBySmtpPassword", query = "SELECT m FROM Mail m WHERE m.smtpPassword = :smtpPassword")})
-public class Mail implements Serializable {
+    @NamedQuery(name = "Mail.findBySmtpPassword", query = "SELECT m FROM Mail m WHERE m.smtpPassword = :smtpPassword"),
+    @NamedQuery(name = "Mail.findBySleeping", query = "SELECT m FROM Mail m WHERE m.sleeping = :sleeping")})
+public class Mail implements Serializable
+{
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -59,6 +61,8 @@ public class Mail implements Serializable {
     @Size(max = 64)
     @Column(name = "SMTP_PASSWORD")
     private String smtpPassword;
+    @Column(name = "SLEEPING")
+    private Boolean sleeping;
     @JoinColumn(name = "ID_CLIENT", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Client idClient;
@@ -121,6 +125,14 @@ public class Mail implements Serializable {
 
     public void setSmtpPassword(String smtpPassword) {
         this.smtpPassword = smtpPassword;
+    }
+
+    public Boolean getSleeping() {
+        return sleeping;
+    }
+
+    public void setSleeping(Boolean sleeping) {
+        this.sleeping = sleeping;
     }
 
     public Client getIdClient() {

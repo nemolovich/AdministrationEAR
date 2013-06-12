@@ -10,7 +10,6 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -27,7 +26,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Windows 7
+ * @author Brian GOHIER
  */
 @Entity
 @Table(name = "CLIENT")
@@ -47,8 +46,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Client.findByOperator", query = "SELECT c FROM Client c WHERE c.operator = :operator"),
     @NamedQuery(name = "Client.findByInternetLogin", query = "SELECT c FROM Client c WHERE c.internetLogin = :internetLogin"),
     @NamedQuery(name = "Client.findByInternetPassword", query = "SELECT c FROM Client c WHERE c.internetPassword = :internetPassword"),
-    @NamedQuery(name = "Client.findByObservations", query = "SELECT c FROM Client c WHERE c.observations = :observations")})
-public class Client implements Serializable {
+    @NamedQuery(name = "Client.findByObservations", query = "SELECT c FROM Client c WHERE c.observations = :observations"),
+    @NamedQuery(name = "Client.findBySleeping", query = "SELECT c FROM Client c WHERE c.sleeping = :sleeping")})
+public class Client implements Serializable
+{
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -99,6 +100,8 @@ public class Client implements Serializable {
     @Size(max = 250)
     @Column(name = "OBSERVATIONS")
     private String observations;
+    @Column(name = "SLEEPING")
+    private Boolean sleeping;
     @JoinColumn(name = "ID_USER", referencedColumnName = "ID")
     @ManyToOne
     private CUser idUser;
@@ -237,6 +240,14 @@ public class Client implements Serializable {
 
     public void setObservations(String observations) {
         this.observations = observations;
+    }
+
+    public Boolean getSleeping() {
+        return sleeping;
+    }
+
+    public void setSleeping(Boolean sleeping) {
+        this.sleeping = sleeping;
     }
 
     public CUser getIdUser() {

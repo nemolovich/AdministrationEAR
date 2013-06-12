@@ -21,7 +21,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Windows 7
+ * @author Brian GOHIER
  */
 @Entity
 @Table(name = "SOFTWARE")
@@ -34,8 +34,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Software.findByLicense", query = "SELECT s FROM Software s WHERE s.license = :license"),
     @NamedQuery(name = "Software.findByEditor", query = "SELECT s FROM Software s WHERE s.editor = :editor"),
     @NamedQuery(name = "Software.findByStationNumber", query = "SELECT s FROM Software s WHERE s.stationNumber = :stationNumber"),
-    @NamedQuery(name = "Software.findByObservations", query = "SELECT s FROM Software s WHERE s.observations = :observations")})
-public class Software implements Serializable {
+    @NamedQuery(name = "Software.findByObservations", query = "SELECT s FROM Software s WHERE s.observations = :observations"),
+    @NamedQuery(name = "Software.findBySleeping", query = "SELECT s FROM Software s WHERE s.sleeping = :sleeping")})
+public class Software implements Serializable
+{
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -59,6 +61,8 @@ public class Software implements Serializable {
     @Size(max = 250)
     @Column(name = "OBSERVATIONS")
     private String observations;
+    @Column(name = "SLEEPING")
+    private Boolean sleeping;
     @JoinColumn(name = "ID_CLIENT", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Client idClient;
@@ -124,6 +128,14 @@ public class Software implements Serializable {
 
     public void setObservations(String observations) {
         this.observations = observations;
+    }
+
+    public Boolean getSleeping() {
+        return sleeping;
+    }
+
+    public void setSleeping(Boolean sleeping) {
+        this.sleeping = sleeping;
     }
 
     public Client getIdClient() {

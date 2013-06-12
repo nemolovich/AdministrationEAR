@@ -37,9 +37,9 @@ public class PhonePatternValidator implements Validator
     {
         if (value == null || "".equals((String)value))
         {
-            FacesMessage msg = new FacesMessage("Numéro de téléphone vide",
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                    "Numéro de téléphone vide",
                     "Le champs 'téléphone' ne peut être vide (format 01.23.45.67.89)");
-            msg.setSeverity(FacesMessage.SEVERITY_ERROR);
             throw new ValidatorException(msg);
         }
         
@@ -47,9 +47,9 @@ public class PhonePatternValidator implements Validator
          
         if (!matcher.matches())
         {
-            FacesMessage msg = new FacesMessage("Numéro de téléphone invalide",
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                    "Numéro de téléphone invalide",
                     "Numéro de téléphone invalide (format 01.23.45.67.89)");
-            msg.setSeverity(FacesMessage.SEVERITY_ERROR);
             throw new ValidatorException(msg);
         }
     }

@@ -95,10 +95,10 @@ public abstract class UniqueFieldValidator<C, F extends AbstractFacade<C>> imple
                 }
                 if((equals||m.invoke(entity).equals(field))&&((Integer)getId.invoke(entity))!=this.update_ID)
                 {
-                    FacesMessage message=new FacesMessage("Champs '"+fieldName+"' incorrect",
+                    FacesMessage message=new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                            "Champs '"+fieldName+"' incorrect",
                             "La valeur '"+field+"' pour le champs '"+this.fieldName+
                             "' est déjà utilisé par une autre entrée");
-                    message.setSeverity(FacesMessage.SEVERITY_ERROR);
                     throw new ValidatorException(message);
                 }
             }

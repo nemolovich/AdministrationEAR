@@ -27,27 +27,27 @@ public abstract class AbstractFacade<T>
     public void create(T entity)
     {
         getEntityManager().persist(entity);
-        FacesMessage message=new FacesMessage("Ajout de la donnée réussie",
+        FacesMessage message=new FacesMessage(FacesMessage.SEVERITY_INFO,
+                "Ajout de la donnée réussie",
                 "L'enregistrement s'est correctement déroulé");
-        message.setSeverity(FacesMessage.SEVERITY_INFO);
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
     public void edit(T entity)
     {
         getEntityManager().merge(entity);
-        FacesMessage message=new FacesMessage("Modification de la donnée réussie",
+        FacesMessage message=new FacesMessage(FacesMessage.SEVERITY_INFO,
+                "Modification de la donnée réussie",
                 "La mise-à-jour s'est correctement déroulée");
-        message.setSeverity(FacesMessage.SEVERITY_INFO);
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
     public void remove(T entity)
     {
         getEntityManager().remove(getEntityManager().merge(entity));
-        FacesMessage message=new FacesMessage("Supression de la donnée réussie",
+        FacesMessage message=new FacesMessage(FacesMessage.SEVERITY_INFO,
+                "Supression de la donnée réussie",
                 "La suppression s'est correctement déroulée");
-        message.setSeverity(FacesMessage.SEVERITY_INFO);
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 

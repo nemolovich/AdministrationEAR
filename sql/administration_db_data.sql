@@ -31,7 +31,7 @@
 ------- Permet de ne laisser l'identifiant '1' libre --------
 -- Redémarre le compteur à '0', création d'admin temporaire
 --  prenant alors en ID '0', prochaine entrée à '1'
-ALTER TABLE ROOT.T_USER ALTER COLUMN ID RESTART WITH 0;
+-- ALTER TABLE ROOT.T_USER ALTER COLUMN ID RESTART WITH 0;
 
 ---------- Création d'un administrateur par défaut ----------
 -- LOGIN (mail):		admin
@@ -39,10 +39,10 @@ ALTER TABLE ROOT.T_USER ALTER COLUMN ID RESTART WITH 0;
 -- /!\ Ne pas oublier de supprimer cette entrée après  /!\ --
 -- /!\ avoir créé votre administrateur via l'interface /!\ --
 -- /!\ principale                                      /!\ --
-INSERT INTO ROOT.T_USER
-		(MAIL, "NAME", FIRSTNAME, RIGHTS, PASSWORD) 
-	VALUES ('admin', '', '', 'ADMIN',
-				'!#/)zW¥§C‰JJ€Ã                ');
+-- INSERT INTO ROOT.T_USER
+-- 		(MAIL, "NAME", FIRSTNAME, RIGHTS, PASSWORD) 
+-- 	VALUES ('admin', '', '', 'ADMIN',
+-- 				'!#/)zW¥§C‰JJ€Ã                ');
 
 ---------------------- INITIALISATION -----------------------
 INSERT INTO ROOT.CLIENT

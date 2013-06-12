@@ -4,8 +4,11 @@
  */
 package bean.view.struct;
 
+import bean.Utils;
 import bean.facade.abstracts.AbstractFacade;
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -25,6 +28,7 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> implements Seria
     private  String webFolder=null;
     private F entityFacade;
     private boolean creating=false;
+    private boolean editing=false;
     
     public EntityView()
     {
@@ -34,6 +38,16 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> implements Seria
     {
         this.webFolder="/restricted/admin/data/"+webFolder+"/";
         this.entityClass=entityClass;
+    }
+
+    public boolean isEditing()
+    {
+        return editing;
+    }
+
+    public void setEditing(boolean editing)
+    {
+        this.editing = editing;
     }
     
     public boolean isCreating()
@@ -54,6 +68,7 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> implements Seria
     public String create()
     {
         this.creating=false;
+        this.editing=false;
         this.setFacade();
         this.entityFacade.create(this.entity);
         return this.webFolder+"list";
@@ -62,14 +77,17 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> implements Seria
     public String delete()
     {
         this.creating=false;
+        this.editing=false;
         this.setFacade();
         this.entityFacade.remove(this.entity);
+        this.entity=null;
         return this.webFolder+"list";
     }
     
     public String update()
     {
         this.creating=false;
+        this.editing=false;
         this.setFacade();
         this.entityFacade.edit(this.entity);
         return this.webFolder+"list";
@@ -78,6 +96,7 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> implements Seria
     public String entityView(C entity)
     {
         this.creating = false;
+        this.editing = false;
         this.entity = entity;
         return this.webFolder+"view";
     }
@@ -86,10 +105,10 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> implements Seria
     {
         if(entities!=null&&entities.length!=1)
         {
-            FacesMessage message=new FacesMessage("Sélection invalide",
+            FacesMessage message=new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                    "Sélection invalide",
                     "Vous devez sélectionner un et un seul élément "
                     + "pour effectuer cette tâche");
-            message.setSeverity(FacesMessage.SEVERITY_ERROR);
             FacesContext.getCurrentInstance().addMessage(null, message);
             return null;
         }
@@ -99,21 +118,62 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> implements Seria
     public String entityUpdate(C entity)
     {
         this.creating = false;
+        this.editing = true;
         this.entity = entity;
         return this.webFolder+"update";
+    }
+    
+    public String entityParameter(C entity)
+    {
+        this.creating = false;
+        this.editing = true;
+        this.entity = entity;
+        return this.webFolder+"parameters";
     }
     
     public String entityDelete(C entity)
     {
         this.creating = false;
+        this.editing = false;
         this.setFacade();
         this.entityFacade.remove(entity);
+        return this.webFolder+"list";
+    }
+    
+    public String entitySleep(C entity)
+    {
+        try
+        {
+            Method m=entity.getClass().getMethod("setSleeping", Boolean.class);
+            Utils.callMethod(m, "mise en veille de la donnée", entity, true);
+        }
+        catch (NoSuchMethodException ex)
+        {
+            Logger.getLogger(EntityView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.entityFacade.edit(entity);
+        return this.webFolder+"list";
+    }
+    
+    public String entityWake(C entity)
+    {
+        try
+        {
+            Method m=entity.getClass().getMethod("setSleeping", Boolean.class);
+            Utils.callMethod(m, "réactivation de la donnée", entity, false);
+        }
+        catch (NoSuchMethodException ex)
+        {
+            Logger.getLogger(EntityView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.entityFacade.edit(entity);
         return this.webFolder+"list";
     }
     
     public String entityCreate()
     {
         this.creating = true;
+        this.editing = false;
         String message="Création d'une entité de la classe '"+this.entityClass.getName()+"'";
         Logger.getLogger(EntityView.class.getName()).log(Level.INFO,
                 message);

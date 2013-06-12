@@ -66,12 +66,12 @@ public class PasswordValidator implements Validator
             return;
         }
         
-        FacesMessage message1=new FacesMessage("Mot de passe incorrect",
+        FacesMessage message1=new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                "Mot de passe incorrect",
                 "Le mot de passe doit contenir entre 8 et 32 caractères");
-        message1.setSeverity(FacesMessage.SEVERITY_ERROR);
-        FacesMessage message2=new FacesMessage("Mot de passe non confirmé",
+        FacesMessage message2=new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                "Mot de passe non confirmé",
                 "Veuillez confirmer le mot de passe");
-        message2.setSeverity(FacesMessage.SEVERITY_ERROR);
         
 //        System.err.println("Status: ID="+this.update_id+" - password='"+password+"' - confirmation='"+
 //                confirm+"' minLength="+passwordMinLength);
@@ -111,9 +111,9 @@ public class PasswordValidator implements Validator
         if (!password.equals(confirm)&&!password.isEmpty())
         {
             confirmComponent.setValid(false);
-            FacesMessage message=new FacesMessage("Confirmation du mot de passe échouée",
+            FacesMessage message=new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                    "Confirmation du mot de passe échouée",
                     "Les mots de passes ne correspondent pas");
-            message.setSeverity(FacesMessage.SEVERITY_ERROR);
             throw new ValidatorException(message);
         }
     }

@@ -16,8 +16,6 @@ var appName='Administration';
  */
 function createRequest(form, xhr, status, args)
 {
-    console.log(status);
-    console.log(args);
     if(args.validationFailed)
     {
         form.jq.effect("shake", { times:2 }, 100);
@@ -141,4 +139,17 @@ function updateTimer(form,id)
     {
         window.location='/'+appName;
     }
+}
+
+/**
+ * 
+ * @param {c} table - La table des données
+ * @param {Number} index - Index de sélection sur la vue
+ * @param {Number} maxRows - Le nombre de lignes par vue
+ * @returns {void}
+ */
+function selectLine(table, index, maxRows)
+{
+    table.unselectAllRows();
+    table.selectRow((index-table.getPaginator().getCurrentPage()*maxRows));
 }

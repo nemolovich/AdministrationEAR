@@ -10,7 +10,6 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -26,7 +25,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Windows 7
+ * @author Brian GOHIER
  */
 @Entity
 @Table(name = "WORKSTATION")
@@ -43,8 +42,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Workstation.findByOperatingSystem", query = "SELECT w FROM Workstation w WHERE w.operatingSystem = :operatingSystem"),
     @NamedQuery(name = "Workstation.findByRam", query = "SELECT w FROM Workstation w WHERE w.ram = :ram"),
     @NamedQuery(name = "Workstation.findByHardDrive", query = "SELECT w FROM Workstation w WHERE w.hardDrive = :hardDrive"),
-    @NamedQuery(name = "Workstation.findByObservations", query = "SELECT w FROM Workstation w WHERE w.observations = :observations")})
-public class Workstation implements Serializable {
+    @NamedQuery(name = "Workstation.findByObservations", query = "SELECT w FROM Workstation w WHERE w.observations = :observations"),
+    @NamedQuery(name = "Workstation.findBySleeping", query = "SELECT w FROM Workstation w WHERE w.sleeping = :sleeping")})
+public class Workstation implements Serializable
+{
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -81,6 +82,8 @@ public class Workstation implements Serializable {
     @Size(max = 250)
     @Column(name = "OBSERVATIONS")
     private String observations;
+    @Column(name = "SLEEPING")
+    private Boolean sleeping;
     @JoinColumn(name = "ID_CLIENT", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Client idClient;
@@ -180,6 +183,14 @@ public class Workstation implements Serializable {
         this.observations = observations;
     }
 
+    public Boolean getSleeping() {
+        return sleeping;
+    }
+
+    public void setSleeping(Boolean sleeping) {
+        this.sleeping = sleeping;
+    }
+
     public Client getIdClient() {
         return idClient;
     }
@@ -209,8 +220,7 @@ public class Workstation implements Serializable {
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         String out=this.brand+" on "+this.operatingSystem+" [P:"+
                 (this.processor!=null&&!this.processor.isEmpty()?this.processor:"null")+
                 "|RAM:"+(this.ram!=null&&!this.ram.isEmpty()?this.ram:"null")+"][";
@@ -219,7 +229,7 @@ public class Workstation implements Serializable {
             out+=DateFormat.getDateInstance().format(this.startDate)+"][";
         }
         out+=this.idClient+"]";
-        return out.replaceAll(",",".");
+        return out;
     }
     
 }

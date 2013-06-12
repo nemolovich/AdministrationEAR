@@ -76,8 +76,10 @@
                     <h:form>
                         <p:dataTable value="#{clientView.entries}"
                                      var="item"
-                                     rows="10"
+                                     rows="#{utils.maxDataRows}"
                                      paginator="true"
+                                     rowStyleClass="#{item.sleeping?'sleeping_elmt':null}"
+                                     paginatorPosition="bottom"
                                      emptyMessage="Aucune société n'a été trouvée"   
                                      widgetVar="clientTable">
                             <p:column headerText="Nom de la société"
@@ -152,6 +154,33 @@
                                                  onclick="return (confirm('#{clientView.getDeleteMessage(item)}'));"
                                                  title="Supprimer cette société"/>
                             </p:column>
+                            <p:column headerText="État"
+                                      style="width:2%;"
+                                      sortBy="#{item.sleeping}"
+                                      filterMatchMode="contains">
+                                <p:commandButton actionListener="#{clientView.entitySleep(item)}"
+                                                 action="javascript:void(0);"
+                                                 icon="ui-icon-pause"
+                                                 immediate="true"
+                                                 ajax="false"
+                                                 update=":clientViewForm :clientDialogHeader"
+                                                 style="font-size: 60%;float:right;"
+                                                 styleClass="red_icon"
+                                                 onclick="return (confirm('Voulez vous mettre en standby cette société?\n\
+(vous pourrez la réactiver quand vous voulez)'));"
+                                                 title="Mettre en standby cette société"
+                                                 rendered="#{not item.sleeping}"/>
+                                <p:commandButton actionListener="#{clientView.entityWake(item)}"
+                                                 action="javascript:void(0);"
+                                                 icon="ui-icon-play"
+                                                 immediate="true"
+                                                 ajax="false"
+                                                 update=":clientViewForm :clientDialogHeader"
+                                                 style="font-size: 60%;float:right;"
+                                                 styleClass="blue_icon"
+                                                 title="Réactiver cette société"
+                                                 rendered="#{item.sleeping}"/>
+                            </p:column>
                             <f:facet name="footer">
                                 <p:outputPanel style="float:left">
                                     <h:outputText value="Rechercher:"/>
@@ -160,6 +189,8 @@
                                     <p:commandButton value="Ajouter une société"
                                                      action="#{clientView.entityCreate()}"
                                                      title="Ajouter une société"
+                                                     icon="ui-icon-circle-plus"
+                                                     styleClass="blue_icon"
                                                      immediate="true"
                                                      ajax="false"/>
                                 </p:outputPanel>

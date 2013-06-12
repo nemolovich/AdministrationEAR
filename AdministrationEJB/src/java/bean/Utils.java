@@ -21,6 +21,20 @@ import javax.inject.Named;
 public class Utils
 {
     /**
+     * Le nombre maximum de ligne dans une liste de données
+     */
+    private int maxDataRows = 10;
+    
+    /**
+     * Renvoi le nombre max de lignes dans une liste de données
+     * @return {@link Integer int} Nombre de lignes
+     */
+    public int getMaxDataRows()
+    {
+        return this.maxDataRows;
+    }
+    
+    /**
      * Remplace chaque caractère d'un texte par une étoile
      * @param text {@link String} - Le texte à convertir
      * @return {@link String} Le texte contenant les étoiles

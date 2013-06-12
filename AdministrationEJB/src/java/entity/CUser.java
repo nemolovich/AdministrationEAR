@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Windows 7
+ * @author Brian GOHIER
  */
 @Entity
 @Table(name = "C_USER")
@@ -35,8 +35,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "CUser.findById", query = "SELECT c FROM CUser c WHERE c.id = :id"),
     @NamedQuery(name = "CUser.findByName", query = "SELECT c FROM CUser c WHERE c.name = :name"),
     @NamedQuery(name = "CUser.findByPhone", query = "SELECT c FROM CUser c WHERE c.phone = :phone"),
-    @NamedQuery(name = "CUser.findByObservations", query = "SELECT c FROM CUser c WHERE c.observations = :observations")})
-public class CUser implements Serializable {
+    @NamedQuery(name = "CUser.findByObservations", query = "SELECT c FROM CUser c WHERE c.observations = :observations"),
+    @NamedQuery(name = "CUser.findBySleeping", query = "SELECT c FROM CUser c WHERE c.sleeping = :sleeping")})
+public class CUser implements Serializable
+{
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,6 +57,8 @@ public class CUser implements Serializable {
     @Size(max = 250)
     @Column(name = "OBSERVATIONS")
     private String observations;
+    @Column(name = "SLEEPING")
+    private Boolean sleeping;
     @OneToMany(mappedBy = "idUser")
     private List<Client> clientList;
     @JoinColumn(name = "ID_CLIENT", referencedColumnName = "ID")
@@ -104,6 +108,14 @@ public class CUser implements Serializable {
 
     public void setObservations(String observations) {
         this.observations = observations;
+    }
+
+    public Boolean getSleeping() {
+        return sleeping;
+    }
+
+    public void setSleeping(Boolean sleeping) {
+        this.sleeping = sleeping;
     }
 
     @XmlTransient

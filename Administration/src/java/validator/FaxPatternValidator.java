@@ -44,9 +44,9 @@ public class FaxPatternValidator implements Validator
          
         if (!matcher.matches())
         {
-            FacesMessage msg = new FacesMessage("Numéro de fax invalide",
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                    "Numéro de fax invalide",
                     "Numéro de fax invalide (format 01.23.45.67.89)");
-            msg.setSeverity(FacesMessage.SEVERITY_ERROR);
             throw new ValidatorException(msg);
         }
     }

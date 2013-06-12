@@ -11,7 +11,7 @@
 -------------------------------------------------------------
 
 --- Supprime les tables si elles existent, sinon commenter --
-DROP TABLE ROOT.T_USER;
+-- DROP TABLE ROOT.T_USER;
 ALTER TABLE ROOT.CLIENT DROP CONSTRAINT client_c_user_id_fk;
 ALTER TABLE ROOT.MAIL DROP CONSTRAINT mail_client_id_fk;
 DROP TABLE ROOT.MAIL;
@@ -28,17 +28,17 @@ DROP TABLE ROOT.C_USER;
 -- DESCRIPTION: 	Table concernant les utilisateurs
 -- 	du site, ceux qui ont accès aux données de la base
 -- 	de données.
- CREATE TABLE ROOT.T_USER (
- 	id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY
- 		(START WITH 1, INCREMENT BY 1),
- 	mail VARCHAR(64) NOT NULL UNIQUE,
- 	name VARCHAR(30) NOT NULL,
- 	firstname VARCHAR(30) NOT NULL,
- 	rights VARCHAR(32) NOT NULL DEFAULT 'UNKNOWN'
- 	CONSTRAINT rights_ck CHECK (rights IN
- 		('UNKNOWN','USER','ADMIN')),
- 	password CHAR(32) NOT NULL
- 	);
+--  CREATE TABLE ROOT.T_USER (
+--  	id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY
+--  		(START WITH 1, INCREMENT BY 1),
+--  	mail VARCHAR(64) NOT NULL UNIQUE,
+--  	name VARCHAR(30) NOT NULL,
+--  	firstname VARCHAR(30) NOT NULL,
+--  	rights VARCHAR(32) NOT NULL DEFAULT 'UNKNOWN'
+--  	CONSTRAINT rights_ck CHECK (rights IN
+--  		('UNKNOWN','USER','ADMIN')),
+--  	password CHAR(32) NOT NULL
+--  	);
 
 ---------------- Création de la table CLIENT ----------------
 -- TABLE:			CLIENT
@@ -60,7 +60,8 @@ CREATE TABLE ROOT.CLIENT (
 		operator VARCHAR(30),
 		internet_login VARCHAR(30),
 		internet_password VARCHAR(64),
-        observations VARCHAR(250));
+        observations VARCHAR(250),
+		sleeping BOOLEAN DEFAULT FALSE);
 
 ---------------- Création de la table C_USER ----------------
 -- TABLE:			C_USER
@@ -73,6 +74,7 @@ CREATE TABLE ROOT.C_USER (
         name VARCHAR(45) NOT NULL DEFAULT 'unnamed',
         phone VARCHAR(14) NOT NULL,
         observations VARCHAR(250),
+		sleeping BOOLEAN DEFAULT FALSE,
         CONSTRAINT user_client_id_fk
                 FOREIGN KEY (id_client)
                 REFERENCES ROOT.CLIENT(id));
@@ -98,6 +100,7 @@ CREATE TABLE ROOT.MAIL (
         pop_password VARCHAR(64),
         smtp VARCHAR(64),
         smtp_password VARCHAR(64),
+		sleeping BOOLEAN DEFAULT FALSE,
         CONSTRAINT mail_client_id_fk
                 FOREIGN KEY (id_client)
                 REFERENCES ROOT.CLIENT(id));
@@ -120,6 +123,7 @@ CREATE TABLE ROOT.WORKSTATION (
 		ram VARCHAR(64),
 		hard_drive VARCHAR(64),
         observations VARCHAR(250),
+		sleeping BOOLEAN DEFAULT FALSE,
         CONSTRAINT workstation_client_id_fk
                 FOREIGN KEY (id_client)
                 REFERENCES ROOT.CLIENT(id));
@@ -138,6 +142,7 @@ CREATE TABLE ROOT.SOFTWARE (
 		editor VARCHAR(64),
 		station_number INTEGER,
         observations VARCHAR(250),
+		sleeping BOOLEAN DEFAULT FALSE,
         CONSTRAINT software_client_id_fk
                 FOREIGN KEY (id_client)
                 REFERENCES ROOT.CLIENT(id));
