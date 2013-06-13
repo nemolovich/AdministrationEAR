@@ -19,7 +19,17 @@ public class EntityMultiView<C> implements Serializable
     private static final long serialVersionUID = 1L;
     private C[] multiSelection;
     private C singleSelection;
+    private Class<C> entityClass;
     private EntityDataModel<C> multiDataModel;
+
+    public EntityMultiView()
+    {
+    }    
+
+    public EntityMultiView(Class<C> entityClass)
+    {
+        this.entityClass = entityClass;
+    }
 
     public EntityDataModel<C> getMultiDataModel()
     {
@@ -56,7 +66,7 @@ public class EntityMultiView<C> implements Serializable
 
     public void setMultiDataModel(List<C> list)
     {
-        this.multiDataModel = new EntityDataModel<C>(list){};
+        this.multiDataModel = new EntityDataModel<C>(list,this.entityClass){};
     }
 
     public C[] getMultiSelection()

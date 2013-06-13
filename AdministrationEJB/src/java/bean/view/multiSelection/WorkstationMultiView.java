@@ -23,6 +23,7 @@ public class WorkstationMultiView extends EntityMultiView<Workstation>
     
     public WorkstationMultiView()
     {
+        super(Workstation.class);
     }
     
     public EntityDataModel<Workstation> getData(List<Workstation> list)

@@ -153,3 +153,9 @@ function selectLine(table, index, maxRows)
     table.unselectAllRows();
     table.selectRow((index-table.getPaginator().getCurrentPage()*maxRows));
 }
+
+//function setOptionSelected(selectId,value)
+//{
+//    $('#'+selectId+' option:selected').removeAttr("selected");
+//    $('#'+selectId+' option[value='+value+']').attr("selected","selected");
+//}

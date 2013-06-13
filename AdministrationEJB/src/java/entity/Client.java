@@ -101,7 +101,7 @@ public class Client implements Serializable
     @Column(name = "OBSERVATIONS")
     private String observations;
     @Column(name = "SLEEPING")
-    private Boolean sleeping;
+    private Boolean sleeping=false;
     @JoinColumn(name = "ID_USER", referencedColumnName = "ID")
     @ManyToOne
     private CUser idUser;

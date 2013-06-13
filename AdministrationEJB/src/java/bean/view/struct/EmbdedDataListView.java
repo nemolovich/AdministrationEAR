@@ -19,7 +19,8 @@ public abstract class EmbdedDataListView<C,O,F extends AbstractEmbdedDataList<C,
 {
     private Method setReferenceMethod;
 
-    public EmbdedDataListView() {
+    public EmbdedDataListView()
+    {
     }    
 
     public EmbdedDataListView(Class<O> entityClass,String webFolder,

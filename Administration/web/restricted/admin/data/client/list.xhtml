@@ -32,13 +32,11 @@
                         <h3 class="tabheader">Détails de la société #{clientView.entity.name}:</h3>
                     </h:form>
                     <ui:include src="/restricted/admin/data/client/popupView.xhtml"/>
-                    <p:hotkey bind="esc" handler="clientViewDialog.hide();"/>
                     <h:form>
                         <p:outputPanel styleClass="buttons_panel">
                             <center>
                                 <p:commandButton title="Fermer la fenêtre"
                                                  action="javascript:void(0);"
-                                                 update=":clientViewForm"
                                                  onclick="clientViewDialog.hide();"
                                                  value="Fermer"/>
                             </center>
@@ -77,6 +75,7 @@
                         <p:dataTable id="clientDataTable"
                                      value="#{clientView.entries}"
                                      var="item"
+                                     lazy="true"
                                      widgetVar="clientTable"
                                      paginator="true"
                                      paginatorPosition="bottom"
@@ -130,7 +129,7 @@
                                                        utils.getShortString(item.observations,40))}"
                                               escape="false"/>
                             </p:column>
-                            <p:column headerText="Actions">
+                            <p:column headerText="Actions" style="white-space: nowrap;">
                                 <p:commandButton actionListener="#{clientView.entityView(item)}"
                                                  icon="ui-icon-search"
                                                  update=":clientViewForm :clientDialogHeader"
@@ -150,14 +149,16 @@
                                                  ajax="false"
                                                  style="font-size: 60%;"
                                                  title="Paramétrer cette société"/>
+                                <h:outputText value="{clientView.getDeleteMessage(item)}"/>
                                 <p:commandButton actionListener="#{clientView.entityDelete(item)}"
                                                  icon="ui-icon-trash"
-                                                 update=":clientViewForm :clientDialogHeader"
+                                                 immediate="true"
+                                                 ajax="false"
+                                                 update=":growl :clientViewForm :clientDialogHeader :clientDataForm"
                                                  style="font-size: 60%;"
                                                  styleClass="red_icon"
-                                                 oncomplete="clientViewDialog.show();"
                                                  action="javascript:void(0);"
-                                                 onclick="return (confirm('#{clientView.getDeleteMessage(item)}'));"
+                                                 onclick="return (confirm('{clientView.getDeleteMessage(item)}'));"
                                                  title="Supprimer cette société"/>
                             </p:column>
                             <p:column id="sleepingTab"
@@ -167,28 +168,34 @@
                                       filterBy="#{item.sleeping}"
                                       filterOptions="#{clientView.sleepingOptions}"
                                       filterMatchMode="exact">
-                                <p:commandButton actionListener="#{clientView.entitySleep(item)}"
-                                                 action="javascript:void(0);"
-                                                 icon="ui-icon-pause"
-                                                 immediate="true"
-                                                 ajax="false"
-                                                 update=":clientViewForm :clientDialogHeader"
-                                                 style="font-size: 60%;float:right;"
-                                                 styleClass="red_icon"
-                                                 onclick="return (confirm('Voulez vous mettre en standby cette société?\n\
-(vous pourrez la réactiver quand vous voulez)'));"
-                                                 title="Mettre en standby cette société"
-                                                 rendered="#{not item.sleeping}"/>
+                                <f:facet name="header">
+                                    <h:outputText value="État"/>
+                                    <p:commandButton title="Actualiser le filtre"
+                                                     type="button"
+                                                     style="margin-left:5px;margin-bottom: 2px;font-size: 50%;vertical-align: bottom !important;"
+                                                     icon="ui-icon-refresh"
+                                                     onclick="clientTable.filter();"/>
+                                </f:facet>
                                 <p:commandButton actionListener="#{clientView.entityWake(item)}"
                                                  action="javascript:void(0);"
                                                  icon="ui-icon-play"
-                                                 immediate="true"
-                                                 ajax="false"
-                                                 update=":clientViewForm :clientDialogHeader"
+                                                 oncomplete="clientTable.filter();"
+                                                 update=":growl :clientDataForm:clientDataTable :clientDataForm:clientDataTable:sleepingTab"
                                                  style="font-size: 60%;float:right;"
                                                  styleClass="blue_icon"
                                                  title="Réactiver cette société"
                                                  rendered="#{item.sleeping}"/>
+                                <p:commandButton actionListener="#{clientView.entitySleep(item)}"
+                                                 action="javascript:void(0);"
+                                                 icon="ui-icon-pause"
+                                                 update=":growl :clientDataForm:clientDataTable:sleepingTab"
+                                                 oncomplete="//clientTable.filter();"
+                                                 onclick="return confirm('Voulez vous vraiment mettre cette société en standby?\n\
+(Vous pourrez la réactivez quand vous le souhaitez)');//clientTable.filter();"
+                                                 style="font-size: 60%;float:right;"
+                                                 styleClass="red_icon"
+                                                 title="Mettre en standby cette société"
+                                                 rendered="#{not item.sleeping}"/>
                             </p:column>
                             <f:facet name="footer">
                                 <p:outputPanel style="float:left">
@@ -205,17 +212,6 @@
                                 </p:outputPanel>
                             </f:facet>
                         </p:dataTable>
-                        <script type="text/javascript">
-                            $(document).ready(function()
-                            {
-//                                var selectOption=$('#clientDataForm\\:clientDataTable\\:sleepingTab');
-//                                selectOption.selectedIndex=0;
-//                                console.log($('#clientDataForm\\:clientDataTable\\:sleepingTab option:selected').text);
-//                                selectOption.attr('title','un test');
-//                                selectOption.val('Actif');
-//                                selectOption.trigger('filter');
-                            });
-                        </script>
                     </h:form>
                 </f:view>
             </ui:define>

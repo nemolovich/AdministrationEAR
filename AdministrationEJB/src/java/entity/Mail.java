@@ -62,7 +62,7 @@ public class Mail implements Serializable
     @Column(name = "SMTP_PASSWORD")
     private String smtpPassword;
     @Column(name = "SLEEPING")
-    private Boolean sleeping;
+    private Boolean sleeping=false;
     @JoinColumn(name = "ID_CLIENT", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Client idClient;

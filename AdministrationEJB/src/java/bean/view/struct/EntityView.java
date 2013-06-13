@@ -7,7 +7,6 @@ package bean.view.struct;
 import bean.Utils;
 import bean.facade.abstracts.AbstractFacade;
 import java.io.Serializable;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 
 /**
  *
@@ -29,6 +29,13 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> implements Seria
     private F entityFacade;
     private boolean creating=false;
     private boolean editing=false;
+    private final SelectItem[] states={
+                    new SelectItem("","Les deux","Affiche les éléments actifs et innactifs"),
+                    new SelectItem("false","Actif","Affiche les éléments actifs"),
+                    new SelectItem("true","Inactif","Affiche les éléments innactifs")
+                };
+    private List<C> filteredEntities;
+    private boolean firstView=true;
     
     public EntityView()
     {
@@ -38,6 +45,63 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> implements Seria
     {
         this.webFolder="/restricted/admin/data/"+webFolder+"/";
         this.entityClass=entityClass;
+    }
+    
+    
+    private List<C> getWakeEntities()
+    {
+        this.setFacade();
+        List<C> res=new ArrayList<C>();
+        Method m;
+        try
+        {
+            m=this.entityClass.getMethod("getSleeping");
+        }
+        catch (NoSuchMethodException ex)
+        {
+            Logger.getLogger(EntityView.class.getName()).log(Level.SEVERE, null, ex);
+            return res;
+        }
+        catch (SecurityException ex)
+        {
+            Logger.getLogger(EntityView.class.getName()).log(Level.SEVERE, null, ex);
+            return res;
+        }
+        catch (NullPointerException ex)
+        {
+            Logger.getLogger(EntityView.class.getName()).log(Level.SEVERE, null, ex);
+            return res;
+        }
+        for(C c:this.findAll())
+        {
+            Boolean isSleeping=(Boolean)Utils.callMethod(m, "récupération de l'état de veille", c);
+            System.err.println(isSleeping);
+            if(!isSleeping)
+            {
+                res.add(entity);
+            }
+        }
+        return res;
+    }
+  
+    public SelectItem[] getSleepingOptions()
+    {
+        return this.states;
+    }
+    
+    public List<C> getFilteredEntities()
+    {
+        if(this.firstView)
+        {
+            this.setFilteredEntities(this.getWakeEntities());
+            this.firstView=false;
+        }
+        return this.filteredEntities;
+    }
+  
+    public void setFilteredEntities(List<C> filteredEntities)
+    {
+        this.filteredEntities = filteredEntities;
     }
 
     public boolean isEditing()

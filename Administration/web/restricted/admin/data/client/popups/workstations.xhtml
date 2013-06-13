@@ -18,8 +18,6 @@
                   showEffect="clip"
                   hideEffect="clip">
             <h:form id="createWorkstationForm">
-                <p:hotkey bind="esc"
-                          handler="createWorstation.hide();"/>
                 <h:panelGrid columns="2" columnClasses="label,fields"
                              rendered="#{not empty workstationView.entity}">
                     <p:outputLabel value="Marque:" for="wbrand" />
@@ -28,11 +26,7 @@
                                  required="true"
                                  requiredMessage="Le champs 'Marque' ne peut être vide"
                                  rendered="#{workstationView.creating or 
-                                                workstationView.editing}">
-                        <f:validator binding="#{workstationUniqueFieldValidator}"/>
-                        <f:attribute name="fieldName" value="Brand" />
-                        <f:attribute name="update_id" value="#{workstationView.entity.id}" />
-                    </p:inputText>
+                                                workstationView.editing}"/>
                     <h:outputText id="wbrandV" value="#{workstationView.entity.brand}"
                                   title="Marque de la machine"
                                   rendered="#{not workstationView.creating and

@@ -62,7 +62,7 @@ public class Software implements Serializable
     @Column(name = "OBSERVATIONS")
     private String observations;
     @Column(name = "SLEEPING")
-    private Boolean sleeping;
+    private Boolean sleeping=false;
     @JoinColumn(name = "ID_CLIENT", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Client idClient;
