@@ -9,18 +9,19 @@
     </h:head>
     <h:body>
         <p:dialog id="dialogWorkstation"
-                          appendToBody="true"
-                          header="Fenêtre de poste"
-                          widgetVar="createWorstation"
-                          resizable="false"
-                          draggable="false"
-                          modal="true"
-                          showEffect="clip"
-                          hideEffect="clip">
+                  appendToBody="true"
+                  header="Fenêtre de poste"
+                  widgetVar="createWorstation"
+                  resizable="false"
+                  draggable="false"
+                  modal="true"
+                  showEffect="clip"
+                  hideEffect="clip">
             <h:form id="createWorkstationForm">
+                <p:hotkey bind="esc"
+                          handler="createWorstation.hide();"/>
                 <h:panelGrid columns="2" columnClasses="label,fields"
                              rendered="#{not empty workstationView.entity}">
-
                     <p:outputLabel value="Marque:" for="wbrand" />
                     <p:inputText id="wbrand" value="#{workstationView.entity.brand}"
                                  title="Marque de la machine"

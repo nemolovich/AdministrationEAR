@@ -73,15 +73,18 @@
                     </h:form>
                 </p:dialog>
                 <f:view>
-                    <h:form>
-                        <p:dataTable value="#{clientView.entries}"
+                    <h:form id="clientDataForm">
+                        <p:dataTable id="clientDataTable"
+                                     value="#{clientView.entries}"
                                      var="item"
-                                     rows="#{utils.maxDataRows}"
+                                     widgetVar="clientTable"
                                      paginator="true"
-                                     rowStyleClass="#{item.sleeping?'sleeping_elmt':null}"
                                      paginatorPosition="bottom"
-                                     emptyMessage="Aucune société n'a été trouvée"   
-                                     widgetVar="clientTable">
+                                     rows="#{utils.maxDataRows}"
+                                     rowStyleClass="#{item.sleeping?'sleeping_elmt':null}"
+                                     filteredValue="#{clientView.filteredEntities}"
+                                     sortBy="#{item.sleeping}"
+                                     emptyMessage="Aucune société n'a été trouvée">
                             <p:column headerText="Nom de la société"
                                       sortBy="#{item.name}"
                                       filterBy="#{item.name}"
@@ -94,12 +97,15 @@
                                       filterMatchMode="contains">
                                 <h:outputText value="#{item.address}"/>
                             </p:column>
-                            <p:column headerText="Téléphone">
+                            <p:column headerText="Téléphone"
+                                      sortBy="#{item.phone}"
+                                      filterBy="#{item.phone}"
+                                      filterMatchMode="contains">
                                 <h:outputText value="#{item.phone}"/>
                             </p:column>
                             <p:column headerText="Interlocuteur"
-                                      sortBy="#{item.idUser}"
-                                      filterBy="#{item.idUser}"
+                                      sortBy="#{item.idUser.name}"
+                                      filterBy="#{item.idUser.name}"
                                       filterMatchMode="contains">
                                 <p:commandButton actionListener="#{cUserView.entityView(item.idUser)}"
                                                  icon="ui-icon-search"
@@ -154,10 +160,13 @@
                                                  onclick="return (confirm('#{clientView.getDeleteMessage(item)}'));"
                                                  title="Supprimer cette société"/>
                             </p:column>
-                            <p:column headerText="État"
+                            <p:column id="sleepingTab"
+                                      headerText="État"
                                       style="width:2%;"
                                       sortBy="#{item.sleeping}"
-                                      filterMatchMode="contains">
+                                      filterBy="#{item.sleeping}"
+                                      filterOptions="#{clientView.sleepingOptions}"
+                                      filterMatchMode="exact">
                                 <p:commandButton actionListener="#{clientView.entitySleep(item)}"
                                                  action="javascript:void(0);"
                                                  icon="ui-icon-pause"
@@ -196,6 +205,17 @@
                                 </p:outputPanel>
                             </f:facet>
                         </p:dataTable>
+                        <script type="text/javascript">
+                            $(document).ready(function()
+                            {
+//                                var selectOption=$('#clientDataForm\\:clientDataTable\\:sleepingTab');
+//                                selectOption.selectedIndex=0;
+//                                console.log($('#clientDataForm\\:clientDataTable\\:sleepingTab option:selected').text);
+//                                selectOption.attr('title','un test');
+//                                selectOption.val('Actif');
+//                                selectOption.trigger('filter');
+                            });
+                        </script>
                     </h:form>
                 </f:view>
             </ui:define>
