@@ -25,11 +25,11 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> implements Seria
     private static final long serialVersionUID = 1L;
     private C entity;
     private Class<C> entityClass;
-    private  String webFolder=null;
+    private String webFolder=null;
     private F entityFacade;
     private boolean creating=false;
     private boolean editing=false;
-    private final SelectItem[] states={
+    public static final SelectItem[] SLEEPING_STATES={
                     new SelectItem("","Les deux","Affiche les éléments actifs et innactifs"),
                     new SelectItem("false","Actif","Affiche les éléments actifs"),
                     new SelectItem("true","Inactif","Affiche les éléments innactifs")
@@ -75,10 +75,9 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> implements Seria
         for(C c:this.findAll())
         {
             Boolean isSleeping=(Boolean)Utils.callMethod(m, "récupération de l'état de veille", c);
-            System.err.println(isSleeping);
             if(!isSleeping)
             {
-                res.add(entity);
+                res.add(c);
             }
         }
         return res;
@@ -86,7 +85,7 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> implements Seria
   
     public SelectItem[] getSleepingOptions()
     {
-        return this.states;
+        return EntityView.SLEEPING_STATES;
     }
     
     public List<C> getFilteredEntities()
@@ -98,7 +97,7 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> implements Seria
         }
         return this.filteredEntities;
     }
-  
+
     public void setFilteredEntities(List<C> filteredEntities)
     {
         this.filteredEntities = filteredEntities;

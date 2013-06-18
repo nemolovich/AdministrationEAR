@@ -53,7 +53,7 @@ public abstract class EntityDataModel<C> extends ListDataModel<C>
     }
 
     @Override
-    @SuppressWarnings({"unchecked"})
+    @SuppressWarnings("unchecked")
     public C getRowData(String rowKey)
     {
         Integer rowId=Integer.parseInt(rowKey);

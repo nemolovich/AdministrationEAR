@@ -100,9 +100,4 @@ public class Utils
         }
         return null;
     }
-    
-    public static String getDataModelFormat(String text)
-    {
-        return text.replaceAll(",", ".");
-    }
 }

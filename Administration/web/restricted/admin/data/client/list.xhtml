@@ -75,13 +75,11 @@
                         <p:dataTable id="clientDataTable"
                                      value="#{clientView.entries}"
                                      var="item"
-                                     lazy="true"
                                      widgetVar="clientTable"
                                      paginator="true"
                                      paginatorPosition="bottom"
                                      rows="#{utils.maxDataRows}"
                                      rowStyleClass="#{item.sleeping?'sleeping_elmt':null}"
-                                     filteredValue="#{clientView.filteredEntities}"
                                      sortBy="#{item.sleeping}"
                                      emptyMessage="Aucune société n'a été trouvée">
                             <p:column headerText="Nom de la société"
@@ -118,10 +116,10 @@
                                 <h:outputText value="#{item.idUser}" rendered="#{not empty item.idUser}"/>
                             </p:column>
                             <p:column headerText="Type d'intervention"
-                                      sortBy="#{item.interventionType}"
-                                      filterBy="#{item.interventionType}"
                                       filterMatchMode="contains">
-                                <h:outputText value="#{item.interventionType}"/>
+                                <h:outputText value="#{utils.getBreakLinesString(
+                                                       utils.getShortString(item.interventionType,40))}"
+                                              escape="false"/>
                             </p:column>
                             <p:column headerText="Observations"
                                       filterMatchMode="contains">
@@ -149,7 +147,6 @@
                                                  ajax="false"
                                                  style="font-size: 60%;"
                                                  title="Paramétrer cette société"/>
-                                <h:outputText value="{clientView.getDeleteMessage(item)}"/>
                                 <p:commandButton actionListener="#{clientView.entityDelete(item)}"
                                                  icon="ui-icon-trash"
                                                  immediate="true"
@@ -158,7 +155,7 @@
                                                  style="font-size: 60%;"
                                                  styleClass="red_icon"
                                                  action="javascript:void(0);"
-                                                 onclick="return (confirm('{clientView.getDeleteMessage(item)}'));"
+                                                 onclick="return (confirm('#{clientView.getDeleteMessage(item)}'));"
                                                  title="Supprimer cette société"/>
                             </p:column>
                             <p:column id="sleepingTab"
@@ -167,7 +164,7 @@
                                       sortBy="#{item.sleeping}"
                                       filterBy="#{item.sleeping}"
                                       filterOptions="#{clientView.sleepingOptions}"
-                                      filterMatchMode="exact">
+                                      filterMatchMode="contains">
                                 <f:facet name="header">
                                     <h:outputText value="État"/>
                                     <p:commandButton title="Actualiser le filtre"
@@ -185,13 +182,15 @@
                                                  styleClass="blue_icon"
                                                  title="Réactiver cette société"
                                                  rendered="#{item.sleeping}"/>
-                                <p:commandButton actionListener="#{clientView.entitySleep(item)}"
+                                <p:commandButton id="setSleepingButton"
+                                                 actionListener="#{clientView.entitySleep(item)}"
                                                  action="javascript:void(0);"
                                                  icon="ui-icon-pause"
-                                                 update=":growl :clientDataForm:clientDataTable:sleepingTab"
-                                                 oncomplete="//clientTable.filter();"
-                                                 onclick="return confirm('Voulez vous vraiment mettre cette société en standby?\n\
-(Vous pourrez la réactivez quand vous le souhaitez)');//clientTable.filter();"
+                                                 oncomplete="clientTable.filter();"
+                                                 onclick="if(!confirm('Voulez vous vraiment mettre cette société en standby?\n'+
+                                                                '(Vous pourrez la réactivez quand vous le souhaitez)'))
+                                                                   {return false;}"
+                                                 update=":growl :clientDataForm:clientDataTable :clientDataForm:clientDataTable:sleepingTab"
                                                  style="font-size: 60%;float:right;"
                                                  styleClass="red_icon"
                                                  title="Mettre en standby cette société"
