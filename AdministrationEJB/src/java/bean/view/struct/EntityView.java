@@ -35,7 +35,7 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> implements Seria
                     new SelectItem("true","Inactif","Affiche les éléments innactifs")
                 };
     private List<C> filteredEntities;
-    private boolean firstView=true;
+    private boolean displaySleepingEntities=false;
     
     public EntityView()
     {
@@ -46,9 +46,18 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> implements Seria
         this.webFolder="/restricted/admin/data/"+webFolder+"/";
         this.entityClass=entityClass;
     }
+
+    public boolean isDisplaySleepingEntities()
+    {
+        return displaySleepingEntities;
+    }
+
+    public void setDisplaySleepingEntities(boolean displaySleepingEntities)
+    {
+        this.displaySleepingEntities = displaySleepingEntities;
+    }
     
-    
-    private List<C> getWakeEntities()
+    private List<C> getSleepEntities(boolean sleeping)
     {
         this.setFacade();
         List<C> res=new ArrayList<C>();
@@ -75,7 +84,7 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> implements Seria
         for(C c:this.findAll())
         {
             Boolean isSleeping=(Boolean)Utils.callMethod(m, "récupération de l'état de veille", c);
-            if(!isSleeping)
+            if(isSleeping==sleeping)
             {
                 res.add(c);
             }
@@ -90,10 +99,13 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> implements Seria
     
     public List<C> getFilteredEntities()
     {
-        if(this.firstView)
+        this.filteredEntities=this.getSleepEntities(false);
+        if(this.displaySleepingEntities)
         {
-            this.setFilteredEntities(this.getWakeEntities());
-            this.firstView=false;
+            for(C c:this.getSleepEntities(true))
+            {
+                this.filteredEntities.add(c);
+            }
         }
         return this.filteredEntities;
     }

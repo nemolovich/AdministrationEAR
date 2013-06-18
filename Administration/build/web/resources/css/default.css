@@ -401,3 +401,25 @@ a:link:hover, a:visited:hover
     color:                      #4f4f4f !important;
     background-color:           #AFAFAF !important;
 }
+
+.ui-chkbox.ui-widget.small_check
+{
+    margin:                     2px;
+    margin-left:                5px;
+    vertical-align:             bottom !important;
+}
+
+.ui-chkbox.ui-widget.small_check,
+.ui-chkbox.ui-widget.small_check div
+{
+    width:                      10px !important;
+    height:                     10px !important;
+}
+
+.ui-chkbox.ui-widget.small_check span
+{
+    background-image:           url("/Administration/javax.faces.resource/images/ui-icons_2e83ff_256x240.png.xhtml?ln=primefaces-aristo") !important;
+    width:                      16px !important;
+    height:                     16px !important;
+    background-position:        -67px -148px !important;
+}

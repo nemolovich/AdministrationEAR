@@ -8,13 +8,10 @@ package bean.view;
 import bean.facade.ClientFacade;
 import bean.view.struct.EntityView;
 import entity.Client;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.model.SelectItem;
 import javax.inject.Named;
 
 /**
