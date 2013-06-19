@@ -1,0 +1,131 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Détails de la société</title>
+    </h:head>
+    <h:body>
+        <view>
+            <h:form id="clientViewForm">
+                <h:panelGrid columns="2" class="full_table">
+                    <p:column>
+                        
+                        <p:fieldset legend="Informations générales">
+                            <h:panelGrid columns="2" columnClasses="label,fields">
+
+                                <h:outputText value="Identifiant:"/>
+                                <h:outputText value="#{clientView.entity.id}" title="Identifiant de la société"/>
+
+                                <h:outputText value="Nom de la société:"/>
+                                <h:outputText value="#{clientView.entity.name}" title="Nom de la société"/>
+
+                                <h:outputText value="Interlocuteur:"/>
+                                <h:outputText value="#{clientView.entity.idUser}"
+                                              title="Interlocuteur de la société"/>
+
+                                <h:outputText value="Adresse:"/>
+                                <h:outputText value="#{clientView.entity.address}" title="Adresse"/>
+
+                                <h:outputText value="Code postal:"/>
+                                <h:outputText value="#{clientView.entity.postalcode}" title="Code postal"/>
+
+                                <h:outputText value="Téléphone:"/>
+                                <h:outputText value="#{clientView.entity.phone}" title="Numéro de téléphone"/>
+
+                                <h:outputText value="Adresse mail:"/>
+                                <h:outputText value="#{clientView.entity.mail}" title="Adresse mail de la société"/>
+
+                                <h:outputText value="Fax:"/>
+                                <h:outputText value="#{clientView.entity.fax}" title="Numéro de fax"/>
+                            </h:panelGrid>
+                        </p:fieldset>
+                        
+                    </p:column>
+                    <p:column>
+                    
+                        <p:fieldset legend="Détails">
+                            <h:panelGrid columns="2" cellspacing="5">
+                                <p:column>
+                                        
+                                    <h4 class="tabheader">Tarifs:</h4>
+                                    <h:panelGrid columns="2" columnClasses="label,fields">
+                                        <h:outputText value="Tarif d'intervention:" />
+                                        <h:outputText value="#{clientView.entity.tarif} €"
+                                                      rendered="#{not empty clientView.entity.tarif}"/>
+                                        <h:outputText value="aucun"
+                                                      rendered="#{empty clientView.entity.tarif}"/>
+
+                                        <h:outputText value="Frais de déplacement:"/>
+                                        <h:outputText value="#{clientView.entity.deplacement} €"
+                                                      rendered="#{not empty clientView.entity.deplacement}"/>
+                                        <h:outputText value="aucun"
+                                                      rendered="#{empty clientView.entity.deplacement}"/>
+                                    </h:panelGrid>
+
+                                </p:column>
+                                <p:column>
+
+                                    <h4 class="tabheader">Connexion Internet:</h4>
+                                    <h:panelGrid columns="2" columnClasses="label,fields">
+
+                                        <h:outputText value="Operateur:"/>
+                                        <h:outputText value="#{clientView.entity.operator}" title="Operateur Internet"/>
+
+                                        <h:outputText value="Identifiant Internet:"/>
+                                        <h:outputText value="#{clientView.entity.internetLogin}" title="Identifiant Internet"/>
+
+                                        <h:outputText value="Mot&nbsp;de&nbsp;passe&nbsp;Internet:"/>
+                                        <p:outputPanel rendered="#{not empty clientView.entity.internetPassword}">
+                                            <p:commandButton
+                                                onmousedown="setFormFieldValue('clientViewForm','internetPasswordView',
+                                                            '#{clientView.entity.internetPassword}');"
+                                                onmouseup="setFormFieldValue('clientViewForm','internetPasswordView',
+                                                         '#{utils.getHiddenString(clientView.entity.internetPassword)}');"
+                                                onmouseout="setFormFieldValue('clientViewForm','internetPasswordView',
+                                                         '#{utils.getHiddenString(clientView.entity.internetPassword)}');"
+                                                id="password_unlocker"
+                                                icon="ui-icon-unlocked"
+                                                title="Afficher le mot de passe"
+                                                style="font-size:50%;vertical-align: bottom;"/>
+                                            <h:outputText id="internetPasswordView"
+                                                          value="#{utils.getHiddenString(clientView.entity.internetPassword)}"/>
+                                        </p:outputPanel>
+                                        <h:outputText value="" rendered="#{empty clientView.entity.internetPassword}"/>
+                                    </h:panelGrid>
+                                        
+                                </p:column>
+                                
+                            </h:panelGrid>
+                            <h:panelGrid columns="2" styleClass="full_table">
+                                    
+                                <p:column>
+                                        
+                                    <h4 class="tabheader">Type d'interventions:</h4>
+                                    <h:inputTextarea value="#{clientView.entity.interventionType}"
+                                                     title="Type d'interventions dans la société"
+                                                     readonly="true"
+                                                     rows="3"
+                                                     styleClass="textarea_min"/>
+
+                                </p:column>
+                                <p:column>
+                                    
+                                    <h4 class="tabheader">Observations:</h4>
+                                    <h:inputTextarea value="#{clientView.entity.observations}"
+                                                     title="Observations"
+                                                     readonly="true"
+                                                     rows="3"
+                                                     styleClass="textarea_min"/>
+
+                                </p:column>
+                            </h:panelGrid>
+                        </p:fieldset>
+                    </p:column>
+                </h:panelGrid>
+            </h:form>
+        </view>
+    </h:body>
+</html>
+

@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html">
+    <h:head>
+    </h:head>
+    <h:body>
+        <h:form id="menuForm">
+            <div class="menu">
+                <h:link outcome="/restricted/user/index" value="Panneau utilisateur" title="Afficher la vue utilisateur" />
+                <br />
+                    <h:link outcome="/restricted/user/user/view" value="Afficher mon profil" title="Afficher mes informations" />
+                    <br />
+                    <h:commandLink action="#{tUserView.entityUpdate(userLogin.user)}" value="Modifier mon profil"
+                                   title="Modifier mes informations"/>
+            </div>
+        </h:form>
+    </h:body>
+</html>
+

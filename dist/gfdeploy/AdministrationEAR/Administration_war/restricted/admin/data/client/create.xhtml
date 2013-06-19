@@ -1,0 +1,268 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Création société</title>
+    </h:head>
+    <h:body>
+        
+    	<ui:composition template="/templates/page_template.xhtml">
+            <ui:define name="title">
+                | Création société
+            </ui:define>
+            <ui:define name="content">
+                <f:attribute name="header" value="Création d'une société"/>
+                <f:view>
+                    <h:form id="clientCreate">
+                        <p:growl id="growlWizard" showDetail="true" life="30000" autoUpdate="true"/>
+                        <p:wizard id="clientCreateWizard"
+                                  backLabel="Retour"
+                                  nextLabel="Suivant"
+                                  widgetVar="clientWizard"
+                                  showNavBar="true"
+                                  step="general">
+                            <p:tab id="general" title="Informations">
+                                
+                                <p:fieldset legend="Informations générales">
+                                    <p>
+                                        Veuillez renseigner les informations générales
+                                        de la société.
+                                        <br />
+                                        (<span class="red-star">*</span>: champs requis)
+                                    </p>
+                                    <h:panelGrid columns="2" columnClasses="label,fields">
+                                        
+                                        <p:outputLabel value="Nom de la société" for="name"/>
+                                        <p:inputText id="name" value="#{clientView.entity.name}" maxlength="45"
+                                                     title="Nom de la société"
+                                                     required="true"
+                                                     requiredMessage="Le nom de la société ne peut être vide">
+                                            <f:validator binding="#{clientUniqueFieldValidator}"/>
+                                            <f:attribute name="fieldName" value="Name" />
+                                            <f:attribute name="update_id" value="#{clientView.entity.id}" />
+                                        </p:inputText>
+                                        
+                                        <p:outputLabel value="Adresse:" for="address"/>
+                                        <p:inputText id="address" value="#{clientView.entity.address}" maxlength="100"
+                                                     title="Adresse de la société"
+                                                     required="true"
+                                                     requiredMessage="Veuillez indiquer l'adresse de la société"/>
+
+                                        <p:outputLabel value="Code postal:" for="postalcode" />
+                                        <p:inputMask id="postalcode" value="#{clientView.entity.postalcode}" mask="99999"
+                                                     title="Code postal de la société"
+                                                     required="true"
+                                                     requiredMessage="Veuillez indiquer le code postal de la société"/>
+
+                                        <p:outputLabel value="Téléphone:" for="phone" />
+                                        <p:inputMask id="phone" value="#{clientView.entity.phone}" mask="99.99.99.99.99"
+                                                     title="Numéro de téléphone de la société"
+                                                     required="true"
+                                                     requiredMessage="Veuillez indiquer le numéro de téléphone de la société">
+                                            <f:validator binding="#{phonePatternValidator}"/>
+                                        </p:inputMask>
+
+                                        <p:outputLabel value="Fax:" for="fax" />
+                                        <p:inputMask id="fax" value="#{clientView.entity.fax}"  mask="99.99.99.99.99"
+                                                     title="Numéro de fax de la société">
+                                            <f:validator binding="#{faxPatternValidator}"/>
+                                        </p:inputMask>
+                                        
+                                        <p:outputLabel value="Adresse mail:" for="mail" />
+                                        <p:inputText id="mail" value="#{clientView.entity.mail}" maxlength="30"
+                                                     title="Adresse mail de la société"
+                                                     required="true"
+                                                     requiredMessage="Veuillez indiquer l'adresse mail de la société">
+                                            <f:validator binding="#{emailPatternValidator}"/>
+                                        </p:inputText>
+                                    
+                                        <p:outputLabel value="Type d'intervention:" for="interventionType" />
+                                        <h:inputTextarea id="interventionType" value="#{clientView.entity.interventionType}"
+                                                         title="Type d'interventions"
+                                                         styleClass="textarea_min"
+                                                         rows="4"/>
+                                    
+                                    </h:panelGrid>
+                                </p:fieldset>
+                            </p:tab>
+                            
+                            <p:tab id="details" title="Détails">
+                                <table width="100%">
+                                    <tr>
+                                        <td style="vertical-align: top !important;">
+                                            <p:fieldset legend="Tarifs">
+                                                <h:panelGrid columns="3" columnClasses="label,fields,label">
+
+                                                    <p:outputLabel value="Tarif d'intervention:" for="tarif" />
+                                                    <p:inputText id="tarif" value="#{clientView.entity.tarif}" maxlength="20"
+                                                                 title="Tarif" size="10"/>
+                                                    <h:outputText value="€"/>
+
+                                                    <p:outputLabel value="Frais de déplacement:" for="deplacement" />
+                                                    <p:inputText id="deplacement" value="#{clientView.entity.deplacement}" maxlength="20"
+                                                                 title="Frais de déplacement" size="10"/>
+                                                    <h:outputText value="€"/>
+
+                                                </h:panelGrid>
+                                            </p:fieldset>
+                                            <p:fieldset legend="Connexion internet">
+                                                <h:panelGrid columns="2" columnClasses="label,fields">
+
+                                                    <p:outputLabel value="Opérateur:" for="operator"/>
+                                                    <p:inputText id="operator" value="#{clientView.entity.operator}"
+                                                                 title="Opérateur Internet" maxlength="50"/>
+
+                                                    <p:outputLabel value="Identifiant:" for="internet_login"/>
+                                                    <p:inputText id="internet_login" value="#{clientView.entity.internetLogin}"
+                                                                 title="Identifiant Internet" maxlength="50"/>
+
+                                                    <h:outputLabel for="internet_password" value="Mot de passe:" />
+                                                    <p:password id="internet_password" value="#{clientView.entity.internetPassword}"
+                                                                redisplay="true" title="Mot de passe Internet" maxlength="64">
+                                                        <f:validator binding="#{passwordValidator}"/>
+                                                        <f:attribute name="update_id" value='#{clientView.entity.id}' />
+                                                        <f:attribute name="confirm" value="#{internet_confirm}" />
+                                                    </p:password>
+
+                                                    <h:outputLabel for="internet_confirm" value="Confirmation:" />
+                                                    <p:password id="internet_confirm" binding="#{internet_confirm}"
+                                                                redisplay="true" title="Confirmation du mot de passe Internet" maxlength="64"/>
+
+                                                </h:panelGrid>
+                                            </p:fieldset>
+                                        </td>
+                                        <td style="vertical-align: top !important;">
+                                            <p:fieldset legend="Observations">
+
+                                                <p:outputLabel value="Observations:" for="observations"/>
+                                                <br />
+                                                <h:inputTextarea id="observations" value="#{clientView.entity.observations}"
+                                                                 styleClass="textarea_primefaces_display"
+                                                                 rows="4"
+                                                                 title="Observations"/>
+                                            </p:fieldset>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </p:tab>
+                            
+                            <p:tab id="finish" title="Récapitulatif">
+                                <table width="100%">
+                                    <tr>
+                                        <td style="vertical-align: top !important;">
+                                            <p:fieldset legend="Informations générales">
+                                                <h:panelGrid columns="2" columnClasses="label,fields">
+
+                                                    <h:outputText value="Nom de la société"/>
+                                                    <h:outputText value="#{clientView.entity.name}"/>
+
+                                                    <h:outputText value="Adresse:"/>
+                                                    <h:outputText value="#{clientView.entity.address}"/>
+
+                                                    <h:outputText value="Code postal:" />
+                                                    <h:outputText value="#{clientView.entity.postalcode}"/>
+
+                                                    <h:outputText value="Téléphone:" />
+                                                    <h:outputText value="#{clientView.entity.phone}"/>
+
+                                                    <h:outputText value="Fax:" />
+                                                    <h:outputText value="#{clientView.entity.fax}"/>
+
+                                                    <h:outputText value="Adresse mail:" />
+                                                    <h:outputText value="#{clientView.entity.mail}"/>
+
+                                                    <h:outputText value="Type d'intervention:" />
+                                                    <h:outputText value="#{clientView.entity.interventionType}"/>
+
+                                                </h:panelGrid>
+                                            </p:fieldset>
+                                            <p:fieldset legend="Connexion internet">
+                                                <h:panelGrid columns="2" columnClasses="label,fields">
+
+                                                    <h:outputText value="Opérateur:"/>
+                                                    <h:outputText value="#{clientView.entity.operator}"/>
+
+                                                    <h:outputText value="Identifiant:"/>
+                                                    <h:outputText value="#{clientView.entity.internetLogin}"/>
+
+                                                    <h:outputText value="Mot de passe:" />
+                                                    <p:outputPanel rendered="#{not empty clientView.entity.internetPassword}">
+                                                        <p:commandButton
+                                                            onmousedown="setFormFieldValue('clientCreate','internetPasswordView',
+                                                                        '#{clientView.entity.internetPassword}');"
+                                                            onmouseup="setFormFieldValue('clientCreate','internetPasswordView',
+                                                                     '#{utils.getHiddenString(clientView.entity.internetPassword)}');"
+                                                            onmouseout="setFormFieldValue('clientCreate','internetPasswordView',
+                                                                     '#{utils.getHiddenString(clientView.entity.internetPassword)}');"
+                                                            id="password_unlocker"
+                                                            icon="ui-icon-unlocked"
+                                                            title="Afficher le mot de passe"
+                                                            style="font-size:50%;vertical-align: bottom;"/>
+                                                        <h:outputText id="internetPasswordView"
+                                                                      value="#{utils.getHiddenString(clientView.entity.internetPassword)}"/>
+                                                    </p:outputPanel>
+                                                    <h:outputText value="" rendered="#{empty clientView.entity.internetPassword}"/>
+
+                                                </h:panelGrid>
+                                            </p:fieldset>
+                                        </td>
+                                        <td style="vertical-align: top !important;">
+                                            <p:fieldset legend="Tarifs">
+                                                <h:panelGrid columns="2" columnClasses="label,fields">
+
+                                                    <h:outputText value="Tarif d'intervention:" />
+                                                    <h:outputText value="#{clientView.entity.tarif} €"
+                                                                  rendered="#{not empty clientView.entity.tarif}"/>
+                                                    <h:outputText value="aucun"
+                                                                  rendered="#{empty clientView.entity.tarif}"/>
+
+                                                    <h:outputText value="Frais de déplacement:" />
+                                                    <h:outputText value="#{clientView.entity.deplacement} €"
+                                                                  rendered="#{not empty clientView.entity.deplacement}"/>
+                                                    <h:outputText value="aucun"
+                                                                  rendered="#{empty clientView.entity.deplacement}"/>
+
+                                                </h:panelGrid>
+                                            </p:fieldset>
+                                            <p:fieldset legend="Observations">
+                                                <h:inputTextarea value="#{clientView.entity.observations}"
+                                                                 readonly="true"
+                                                                 rows="4"
+                                                                 styleClass="textarea_auto"
+                                                                 title="Observations"/>
+                                            </p:fieldset>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="vertical-align: top !important;">
+                                        </td>
+                                    </tr>
+                                </table>
+                                <p:outputPanel styleClass="buttons_panel">
+                                    <p:commandButton value="Confirmer"
+                                                     immediate="true"
+                                                     ajax="false"
+                                                     title="Veuillez lire les informations avant de valider"
+                                                     actionListener="#{clientView.create()}"
+                                                     type="submit"
+                                                     update=":growl"
+                                                     action="#{clientView.entityParameter(clientView.entity)}"/>
+                                    <p:commandButton
+                                        action="javascript:void(0);"
+                                        title="Si vous confirmez vous créez cette nouvelle société et vous serez redirigé vers la finalisation de celle-ci"
+                                        style="cursor:pointer;font-size: 30%;"
+                                        icon="ui-icon-info"/>
+                                </p:outputPanel>
+                            </p:tab>
+                        </p:wizard>
+                    </h:form>
+                </f:view>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

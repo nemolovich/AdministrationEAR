@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Modification d'utilisateur</title>
+    </h:head>
+    <h:body>
+    	<ui:composition template="/templates/page_template.xhtml">
+            <ui:define name="title">
+                | Modification paramètres
+            </ui:define>
+            <ui:define name="content">
+                <f:attribute name="header" value="Modification des paramètres"/>
+                <f:view>
+                    <h:form id="userUpdate" rendered="#{not empty tUserView.entity}">
+                        <p>
+                            Veuillez compléter les informations ci-dessous et valider por modifier vos paramètres.
+                            <br />
+                            (<span class="red-star">*</span>: Champs obligatoires)
+                        </p>
+                        <h:panelGrid columns="2" columnClasses="label,field">
+                            <p:outputLabel value="Mail:" for="mail"/>
+                            <p:inputText id="mail" value="#{tUserView.entity.mail}" title="Mail" required="true" requiredMessage="Le champs 'Mail' ne peut être vide">
+                                <f:validator binding="#{userUniqueFieldValidator}"/>
+                                <f:attribute name="fieldName" value="Mail" />
+                                <f:attribute name="update_id" value="#{tUserView.entity.id}" />
+                            </p:inputText>
+
+                            <p:outputLabel value="Nom:" for="name" />
+                            <p:inputText id="name" value="#{tUserView.entity.name}" title="Name" required="true" requiredMessage="Le champs 'Nom' ne peut être vide"/>
+
+                            <p:outputLabel value="Prénom:" for="firstname" />
+                            <p:inputText id="firstname" value="#{tUserView.entity.firstname}" title="Firstname" required="true" requiredMessage="Le champs 'Prénom' ne peut être vide"/>
+
+                            <p:outputLabel for="password" value="Mot de passe" />
+                            <p:password id="password" value="#{tUserView.entity.password}"
+                                        feedback="true"
+                                        strongLabel="Sécurité forte"
+                                        goodLabel="Sécurité bonne"
+                                        weakLabel="Sécurité faible"
+                                        promptLabel="Entrez un mot de passe">
+                                <f:validator binding="#{passwordValidator}" />
+                                <f:attribute name="confirm" value="#{confirm}" />
+                                <f:attribute name="update_id" value="#{tUserView.entity.id}" />
+                                <f:attribute name="min_length" value="#{true}" />
+                            </p:password>
+
+                            <p:outputLabel for="confirm" value="Confirmation" />
+                            <p:password id="confirm" binding="#{confirm}"/>
+
+                        </h:panelGrid>
+                        <p:outputPanel styleClass="buttons_panel">
+                            <p:commandButton id="update" value="Mettre à jour"
+                                             action="#{tUserView.update(userLogin)}"
+                                             icon="ui-icon-disk"
+                                             styleClass="blue_icon"
+                                             ajax="false"/>
+                            <p:commandButton id="back" value="Annuler"
+                                             action="view"
+                                             icon="ui-icon-closethick"
+                                             styleClass="red_icon"
+                                             ajax="false" immediate="true">
+                            </p:commandButton>
+                        </p:outputPanel>
+                    </h:form>
+                    <h:form id="emptyDataErrorForm" rendered="#{empty tUserView.entity}">
+                        <div class="ui-messages">
+                            <div class="ui-messages-error">
+                                <span class="ui-messages-error-icon"/>
+                                <ul>
+                                    <li>
+                                        <span class="ui-messages-error-summary">
+                                            Aucun utilisateur n'est sélectionné pour la modification
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <p>
+                            Vous allez être redirigez vers l'accueil dans
+                            <h:outputText id="countDown" value="5"/> secondes
+                        </p>
+                        <script type="text/javascript">
+                            $(document).ready(function(){
+                                setTimer(5);
+                            });
+                        </script>
+                        <p:poll interval="1" update="emptyDataErrorForm:countDown"
+                                oncomplete="updateTimer('emptyDataErrorForm','countDown');"/>
+                    </h:form>
+                </f:view>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

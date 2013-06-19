@@ -46,6 +46,13 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> implements Seria
         this.webFolder="/restricted/admin/data/"+webFolder+"/";
         this.entityClass=entityClass;
     }
+    
+    public void switchDisplaySleepingEntities()
+    {
+//        this.displaySleepingEntities=!this.displaySleepingEntities;
+        this.getFilteredEntities();
+        System.err.println("Set display to: "+this.displaySleepingEntities);
+    }
 
     public boolean isDisplaySleepingEntities()
     {
@@ -57,10 +64,8 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> implements Seria
         this.displaySleepingEntities = displaySleepingEntities;
     }
     
-    private List<C> getSleepEntities(boolean sleeping)
+    private Boolean isSleepingCall(C entity)
     {
-        this.setFacade();
-        List<C> res=new ArrayList<C>();
         Method m;
         try
         {
@@ -69,22 +74,28 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> implements Seria
         catch (NoSuchMethodException ex)
         {
             Logger.getLogger(EntityView.class.getName()).log(Level.SEVERE, null, ex);
-            return res;
+            return null;
         }
         catch (SecurityException ex)
         {
             Logger.getLogger(EntityView.class.getName()).log(Level.SEVERE, null, ex);
-            return res;
+            return null;
         }
         catch (NullPointerException ex)
         {
             Logger.getLogger(EntityView.class.getName()).log(Level.SEVERE, null, ex);
-            return res;
+            return null;
         }
+        return (Boolean)Utils.callMethod(m, "récupération de l'état de veille", entity);
+    }
+    
+    private List<C> getSleepEntities(boolean sleeping)
+    {
+        this.setFacade();
+        List<C> res=new ArrayList<C>();
         for(C c:this.findAll())
         {
-            Boolean isSleeping=(Boolean)Utils.callMethod(m, "récupération de l'état de veille", c);
-            if(isSleeping==sleeping)
+            if(this.isSleepingCall(c)==sleeping)
             {
                 res.add(c);
             }
@@ -99,12 +110,14 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> implements Seria
     
     public List<C> getFilteredEntities()
     {
-        this.filteredEntities=this.getSleepEntities(false);
-        if(this.displaySleepingEntities)
+        if(!this.displaySleepingEntities&&this.filteredEntities!=null)
         {
-            for(C c:this.getSleepEntities(true))
+            for(C c:this.filteredEntities)
             {
-                this.filteredEntities.add(c);
+                if(this.isSleepingCall(c))
+                {
+                    this.filteredEntities.remove(c);
+                }
             }
         }
         return this.filteredEntities;

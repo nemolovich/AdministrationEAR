@@ -1,0 +1,146 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Paramètres société</title>
+    </h:head>
+    <h:body>
+        
+    	<ui:composition template="/templates/page_template.xhtml">
+            <ui:define name="title">
+                | Paramètres société
+            </ui:define>
+            <ui:define name="content">
+                <f:attribute name="header" value="Modification des paramètres d'une société"/>
+                <ui:include src="/restricted/admin/data/client/popups/workstations.xhtml"/>
+                <f:view>
+                    <h:form id="clientUpdate">
+                        
+                        <div class="ui-messages ui-widget">
+                            <div class="ui-messages-warn ui-corner-all">
+                                <span class="ui-messages-warn-icon"/>
+                                <ul>
+                                    <li>
+                                        <span class="ui-messages-warn-summary">
+                                            Attention! L'ajout de ces données est instantané.
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <p:growl id="growlWizard" showDetail="true" life="30000" autoUpdate="true"/>
+                        <p:wizard id="clientUpdateWizard"
+                                  backLabel="Retour"
+                                  nextLabel="Suivant"
+                                  widgetVar="clientWizard"
+                                  showNavBar="true">
+                            
+                            <p:tab id="postes" title="Postes">
+                                <p:dataTable id="clientWorkstationList"
+                                             var="poste"
+                                             widgetVar="clientWorkstationTable"
+                                             rowIndexVar="index"
+                                             paginatorPosition="bottom"
+                                             emptyMessage="Aucun poste n'a été trouvé"
+                                             value="#{workstationMultiView.getData(clientView.entity.workstationList)}"
+                                             paginator="true"
+                                             rows="#{utils.maxDataRows}"
+                                             selection="#{workstationMultiView.multiSelection}">
+                                    
+                                    <p:ajax event="rowSelectCheckbox"
+                                            process="@this"
+                                            update=":createWorkstationForm
+                                             clientWorkstationList:posteDelete" />
+                                    <p:ajax event="rowUnselectCheckbox"
+                                            process="@this"
+                                            update=":createWorkstationForm
+                                             clientWorkstationList:posteDelete" />
+                                    <p:ajax event="toggleSelect"
+                                            process="@this"
+                                            update=":createWorkstationForm
+                                             clientWorkstationList:posteDelete" />
+
+                                    <p:column selectionMode="multiple" style="width:2%">
+                                    </p:column>
+
+                                    <p:column>
+                                        <h:outputText value='#{poste}'/>
+                                    </p:column>
+                                    
+                                    <p:column>
+                                        <p:commandButton actionListener="#{workstationView.entityView(poste)}"
+                                                         icon="ui-icon-search"
+                                                         style="font-size: 60%;"
+                                                         title="Détails de ce poste"
+                                                         update="clientWorkstationList :createWorkstationForm"
+                                                         oncomplete="createWorstation.show();"/>
+                                        <p:commandButton actionListener="#{workstationView.entityUpdate(poste)}"
+                                                         icon="ui-icon-pencil"
+                                                         style="font-size: 60%;"
+                                                         title="Modifier ce poste"
+                                                         update="clientWorkstationList :createWorkstationForm"
+                                                         oncomplete="createWorstation.show();"/>
+                                        <p:commandButton actionListener="#{workstationView.entityDelete(clientView.entity, poste)}"
+                                                         icon="ui-icon-trash"
+                                                         action="javascipt:void(0);"
+                                                         immediate="true"
+                                                         ajax="false"
+                                                         styleClass="red_icon"
+                                                         style="font-size: 60%;"
+                                                         title="Supprimer ce poste"
+                                                         update="clientWorkstationList"
+                                                         onclick="return confirm('#{workstationView.getDeleteMessage(poste)}');"/>
+                                    </p:column>
+                                    
+                                    <f:facet name="footer"> 
+                                        <p:commandButton value="Ajouter un poste"
+                                                         style="float:left;"
+                                                         icon="ui-icon-circle-plus"
+                                                         styleClass="blue_icon"
+                                                         title="Ajouter un poste à cette société"
+                                                         update=":createWorkstationForm"
+                                                         actionListener="#{workstationView.entityCreate(clientView.entity)}"
+                                                         onclick="createWorstation.show();"/>
+                                        <p:commandButton id="posteDelete"
+                                                         value="Supprimer"
+                                                         style="float:left;"
+                                                         icon="ui-icon-trash"
+                                                         styleClass="red_icon"
+                                                         title="Afficher les détails"
+                                                         update=":createWorkstationForm @this"
+                                                         disabled="#{workstationMultiView.emptySelection}"
+                                                         actionListener="#{workstationView.remove(clientView.entity,
+                                                                           workstationMultiView.multiSelection)}"
+                                                         oncomplete="#{workstationMultiView.checkEmptySelection()}"
+                                                         onclick="if(#{workstationMultiView.emptySelection})
+                                                            {return false;}
+                                                            else{return confirm('#{workstationView.deleteMessages(workstationMultiView.multiSelectionCast)}');}"/>
+                                    </f:facet>
+
+                                </p:dataTable>
+                            </p:tab>
+                            
+                            <p:tab id="emails" title="E-Mails">
+                                <p:fieldset legend="E-Mails">
+                                    E-Mails
+                                </p:fieldset>
+                            </p:tab>
+                            
+                            <p:tab id="users" title="Utilisateurs">
+                                <p:fieldset legend="Utilisateurs">
+                                    Utilisateurs
+                                </p:fieldset>
+                            </p:tab>
+                            
+                        </p:wizard>
+                    </h:form>
+                </f:view>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

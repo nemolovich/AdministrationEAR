@@ -72,6 +72,12 @@
                 </p:dialog>
                 <f:view>
                     <h:form id="clientDataForm">
+                        <script type="text/javascript">
+                            $(document).ready(function()
+                            {
+                                clientTable.filter();
+                            });
+                        </script>
                         <p:dataTable id="clientDataTable"
                                      value="#{clientView.entries}"
                                      var="item"
@@ -80,8 +86,8 @@
                                      paginatorPosition="bottom"
                                      rows="#{utils.maxDataRows}"
                                      rowStyleClass="#{item.sleeping?'sleeping_elmt':null}"
+                                     sortBy="#{item.name}"
                                      filteredValue="#{clientView.filteredEntities}"
-                                     sortBy="#{item.sleeping}"
                                      emptyMessage="Aucune société n'a été trouvée">
                             <p:column headerText="Nom de la société"
                                       sortBy="#{item.name}"
@@ -161,23 +167,7 @@
                             </p:column>
                             <p:column id="sleepingTab"
                                       headerText="État"
-                                      style="width:2%;"
-                                      sortBy="#{item.sleeping}">
-                                <f:facet name="header">
-                                    <h:outputText value="État"/>
-                                    <br/>
-                                    <p:outputLabel for="checkDisplaySleeping"
-                                                   value="Afficher tout"
-                                                   style="font-size:75%;"/>
-                                    <p:selectBooleanCheckbox id="checkDisplaySleeping"
-                                                             value="#{clientView.displaySleepingEntities}"
-                                                             styleClass="small_check">  
-                                        <p:ajax update=":clientDataForm:clientDataTable :clientDataForm:clientDataTable:sleepingTab"/>  
-                                    </p:selectBooleanCheckbox>
-                                    <p:tooltip for="checkDisplaySleeping" value="Affiche les société en sommeil en plus de celles actives"
-                                               showEffect="fade" hideEffect="fade"
-                                               style="background: #F8F6F0;"/>
-                                </f:facet>
+                                      style="width:2%;">
                                 <p:commandButton actionListener="#{clientView.entityWake(item)}"
                                                  action="javascript:void(0);"
                                                  icon="ui-icon-play"
@@ -205,7 +195,8 @@
                                 <p:outputPanel style="float:left">
                                     <h:outputText value="Rechercher:"/>
                                     <p:inputText id="globalFilter" onkeyup="clientTable.filter();"
-                                                 style="width:150px;margin-left:20px" />
+                                                 style="width:150px;margin-left:20px">
+                                    </p:inputText>
                                     <p:commandButton value="Ajouter une société"
                                                      action="#{clientView.entityCreate()}"
                                                      title="Ajouter une société"
@@ -213,6 +204,21 @@
                                                      styleClass="blue_icon"
                                                      immediate="true"
                                                      ajax="false"/>
+                                    <p:outputLabel for="checkDisplaySleeping"
+                                                   value="Afficher tout"
+                                                   style="font-size:75%;margin-bottom: 10px !important;margin-left: 10px;"/>
+                                    <p:selectBooleanCheckbox id="checkDisplaySleeping"
+                                                             value="#{clientView.displaySleepingEntities}"
+                                                             styleClass="small_check"
+                                                             style="vertical-align: middle !important;margin-bottom: 5px !important;">  
+                                        <p:ajax update=":clientDataForm:clientDataTable"
+                                                listener="#{clientView.switchDisplaySleepingEntities()}"
+                                                immediate="false"
+                                                oncomplete="clientTable.filter();"/>  
+                                    </p:selectBooleanCheckbox>
+                                    <p:tooltip for="checkDisplaySleeping" value="Affiche les sociétés en sommeil en plus de celles actives"
+                                               showEffect="fade" hideEffect="fade"
+                                               style="background: #F8F6F0;"/>
                                 </p:outputPanel>
                             </f:facet>
                         </p:dataTable>

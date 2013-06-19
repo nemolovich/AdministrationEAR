@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <script type="text/javascript">
+            $(document).ready(function()
+            {
+                setLayoutButtonsTooltips("menu_right","la liste des tâches");
+                setLayoutButtonsTooltips("menu","le menu");
+            });
+        </script>
+    </h:head>
+    <h:body>
+        <h:form id="header_form">
+<!--            <p:hotkey bind="up" actionListener="#{userLogin.addKonami('u')}"/>
+            <p:hotkey bind="down" actionListener="#{userLogin.addKonami('d')}"/>
+            <p:hotkey bind="left" actionListener="#{userLogin.addKonami('l')}"/>
+            <p:hotkey bind="right" actionListener="#{userLogin.addKonami('r')}"/>
+            <p:hotkey bind="b" actionListener="#{userLogin.addKonami('b')}"/>
+            <p:hotkey bind="a" update=":growl" actionListener="#{userLogin.addKonami('a')}"/>-->
+            <h:link outcome="/index">
+                <img src="/Administration/resources/img/logoAS.png" id="logo"
+                     title="Retour à l'accueil"/>
+            </h:link>
+            <h1>
+                <center>
+                    Admin-Services
+                </center>
+            </h1>
+            <p:outputPanel>
+                <p:panel rendered="#{userLogin.logged}">
+                    <h:outputText value="Vous êtes connecté en tant que:"
+                                  style="font-size: 85%;"/>
+                    <br />
+                    <p:commandButton action="#{tUserView.entityUpdate(userLogin.user)}"
+                                     icon="ui-icon-wrench"
+                                     style="font-size: 50%;padding-top:0px;"
+                                     title="Modifier mes informations"
+                                     ajax="false"
+                                     immediate="true"/>
+                    <h:outputText value="#{userLogin.firstname} #{userLogin.name}"
+                                  style="font-size: 90%;font-weight:bold;margin-left:5px;vertical-align: bottom;"/>
+                    <br />
+                    <p:commandButton icon="ui-icon-power"
+                                     title="Se déconnecter"
+                                     value="Se déconnecter"
+                                     immediate="true"
+                                     ajax="false"
+                                     style="font-size:75%;float:right;margin:5px;"
+                                     styleClass="red_icon"
+                                     action="#{userLogin.logout()}"
+                                     onclick="reloadInterval(1);"/>
+                </p:panel>
+                <p:panel rendered="#{!userLogin.logged}" style="float:right;">
+                    <h:outputText value="Vous n'êtes pas connecté"
+                                  style="font-size: 85%;"/>
+                    <br />
+                    <p:commandButton id="login_command"
+                                     icon="ui-icon-key"
+                                     styleClass="blue_icon"
+                                     style="font-size: 75%;float:right;margin:5px;"
+                                     title="Se connecter"
+                                     value="Se connecter"
+                                     onclick="autentification.show();"/>
+                </p:panel>
+            </p:outputPanel>
+        </h:form>
+        <p:dialog id="dialogAuth"
+                  appendToBody="true"
+                  header="Connexion"
+                  widgetVar="autentification"
+                  resizable="false"
+                  draggable="false"
+                  modal="true"
+                  showEffect="clip"
+                  hideEffect="clip">
+            <h:form id="authDialogForm">
+                <p:hotkey bind="esc" handler="authDialogForm.reset();autentification.hide();"/>
+                <h:panelGrid columns="2" cellpadding="5" columnClasses="label,field">
+                    <p:outputLabel value="Mail:" for="mail_popup" />
+                    <p:inputText id="mail_popup" value="#{userLogin.loginMail}" title="Mail">
+                        <f:validator binding="#{userLoginValidator}"/>
+                        <f:attribute name="password" value="#{password_popup}" />
+                        <p:ajax event="keyup"
+                                oncomplete="handleEvent(autentification,event);"/>
+                    </p:inputText>
+
+                    <p:outputLabel for="password_popup" value="Mot&nbsp;de&nbsp;passe:" />
+                    <p:password id="password_popup" binding="#{password_popup}"
+                                autocomplete="true"/>
+
+                </h:panelGrid>
+                <p:outputPanel style="margin-top: 20px;">
+                    <p:commandButton id="login_button" value="Valider"
+                                     actionListener="#{userLogin.login()}"
+                                     type="submit"
+                                     update=":growl :authDialogForm:password_popup"
+                                     oncomplete="if(createRequest(autentification, xhr, status, args)){
+                                     reloadInterval(1);}"
+                                     styleClass="blue_icon"
+                                     icon="ui-icon-key"/>
+                    <p:commandButton id="close_button" value="Annuler"
+                                     action="javascript:void(0)"
+                                     styleClass="red_icon"
+                                     type="reset"
+                                     immediate="true"
+                                     ajax="true"
+                                     onclick="autentification.hide();"
+                                     icon="ui-icon-closethick"/>
+                </p:outputPanel>
+            </h:form>
+        </p:dialog>
+    </h:body>
+</html>
+
