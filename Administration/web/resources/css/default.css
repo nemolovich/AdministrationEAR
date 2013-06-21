@@ -89,16 +89,25 @@ h3
 
 a:link, a:visited
 {
-  color:                        #045491;
-  font-weight:                  bold;
-  text-decoration:              none;
+    font-weight:                bold;
+    text-decoration:            none;
+}
+
+a:link
+{
+    color:                      #045491 !important;
+}
+
+a:visited
+{
+    color:                      #4f4f4f !important;
 }
 
 a:link:hover, a:visited:hover 
 {
-  color:                        #045491;
-  font-weight:                  bold;
-  text-decoration:              underline;
+    color:                      #045491 !important;
+    font-weight:                bold;
+    text-decoration:            underline;
 }
 
 #javax_faces_developmentstage_messages
@@ -404,6 +413,7 @@ a:link:hover, a:visited:hover
 
 .ui-chkbox.ui-widget.small_check
 {
+    cursor:                     pointer;
     margin:                     2px;
     margin-left:                5px;
     vertical-align:             bottom !important;
@@ -419,7 +429,29 @@ a:link:hover, a:visited:hover
 .ui-chkbox.ui-widget.small_check span
 {
     background-image:           url("/Administration/javax.faces.resource/images/ui-icons_2e83ff_256x240.png.xhtml?ln=primefaces-aristo") !important;
-    width:                      16px !important;
-    height:                     16px !important;
+    width:                      12px !important;
+    height:                     12px !important;
     background-position:        -67px -148px !important;
+}
+
+.tooltip
+{
+    margin:                     0 !important;
+    padding:                    2px 5px !important;
+    padding-top:                0px !important;
+    color:                      #575757 !important;
+    border:                     1px solid #767676 !important;
+    font-family:                'Lucida Sans Unicode', 'Lucida Grande', sans-serif !important;
+    background:                 #F8F6F0 !important; /* Old browsers */
+    background:                 -moz-linear-gradient(top,  #ffffff 0%, #e4e5f0 100%) !important; /* FF3.6+ */
+    background:                 -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#e4e5f0)) !important; /* Chrome,Safari4+ */
+    background:                 -webkit-linear-gradient(top,  #ffffff 0%,#e4e5f0 100%) !important; /* Chrome10+,Safari5.1+ */
+    background:                 -o-linear-gradient(top,  #ffffff 0%,#e4e5f0 100%) !important; /* Opera 11.10+ */
+    background:                 -ms-linear-gradient(top,  #ffffff 0%,#e4e5f0 100%) !important; /* IE10+ */
+    background:                 linear-gradient(to bottom,  #ffffff 0%,#e4e5f0 100%) !important; /* W3C */
+    filter:                     progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e4e5f0',GradientType=0 ) !important; /* IE6-9 */
+    font-size:                  100% !important;
+    -webkit-box-shadow:         5px 5px 2px -3px #767676;
+    -moz-box-shadow:            5px 5px 2px -3px #767676;
+    box-shadow:                 5px 5px 2px -3px #767676;
 }
