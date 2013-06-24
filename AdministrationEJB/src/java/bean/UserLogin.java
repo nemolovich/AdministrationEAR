@@ -38,18 +38,30 @@ public class UserLogin implements Serializable
     private int loginTry=0;
     private long nextTryTime;
     private boolean blocked=false;
-    /**
-     * Code konami: UP UP DOWN DOWN LEFT RIGHT LEFT RIGHT B A
-     */
+    // ************************************************
+    // Code konami: UP UP DOWN DOWN LEFT RIGHT LEFT RIGHT B A
+    // ************************************************
     private static final String konamiCode="uuddlrlrba";
     private String konami="";
     private long previousHit=Calendar.getInstance().getTimeInMillis();
+    // ************************************************
+    // Stateful infos pour les menus
+    // ************************************************
     /**
-     * Stateful infos pour les menus
+     * Identifiant du menu de gauche
      */
     private static final String menuLeftID="menu";
+    /**
+     * Identifiant du menu de droite
+     */
     private static final String menuRightID="menu_right";
+    /**
+     * Identifiant du menu de droite
+     */
     private int menuLeftSize=200;
+    /**
+     * Identifiant du menu de droite
+     */
     private int menuRightSize=300;
     private boolean menuLeftClosed=false;
     private boolean menuRightClosed=true;
@@ -62,6 +74,10 @@ public class UserLogin implements Serializable
     {
     }
     
+    /**
+     * Action de cacher ou afficher un menu
+     * @param event {@link ToogleEvent} - Evénement déclencheur
+     */
     public void handleToggle(ToggleEvent event)
     {
         if(event.getComponent().getAttributes().get("id").equals(UserLogin.menuLeftID))
@@ -74,6 +90,10 @@ public class UserLogin implements Serializable
         }
     }
     
+    /**
+     * Action au redimensionnement d'un menu
+     * @param event {@link ResizeEvent} - Evénement déclencheur
+     */
     public void handleResize(ResizeEvent event)
     {
         try

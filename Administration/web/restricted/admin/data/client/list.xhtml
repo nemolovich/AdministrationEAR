@@ -183,7 +183,7 @@
                                                  icon="ui-icon-pause"
                                                  oncomplete="clientTable.filter();"
                                                  onclick="if(!confirm('Voulez vous vraiment mettre cette société en standby?\n'+
-                                                                '(Vous pourrez la réactivez quand vous le souhaitez)'))
+                                                                '(Vous pourrez la réactiver quand vous le souhaitez)'))
                                                                    {return false;}"
                                                  update=":growl :clientDataForm:clientDataTable :clientDataForm:clientDataTable:sleepingTab"
                                                  style="font-size: 60%;float:right;"
@@ -217,7 +217,7 @@
                                                 oncomplete="clientTable.filter();"/>  
                                     </p:selectBooleanCheckbox>
                                     <p:tooltip for="checkDisplaySleeping"
-                                               value="Ajouter une société. Affiche les sociétés en sommeil en plus de celles actives"
+                                               value="Affiche les sociétés en sommeil en plus de celles actives"
                                                showEffect="fade" hideEffect="fade"
                                                styleClass="tooltip"/>
                                 </p:outputPanel>
