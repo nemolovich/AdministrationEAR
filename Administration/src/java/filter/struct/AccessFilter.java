@@ -4,6 +4,7 @@
  */
 package filter.struct;
 
+import bean.ApplicationLogger;
 import bean.UserLogin;
 import static filter.AdminAccessFilter.getStackTrace;
 import java.io.IOException;
@@ -230,7 +231,7 @@ public class AccessFilter implements Filter
         Throwable problem = null;
         try
         {
-//            System.out.println("Vos droits sont: "+this.userLogin.getRights());
+//            '.writeInfo("Vos droits sont: "+this.userLogin.getRights());
             String uri=((HttpServletRequest)request).getRequestURI().toString();
             uri=uri.substring(1,uri.lastIndexOf('.'));
             uri=uri.substring(uri.indexOf('/'));
@@ -238,6 +239,13 @@ public class AccessFilter implements Filter
             this.userLogin.setTemplate(this.userLogin.getRights().toLowerCase());
             if(!this.allowedRights.contains(this.userLogin.getRights()))
             {
+                ApplicationLogger.writeWarning("Tentative d'accès à une page "
+                        + "sécurisée pour l'utilisateur: "+
+                        (this.userLogin!=null&&this.userLogin.getUser()!=null?
+                            (this.userLogin.getUser().getFirstname()+" "+
+                                this.userLogin.getUser().getName()+" ["+
+                                this.userLogin.getUser().getRights()+"]"):"Anonyme")+
+                        " [Page=\""+uri+"\"]");
                 ((HttpServletResponse)response).sendRedirect(((HttpServletRequest)request).getContextPath() + "/restricted/login.xhtml");
             }
             chain.doFilter(request, response);

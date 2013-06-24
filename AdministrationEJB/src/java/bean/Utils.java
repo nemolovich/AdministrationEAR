@@ -7,8 +7,6 @@ package bean;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 
@@ -20,6 +18,10 @@ import javax.inject.Named;
 @ApplicationScoped
 public class Utils
 {
+    /**
+     * Nom de l'application
+     */
+    public static final String APPLICATION_NAME="Administration";
     /**
      * Le nombre maximum de ligne dans une liste de données
      */
@@ -80,23 +82,29 @@ public class Utils
     {
         try
         {
-            String call="Appel de la méthode '"+m.getName()+"' ("+desc+") sur "
-                    + "l'objet de la classe '"+target.getClass().getName()+"' "
+            String call="Appel de la méthode \""+m.getName()+"\" ("+desc+") sur "
+                    + "l'objet de la classe \""+target.getClass().getName()+"\" "
                     + "avec les paramètres: "+Arrays.toString(args);
-            Logger.getLogger(Utils.class.getName()).log(Level.INFO, call);
+            ApplicationLogger.writeInfo(call);
             return m.invoke(target, args);
         }
         catch (IllegalAccessException ex)
         {
-            Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, ex);
+            ApplicationLogger.writeError("La méthode \""+m.getName()+"\" est"+
+                    " interdite d'accès pour la classe \""+target.getClass().getName()
+                    +"\"", ex);
         }
         catch (IllegalArgumentException ex)
         {
-            Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, ex);
+           ApplicationLogger.writeError("Les arguments pour la méthode \"get"+
+                    m.getName()+"\" sont incorrects pour la classe \""+
+                    target.getClass().getName()+"\"", ex);
         }
         catch (InvocationTargetException ex)
         {
-            Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, ex);
+            ApplicationLogger.writeError("La méthode \"get"+m.getName()+"\" n'est"+
+                    " pas applicable pour la classe \""+target.getClass().getName()+
+                    "\"", ex);
         }
         return null;
     }

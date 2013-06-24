@@ -4,8 +4,7 @@
  */
 package validator;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import bean.ApplicationLogger;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -40,16 +39,15 @@ public class PasswordValidator implements Validator
         if(passwordMinLength==null)
         {
             String warning="La taille minimum du mot de passe n'est pas requise dans "+
-                    "le validateur '"+PasswordValidator.class.getName()+"'";
-            Logger.getLogger(PasswordValidator.class.getName()).log(Level.WARNING, 
-                    warning);
+                    "le validateur \""+PasswordValidator.class.getName()+"\"";
+            ApplicationLogger.writeWarning(warning);
             passwordMinLength=false;
         }
         
         if(confirm==null)
         {
-            System.err.println("Dans le validateur '"+this.getClass().getName()+
-                    "'. Vous devez spécifier un champs avec l'id 'confirm'. "
+            ApplicationLogger.writeWarning("Dans le validateur \""+this.getClass().getName()+
+                    "\". Vous devez spécifier un champs avec l'id \"confirm\". "
                     + "Exemple: <h:inputSecret id=\"confirm\" binding=\"#{confirm}\"/> "
                     + "si vous ajouter e attribut pour ce validateur: "
                     + "<f:attribute name=\"confirm\" value=\"#{confirm}\" />");
@@ -58,8 +56,8 @@ public class PasswordValidator implements Validator
         
         if(this.update_id==null)
         {
-            System.err.println("Dans le validateur '"+this.getClass().getName()+
-                    "'. Vous devez spécifier un attribut 'update_id' pour ce validateur. "
+            ApplicationLogger.writeWarning("Dans le validateur \""+this.getClass().getName()+
+                    "\". Vous devez spécifier un attribut \"update_id\" pour ce validateur. "
                     + "Exemple: <f:attribute name=\"update_id\" value=\"1\" /> "
                     + "pour la mise à jour de l'utilisateur ayant "
                     + "pour identifiant 1 (-1 pour la création).");
@@ -73,8 +71,8 @@ public class PasswordValidator implements Validator
                 "Mot de passe non confirmé",
                 "Veuillez confirmer le mot de passe");
         
-//        System.err.println("Status: ID="+this.update_id+" - password='"+password+"' - confirmation='"+
-//                confirm+"' minLength="+passwordMinLength);
+//        ApplicationLogger.writeWarning("Status: ID="+this.update_id+" - password=\""+password+"\" - confirmation=\""+
+//                confirm+"\" minLength="+passwordMinLength);
 
         if (this.update_id==-1 && (password == null || (passwordMinLength &&
                 (password.isEmpty() || password.length()<8)) ||
@@ -91,8 +89,7 @@ public class PasswordValidator implements Validator
         
         if(this.update_id!=-1 && (confirm == null || confirm.isEmpty()) && password.isEmpty())
         {
-            Logger.getLogger(PasswordValidator.class.getName()).log(Level.WARNING, 
-                    "Le mot de passe n'a pas été modifié");
+            ApplicationLogger.writeWarning("Le mot de passe n'a pas été modifié");
         }
         else
         {

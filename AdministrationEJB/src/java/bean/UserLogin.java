@@ -219,6 +219,9 @@ public class UserLogin implements Serializable
     
     public void sessionBlockFor(int minutes)
     {
+        ApplicationLogger.writeWarning("La session pour l'utilisateur: "+
+                this.getFirstname()+" "+this.getName()+
+                " ["+this.getRights()+"] a été bloquée pour "+minutes+" minutes");
         long currentTime=Calendar.getInstance().getTimeInMillis();
         this.nextTryTime=currentTime+60000*minutes;
         this.blocked=true;
@@ -246,6 +249,9 @@ public class UserLogin implements Serializable
     
     public void unLock()
     {
+        ApplicationLogger.writeWarning("La session pour l'utilisateur: "+
+                this.getFirstname()+" "+this.getName()+
+                " ["+this.getRights()+"] a été débloquée");
         this.blocked=false;
     }
     
@@ -331,6 +337,9 @@ public class UserLogin implements Serializable
     
     public void setUser(TUser user)
     {
+        ApplicationLogger.writeInfo("Connexion de l'utilisateur: "+
+                user.getFirstname()+" "+user.getName()+
+                " ["+user.getRights()+"]");
         this.user=new User(user);
     }
     
@@ -343,7 +352,7 @@ public class UserLogin implements Serializable
                 return u;
             }
         }
-        System.err.println("Utilisateur non trouvé");
+        ApplicationLogger.writeWarning("Utilisateur non trouvé");
         return null;
     }
     
@@ -373,6 +382,9 @@ public class UserLogin implements Serializable
     
     public String logout()
     {
+        ApplicationLogger.writeInfo("Déconnexion de l'utilisateur: "+
+                this.user.getFirstname()+" "+this.user.getName()+
+                " ["+this.user.getRights()+"]");
         this.user=null;
         this.template="unknown";
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();

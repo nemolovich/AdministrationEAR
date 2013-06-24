@@ -4,11 +4,10 @@
  */
 package bean.view.multiSelection.struct;
 
+import bean.ApplicationLogger;
 import bean.Utils;
 import java.lang.reflect.Method;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.faces.model.ListDataModel;
 import org.primefaces.model.SelectableDataModel;
 
@@ -36,11 +35,15 @@ public abstract class EntityDataModel<C> extends ListDataModel<C>
         }
         catch (NoSuchMethodException ex)
         {
-            Logger.getLogger(EntityDataModel.class.getName()).log(Level.SEVERE, null, ex);
+            ApplicationLogger.writeError("La méthode de récupération de"
+                    + " l'identifiant pour la class \""+entityClass.getName()+"\""
+                    + " n'a pas été trouvée", ex);
         }
         catch (SecurityException ex)
         {
-            Logger.getLogger(EntityDataModel.class.getName()).log(Level.SEVERE, null, ex);
+            ApplicationLogger.writeError("La méthode de récupération de"
+                    + " l'identifiant pour la class \""+entityClass.getName()+"\""
+                    + " n'est pas accessible", ex);
         }
     }
     
@@ -48,7 +51,6 @@ public abstract class EntityDataModel<C> extends ListDataModel<C>
     public Object getRowKey(C c)
     {
         Integer id=(Integer) Utils.callMethod(getId, "récupération de l'identifiant", c);
-//        System.err.println("On m'a appellé?");
         return id;
     }
 

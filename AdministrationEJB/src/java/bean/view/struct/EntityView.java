@@ -4,14 +4,15 @@
  */
 package bean.view.struct;
 
+import bean.ApplicationLogger;
 import bean.Utils;
 import bean.facade.abstracts.AbstractFacade;
+import entity.TUser;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
@@ -49,9 +50,7 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> implements Seria
     
     public void switchDisplaySleepingEntities()
     {
-//        this.displaySleepingEntities=!this.displaySleepingEntities;
         this.getFilteredEntities();
-        System.err.println("Set display to: "+this.displaySleepingEntities);
     }
 
     public boolean isDisplaySleepingEntities()
@@ -73,17 +72,20 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> implements Seria
         }
         catch (NoSuchMethodException ex)
         {
-            Logger.getLogger(EntityView.class.getName()).log(Level.SEVERE, null, ex);
+            ApplicationLogger.writeError("La méthode \"getSleeping\" n'a pas"+
+                    " été trouvée pour la classe \""+this.entityClass.getName()+"\"", ex);
             return null;
         }
         catch (SecurityException ex)
         {
-            Logger.getLogger(EntityView.class.getName()).log(Level.SEVERE, null, ex);
+            ApplicationLogger.writeError("La méthode \"getSleeping\" n'est pas"+
+                    " accessible pour la classe \""+TUser.class.getName()+"\"", ex);
             return null;
         }
         catch (NullPointerException ex)
         {
-            Logger.getLogger(EntityView.class.getName()).log(Level.SEVERE, null, ex);
+            ApplicationLogger.writeError("La méthode \"getSleeping\" renvoi \"null\""
+                    + " pour la classe '"+TUser.class.getName()+"'", ex);
             return null;
         }
         return (Boolean)Utils.callMethod(m, "récupération de l'état de veille", entity);
@@ -112,12 +114,21 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> implements Seria
     {
         if(!this.displaySleepingEntities&&this.filteredEntities!=null)
         {
-            for(C c:this.filteredEntities)
+            try
             {
-                if(this.isSleepingCall(c))
+                for(C c:this.filteredEntities)
                 {
-                    this.filteredEntities.remove(c);
+                    if(this.isSleepingCall(c))
+                    {
+                        this.filteredEntities.remove(c);
+                    }
                 }
+            }
+            catch (ConcurrentModificationException ex)
+            {
+                ApplicationLogger.writeError("Accès concurrent à la méthode"
+                        + " \"getFilteredEntities\" pour la liste des données de"
+                        + " la classe \""+this.entityClass.getName()+"\"", ex);
             }
         }
         return this.filteredEntities;
@@ -237,7 +248,8 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> implements Seria
         }
         catch (NoSuchMethodException ex)
         {
-            Logger.getLogger(EntityView.class.getName()).log(Level.SEVERE, null, ex);
+            ApplicationLogger.writeError("La méthode \"setSleeping\" n'a pas"+
+                    " été trouvée pour la classe \""+this.entityClass.getName()+"\"", ex);
         }
         this.entityFacade.edit(entity);
         return this.webFolder+"list";
@@ -252,7 +264,8 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> implements Seria
         }
         catch (NoSuchMethodException ex)
         {
-            Logger.getLogger(EntityView.class.getName()).log(Level.SEVERE, null, ex);
+            ApplicationLogger.writeError("La méthode \"setSleeping\" n'a pas"+
+                    " été trouvée pour la classe \""+this.entityClass.getName()+"\"", ex);
         }
         this.entityFacade.edit(entity);
         return this.webFolder+"list";
@@ -262,20 +275,21 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> implements Seria
     {
         this.creating = true;
         this.editing = false;
-        String message="Création d'une entité de la classe '"+this.entityClass.getName()+"'";
-        Logger.getLogger(EntityView.class.getName()).log(Level.INFO,
-                message);
+        String message="Création d'une entité de la classe \""+this.entityClass.getName()+"\"";
+        ApplicationLogger.writeInfo(message);
         try
         {
             this.entity = this.entityClass.newInstance();
         }
         catch (InstantiationException ex)
         {
-            Logger.getLogger(EntityView.class.getName()).log(Level.SEVERE, null, ex);
+            ApplicationLogger.writeError("Impossible d'instancier un objet de la"
+                    + " classe \""+this.entityClass.getName()+"\"", ex);
         }
         catch (IllegalAccessException ex)
         {
-            Logger.getLogger(EntityView.class.getName()).log(Level.SEVERE, null, ex);
+            ApplicationLogger.writeError("Droits refusés pour l'instanciation"
+                    + " d'un objet de la classe \""+this.entityClass.getName()+"\"", ex);
         }
         return this.webFolder+"create";
     }

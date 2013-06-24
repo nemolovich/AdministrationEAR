@@ -4,6 +4,7 @@
  */
 package entity;
 
+import bean.ApplicationLogger;
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -11,8 +12,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -122,23 +121,29 @@ public class TUser implements Serializable
         }
         catch (NoSuchMethodException ex)
         {
-            Logger.getLogger(TUser.class.getName()).log(Level.SEVERE, null, ex);
+            ApplicationLogger.writeError("La méthode \"get"+fieldName+"\" n'a pas"+
+                    " été trouvée pour la classe \""+TUser.class.getName()+"\"", ex);
         }
         catch (SecurityException ex)
         {
-            Logger.getLogger(TUser.class.getName()).log(Level.SEVERE, null, ex);
+            ApplicationLogger.writeError("La méthode \"get"+fieldName+"\" n'est pas"+
+                    " accessible pour la classe \""+TUser.class.getName()+"\"", ex);
         }
         catch (IllegalAccessException ex)
         {
-            Logger.getLogger(TUser.class.getName()).log(Level.SEVERE, null, ex);
+            ApplicationLogger.writeError("La méthode \"get"+fieldName+"\" est"+
+                    " interdite d'accès pour la classe \""+TUser.class.getName()+"\"", ex);
         }
         catch (IllegalArgumentException ex)
         {
-            Logger.getLogger(TUser.class.getName()).log(Level.SEVERE, null, ex);
+            ApplicationLogger.writeError("Les arguments pour la méthode \"get"+
+                    fieldName+"\" sont incorrects pour la classe \""+
+                    TUser.class.getName()+"\"", ex);
         }
         catch (InvocationTargetException ex)
         {
-            Logger.getLogger(TUser.class.getName()).log(Level.SEVERE, null, ex);
+            ApplicationLogger.writeError("La méthode \"get"+fieldName+"\" n'est"+
+                    " pas applicable pour la classe \""+TUser.class.getName()+"\"", ex);
         }
         return null;
     }
@@ -183,7 +188,7 @@ public class TUser implements Serializable
         }
         else
         {
-            System.err.println("Les droits ne sont pas corrects");
+            ApplicationLogger.writeWarning("Les droits ne sont pas corrects");
         }
     }
     
@@ -205,7 +210,7 @@ public class TUser implements Serializable
     {
         if(password.isEmpty())
         {
-            Logger.getLogger(TUser.class.getName()).log(Level.WARNING, "Utilisation de l'ancien mot de passe");
+            ApplicationLogger.writeWarning("Utilisation de l'ancien mot de passe");
             return;
         }
         MessageDigest md;
@@ -215,7 +220,7 @@ public class TUser implements Serializable
         }
         catch (NoSuchAlgorithmException ex)
         {
-            Logger.getLogger(TUser.class.getName()).log(Level.SEVERE, null, ex);
+            ApplicationLogger.writeError("Cryptage du mot de passe imposible", ex);
             this.password="nopass";
             return;
         }

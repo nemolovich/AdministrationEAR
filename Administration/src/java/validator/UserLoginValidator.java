@@ -4,14 +4,13 @@
  */
 package validator;
 
+import bean.ApplicationLogger;
 import bean.UserLogin;
 import bean.facade.TUserFacade;
 import entity.TUser;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -45,7 +44,6 @@ public class UserLoginValidator implements Validator
     public void validate(FacesContext context, UIComponent component, Object value)
             throws ValidatorException
     {
-//        System.err.println("VALIDATING AUTH");
         String mail = (String) value;
         UIInput passwordComponent = (UIInput) component.getAttributes().get("password");
         String password = (String)passwordComponent.getSubmittedValue();
@@ -101,7 +99,7 @@ public class UserLoginValidator implements Validator
                 }
                 catch (NoSuchAlgorithmException ex)
                 {
-                    Logger.getLogger(UserLoginValidator.class.getName()).log(Level.SEVERE, null, ex);
+                    ApplicationLogger.writeError("Cryptage du mot de passe imposible", ex);
                     return;
                 }
                 md.update(password.getBytes(/*"UTF-8"*/));

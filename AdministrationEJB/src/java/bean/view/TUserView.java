@@ -41,7 +41,6 @@ public class TUserView extends EntityView<TUser, TUserFacade>
     public String entityUpdate(TUser entity, UserLogin currentUser)
     {
         super.entityUpdate(entity);
-        System.err.println("CurrentUser: "+(currentUser!=null));
         if(currentUser.getRights().equals(TUser.ADMIN_RIGHTS))
         {
             return "/restricted/admin/user/update";
@@ -52,7 +51,6 @@ public class TUserView extends EntityView<TUser, TUserFacade>
     public String update(UserLogin currentUser)
     {
         this.setEntity(this.tUserFacade.update(this.getEntity()));
-        System.out.println("CurrentUser: "+(currentUser!=null));
         // Si on est en mode utilisateur
         if(currentUser!=null)
         {

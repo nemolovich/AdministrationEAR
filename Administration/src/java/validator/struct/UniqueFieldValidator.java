@@ -4,12 +4,11 @@
  */
 package validator.struct;
 
+import bean.ApplicationLogger;
 import bean.facade.abstracts.AbstractFacade;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -53,9 +52,9 @@ public abstract class UniqueFieldValidator<C, F extends AbstractFacade<C>> imple
         if(this.fieldName==null || this.fieldName.isEmpty()
             || this.update_ID==null )
         {
-            System.err.println("Dans le validateur '"+this.getClass().getName()+
-                    "'. Vous devez spécifier un attribut 'fieldName' pour ce validateur ainsi qu'un attribut 'update_id'. "
-                    + "Exemple: <f:attribute name=\"fieldName\" value=\"Mail\" /> pour un champs 'Mail' et "
+            ApplicationLogger.writeWarning("Dans le validateur \""+this.getClass().getName()+
+                    "\". Vous devez spécifier un attribut \"fieldName\" pour ce validateur ainsi qu'un attribut \"update_id\". "
+                    + "Exemple: <f:attribute name=\"fieldName\" value=\"Mail\" /> pour un champs \"Mail\" et "
                     + "<f:attribute name=\"update_id\" value=\"1\" /> pour la mise à jour de l'utilisateur ayant "
                     + "pour identifiant 1 (-1 pour la création).");
             return;
@@ -76,12 +75,14 @@ public abstract class UniqueFieldValidator<C, F extends AbstractFacade<C>> imple
         }
         catch (NoSuchMethodException ex)
         {
-            Logger.getLogger(UniqueFieldValidator.class.getName()).log(Level.SEVERE, null, ex);
+            ApplicationLogger.writeError("La méthode \"get"+fieldName+"\" n'a pas "
+                    + "été trouvé pour la classe \""+this.entityClass+"\"", ex);
             return;
         }
         catch (SecurityException ex)
         {
-            Logger.getLogger(UniqueFieldValidator.class.getName()).log(Level.SEVERE, null, ex);
+            ApplicationLogger.writeError("L'accès à la méthode \"get"+fieldName+
+                    "\" est restreint pour la classe \""+this.entityClass+"\"", ex);
             return;
         }
         for(C entity:entities)
@@ -104,15 +105,21 @@ public abstract class UniqueFieldValidator<C, F extends AbstractFacade<C>> imple
             }
             catch (IllegalAccessException ex)
             {
-                Logger.getLogger(UniqueFieldValidator.class.getName()).log(Level.SEVERE, null, ex);
+                ApplicationLogger.writeError("Accès interdit à la méthode de "
+                        + "récupération de l'identifiant pour la classe \""+
+                        this.entityClass+"\"", ex);
             }
             catch (IllegalArgumentException ex)
             {
-                Logger.getLogger(UniqueFieldValidator.class.getName()).log(Level.SEVERE, null, ex);
+                ApplicationLogger.writeError("Arguments invalides pour la méthode de "
+                        + "récupération de l'identifiant pour la classe \""+
+                        this.entityClass+"\"", ex);
             }
             catch (InvocationTargetException ex)
             {
-                Logger.getLogger(UniqueFieldValidator.class.getName()).log(Level.SEVERE, null, ex);
+                ApplicationLogger.writeError("Impossible d'appeler la méthode de "
+                        + "récupération de l'identifiant pour la classe \""+
+                        this.entityClass+"\"", ex);
             }
         }
         if(this.fieldName.equalsIgnoreCase("Mail"))
