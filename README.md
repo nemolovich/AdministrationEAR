@@ -1,5 +1,5 @@
-Stage_M1
-========
+AdministrationEAR
+=================
 
 <b>AdministrationEAR[`EAR`]{Administration[`WAR`],AdministrationEJB[`EJB`]}</b>
 
