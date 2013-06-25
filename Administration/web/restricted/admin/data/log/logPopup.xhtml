@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <p:dialog id="logViewPopup"
+                  dynamic="true"
+                  appendToBody="true"
+                  header="Fichier journal du serveur"
+                  widgetVar="logViewDialog"
+                  resizable="true"
+                  draggable="true"
+                  maximizable="true"
+                  modal="true"
+                  width="750"
+                  height="500"
+                  minWidth="750"
+                  minHeight="500"
+                  showEffect="clip"
+                  hideEffect="clip">
+            <h:form id="displayLogForm">
+                <p:hotkey bind="esc" handler="logViewDialog.hide();"/>
+                <h:outputText value="#{logger.getHTMLLog()}"
+                              escape="false"/>
+            </h:form>
+        </p:dialog>
+    </h:body>
+</html>
+

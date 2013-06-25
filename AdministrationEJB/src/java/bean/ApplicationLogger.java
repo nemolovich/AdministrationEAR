@@ -9,13 +9,17 @@ import static bean.ApplicationLogger.displayInfo;
 import static bean.ApplicationLogger.displayWarning;
 import static bean.ApplicationLogger.startWrite;
 import static bean.ApplicationLogger.writeInfo;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.text.SimpleDateFormat;
@@ -40,10 +44,12 @@ public class ApplicationLogger
     private static final String INFO_TAG="INFO";
     private static final String WARNING_TAG="WARNING";
     private static final String ERROR_TAG="ERROR";
-    private static final String BIG_SEPARATOR="\r\n##=================================================================\r\n";
-    private static final String SEPARATOR="\r\n##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\r\n";
-    private static final String SMALL_SEPARATOR="\r\n##-----------------------------------------------------------------\r\n";
+    private static final String HUGE_SEPARATOR="###################################################################";
+    private static final String BIG_SEPARATOR="##=================================================================";
+    private static final String SEPARATOR="##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
+    private static final String SMALL_SEPARATOR="##-----------------------------------------------------------------";
     private static String lastLine=null;
+    private static String lastStyle=null;
     private static int nbLastLine=0;
 
     public ApplicationLogger()
@@ -72,17 +78,140 @@ public class ApplicationLogger
     
     private static void addHeader()
     {
-        String header="###################################################################\r\n"
-                                + "## Fichier journal pour l'application '"+Utils.APPLICATION_NAME+"'";
-        for(int i=Utils.APPLICATION_NAME.length();i<24;i++)
+        String header=HUGE_SEPARATOR+"\r\n"
+                                + "## Fichier journal pour l'application: '"+Utils.APPLICATION_NAME+"'";
+        for(int i=Utils.APPLICATION_NAME.length();i<=22;i++)
         {
             header+=" ";
         }
         header+=" ##\r\n";
         header+="## Date de création:        "+date()+"                   ##\r\n";
-        header+="###################################################################\r\n";
+        header+=HUGE_SEPARATOR+"\r\n";
         out.println(header);
         out.flush();
+    }
+    
+    public static String getHTMLLog()
+    {
+        Reader reader = null;
+        boolean inTab=false;
+        String logHTML="";
+        String logLine="";
+        try
+        {
+            FileInputStream fileReader=new FileInputStream(logFile);
+            reader=new BufferedReader(new InputStreamReader(fileReader,"UTF8"));
+            int c;
+            while((c=reader.read())!=-1)
+            {
+                if(c=='\n')
+                {
+                    if(logLine.equals(BIG_SEPARATOR)||
+                            logLine.equals(SEPARATOR)||
+                            logLine.equals(SMALL_SEPARATOR))
+                    {
+                        logHTML+="<hr/>";
+                    }
+                    else if(logLine.equals(HUGE_SEPARATOR))
+                    {
+                        inTab^=true;
+                        if(inTab)
+                        {
+                            logHTML+="<TABLE>\n";
+                        }
+                        else
+                        {
+                            logHTML+="</TABLE>\n";
+                        }
+                    }
+                    else if(logLine.startsWith("## "))
+                    {
+                        logLine=logLine.substring(3);
+                        if(logLine.endsWith(" ##"))
+                        {
+                            logLine=logLine.substring(0,logLine.indexOf(" ##"));
+                        }
+                        if(logLine.contains(":"))
+                        {
+                            String field=logLine.substring(0, logLine.indexOf(":"));
+                            String value=logLine.substring(field.length()+1);
+                            while(value.startsWith(" "))
+                            {
+                                value=value.substring(1);
+                            }
+                            while(value.endsWith(" "))
+                            {
+                                value=value.substring(0,value.length()-1);
+                            }
+                            logHTML+="--value:--"+value+"--<br/>";
+                            if((value.startsWith("'")&&value.endsWith("'"))||
+                                    (value.startsWith("[")&&value.endsWith("]")))
+                            {
+                                value=value.substring(1,value.length()-1);
+                            }
+                            if(inTab)
+                            {
+                                logHTML+="<TR><TD class=\"label\">"+field+":</TD>\n"
+                                        + "<TD class=\"fields\">"+value+"</TD></TR>\n";
+                            }
+                            else
+                            {
+                                logHTML+="COMMENT: Field: "+field+", value: "+value+"<br/>";
+                            }
+                        }
+                        else
+                        {
+                            if(inTab)
+                            {
+                                logHTML+="<TR><TD class=\"label\" colspan=\"2\">"+
+                                        logLine+"</TD></TR>\n";
+                            }
+                            else
+                            {
+                                logHTML+="COMMENT: "+logLine+"<br/>";
+                            }
+                        }
+                    }
+                    else
+                    {
+                        logHTML+=logLine+"<br/>";
+                    }
+                    logLine="";
+                }
+                else if(c=='\r')
+                {
+                    // Rien car '\r\n' dans le log
+                }
+                else
+                {
+                    logLine+=(char)c;
+                }
+            }
+        }
+        catch (FileNotFoundException ex)
+        {
+            Logger.getLogger(ApplicationLogger.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (UnsupportedEncodingException ex)
+        {
+            Logger.getLogger(ApplicationLogger.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (IOException ex)
+        {
+            Logger.getLogger(ApplicationLogger.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        finally
+        {
+            try
+            {
+                reader.close();
+            }
+            catch (IOException ex)
+            {
+                Logger.getLogger(ApplicationLogger.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return logHTML;
     }
     
     public static void start(String fileName)
@@ -96,7 +225,7 @@ public class ApplicationLogger
         }
         else
         {
-            write(BIG_SEPARATOR);
+            write("\r\n"+BIG_SEPARATOR);
             writeInfo("Début des écritures dans le journal");
         }
     }
@@ -130,7 +259,6 @@ public class ApplicationLogger
                 return false;
             }
         }
-        
         try
         {
             FileOutputStream fileWriter=new FileOutputStream(logFile, true);
@@ -166,9 +294,9 @@ public class ApplicationLogger
     
     public static boolean stopWrite()
     {
-        write(SEPARATOR);
+        write("\r\n"+SEPARATOR);
         writeInfo("Fin des écritures dans le journal");
-        write(BIG_SEPARATOR);
+        write("\r\n"+BIG_SEPARATOR);
         out.close();
         return false;
     }
@@ -211,18 +339,23 @@ public class ApplicationLogger
             String add=(style!=null?(style.equals(INFO_TAG)?info():
                         style.equals(WARNING_TAG)?warning():
                         style.equals(ERROR_TAG)?error():""):"");
-            String before=add;
-            for(int i=add.length();i<24;i++)
+            String before=lastStyle!=null?lastStyle:"";
+            for(int i=before.length();i<23;i++)
             {
                 before=" "+before;
             }
             if(nbLastLine>0)
             {
-                out.append(before+" Same line "+nbLastLine+" times\r\n");
+                out.append(before+": Même ligne "+nbLastLine+" fois\r\n");
                 out.flush();
-                displayInfo(before+" Same line "+nbLastLine+" times\r\n");
+                displayInfo(before+": Même ligne "+nbLastLine+" fois\r\n");
             }
-            out.append(date()+add+message.replaceAll("'", "''")+"\r\n");
+            if(style!=null)
+            {
+                add=date()+add;
+                lastStyle=style;
+            }
+            out.append(add+message.replaceAll("'", "''")+"\r\n");
             out.flush();
             if(ex!=null)
             {
