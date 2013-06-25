@@ -159,3 +159,37 @@ function selectLine(table, index, maxRows)
 //    $('#'+selectId+' option:selected').removeAttr("selected");
 //    $('#'+selectId+' option[value='+value+']').attr("selected","selected");
 //}
+
+/**
+ * Renvoi la largeur du navigateur
+ * @returns {Number}
+ */
+function getNavigatorWidth()
+{
+    winW=700;
+    if (document.body && document.body.offsetWidth)
+    {
+        winW = document.body.offsetWidth;
+    }
+    if (document.compatMode=='CSS1Compat' &&
+        document.documentElement &&
+        document.documentElement.offsetWidth )
+    {
+        winW = document.documentElement.offsetWidth;
+    }
+    return winW;
+}
+
+/**
+ * Renvoi la heuteur du navigateur
+ * @returns {Number}
+ */
+function getNavigatorHeight()
+{
+    winH=500;
+    if (document.body && document.body.offsetWidth)
+    {
+        winH = document.body.offsetHeight;
+    }
+    return winH;
+}

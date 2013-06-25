@@ -25,8 +25,19 @@
                   hideEffect="clip">
             <h:form id="displayLogForm">
                 <p:hotkey bind="esc" handler="logViewDialog.hide();"/>
-                <h:outputText value="#{logger.getHTMLLog()}"
-                              escape="false"/>
+                <div id="logContainer" style="width:100% !important;height:auto !important;max-height:auto;">
+                    <h:outputText value="#{logger.getHTMLLog()}"
+                                  escape="false"/>
+                    <script type="text/javascript">
+                        $(document).ready(function()
+                        {
+                            var element=document.getElementById("logContainer");
+                            var maxEHeight=(getNavigatorHeight()-450)+"px";
+                            element.style.height=maxEHeight;
+                            //ui-dialog-content
+                        });
+                    </script>
+                </div>
             </h:form>
         </p:dialog>
     </h:body>

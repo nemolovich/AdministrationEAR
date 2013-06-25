@@ -455,3 +455,62 @@ a:link:hover, a:visited:hover
     -moz-box-shadow:            5px 5px 2px -3px #767676;
     box-shadow:                 5px 5px 2px -3px #767676;
 }
+
+.big_sep
+{
+    border-color:               #C0C0C0;
+    border-width:               2px;
+    border-radius:              4px;
+}
+
+.sep
+{
+    border-color:               #D0D0D0;
+    border-width:               1.5px;
+    border-radius:              4px;
+}
+
+.small_sep
+{
+    border-color:               #DEDEDE;
+    border-width:               1px;
+    border-radius:              4px;
+}
+
+.icon_info
+{
+    cursor:                     help;
+}
+
+a.blankLink,
+a.blankLink:link,
+a.blankLink:visited
+{
+    cursor:                     pointer !important;
+    color:                      #767676 !important;
+}
+
+a.blankLink:focus,
+a.blankLink:hover,
+a.blankLink:visited:focus,
+a.blankLink:link:focus,
+a.blankLink:visited:hover,
+a.blankLink:link:hover
+{
+    padding:                    0 2px;
+    background-color:           #C0C0C0 !important;
+    color:                      #FFFFFF !important;
+    text-decoration:            underline !important;
+    text-shadow:                1px 1px 1px #333333;
+}
+
+TABLE.infos_header
+{
+    background-color:           #F1F5F8;
+    border:                     1px solid #E6F0FC;
+    border-radius:              4px;
+    padding:                    5px;
+    padding-bottom:             25px;
+    margin:                     0 auto;
+    width:                      100%;
+}

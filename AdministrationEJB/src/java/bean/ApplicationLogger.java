@@ -22,6 +22,7 @@ import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.logging.Level;
@@ -40,7 +41,7 @@ public class ApplicationLogger
     private static final Logger log=Logger.getLogger(ApplicationLogger.class.getName());
     private static File logFile;
     private static PrintWriter out;
-    private static final SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+    private static final SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
     private static final String INFO_TAG="INFO";
     private static final String WARNING_TAG="WARNING";
     private static final String ERROR_TAG="ERROR";
@@ -85,18 +86,103 @@ public class ApplicationLogger
             header+=" ";
         }
         header+=" ##\r\n";
-        header+="## Date de création:        "+date()+"                   ##\r\n";
+        header+="## Date de création:        "+date()+"                ##\r\n";
         header+=HUGE_SEPARATOR+"\r\n";
-        out.println(header);
+        out.print(header);
         out.flush();
+    }
+    
+    private static String getStyleFrom(String message)
+    {
+        return getStyleFrom(message, null, null);
+    }
+    
+    private static String getStyleFrom(String message, String style)
+    {
+        return getStyleFrom(message, style, null);
+    }
+    
+    private static String getStyleFrom(String message, String style, String date)
+    {
+        String classe="info";
+        String div="";
+        String spanClass="";
+        if(date!=null)
+        {
+            try
+            {
+                date=format.parse(date.substring(1, date.length()-1)).toString();
+                spanClass+=" icon_info\" title=\""+(style!=null?style+": ":"")+date;
+            }
+            catch (ParseException ex)
+            {
+                displayError("Impossible de parser la date '"+date+"'", ex);
+            }
+        }
+        spanClass+="\"/>\n";
+        if(style==null&&lastStyle!=null)
+        {
+            div+=
+            "        </ul><!-- pour style"+lastStyle+"-->\n"+
+            "    </div>\n"+
+            "</div>\n";
+            lastStyle=null;
+        }
+        else if(style!=null&&style.equals(WARNING_TAG))
+        {
+            classe="warn";
+        }
+        else if(style!=null&&style.equals(ERROR_TAG))
+        {
+            classe="error";
+        }
+        if(style!=null&&lastStyle!=null&&!lastStyle.equals(classe))
+        {
+            div+=
+            "        </ul><!-- Fermeture du style"+lastStyle+"-->\n"+
+            "    </div>\n"+
+            "</div>\n";
+            div+=
+            "<div class=\"ui-messages ui-widget\">\n"+
+            "    <div class=\"ui-messages-"+classe+" ui-corner-all\">\n"+
+            "        <span class=\"ui-messages-"+classe+"-icon"+spanClass+
+            "        <ul>\n";
+        }
+        else if(style!=null&&lastStyle==null)
+        {
+            div+=
+            "<div class=\"ui-messages ui-widget\">\n"+
+            "    <div class=\"ui-messages-"+classe+" ui-corner-all\">\n"+
+            "        <span class=\"ui-messages-"+classe+"-icon"+spanClass+
+            "        <ul>\n";
+        }
+        if(style!=null)
+        {
+            div+=
+            "            <li>\n"+
+            "                <span class=\"ui-messages-"+classe+"-summary\">\n";
+            lastStyle=style;
+        }
+        div+=message.replaceAll("''", "&quot;")+"\n";
+        if(style!=null)
+        {
+            div+=
+            "                </span>\n"+
+            "            </li>\n";
+        }
+        return div;
     }
     
     public static String getHTMLLog()
     {
+        lastStyle=null;
+        FileOutputStream fileWriter = null;
         Reader reader = null;
         boolean inTab=false;
         String logHTML="";
         String logLine="";
+        int error_report_id=0;
+        boolean inDetails=false;
         try
         {
             FileInputStream fileReader=new FileInputStream(logFile);
@@ -106,18 +192,40 @@ public class ApplicationLogger
             {
                 if(c=='\n')
                 {
-                    if(logLine.equals(BIG_SEPARATOR)||
-                            logLine.equals(SEPARATOR)||
-                            logLine.equals(SMALL_SEPARATOR))
+                    if(logLine.equals(BIG_SEPARATOR))
                     {
-                        logHTML+="<hr/>";
+                        logHTML+=getStyleFrom("\n<hr class=\"big_sep\"/>\n\n",null);
+                    }
+                    else if(logLine.equals(SEPARATOR))
+                    {
+                        logHTML+=getStyleFrom("\n<hr class=\"sep\"/>\n\n",null);
+                    }
+                    else if(logLine.equals(SMALL_SEPARATOR))
+                    {
+                        if(inDetails)
+                        {
+                            logHTML+=
+    "                    </span>\n" +
+    "                </span>\n" +
+    "                <script id=\"error_report_"+error_report_id+"_s\" type=\"text/javascript\">\n" +
+    "                    PrimeFaces.cw('Inplace','error_report_"+error_report_id+"_js',\n" +
+    "                                {id:'error_report_"+error_report_id+"',\n" +
+    "                                    effect:'slide',\n" +
+    "                                    effectSpeed:'normal',\n" +
+    "                                    event:'click',\n" +
+    "                                    toggleable:true\n" +
+    "                                });\n" +
+    "                </script>";
+                            error_report_id++;
+                        }
+                        logHTML+=getStyleFrom("\n<hr class=\"small_sep\"/>\n\n",null);
                     }
                     else if(logLine.equals(HUGE_SEPARATOR))
                     {
                         inTab^=true;
                         if(inTab)
                         {
-                            logHTML+="<TABLE>\n";
+                            logHTML+="<TABLE class=\"infos_header\">\n";
                         }
                         else
                         {
@@ -143,7 +251,6 @@ public class ApplicationLogger
                             {
                                 value=value.substring(0,value.length()-1);
                             }
-                            logHTML+="--value:--"+value+"--<br/>";
                             if((value.startsWith("'")&&value.endsWith("'"))||
                                     (value.startsWith("[")&&value.endsWith("]")))
                             {
@@ -151,30 +258,63 @@ public class ApplicationLogger
                             }
                             if(inTab)
                             {
-                                logHTML+="<TR><TD class=\"label\">"+field+":</TD>\n"
-                                        + "<TD class=\"fields\">"+value+"</TD></TR>\n";
+                                logHTML+=
+                                    "    <TR>\n" +
+                                    "        <TD class=\"label\">"+field+":</TD>\n" +
+                                    "        <TD class=\"fields\">"+value+"</TD>\n" +
+                                    "    </TR>\n";
                             }
                             else
                             {
-                                logHTML+="COMMENT: Field: "+field+", value: "+value+"<br/>";
+                                logHTML+=getStyleFrom("COMMENT: Field: "+field+", value: "+value+"<br/>\n");
                             }
                         }
                         else
                         {
                             if(inTab)
                             {
-                                logHTML+="<TR><TD class=\"label\" colspan=\"2\">"+
-                                        logLine+"</TD></TR>\n";
+                                logHTML+=
+                                    "    <TR>\n" +
+                                    "        <TD class=\"label\" colspan=\"2\">\n"+
+                                    logLine+
+                                    "        </TD>\n" +
+                                    "    </TR>\n";
                             }
                             else
                             {
-                                logHTML+="COMMENT: "+logLine+"<br/>";
+                                logHTML+=getStyleFrom("COMMENT: "+logLine+"<br/>\n");
                             }
                         }
                     }
+                    else if(logLine.length()>21&&logLine.substring(22).startsWith(INFO_TAG+": "))
+                    {
+                        logHTML+=getStyleFrom(logLine.substring(24+INFO_TAG.length()), INFO_TAG, logLine.substring(0, 21));
+                    }
+                    else if(logLine.length()>21&&logLine.substring(22).startsWith(WARNING_TAG+": "))
+                    {
+                        logHTML+=getStyleFrom(logLine.substring(24+WARNING_TAG.length()), WARNING_TAG, logLine.substring(0, 21));
+                    }
+                    else if(logLine.length()>21&&logLine.substring(22).startsWith(ERROR_TAG+": "))
+                    {
+                        logHTML+=getStyleFrom(logLine.substring(24+ERROR_TAG.length()), ERROR_TAG, logLine.substring(0, 21));
+                    }
+                    else if(logLine.startsWith("\tCause: "))
+                    {
+                        logHTML+=
+    "                "+logLine+"<br/>\n" +
+    "                Détails de l'erreur: \n" +
+    "                <span id=\"error_report_"+error_report_id+"\" class=\"ui-inplace ui-hidden-container\">\n" +
+    "                    <span id=\"error_report_"+error_report_id+"_display\" class=\"ui-inplace-display\" style=\"background:none;display:inline\">\n" +
+    "                        <a href=\"#\" class=\"blankLink\" title=\"Afficher les détails de l'erreur\">Afficher</a>\n" +
+    "                    </span><br/>\n" +
+    "                    <span id=\"error_report_"+error_report_id+"_content\" class=\"ui-inplace-content\" style=\"display:none\">\n" +
+    "                        <a href=\"#\" class=\"blankLink\" name=\"error_report_"+error_report_id+"_hide\" title=\"Masquer les détails\"\n" +
+    "                            onclick=\"error_report_"+error_report_id+"_js.hide();\" >Masquer</a>\n<br/>\n";
+                        inDetails=true;
+                    }
                     else
                     {
-                        logHTML+=logLine+"<br/>";
+                        logHTML+=logLine+"<br/>\n";
                     }
                     logLine="";
                 }
@@ -190,15 +330,15 @@ public class ApplicationLogger
         }
         catch (FileNotFoundException ex)
         {
-            Logger.getLogger(ApplicationLogger.class.getName()).log(Level.SEVERE, null, ex);
+            displayError("Impossible de trouver le fichier journal", ex);
         }
         catch (UnsupportedEncodingException ex)
         {
-            Logger.getLogger(ApplicationLogger.class.getName()).log(Level.SEVERE, null, ex);
+            displayError("Le type d'encodage du fichier journal est incorrect", ex);
         }
         catch (IOException ex)
         {
-            Logger.getLogger(ApplicationLogger.class.getName()).log(Level.SEVERE, null, ex);
+            displayError("Erreur (I/O) lors de la lecture du fichier journal", ex);
         }
         finally
         {
@@ -208,9 +348,26 @@ public class ApplicationLogger
             }
             catch (IOException ex)
             {
-                Logger.getLogger(ApplicationLogger.class.getName()).log(Level.SEVERE, null, ex);
+                displayError("Erreur lors de la fermeture du fichier journal", ex);
             }
         }
+//        try {
+//            fileWriter = new FileOutputStream(new File("page.html"), false);
+//            Writer writer=new BufferedWriter(new OutputStreamWriter(fileWriter,"UTF8"));
+//            PrintWriter htmlFile=new PrintWriter(writer);
+//            htmlFile.print(logHTML);
+//            htmlFile.flush();
+//        } catch (FileNotFoundException ex) {
+//            Logger.getLogger(ApplicationLogger.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (UnsupportedEncodingException ex) {
+//            Logger.getLogger(ApplicationLogger.class.getName()).log(Level.SEVERE, null, ex);
+//        } finally {
+//            try {
+//                fileWriter.close();
+//            } catch (IOException ex) {
+//                Logger.getLogger(ApplicationLogger.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        }
         return logHTML;
     }
     
@@ -227,6 +384,7 @@ public class ApplicationLogger
         {
             write("\r\n"+BIG_SEPARATOR);
             writeInfo("Début des écritures dans le journal");
+            write(SEPARATOR);
         }
     }
     
@@ -296,7 +454,7 @@ public class ApplicationLogger
     {
         write("\r\n"+SEPARATOR);
         writeInfo("Fin des écritures dans le journal");
-        write("\r\n"+BIG_SEPARATOR);
+        write(BIG_SEPARATOR);
         out.close();
         return false;
     }
@@ -319,7 +477,9 @@ public class ApplicationLogger
     
     public static void writeError(String message, Exception ex)
     {
+        write(SMALL_SEPARATOR);
         write(message, ERROR_TAG, ex);
+        write(SMALL_SEPARATOR);
     }
     
     public static void write(String message)
@@ -340,7 +500,7 @@ public class ApplicationLogger
                         style.equals(WARNING_TAG)?warning():
                         style.equals(ERROR_TAG)?error():""):"");
             String before=lastStyle!=null?lastStyle:"";
-            for(int i=before.length();i<23;i++)
+            for(int i=before.length();i<26;i++)
             {
                 before=" "+before;
             }
