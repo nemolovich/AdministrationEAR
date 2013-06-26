@@ -4,7 +4,7 @@
  */
 package bean.view.multiSelection.struct;
 
-import java.io.Serializable;
+import bean.view.filteredSelection.EntitySleepingSelection;
 import java.util.ArrayList;
 import java.util.List;
 import javax.faces.application.FacesMessage;
@@ -14,7 +14,7 @@ import javax.faces.context.FacesContext;
  *
  * @author Brian GOHIER
  */
-public class EntityMultiView<C> implements Serializable
+public class EntityMultiView<C> extends EntitySleepingSelection<C>
 {
     private static final long serialVersionUID = 1L;
     private C[] multiSelection;
@@ -28,6 +28,7 @@ public class EntityMultiView<C> implements Serializable
 
     public EntityMultiView(Class<C> entityClass)
     {
+        super(entityClass);
         this.entityClass = entityClass;
     }
 
@@ -66,6 +67,7 @@ public class EntityMultiView<C> implements Serializable
 
     public void setMultiDataModel(List<C> list)
     {
+        super.setFullList(list);
         this.multiDataModel = new EntityDataModel<C>(list,this.entityClass){};
     }
 

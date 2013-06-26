@@ -6,7 +6,6 @@ package bean.facade.abstracts;
 
 import bean.Utils;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;

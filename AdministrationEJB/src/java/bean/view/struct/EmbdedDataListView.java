@@ -4,6 +4,7 @@
  */
 package bean.view.struct;
 
+import bean.ApplicationLogger;
 import bean.Utils;
 import bean.facade.abstracts.AbstractEmbdedDataList;
 import java.lang.reflect.Method;
@@ -58,6 +59,40 @@ public abstract class EmbdedDataListView<C,O,F extends AbstractEmbdedDataList<C,
     {
         this.setFacade();
         super.getEntityFacade().updateToDataList(entity,this.getInstance());
+        return "list";
+    }
+    
+    public String entitySleep(C entity, O instance)
+    {
+        this.setFacade();
+        try
+        {
+            Method m=instance.getClass().getMethod("setSleeping", Boolean.class);
+            Utils.callMethod(m, "mise en veille de la donnée", instance, true);
+        }
+        catch (NoSuchMethodException ex)
+        {
+            ApplicationLogger.writeError("La méthode \"setSleeping\" n'a pas"+
+                    " été trouvée pour la classe \""+instance.getClass().getName()+"\"", ex);
+        }
+        super.getEntityFacade().updateToDataList(entity, instance);
+        return "list";
+    }
+    
+    public String entityWake(C entity, O instance)
+    {
+        this.setFacade();
+        try
+        {
+            Method m=instance.getClass().getMethod("setSleeping", Boolean.class);
+            Utils.callMethod(m, "réactivation de la donnée", instance, false);
+        }
+        catch (NoSuchMethodException ex)
+        {
+            ApplicationLogger.writeError("La méthode \"setSleeping\" n'a pas"+
+                    " été trouvée pour la classe \""+instance.getClass().getName()+"\"", ex);
+        }
+        super.getEntityFacade().updateToDataList(entity, instance);
         return "list";
     }
     

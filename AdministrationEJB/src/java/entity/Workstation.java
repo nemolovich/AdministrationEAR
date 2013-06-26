@@ -218,6 +218,11 @@ public class Workstation implements Serializable
         }
         return true;
     }
+    
+    public String getFullString()
+    {
+        return "entity.Workstation{" + "id=" + id + ", wsType=" + wsType + ", brand=" + brand + ", startDate=" + startDate + ", processor=" + processor + ", monitor=" + monitor + ", videoCard=" + videoCard + ", operatingSystem=" + operatingSystem + ", ram=" + ram + ", hardDrive=" + hardDrive + ", observations=" + observations + ", sleeping=" + sleeping + ", idClient=" + idClient + '}';
+    }
 
     @Override
     public String toString() {

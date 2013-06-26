@@ -166,6 +166,11 @@ public class Software implements Serializable
         return true;
     }
 
+    public String getFullString()
+    {
+        return "entity.Software{" + "id=" + id + ", name=" + name + ", version=" + version + ", license=" + license + ", editor=" + editor + ", stationNumber=" + stationNumber + ", observations=" + observations + ", sleeping=" + sleeping + ", idClient=" + idClient + '}';
+    }
+
     @Override
     public String toString() {
         return this.name+" [v"+this.version+" by "+this.editor+"]";

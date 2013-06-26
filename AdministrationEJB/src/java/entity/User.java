@@ -36,5 +36,5 @@ public class User extends TUser implements Serializable
             String password, String rights)
     {
         super(id, mail, name, firstname, password, rights);
-    }
+    } 
 }

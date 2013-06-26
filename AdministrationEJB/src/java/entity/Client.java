@@ -314,9 +314,14 @@ public class Client implements Serializable
         return true;
     }
 
+    public String getFullString()
+    {
+        return "entity.Client{" + "id=" + id + ", name=" + name + ", address=" + address + ", postalcode=" + postalcode + ", phone=" + phone + ", fax=" + fax + ", tarif=" + tarif + ", deplacement=" + deplacement + ", mail=" + mail + ", interventionType=" + interventionType + ", operator=" + operator + ", internetLogin=" + internetLogin + ", internetPassword=" + internetPassword + ", observations=" + observations + ", sleeping=" + sleeping + ", idUser=" + idUser + '}';
+    }
+
     @Override
     public String toString() {
         return this.name;
     }
-    
+
 }

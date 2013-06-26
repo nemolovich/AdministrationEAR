@@ -163,6 +163,11 @@ public class Mail implements Serializable
         return true;
     }
 
+    public String getFullString()
+    {
+        return "entity.Mail{" + "id=" + id + ", mail=" + mail + ", pop=" + pop + ", popPassword=" + popPassword + ", smtp=" + smtp + ", smtpPassword=" + smtpPassword + ", sleeping=" + sleeping + ", idClient=" + idClient + '}';
+    }
+
     @Override
     public String toString() {
         return this.mail;

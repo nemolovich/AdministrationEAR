@@ -22,9 +22,12 @@ import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.enterprise.context.ApplicationScoped;
@@ -42,6 +45,9 @@ public class ApplicationLogger
     private static File logFile;
     private static PrintWriter out;
     private static final SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+    private static final DateFormat formatFull = new SimpleDateFormat(
+            "EEEEE dd MMMMM yyyy à HH:mm:ss",
+            Locale.FRANCE);
     private static final String INFO_TAG="INFO";
     private static final String WARNING_TAG="WARNING";
     private static final String ERROR_TAG="ERROR";
@@ -111,12 +117,13 @@ public class ApplicationLogger
         {
             try
             {
-                date=format.parse(date.substring(1, date.length()-1)).toString();
+                Date d=format.parse(date.substring(1, date.length()-1));
+                date=formatFull.format(d);
                 spanClass+=" icon_info\" title=\""+(style!=null?style+": ":"")+date;
             }
             catch (ParseException ex)
             {
-                displayError("Impossible de parser la date '"+date+"'", ex);
+                displayError("Impossible de parser la date '"+date+"'", null);
             }
         }
         spanClass+="\"/>\n";
@@ -139,9 +146,9 @@ public class ApplicationLogger
         if(style!=null&&lastStyle!=null&&!lastStyle.equals(classe))
         {
             div+=
-            "        </ul><!-- Fermeture du style"+lastStyle+"-->\n"+
+            "        </ul>\n"+
             "    </div>\n"+
-            "</div>\n";
+            "</div><!-- Fermeture du style\"+lastStyle+\"-->\n";
             div+=
             "<div class=\"ui-messages ui-widget\">\n"+
             "    <div class=\"ui-messages-"+classe+" ui-corner-all\">\n"+
@@ -181,7 +188,7 @@ public class ApplicationLogger
         boolean inTab=false;
         String logHTML="";
         String logLine="";
-        int error_report_id=0;
+        int details_report_id=0;
         boolean inDetails=false;
         try
         {
@@ -207,16 +214,16 @@ public class ApplicationLogger
                             logHTML+=
     "                    </span>\n" +
     "                </span>\n" +
-    "                <script id=\"error_report_"+error_report_id+"_s\" type=\"text/javascript\">\n" +
-    "                    PrimeFaces.cw('Inplace','error_report_"+error_report_id+"_js',\n" +
-    "                                {id:'error_report_"+error_report_id+"',\n" +
+    "                <script id=\"details_report_"+details_report_id+"_s\" type=\"text/javascript\">\n" +
+    "                    PrimeFaces.cw('Inplace','details_report_"+details_report_id+"_js',\n" +
+    "                                {id:'details_report_"+details_report_id+"',\n" +
     "                                    effect:'slide',\n" +
     "                                    effectSpeed:'normal',\n" +
     "                                    event:'click',\n" +
     "                                    toggleable:true\n" +
     "                                });\n" +
     "                </script>";
-                            error_report_id++;
+                            details_report_id++;
                         }
                         logHTML+=getStyleFrom("\n<hr class=\"small_sep\"/>\n\n",null);
                     }
@@ -303,13 +310,28 @@ public class ApplicationLogger
                         logHTML+=
     "                "+logLine+"<br/>\n" +
     "                Détails de l'erreur: \n" +
-    "                <span id=\"error_report_"+error_report_id+"\" class=\"ui-inplace ui-hidden-container\">\n" +
-    "                    <span id=\"error_report_"+error_report_id+"_display\" class=\"ui-inplace-display\" style=\"background:none;display:inline\">\n" +
+    "                <span id=\"details_report_"+details_report_id+"\" class=\"ui-inplace ui-hidden-container\">\n" +
+    "                    <span id=\"details_report_"+details_report_id+"_display\" class=\"ui-inplace-display\" style=\"background:none;display:inline\">\n" +
     "                        <a href=\"#\" class=\"blankLink\" title=\"Afficher les détails de l'erreur\">Afficher</a>\n" +
     "                    </span><br/>\n" +
-    "                    <span id=\"error_report_"+error_report_id+"_content\" class=\"ui-inplace-content\" style=\"display:none\">\n" +
-    "                        <a href=\"#\" class=\"blankLink\" name=\"error_report_"+error_report_id+"_hide\" title=\"Masquer les détails\"\n" +
-    "                            onclick=\"error_report_"+error_report_id+"_js.hide();\" >Masquer</a>\n<br/>\n";
+    "                    <span id=\"details_report_"+details_report_id+"_content\" class=\"ui-inplace-content\" style=\"display:none\">\n" +
+    "                        <a href=\"#\" class=\"blankLink\" name=\"details_report_"+details_report_id+"_hide\" title=\"Masquer les détails\"\n" +
+    "                            onclick=\"details_report_"+details_report_id+"_js.hide();\" >Masquer</a>\n<br/>\n";
+                        inDetails=true;
+                    }
+                    else if(logLine.startsWith("\tObjet: \""))
+                    {
+                        logHTML+=
+    "                Détails de l'objet: \n" +
+    "                <span id=\"details_report_"+details_report_id+"\" class=\"ui-inplace ui-hidden-container\">\n" +
+    "                    <span id=\"details_report_"+details_report_id+"_display\" class=\"ui-inplace-display\" style=\"background:none;display:inline\">\n" +
+    "                        <a href=\"#\" class=\"blankLink\" title=\"Afficher les détails de l'objet\">Afficher</a>\n" +
+    "                    </span><br/>\n" +
+    "                    <span id=\"details_report_"+details_report_id+"_content\" class=\"ui-inplace-content\" style=\"display:none\">\n" +
+    "                        <a href=\"#\" class=\"blankLink\" name=\"details_report_"+details_report_id+"_hide\" title=\"Masquer les détails\"\n" +
+    "                            onclick=\"details_report_"+details_report_id+"_js.hide();\" >Masquer</a>\n<br/>\n" +
+    "                            "+logLine.substring(9)+"\n<br/>";
+                            
                         inDetails=true;
                     }
                     else
@@ -342,13 +364,16 @@ public class ApplicationLogger
         }
         finally
         {
-            try
+            if(reader!=null)
             {
-                reader.close();
-            }
-            catch (IOException ex)
-            {
-                displayError("Erreur lors de la fermeture du fichier journal", ex);
+                try
+                {
+                    reader.close();
+                }
+                catch (IOException ex)
+                {
+                    displayError("Erreur lors de la fermeture du fichier journal", ex);
+                }
             }
         }
 //        try {
@@ -445,6 +470,14 @@ public class ApplicationLogger
             {
                 addHeader();
             }
+//            try
+//            {
+//                int n=Integer.parseInt("STRING");
+//            }
+//            catch (NumberFormatException ex)
+//            {
+//                writeError("Un test d'erreur", ex);
+//            }
             return true;
         }
         return false;
@@ -463,6 +496,26 @@ public class ApplicationLogger
     {
         ApplicationLogger.stopWrite();
         ApplicationLogger.displayInfo("Fin d'enregistrement du journal");
+    }
+    
+    public static void addSmallSep()
+    {
+        write(SMALL_SEPARATOR);
+    }
+    
+    public static void addSep()
+    {
+        write(SEPARATOR);
+    }
+    
+    public static void addBigSep()
+    {
+        write(BIG_SEPARATOR);
+    }
+    
+    public static void addHugegSep()
+    {
+        write(HUGE_SEPARATOR);
     }
     
     public static void writeInfo(String message)

@@ -526,8 +526,7 @@ TABLE.infos_header
 {
     width:                      98% !important;
     height:                     auto !important;
-    padding-bottom:             30px !important;
+    padding-bottom:             45px !important;
     overflow:                   -moz-scrollbars-vertical;
     overflow-y:                 scroll;
-    
 }

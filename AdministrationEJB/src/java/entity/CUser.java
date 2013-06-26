@@ -154,6 +154,11 @@ public class CUser implements Serializable
         }
         return true;
     }
+    
+    public String getFullString()
+    {
+        return "entity.CUser{" + "id=" + id + ", name=" + name + ", phone=" + phone + ", observations=" + observations + ", sleeping=" + sleeping + ", idClient=" + idClient + '}';
+    }
 
     @Override
     public String toString() {

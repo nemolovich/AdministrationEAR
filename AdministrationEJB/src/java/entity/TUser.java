@@ -278,6 +278,11 @@ public class TUser implements Serializable
         }
         return true;
     }
+    
+    public String getFullString()
+    {
+        return "entity.TUser{" + "id=" + id + ", mail=" + mail + ", name=" + name + ", firstname=" + firstname + ", password=" + password + ", rights=" + rights + '}';
+    }
 
     @Override
     public String toString()

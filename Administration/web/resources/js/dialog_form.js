@@ -171,12 +171,6 @@ function getNavigatorWidth()
     {
         winW = document.body.offsetWidth;
     }
-    if (document.compatMode=='CSS1Compat' &&
-        document.documentElement &&
-        document.documentElement.offsetWidth )
-    {
-        winW = document.documentElement.offsetWidth;
-    }
     return winW;
 }
 
