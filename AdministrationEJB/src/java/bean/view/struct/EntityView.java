@@ -112,17 +112,21 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> implements Seria
     
     public List<C> getFilteredEntities()
     {
+        List<C> temp=this.filteredEntities!=null?
+                new ArrayList<C>(this.filteredEntities):
+                new ArrayList<C>();
         if(!this.displaySleepingEntities&&this.filteredEntities!=null)
         {
             try
             {
-                for(C c:this.filteredEntities)
+                for(C c:temp)
                 {
-                    if(this.isSleepingCall(c))
+                    if(c!=null&&this.isSleepingCall(c))
                     {
                         this.filteredEntities.remove(c);
                     }
                 }
+                temp.clear();
             }
             catch (ConcurrentModificationException ex)
             {

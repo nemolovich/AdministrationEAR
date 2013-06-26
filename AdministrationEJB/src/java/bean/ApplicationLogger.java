@@ -163,7 +163,7 @@ public class ApplicationLogger
             "                <span class=\"ui-messages-"+classe+"-summary\">\n";
             lastStyle=style;
         }
-        div+=message.replaceAll("''", "&quot;")+"\n";
+        div+=message.replaceAll("''", "&apos;")+"\n";
         if(style!=null)
         {
             div+=
@@ -384,7 +384,7 @@ public class ApplicationLogger
         {
             write("\r\n"+BIG_SEPARATOR);
             writeInfo("Début des écritures dans le journal");
-            write(SEPARATOR);
+            write(SEPARATOR+"\r\n");
         }
     }
     

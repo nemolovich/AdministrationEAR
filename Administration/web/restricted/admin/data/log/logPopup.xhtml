@@ -2,8 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>Facelet Title</title>
     </h:head>
@@ -25,15 +24,20 @@
                   hideEffect="clip">
             <h:form id="displayLogForm">
                 <p:hotkey bind="esc" handler="logViewDialog.hide();"/>
-                <div id="logContainer" style="width:100% !important;height:auto !important;max-height:auto;">
+                <div id="logContainer">
                     <h:outputText value="#{logger.getHTMLLog()}"
                                   escape="false"/>
                     <script type="text/javascript">
                         $(document).ready(function()
                         {
                             var element=document.getElementById("logContainer");
-                            var maxEHeight=(getNavigatorHeight()-450)+"px";
-                            element.style.height=maxEHeight;
+                            var maxEHeight=getNavigatorHeight();
+                            var parentHeight=document.getElementById("logViewPopup").style.height;
+                            if(maxEHeight>parentHeight)
+                            {
+                                maxEHeight=parentHeight;
+                            }
+                            element.style.maxHeight=(maxEHeight-75)+"px";
                             //ui-dialog-content
                         });
                     </script>

@@ -242,9 +242,7 @@ public class AccessFilter implements Filter
                 ApplicationLogger.writeWarning("Tentative d'accès à une page "
                         + "sécurisée pour l'utilisateur: "+
                         (this.userLogin!=null&&this.userLogin.getUser()!=null?
-                            (this.userLogin.getUser().getFirstname()+" "+
-                                this.userLogin.getUser().getName()+" ["+
-                                this.userLogin.getUser().getRights()+"]"):"Anonyme")+
+                            (this.userLogin.getUser().toString()):"Anonyme")+
                         " [Page=\""+uri+"\"]");
                 ((HttpServletResponse)response).sendRedirect(((HttpServletRequest)request).getContextPath() + "/restricted/login.xhtml");
             }

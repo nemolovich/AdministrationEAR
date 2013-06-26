@@ -282,7 +282,7 @@ public class TUser implements Serializable
     @Override
     public String toString()
     {
-        return "entity.TUser{" + "id=" + id + ", mail=" + mail + ", name=" + name + ", firstname=" + firstname + ", rights=" + rights + '}';
+        return this.firstname+" "+this.name+" ["+this.rights+"](id="+this.id+")";
     }
     
 }

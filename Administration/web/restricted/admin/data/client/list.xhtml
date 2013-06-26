@@ -55,7 +55,7 @@
                           showEffect="clip"
                           hideEffect="clip">
                     <h:form id="cuserDialogHeader">
-                        <h3>Détails de l'utilisateur #{cUserView.entity.name}:</h3>
+                        <h3 class="tabheader">Détails de l'utilisateur #{cUserView.entity.name}:</h3>
                     </h:form>
                     <ui:include src="/restricted/admin/data/c_user/popupView.xhtml"/>
                     <p:hotkey bind="esc" handler="cuserViewDialog.hide();"/>
@@ -167,6 +167,7 @@
                             </p:column>
                             <p:column id="sleepingTab"
                                       headerText="État"
+                                      sortBy="#{item.sleeping}"
                                       style="width:2%;">
                                 <p:commandButton actionListener="#{clientView.entityWake(item)}"
                                                  action="javascript:void(0);"

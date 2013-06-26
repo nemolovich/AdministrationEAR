@@ -338,8 +338,7 @@ public class UserLogin implements Serializable
     public void setUser(TUser user)
     {
         ApplicationLogger.writeInfo("Connexion de l'utilisateur: "+
-                user.getFirstname()+" "+user.getName()+
-                " ["+user.getRights()+"]");
+                user.toString());
         this.user=new User(user);
     }
     
@@ -383,8 +382,7 @@ public class UserLogin implements Serializable
     public String logout()
     {
         ApplicationLogger.writeInfo("Déconnexion de l'utilisateur: "+
-                this.user.getFirstname()+" "+this.user.getName()+
-                " ["+this.user.getRights()+"]");
+                this.user.toString());
         this.user=null;
         this.template="unknown";
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();

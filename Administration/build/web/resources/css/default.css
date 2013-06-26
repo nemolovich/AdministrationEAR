@@ -514,3 +514,20 @@ TABLE.infos_header
     margin:                     0 auto;
     width:                      100%;
 }
+
+#logViewPopup .ui-widget-content
+{
+    width:                      100% !important;
+    height:                     auto !important;
+    display:                    block;
+}
+
+#logContainer
+{
+    width:                      98% !important;
+    height:                     auto !important;
+    padding-bottom:             30px !important;
+    overflow:                   -moz-scrollbars-vertical;
+    overflow-y:                 scroll;
+    
+}
