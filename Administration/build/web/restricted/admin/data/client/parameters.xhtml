@@ -112,7 +112,6 @@
                                         <p:commandButton actionListener="#{workstationView.entityWake(clientView.entity,poste)}"
                                                          action="javascript:void(0);"
                                                          icon="ui-icon-play"
-                                                         oncomplete="clientWorkstationTable.filter();"
                                                          update=":growl clientWorkstationList"
                                                          style="font-size: 60%;float:right;"
                                                          styleClass="blue_icon"
@@ -122,7 +121,6 @@
                                                          actionListener="#{workstationView.entitySleep(clientView.entity,poste)}"
                                                          action="javascript:void(0);"
                                                          icon="ui-icon-pause"
-                                                         oncomplete="clientWorkstationTable.filter();"
                                                          onclick="if(!confirm('Voulez vous vraiment mettre ce poste en standby?\n'+
                                                                         '(Vous pourrez le réactiver quand vous le souhaitez)'))
                                                                            {return false;}"
@@ -151,7 +149,7 @@
                                                              disabled="#{workstationMultiView.emptySelection}"
                                                              actionListener="#{workstationView.remove(clientView.entity,
                                                                                workstationMultiView.multiSelection)}"
-                                                             oncomplete="#{workstationMultiView.checkEmptySelection()};clientWorkstationTable.filter();"
+                                                             oncomplete="#{workstationMultiView.checkEmptySelection()}"
                                                              onclick="if(#{workstationMultiView.emptySelection})
                                                                 {return false;}
                                                                 else{return confirm('#{workstationView.deleteMessages(workstationMultiView.multiSelectionCast)}');}"/>
@@ -163,9 +161,7 @@
                                                                      styleClass="small_check"
                                                                      style="vertical-align: middle !important;margin-bottom: 5px !important;">  
                                                 <p:ajax update=":clientUpdate"
-                                                        listener="#{workstationMultiView.switchDisplaySleepingEntities()}"
-                                                        immediate="false"
-                                                        oncomplete="clientWorkstationTable.filter();"/>  
+                                                        immediate="false"/>  
                                             </p:selectBooleanCheckbox>
                                             <p:tooltip for="checkDisplayWorkstationSleeping"
                                                        value="Affiche les postes en sommeil en plus de ceux actifs"

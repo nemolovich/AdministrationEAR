@@ -7,7 +7,6 @@ package bean.view.filteredSelection;
 import bean.ApplicationLogger;
 import bean.Utils;
 import bean.view.struct.EntityView;
-import entity.TUser;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -30,7 +29,6 @@ public abstract class EntitySleepingSelection<C> implements Serializable
                 };
     private List<C> filteredEntities;
     private boolean displaySleepingEntities=false;
-    private List<C> fullList;
 
     public EntitySleepingSelection()
     {
@@ -41,24 +39,11 @@ public abstract class EntitySleepingSelection<C> implements Serializable
         this.entityClass = entityClass;
     }
 
-    public List<C> getFullList()
-    {
-        return fullList;
-    }
-
-    public void setFullList(List<C> fullList)
-    {
-        this.fullList = fullList;
-    }
+    public abstract List<C> getFullList();
     
-    public void switchDisplaySleepingEntities()
-    {
-        this.getFilteredEntities();
-    }
-
     public boolean isDisplaySleepingEntities()
     {
-        return displaySleepingEntities;
+        return this.displaySleepingEntities;
     }
 
     public void setDisplaySleepingEntities(boolean displaySleepingEntities)
@@ -82,13 +67,13 @@ public abstract class EntitySleepingSelection<C> implements Serializable
         catch (SecurityException ex)
         {
             ApplicationLogger.writeError("La méthode \"getSleeping\" n'est pas"+
-                    " accessible pour la classe \""+TUser.class.getName()+"\"", ex);
+                    " accessible pour la classe \""+this.entityClass.getName()+"\"", ex);
             return null;
         }
         catch (NullPointerException ex)
         {
             ApplicationLogger.writeError("La méthode \"getSleeping\" renvoi \"null\""
-                    + " pour la classe '"+TUser.class.getName()+"'", ex);
+                    + " pour la classe '"+this.entityClass.getName()+"'", ex);
             return null;
         }
         return (Boolean)Utils.callMethod(m, "récupération de l'état de veille", entity);
@@ -97,7 +82,7 @@ public abstract class EntitySleepingSelection<C> implements Serializable
     private List<C> getSleepEntities(boolean sleeping)
     {
         List<C> res=new ArrayList<C>();
-        for(C c:this.fullList)
+        for(C c:this.getFullList())
         {
             if(this.isSleepingCall(c)==sleeping)
             {
@@ -117,13 +102,15 @@ public abstract class EntitySleepingSelection<C> implements Serializable
         List<C> temp=this.filteredEntities!=null?
                 new ArrayList<C>(this.filteredEntities):
                 new ArrayList<C>();
+        System.err.println("Length temp: "+temp.size());
         if(!this.displaySleepingEntities&&this.filteredEntities!=null)
         {
             try
             {
                 for(C c:temp)
                 {
-                    if(c!=null&&this.isSleepingCall(c))
+                    Boolean sleeping=this.isSleepingCall(c);
+                    if(c!=null&&(sleeping!=null&&sleeping))
                     {
                         this.filteredEntities.remove(c);
                     }
@@ -136,6 +123,14 @@ public abstract class EntitySleepingSelection<C> implements Serializable
                         + " \"getFilteredEntities\" pour la liste des données de"
                         + " la classe \""+this.entityClass.getName()+"\"", ex);
             }
+        }
+        if(this.filteredEntities==null)
+        {
+            Exception ex=new NullPointerException("La liste des entitiés de la " +
+                    "classe \""+this.entityClass.getName()+"\" filtrée pour le " +
+                    "filtre \"Sleeping\" renvoi \"null\"");
+            ApplicationLogger.writeError(ex.getLocalizedMessage(), ex);
+            return this.getFullList()!=null?this.getFullList():new ArrayList<C>();
         }
         return this.filteredEntities;
     }

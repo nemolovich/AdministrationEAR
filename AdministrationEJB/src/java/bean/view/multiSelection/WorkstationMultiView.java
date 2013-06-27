@@ -25,10 +25,4 @@ public class WorkstationMultiView extends EntityMultiView<Workstation>
     {
         super(Workstation.class);
     }
-    
-    public EntityDataModel<Workstation> getData(List<Workstation> list)
-    {
-        super.setMultiDataModel(list);
-        return super.getMultiDataModel();
-    }
 }

@@ -136,9 +136,9 @@
                                      type="submit"
                                      actionListener="#{workstationView.create(clientView.entity)}"
                                      icon="ui-icon-check"
-                                     update=":createWorkstationForm :clientUpdate"
+                                     update=":createWorkstationForm :clientUpdate:clientWorkstationList"
                                      styleClass="blue_icon"
-                                     oncomplete="createRequest(createWorstation, xhr, status, args);clientWorkstationTable.filter();"
+                                     oncomplete="createRequest(createWorstation, xhr, status, args);"
                                      />
                     <p:commandButton id="backCreateWorkstation" value="Annuler"
                                      title="Annuler la création"
@@ -157,9 +157,9 @@
                                      type="submit"
                                      actionListener="#{workstationView.update(clientView.entity)}"
                                      icon="ui-icon-pencil"
-                                     update=":createWorkstationForm :clientUpdate"
+                                     update=":createWorkstationForm :clientUpdate:clientWorkstationList"
                                      styleClass="blue_icon"
-                                     oncomplete="createRequest(createWorstation, xhr, status, args);clientWorkstationTable.filter();"
+                                     oncomplete="createRequest(createWorstation, xhr, status, args);"
                                      />
                     <p:commandButton id="backEditWorkstation" value="Annuler"
                                      title="Annuler les changements"

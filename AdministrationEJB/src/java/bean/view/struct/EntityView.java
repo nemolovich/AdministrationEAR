@@ -8,15 +8,11 @@ import bean.ApplicationLogger;
 import bean.Utils;
 import bean.facade.abstracts.AbstractFacade;
 import bean.view.filteredSelection.EntitySleepingSelection;
-import entity.TUser;
-import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
 
 /**
  *
@@ -38,8 +34,15 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> extends EntitySl
     
     public EntityView(Class<C> entityClass,String webFolder)
     {
+        super(entityClass);
         this.webFolder="/restricted/admin/data/"+webFolder+"/";
         this.entityClass=entityClass;
+    }
+    
+    @Override
+    public List<C> getFullList()
+    {
+        return this.findAll();
     }
 
     public boolean isEditing()

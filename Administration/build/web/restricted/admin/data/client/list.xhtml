@@ -158,7 +158,7 @@
                                                  icon="ui-icon-trash"
                                                  immediate="true"
                                                  ajax="false"
-                                                 update=":growl :clientViewForm :clientDialogHeader :clientDataForm"
+                                                 update=":growl :clientViewForm :clientDialogHeader :clientDataForm:clientDataTable"
                                                  style="font-size: 60%;"
                                                  styleClass="red_icon"
                                                  action="javascript:void(0);"
@@ -172,8 +172,7 @@
                                 <p:commandButton actionListener="#{clientView.entityWake(item)}"
                                                  action="javascript:void(0);"
                                                  icon="ui-icon-play"
-                                                 oncomplete="clientTable.filter();"
-                                                 update=":growl :clientDataForm:clientDataTable :clientDataForm:clientDataTable:sleepingTab"
+                                                 update=":growl clientDataTable"
                                                  style="font-size: 60%;float:right;"
                                                  styleClass="blue_icon"
                                                  title="Réactiver cette société"
@@ -182,11 +181,10 @@
                                                  actionListener="#{clientView.entitySleep(item)}"
                                                  action="javascript:void(0);"
                                                  icon="ui-icon-pause"
-                                                 oncomplete="clientTable.filter();"
                                                  onclick="if(!confirm('Voulez vous vraiment mettre cette société en standby?\n'+
                                                                 '(Vous pourrez la réactiver quand vous le souhaitez)'))
                                                                    {return false;}"
-                                                 update=":growl :clientDataForm:clientDataTable :clientDataForm:clientDataTable:sleepingTab"
+                                                 update=":growl :clientDataForm:clientDataTable"
                                                  style="font-size: 60%;float:right;"
                                                  styleClass="red_icon"
                                                  title="Mettre en standby cette société"
@@ -212,10 +210,8 @@
                                                              value="#{clientView.displaySleepingEntities}"
                                                              styleClass="small_check"
                                                              style="vertical-align: middle !important;margin-bottom: 5px !important;">  
-                                        <p:ajax update=":clientDataForm:clientDataTable"
-                                                listener="#{clientView.switchDisplaySleepingEntities()}"
-                                                immediate="false"
-                                                oncomplete="clientTable.filter();"/>  
+                                        <p:ajax update=":clientDataForm"
+                                                immediate="false"/>  
                                     </p:selectBooleanCheckbox>
                                     <p:tooltip for="checkDisplaySleeping"
                                                value="Affiche les sociétés en sommeil en plus de celles actives"

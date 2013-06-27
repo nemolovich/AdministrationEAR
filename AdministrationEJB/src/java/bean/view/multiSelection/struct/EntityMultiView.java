@@ -21,6 +21,7 @@ public class EntityMultiView<C> extends EntitySleepingSelection<C>
     private C singleSelection;
     private Class<C> entityClass;
     private EntityDataModel<C> multiDataModel;
+    private List<C> fullList;
 
     public EntityMultiView()
     {
@@ -32,9 +33,21 @@ public class EntityMultiView<C> extends EntitySleepingSelection<C>
         this.entityClass = entityClass;
     }
 
+    @Override
+    public List<C> getFullList()
+    {
+        return this.fullList;
+    }
+    
+    public EntityDataModel<C> getData(List<C> list)
+    {
+        this.setMultiDataModel(list);
+        return this.getMultiDataModel();
+    }
+
     public EntityDataModel<C> getMultiDataModel()
     {
-        return multiDataModel;
+        return this.multiDataModel;
     }
     
     public boolean isSingleSelected()
@@ -67,7 +80,8 @@ public class EntityMultiView<C> extends EntitySleepingSelection<C>
 
     public void setMultiDataModel(List<C> list)
     {
-        super.setFullList(list);
+        this.fullList=list;
+        super.setFilteredEntities(list);
         this.multiDataModel = new EntityDataModel<C>(list,this.entityClass){};
     }
 
