@@ -5,11 +5,8 @@
 package bean.facade.abstracts;
 
 import bean.ApplicationLogger;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import bean.Utils;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
@@ -28,60 +25,11 @@ public abstract class AbstractFacade<T>
     }
 
     protected abstract EntityManager getEntityManager();
-    
-    private String getFullString(T entity)
-    {
-        try
-        {
-            Method getFullString=this.entityClass.getMethod("getFullString");
-            String fullString=(String) getFullString.invoke(entity);
-            String spacer="\t";
-            for(int i=0;i<this.entityClass.getName().length()*2+5;i++)
-            {
-                spacer+=" ";
-            }
-            fullString=fullString.replaceAll(", ", 
-                                    ",\n"+spacer)
-                    .replaceAll("}", "\n"+spacer+"}");
-            return fullString;
-        }
-        catch (NoSuchMethodException ex)
-        {
-            ApplicationLogger.displayError("Impossible de trouver la méthode \""+
-                    "getFullString\" pour la classe \""+this.entityClass.getName()+
-                    "\"", ex);
-        }
-        catch (SecurityException ex)
-        {
-            ApplicationLogger.displayError("Accès refusé à la méthode \""+
-                    "getFullString\" pour la classe \""+this.entityClass.getName()+
-                    "\"", ex);
-        }
-        catch (IllegalAccessException ex)
-        {
-            ApplicationLogger.displayError("Impossible d'accéder à la méthode \""+
-                    "getFullString\" pour la classe \""+this.entityClass.getName()+
-                    "\"", ex);
-        }
-        catch (IllegalArgumentException ex)
-        {
-            ApplicationLogger.displayError("Arguments invalides pour la méthode \""+
-                    "getFullString\" pour la classe \""+this.entityClass.getName()+
-                    "\"", ex);
-        }
-        catch (InvocationTargetException ex)
-        {
-            ApplicationLogger.displayError("Impossible d'appeler à la méthode \""+
-                    "getFullString\" pour la classe \""+this.entityClass.getName()+
-                    "\"", ex);
-        }
-        return null;
-    }
 
     public void create(T entity)
     {
         getEntityManager().persist(entity);
-        String details=this.getFullString(entity);
+        String details=Utils.getFullString(entity);
         details=details!=null?details:entity.toString();
         ApplicationLogger.writeWarning("Création de l'entité de la classe \""+
                 this.entityClass.getName()+"\" réussie");
@@ -96,7 +44,7 @@ public abstract class AbstractFacade<T>
     public void edit(T entity)
     {
         getEntityManager().merge(entity);
-        String details=this.getFullString(entity);
+        String details=Utils.getFullString(entity);
         details=details!=null?details:entity.toString();
         ApplicationLogger.addSmallSep();
         ApplicationLogger.writeWarning("Modification de l'entité de la classe \""+
@@ -113,7 +61,7 @@ public abstract class AbstractFacade<T>
     public void remove(T entity)
     {
         T temp=entity;
-        String details=this.getFullString(temp);
+        String details=Utils.getFullString(temp);
         details=details!=null?details:temp.toString();
         getEntityManager().remove(getEntityManager().merge(entity));
         ApplicationLogger.writeWarning("Suppression de l'entité de la classe \""+

@@ -155,13 +155,13 @@
                                                  style="font-size: 60%;"
                                                  title="Paramétrer cette société"/>
                                 <p:commandButton actionListener="#{clientView.entityDelete(item)}"
-                                                 icon="ui-icon-trash"
+                                                 action="javascript:void(0);"
                                                  immediate="true"
                                                  ajax="false"
+                                                 icon="ui-icon-trash"
                                                  update=":growl :clientViewForm :clientDialogHeader :clientDataForm:clientDataTable"
                                                  style="font-size: 60%;"
                                                  styleClass="red_icon"
-                                                 action="javascript:void(0);"
                                                  onclick="return (confirm('#{clientView.getDeleteMessage(item)}'));"
                                                  title="Supprimer cette société"/>
                             </p:column>

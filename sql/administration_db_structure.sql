@@ -114,7 +114,7 @@ CREATE TABLE ROOT.WORKSTATION (
 		(START WITH 1, INCREMENT BY 1),
 		id_client INTEGER NOT NULL,
 		ws_type VARCHAR(64),
-        brand VARCHAR(64),
+        brand VARCHAR(64) NOT NULL,
         start_date DATE,
 		processor VARCHAR(64),
 		monitor VARCHAR(64),

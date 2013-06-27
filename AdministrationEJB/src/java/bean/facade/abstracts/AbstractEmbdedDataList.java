@@ -4,6 +4,7 @@
  */
 package bean.facade.abstracts;
 
+import bean.ApplicationLogger;
 import bean.Utils;
 import java.lang.reflect.Method;
 import java.util.List;
@@ -41,6 +42,19 @@ public abstract class AbstractEmbdedDataList<C,O> extends AbstractFacade<O>
                 "méthode de paramétrage des données",entity,list);
         this.em.persist(instance);
         this.em.merge(entity);
+        
+        String entity_details=Utils.getFullString(entity);
+        entity_details=entity_details!=null?entity_details:entity.toString();
+        String instance_details=Utils.getFullString(instance);
+        instance_details=instance_details!=null?instance_details:instance.toString();
+        ApplicationLogger.writeWarning("Ajout de l'entité de la classe \""+
+                instance.getClass().getName()+"\" réussie");
+        ApplicationLogger.write("\tObjet: \""+instance.getClass().getName()+"\": \""+
+                instance_details+"\"");
+        ApplicationLogger.write("\t[INSIDE] Dans la liste de l'objet:\n"+
+                "\tObjet: \""+entity.getClass().getName()+"\": \""+
+                entity_details+"\"");
+        ApplicationLogger.addSmallSep();
         FacesMessage message=new FacesMessage(FacesMessage.SEVERITY_INFO,
                 "Ajout de la donnée réussi",
                 "La donnée a bien été ajoutée dans la liste");
@@ -56,6 +70,18 @@ public abstract class AbstractEmbdedDataList<C,O> extends AbstractFacade<O>
 //                "méthode de paramétrage des données",entity,list);
         this.em.merge(instance);
         this.em.merge(entity);
+        String entity_details=Utils.getFullString(entity);
+        entity_details=entity_details!=null?entity_details:entity.toString();
+        String instance_details=Utils.getFullString(instance);
+        instance_details=instance_details!=null?instance_details:instance.toString();
+        ApplicationLogger.writeWarning("Modification de l'entité de la classe \""+
+                instance.getClass().getName()+"\" réussie");
+        ApplicationLogger.write("\tObjet: \""+instance.getClass().getName()+"\": \""+
+                instance_details+"\"");
+        ApplicationLogger.write("\t[INSIDE] Dans la liste de l'objet:\n"+
+                "\tObjet: \""+entity.getClass().getName()+"\": \""+
+                entity_details+"\"");
+        ApplicationLogger.addSmallSep();
         FacesMessage message=new FacesMessage(FacesMessage.SEVERITY_INFO,
                 "Modification de la donnée réussi",
                 "La donnée a bien été modifiée dans la liste");
@@ -71,10 +97,24 @@ public abstract class AbstractEmbdedDataList<C,O> extends AbstractFacade<O>
         }
         List<O> list=(List<O>) Utils.callMethod(this.getDataListMethod,
                 "méthode de récupération des données",entity);
+        ApplicationLogger.writeWarning("Suppression des entités de la classe \""+
+                instances[0].getClass().getName()+"\"...");
         for(O instance:instances)
         {
             list.remove(instance);
+            String instance_details=Utils.getFullString(instance);
+            instance_details=instance_details!=null?instance_details:instance.toString();
+            ApplicationLogger.write("\t[DELETE...]");
+            ApplicationLogger.write("\tObjet: \""+instance.getClass().getName()+"\": \""+
+                    instance_details+"\"");
+            ApplicationLogger.write("\t[DELETED] Réussie");
         }
+        String entity_details=Utils.getFullString(entity);
+        entity_details=entity_details!=null?entity_details:entity.toString();
+        ApplicationLogger.write("\t[INSIDE] Dans la liste de l'objet:\n"+
+                "\tObjet: \""+entity.getClass().getName()+"\": \""+
+                entity_details+"\"");
+        ApplicationLogger.addSmallSep();
         Utils.callMethod(this.setDataListMethod,
                 "méthode de paramétrage des données",entity,list);
         boolean unique = instances.length==1;

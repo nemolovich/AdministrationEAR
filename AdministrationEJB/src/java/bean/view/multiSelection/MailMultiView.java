@@ -5,7 +5,7 @@
 package bean.view.multiSelection;
 
 import bean.view.multiSelection.struct.EntityMultiView;
-import entity.Workstation;
+import entity.Mail;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
@@ -13,14 +13,14 @@ import javax.inject.Named;
  *
  * @author Brian GOHIER
  */
-@Named(value = "workstationMultiView")
+@Named(value = "mailMultiView")
 @SessionScoped
-public class WorkstationMultiView extends EntityMultiView<Workstation>
+public class MailMultiView extends EntityMultiView<Mail>
 {
     private static final long serialVersionUID = 1L;
     
-    public WorkstationMultiView()
+    public MailMultiView()
     {
-        super(Workstation.class);
+        super(Mail.class);
     }
 }

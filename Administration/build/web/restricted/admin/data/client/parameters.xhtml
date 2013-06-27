@@ -17,6 +17,7 @@
             <ui:define name="content">
                 <f:attribute name="header" value="Modification des paramètres d'une société"/>
                 <ui:include src="/restricted/admin/data/client/popups/workstations.xhtml"/>
+                <ui:include src="/restricted/admin/data/client/popups/mails.xhtml"/>
                 <f:view>
                     <h:form id="clientUpdate">
                         
@@ -32,7 +33,7 @@
                                 </ul>
                             </div>
                         </div>
-                        <p:growl id="growlWizard" showDetail="true" life="30000" autoUpdate="true"/>
+                        <p:growl id="growlWizard" showDetail="true" life="30000" autoUpdate="false" escape="false"/>
                         <p:wizard id="clientUpdateWizard"
                                   backLabel="Retour"
                                   nextLabel="Suivant"
@@ -76,7 +77,7 @@
                                     <p:column selectionMode="multiple" style="width:2%">
                                     </p:column>
 
-                                    <p:column headerText="Détails">
+                                    <p:column headerText="Détails" style="width:100%;">
                                         <h:outputText value="#{poste.toString()}"/>
                                     </p:column>
                                     
@@ -85,24 +86,23 @@
                                                          icon="ui-icon-search"
                                                          style="font-size: 60%;"
                                                          title="Détails de ce poste"
-                                                         update="clientWorkstationList :createWorkstationForm"
+                                                         update=":createWorkstationForm"
                                                          oncomplete="createWorstation.show();"/>
                                         <p:commandButton actionListener="#{workstationView.entityUpdate(poste)}"
                                                          icon="ui-icon-pencil"
                                                          style="font-size: 60%;"
                                                          title="Modifier ce poste"
-                                                         update="clientWorkstationList :createWorkstationForm"
+                                                         update=":createWorkstationForm"
                                                          oncomplete="createWorstation.show();"/>
                                         <p:commandButton actionListener="#{workstationView.entityDelete(clientView.entity, poste)}"
                                                          action="javascipt:void(0);"
-                                                         immediate="true"
-                                                         ajax="false"
                                                          icon="ui-icon-trash"
-                                                         update="clientWorkstationList"
+                                                         oncomplete="clientWorkstationTable.filter();"
+                                                         update=":clientUpdate :clientUpdate:growlWizard :clientUpdate:clientWorkstationList"
                                                          style="font-size: 60%;"
                                                          styleClass="red_icon"
-                                                         title="Supprimer ce poste"
-                                                         onclick="return confirm('#{workstationView.getDeleteMessage(poste)}');"/>
+                                                         onclick="if(!confirm('#{workstationView.getDeleteMessage(poste)}')){return false;}"
+                                                         title="Supprimer ce poste"/>
                                     </p:column>
                                     
                                     <p:column id="sleepingWorkstationTab"
@@ -112,7 +112,7 @@
                                         <p:commandButton actionListener="#{workstationView.entityWake(clientView.entity,poste)}"
                                                          action="javascript:void(0);"
                                                          icon="ui-icon-play"
-                                                         update=":growl clientWorkstationList"
+                                                         update=":clientUpdate:growlWizard :clientUpdate:clientWorkstationList"
                                                          style="font-size: 60%;float:right;"
                                                          styleClass="blue_icon"
                                                          title="Réactiver ce poste"
@@ -121,11 +121,12 @@
                                                          actionListener="#{workstationView.entitySleep(clientView.entity,poste)}"
                                                          action="javascript:void(0);"
                                                          icon="ui-icon-pause"
+                                                         oncomplete="clientWorkstationTable.filter();"
+                                                         update=":clientUpdate:growlWizard :clientUpdate:clientWorkstationList"
+                                                         style="font-size: 60%;float:right;"
                                                          onclick="if(!confirm('Voulez vous vraiment mettre ce poste en standby?\n'+
                                                                         '(Vous pourrez le réactiver quand vous le souhaitez)'))
                                                                            {return false;}"
-                                                         update=":growl clientWorkstationList"
-                                                         style="font-size: 60%;float:right;"
                                                          styleClass="red_icon"
                                                          title="Mettre en standby ce poste"
                                                          rendered="#{not poste.sleeping}"/>
@@ -145,14 +146,15 @@
                                                              icon="ui-icon-trash"
                                                              styleClass="red_icon"
                                                              title="Supprimer les postes sélectionnés"
-                                                             update=":createWorkstationForm @this"
+                                                             update=":clientUpdate :clientUpdate:growlWizard :clientUpdate:clientWorkstationList @this"
                                                              disabled="#{workstationMultiView.emptySelection}"
                                                              actionListener="#{workstationView.remove(clientView.entity,
                                                                                workstationMultiView.multiSelection)}"
-                                                             oncomplete="#{workstationMultiView.checkEmptySelection()}"
+                                                             oncomplete="if(#{workstationMultiView.checkEmptySelection()}!='true'){
+                                                                    clientWorkstationTable.filter();}"
                                                              onclick="if(#{workstationMultiView.emptySelection})
                                                                 {return false;}
-                                                                else{return confirm('#{workstationView.deleteMessages(workstationMultiView.multiSelectionCast)}');}"/>
+                                                                else{if(!confirm('#{workstationView.deleteMessages(workstationMultiView.multiSelectionCast)}')){return false;}}"/>
                                             <p:outputLabel for="checkDisplayWorkstationSleeping"
                                                            value="Afficher tout"
                                                            style="font-size:75%;margin-bottom: 10px !important;margin-left: 10px;"/>
@@ -161,6 +163,7 @@
                                                                      styleClass="small_check"
                                                                      style="vertical-align: middle !important;margin-bottom: 5px !important;">  
                                                 <p:ajax update=":clientUpdate"
+                                                        oncomplete="clientWorkstationTable.filter();"
                                                         immediate="false"/>  
                                             </p:selectBooleanCheckbox>
                                             <p:tooltip for="checkDisplayWorkstationSleeping"
@@ -169,14 +172,148 @@
                                                        styleClass="tooltip"/>
                                         </p:outputPanel>
                                     </f:facet>
-
+                                    <script type="text/javascript">
+                                        $(document).ready(function()
+                                        {
+                                            clientWorkstationTable.filter();
+                                        });
+                                    </script>
                                 </p:dataTable>
                             </p:tab>
                             
                             <p:tab id="emails" title="E-Mails">
-                                <p:fieldset legend="E-Mails">
-                                    E-Mails
-                                </p:fieldset>
+                                <p:dataTable id="clientMailList"
+                                             var="mail"
+                                             widgetVar="clientMailTable"
+                                             rowIndexVar="index"
+                                             paginatorPosition="bottom"
+                                             emptyMessage="Aucune adresse mail n'a été trouvée"
+                                             rowStyleClass="#{mail.sleeping?'sleeping_elmt':null}"
+                                             value="#{mailMultiView.getData(clientView.entity.mailList)}"
+                                             paginator="true"
+                                             rows="#{utils.maxDataRows}"
+                                             sortBy="#{mail.id}"
+                                             filteredValue="#{mailMultiView.filteredEntities}"
+                                             selection="#{mailMultiView.multiSelection}">
+                                    
+                                    <p:ajax event="rowSelectCheckbox"
+                                            process="@this"
+                                            update=":createMailForm
+                                             clientMailList:mailDelete" />
+                                    <p:ajax event="rowUnselectCheckbox"
+                                            process="@this"
+                                            update=":createMailForm
+                                             clientMailList:mailDelete" />
+                                    <p:ajax event="toggleSelect"
+                                            process="@this"
+                                            update=":createMailForm
+                                             clientMailList:mailDelete" />
+
+                                    <p:column selectionMode="multiple" style="width:2%">
+                                    </p:column>
+
+                                    <p:column headerText="Détails" style="width:100%;">
+                                        <h:outputText value="#{mail.toString()}"/>
+                                    </p:column>
+                                    
+                                    <p:column headerText="Actions" style="white-space: nowrap;">
+                                        <p:commandButton actionListener="#{mailView.entityView(mail)}"
+                                                         icon="ui-icon-search"
+                                                         style="font-size: 60%;"
+                                                         title="Détails de cette adresse mail"
+                                                         update=":createMailForm"
+                                                         oncomplete="createMail.show();"/>
+                                        <p:commandButton actionListener="#{mailView.entityUpdate(mail)}"
+                                                         icon="ui-icon-pencil"
+                                                         style="font-size: 60%;"
+                                                         title="Modifier cette adresse mail"
+                                                         update=":createMailForm"
+                                                         oncomplete="createMail.show();"/>
+                                        <p:commandButton actionListener="#{mailView.entityDelete(clientView.entity, mail)}"
+                                                         action="javascipt:void(0);"
+                                                         icon="ui-icon-trash"
+                                                         oncomplete="clientMailTable.filter();clientMailTable.filter();"
+                                                         update=":clientUpdate :clientUpdate:growlWizard :clientUpdate:clientMailList"
+                                                         style="font-size: 60%;"
+                                                         styleClass="red_icon"
+                                                         onclick="if(!confirm('#{mailView.getDeleteMessage(mail)}')){return false;}"
+                                                         title="Supprimer cette adresse mail"/>
+                                    </p:column>
+                                    
+                                    <p:column id="sleepingMailTab"
+                                              headerText="État"
+                                              sortBy="#{mail.sleeping}"
+                                              style="width:2%;">
+                                        <p:commandButton actionListener="#{mailView.entityWake(clientView.entity,mail)}"
+                                                         action="javascript:void(0);"
+                                                         icon="ui-icon-play"
+                                                         update=":clientUpdate:growlWizard :clientUpdate:clientMailList"
+                                                         style="font-size: 60%;float:right;"
+                                                         styleClass="blue_icon"
+                                                         title="Réactiver cette adresse mail"
+                                                         rendered="#{mail.sleeping}"/>
+                                        <p:commandButton id="setMailSleepingButton"
+                                                         actionListener="#{mailView.entitySleep(clientView.entity,mail)}"
+                                                         action="javascript:void(0);"
+                                                         icon="ui-icon-pause"
+                                                         oncomplete="clientMailTable.filter();"
+                                                         update=":clientUpdate:growlWizard :clientUpdate:clientMailList"
+                                                         style="font-size: 60%;float:right;"
+                                                         onclick="if(!confirm('Voulez vous vraiment mettre cette adresse mail en standby?\n'+
+                                                                        '(Vous pourrez la réactiver quand vous le souhaitez)'))
+                                                                           {return false;}"
+                                                         styleClass="red_icon"
+                                                         title="Mettre en standby cette adresse mail"
+                                                         rendered="#{not mail.sleeping}"/>
+                                    </p:column>
+                                    
+                                    <f:facet name="footer">
+                                        <p:outputPanel style="float:left">
+                                            <p:commandButton value="Ajouter un mail"
+                                                             icon="ui-icon-circle-plus"
+                                                             styleClass="blue_icon"
+                                                             title="Ajouter une adresse mail à cette société"
+                                                             update=":createMailForm"
+                                                             actionListener="#{mailView.entityCreate(clientView.entity)}"
+                                                             onclick="createMail.show();"/>
+                                            <p:commandButton id="mailDelete"
+                                                             value="Supprimer"
+                                                             icon="ui-icon-trash"
+                                                             styleClass="red_icon"
+                                                             title="Supprimer les adresses mail sélectionnées"
+                                                             update=":clientUpdate :clientUpdate:growlWizard :clientUpdate:clientMailList @this"
+                                                             disabled="#{mailMultiView.emptySelection}"
+                                                             actionListener="#{mailView.remove(clientView.entity,
+                                                                               mailMultiView.multiSelection)}"
+                                                             oncomplete="if(#{mailMultiView.checkEmptySelection()}!='true'){
+                                                                    clientMailTable.filter();clientMailTable.filter();}"
+                                                             onclick="if(#{mailMultiView.emptySelection})
+                                                                {return false;}
+                                                                else{if(!confirm('#{mailView.deleteMessages(mailMultiView.multiSelectionCast)}')){return false;}}"/>
+                                            <p:outputLabel for="checkDisplayMailSleeping"
+                                                           value="Afficher tout"
+                                                           style="font-size:75%;margin-bottom: 10px !important;margin-left: 10px;"/>
+                                            <p:selectBooleanCheckbox id="checkDisplayMailSleeping"
+                                                                     value="#{mailMultiView.displaySleepingEntities}"
+                                                                     styleClass="small_check"
+                                                                     style="vertical-align: middle !important;margin-bottom: 5px !important;">  
+                                                <p:ajax update=":clientUpdate:clientMailList"
+                                                        oncomplete="clientMailTable.filter();clientMailTable.filter();"
+                                                        immediate="false"/>  
+                                            </p:selectBooleanCheckbox>
+                                            <p:tooltip for="checkDisplayMailSleeping"
+                                                       value="Affiche les adresses mail en sommeil en plus de celles actives"
+                                                       showEffect="fade" hideEffect="fade"
+                                                       styleClass="tooltip"/>
+                                        </p:outputPanel>
+                                    </f:facet>
+                                    <script type="text/javascript">
+                                        $(document).on("ready",function()
+                                        {
+                                            clientMailTable.filter();
+                                        });
+                                    </script>
+                                </p:dataTable>
                             </p:tab>
                             
                             <p:tab id="users" title="Utilisateurs">

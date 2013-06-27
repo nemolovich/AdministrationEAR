@@ -2,10 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package validator;
+package validator.unique;
 
-import bean.facade.WorkstationFacade;
-import entity.Workstation;
+import bean.facade.TUserFacade;
+import entity.TUser;
 import javax.ejb.EJB;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -18,22 +18,22 @@ import validator.unique.struct.UniqueFieldValidator;
  *
  * @author Brian GOHIER
  */
-@FacesValidator("workstationUniqueFieldValidator")
-public class WorkstationUniqueFieldValidator extends UniqueFieldValidator<Workstation, WorkstationFacade>implements Validator
+@FacesValidator("userUniqueFieldValidator")
+public class UserUniqueFieldValidator extends UniqueFieldValidator<TUser, TUserFacade>implements Validator
 {
     @EJB
-    private WorkstationFacade workstationFacade;
+    private TUserFacade tUserFacade;
     
-    public WorkstationUniqueFieldValidator()
+    public UserUniqueFieldValidator()
     {
-        super(Workstation.class);
+        super(TUser.class);
     }
     
     @Override
     public void validate(FacesContext context, UIComponent component, Object value)
             throws ValidatorException
     {
-        super.entityFacade = this.workstationFacade;
+        super.entityFacade = this.tUserFacade;
         super.validate(context, component, value);
     }
 }

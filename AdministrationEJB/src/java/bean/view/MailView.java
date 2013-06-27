@@ -6,7 +6,7 @@
 package bean.view;
 
 import bean.facade.MailFacade;
-import bean.view.struct.EntityView;
+import bean.view.struct.EmbdedDataListView;
 import entity.Client;
 import entity.Mail;
 import java.util.List;
@@ -20,22 +20,17 @@ import javax.inject.Named;
  */
 @Named(value = "mailView")
 @SessionScoped
-public class MailView extends EntityView<Mail, MailFacade>
+public class MailView extends EmbdedDataListView<Client, Mail, MailFacade>
 {
     private static final long serialVersionUID = 1L;
     @EJB
     private MailFacade mailFacade;
     
-    public MailView()
+    public MailView() throws NoSuchMethodException
     {
-        super(Mail.class,"mail");
-    }
-    
-    public String entityCreate(Client client)
-    {
-        super.entityCreate();
-        super.getInstance().setIdClient(client);
-        return null;
+        super(Mail.class,"mail",
+                Mail.class.getMethod("setIdClient",
+                                        new Class<?>[]{Client.class}));
     }
 
     @Override
@@ -63,6 +58,33 @@ public class MailView extends EntityView<Mail, MailFacade>
                 + " cette adresse mail ("+entity.getMail()
                 + " id="+entity.getId()+"). Cette action est irreversible,"
                 + " êtes-vous certain(e) de vouloir continuer?";
+    }
+
+    @Override
+    public String deleteMessages(List<Mail> entities)
+    {
+        if(entities!=null)
+        {
+            String out="Vous êtes sur le point de supprimer définitivement toutes"
+                + " les adresse mail sélectionnées (";
+            boolean first=true;
+            for(Mail mail:entities)
+            {
+                if(first)
+                {
+                    first=false;
+                }
+                else
+                {
+                    out+=", ";
+                }
+                out+=mail.getMail()+" id="+mail.getId();
+            }
+            out+="). Cette action est irreversible, "
+                + "êtes-vous certain(e) de vouloir continuer?";
+            return out;
+        }
+        return "Erreur!";
     }
 
     @Override

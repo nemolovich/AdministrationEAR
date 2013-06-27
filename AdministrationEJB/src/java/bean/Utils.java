@@ -108,4 +108,59 @@ public class Utils
         }
         return null;
     }
+    
+    /**
+     * Permet de récupérer les information complètes pour une classe qui possède
+     * une méthode "getFullString"
+     * @param entity {@link Object} - L'objet sur lequel appeler la méthode "getFullString"
+     * @return {@link String} - La description complète de l'objet
+     */
+    public static String getFullString(Object entity)
+    {
+        try
+        {
+            Method getFullString=entity.getClass().getMethod("getFullString");
+            String fullString=(String) getFullString.invoke(entity);
+            String spacer="\t";
+            for(int i=0;i<entity.getClass().getName().length()*2+5;i++)
+            {
+                spacer+=" ";
+            }
+            fullString=fullString.replaceAll(", ", 
+                                    ",\n"+spacer)
+                    .replaceAll("}", "\n"+spacer+"}");
+            return fullString;
+        }
+        catch (NoSuchMethodException ex)
+        {
+            ApplicationLogger.displayError("Impossible de trouver la méthode \""+
+                    "getFullString\" pour la classe \""+entity.getClass().getName()+
+                    "\"", ex);
+        }
+        catch (SecurityException ex)
+        {
+            ApplicationLogger.displayError("Accès refusé à la méthode \""+
+                    "getFullString\" pour la classe \""+entity.getClass().getName()+
+                    "\"", ex);
+        }
+        catch (IllegalAccessException ex)
+        {
+            ApplicationLogger.displayError("Impossible d'accéder à la méthode \""+
+                    "getFullString\" pour la classe \""+entity.getClass().getName()+
+                    "\"", ex);
+        }
+        catch (IllegalArgumentException ex)
+        {
+            ApplicationLogger.displayError("Arguments invalides pour la méthode \""+
+                    "getFullString\" pour la classe \""+entity.getClass().getName()+
+                    "\"", ex);
+        }
+        catch (InvocationTargetException ex)
+        {
+            ApplicationLogger.displayError("Impossible d'appeler à la méthode \""+
+                    "getFullString\" pour la classe \""+entity.getClass().getName()+
+                    "\"", ex);
+        }
+        return null;
+    }
 }

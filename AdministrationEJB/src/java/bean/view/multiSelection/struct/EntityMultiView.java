@@ -6,6 +6,7 @@ package bean.view.multiSelection.struct;
 
 import bean.view.filteredSelection.EntitySleepingSelection;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -36,7 +37,7 @@ public class EntityMultiView<C> extends EntitySleepingSelection<C>
     @Override
     public List<C> getFullList()
     {
-        return this.fullList;
+        return this.fullList!=null?this.fullList:new ArrayList<C>();
     }
     
     public EntityDataModel<C> getData(List<C> list)
@@ -80,8 +81,8 @@ public class EntityMultiView<C> extends EntitySleepingSelection<C>
 
     public void setMultiDataModel(List<C> list)
     {
+//        System.err.println("IS SETTING DATA MODEL: "+Arrays.toString(list.toArray()));
         this.fullList=list;
-        super.setFilteredEntities(list);
         this.multiDataModel = new EntityDataModel<C>(list,this.entityClass){};
     }
 

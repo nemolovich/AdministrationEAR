@@ -29,6 +29,7 @@ public abstract class EntitySleepingSelection<C> implements Serializable
                 };
     private List<C> filteredEntities;
     private boolean displaySleepingEntities=false;
+    private static boolean DISPLAYED_ERROR=false;
 
     public EntitySleepingSelection()
     {
@@ -103,6 +104,7 @@ public abstract class EntitySleepingSelection<C> implements Serializable
                 new ArrayList<C>(this.filteredEntities):
                 new ArrayList<C>();
         System.err.println("Length temp: "+temp.size());
+        
         if(!this.displaySleepingEntities&&this.filteredEntities!=null)
         {
             try
@@ -124,12 +126,13 @@ public abstract class EntitySleepingSelection<C> implements Serializable
                         + " la classe \""+this.entityClass.getName()+"\"", ex);
             }
         }
-        if(this.filteredEntities==null)
+        if(this.filteredEntities==null&&!DISPLAYED_ERROR)
         {
             Exception ex=new NullPointerException("La liste des entitiés de la " +
                     "classe \""+this.entityClass.getName()+"\" filtrée pour le " +
                     "filtre \"Sleeping\" renvoi \"null\"");
             ApplicationLogger.writeError(ex.getLocalizedMessage(), ex);
+            DISPLAYED_ERROR=true;
             return this.getFullList()!=null?this.getFullList():new ArrayList<C>();
         }
         return this.filteredEntities;

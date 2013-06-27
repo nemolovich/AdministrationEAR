@@ -334,6 +334,27 @@ public class ApplicationLogger
                             
                         inDetails=true;
                     }
+                    else if(logLine.startsWith("\t[INSIDE] ")||logLine.startsWith("\t[DELETED]"))
+                    {
+                        
+                        if(inDetails)
+                        {
+                            logHTML+=
+    "                    </span>\n" +
+    "                </span>\n" +
+    "                <script id=\"details_report_"+details_report_id+"_s\" type=\"text/javascript\">\n" +
+    "                    PrimeFaces.cw('Inplace','details_report_"+details_report_id+"_js',\n" +
+    "                                {id:'details_report_"+details_report_id+"',\n" +
+    "                                    effect:'slide',\n" +
+    "                                    effectSpeed:'normal',\n" +
+    "                                    event:'click',\n" +
+    "                                    toggleable:true\n" +
+    "                                });\n" +
+    "                </script>";
+                            details_report_id++;
+                        }
+                        logHTML+=logLine.substring(10).replaceAll("''","'")+"<br/>\n\r";
+                    }
                     else
                     {
                         logHTML+=logLine+"<br/>\n";

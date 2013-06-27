@@ -1,0 +1,161 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <p:dialog id="dialogMail"
+                  appendToBody="true"
+                  header="Fenêtre de mail"
+                  widgetVar="createMail"
+                  resizable="false"
+                  draggable="false"
+                  modal="true"
+                  showEffect="clip"
+                  hideEffect="clip">
+            <h:form id="createMailForm">
+                <h:panelGrid columns="2" columnClasses="label,fields"
+                             rendered="#{not empty mailView.entity}">
+                    <p:outputLabel value="Adresse mail:" for="mmail" />
+                    <h:inputText id="mmail" value="#{mailView.entity.mail}"
+                                 title="Adresse mail"
+                                 required="true"
+                                 requiredMessage="Le champs 'Mail' ne peut être vide"
+                                 rendered="#{mailView.creating or 
+                                                mailView.editing}">
+                        <f:validator binding="#{mailUniqueFieldValidator}"/>
+                        <f:attribute name="fieldName" value="Mail" />
+                        <f:attribute name="update_id" value="#{mailView.entity.id}" />
+                    </h:inputText>
+                    <h:outputText id="mmailV" value="#{mailView.entity.mail}"
+                                  title="Adresse mail"
+                                  rendered="#{not mailView.creating and
+                                              not mailView.editing}"/>
+
+                    <p:outputLabel value="Adresse POP:" for="mpop" />
+                    <h:inputText id="mpop" value="#{mailView.entity.pop}"
+                                 title="Adresse POP"
+                                 rendered="#{mailView.creating or 
+                                                mailView.editing}"/>
+                    <h:outputText id="mpopV" value="#{mailView.entity.mail}"
+                                  title="Adresse POP"
+                                  rendered="#{not mailView.creating and
+                                              not mailView.editing}"/>
+
+                    <p:outputLabel value="Mot de passe POP:" for="mpopPassword" />
+                    <h:inputText id="mpopPassword" value="#{mailView.entity.popPassword}"
+                                 title="Mot de passe POP"
+                                 rendered="#{mailView.creating or 
+                                                mailView.editing}"/>
+                    <h:outputText id="mpopPasswordV" value="#{mailView.entity.mail}"
+                                  title="Mot de passe POP"
+                                  rendered="#{not mailView.creating and
+                                              not mailView.editing}"/>
+
+                    <p:outputLabel value="Adresse SMTP:" for="msmtp" />
+                    <h:inputText id="msmtp" value="#{mailView.entity.smtp}"
+                                 title="Adresse SMTP"
+                                 rendered="#{mailView.creating or 
+                                                mailView.editing}"/>
+                    <h:outputText id="msmtpV" value="#{mailView.entity.mail}"
+                                  title="Adresse SMTP"
+                                  rendered="#{not mailView.creating and
+                                              not mailView.editing}"/>
+
+                    <p:outputLabel value="Mot de passe SMTP:" for="msmtpPassword" />
+                    <h:inputText id="msmtpPassword" value="#{mailView.entity.smtpPassword}"
+                                 title="Mot de passe SMTP"
+                                 rendered="#{mailView.creating or 
+                                                mailView.editing}"/>
+                    <h:outputText id="msmtpPasswordV" value="#{mailView.entity.mail}"
+                                  title="Mot de passe SMTP"
+                                  rendered="#{not mailView.creating and
+                                              not mailView.editing}"/>
+                    
+                </h:panelGrid>
+                <p:outputPanel rendered="#{mailView.creating or
+                                            mailView.editing}">
+                    (<span class="red-star">*</span>: champs requis)<br />
+                </p:outputPanel>
+                <p:outputPanel rendered="#{mailView.creating}">
+                    <p:commandButton id="createWorkstation" value="Ajouter"
+                                     title="Ajouter cette adresse mail à la société"
+                                     type="submit"
+                                     actionListener="#{mailView.create(clientView.entity)}"
+                                     icon="ui-icon-check"
+                                     update=":clientUpdate :clientUpdate:growlWizard :createMailForm"
+                                     styleClass="blue_icon"
+                                     oncomplete="createRequest(createMail, xhr, status, args);clientMailTable.filter();clientMailTable.filter();"
+                                     />
+                    <p:commandButton id="backCreateMail" value="Annuler"
+                                     title="Annuler la création"
+                                     action="javascript:void(0);"
+                                     styleClass="red_icon"
+                                     type="reset"
+                                     immediate="true"
+                                     ajax="true"
+                                     icon="ui-icon-closethick"
+                                     onclick="createMail.hide();"
+                                     />
+                </p:outputPanel>
+                <p:outputPanel rendered="#{mailView.editing}">
+                    <p:commandButton  id="updateMail" value="Mettre à jour"
+                                     title="Enregistrer les changements"
+                                     type="submit"
+                                     actionListener="#{mailView.update(clientView.entity)}"
+                                     icon="ui-icon-pencil"
+                                     update=":clientUpdate :clientUpdate:growlWizard :createMailForm"
+                                     styleClass="blue_icon"
+                                     oncomplete="createRequest(createMail, xhr, status, args);clientMailTable.filter();clientMailTable.filter();"
+                                     />
+                    <p:commandButton id="backEditMail" value="Annuler"
+                                     title="Annuler les changements"
+                                     action="javascript:void(0);"
+                                     styleClass="red_icon"
+                                     type="reset"
+                                     immediate="true"
+                                     ajax="true"
+                                     icon="ui-icon-closethick"
+                                     onclick="createMail.hide();"
+                                     />
+                </p:outputPanel>
+                <p:outputPanel rendered="#{not mailView.creating and 
+                                            not mailView.editing}">
+                    <center>
+                        <p:commandButton id="backWorkstation" value="Fermer"
+                                         title="Fermer la fenêtre"
+                                         action="javascript:void(0);"
+                                         type="reset"
+                                         immediate="true"
+                                         ajax="true"
+                                         onclick="createMail.hide();"
+                                         />
+                    </center>
+                </p:outputPanel>
+                <p:outputPanel id="selectionMailError" 
+                               rendered="#{empty mailView.entity}">
+                    <div class="ui-messages ui-widget">
+                        <div class="ui-messages-error ui-corner-all">
+                            <span class="ui-messages-error-icon"/>
+                            <ul>
+                                <li>
+                                    <span class="ui-messages-error-summary">
+                                        Sélection incorrecte!
+                                        <script type="text/javascript">
+//                                                    createmAIL.hide();
+                                        </script>
+                                    </span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </p:outputPanel>
+            </h:form>
+        </p:dialog>
+    </h:body>
+</html>
+

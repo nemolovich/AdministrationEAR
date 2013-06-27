@@ -2,38 +2,38 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package validator;
+package validator.unique;
 
-import bean.facade.ClientFacade;
-import entity.Client;
+import bean.facade.MailFacade;
+import entity.Mail;
 import javax.ejb.EJB;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.FacesValidator;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
-import validator.struct.UniqueFieldValidator;
+import validator.unique.struct.UniqueFieldValidator;
 
 /**
  *
  * @author Brian GOHIER
  */
-@FacesValidator("clientUniqueFieldValidator")
-public class ClientUniqueFieldValidator extends UniqueFieldValidator<Client, ClientFacade>implements Validator
+@FacesValidator("mailUniqueFieldValidator")
+public class MailUniqueFieldValidator extends UniqueFieldValidator<Mail, MailFacade>implements Validator
 {
     @EJB
-    private ClientFacade clientFacade;
+    private MailFacade mailFacade;
     
-    public ClientUniqueFieldValidator()
+    public MailUniqueFieldValidator()
     {
-        super(Client.class);
+        super(Mail.class);
     }
     
     @Override
     public void validate(FacesContext context, UIComponent component, Object value)
             throws ValidatorException
     {
-        super.entityFacade = this.clientFacade;
+        super.entityFacade = this.mailFacade;
         super.validate(context, component, value);
     }
 }
