@@ -1,5 +1,4 @@
 /**
- * 
  * Nom de l'application (notamment pour l'URL de navigation)
  * @type String
  */
@@ -12,7 +11,7 @@ var appName='Administration';
  * @param {Object} xhr - HttpRequest 
  * @param {Object} status - Etat du formulaire
  * @param {String} args - Retour du formulaire
- * @returns {Boolean} - vrai si le formulaire est correcte
+ * @returns {Boolean} - Vrai si le formulaire est correcte
  */
 function createRequest(form, xhr, status, args)
 {
@@ -32,7 +31,7 @@ function createRequest(form, xhr, status, args)
  * Permet de récupérer les évènements venant du clavier via une
  * balise <p:ajax> sur un attribut 'oncomplete' et d'en modifier
  * un objet donné
- * @param {c} item - l'objet à faire intéragir
+ * @param {c} item - L'objet à faire intéragir
  * @param {keyboardEvents} event - L'évènement à récupérer
  * @returns {void}
  */
@@ -49,7 +48,7 @@ function handleEvent(item, event)
 
 /**
  * Recharge la page après le nombre de secondes indiquées
- * @param {Number} secondes - le temps d'attente avant rafraichissement
+ * @param {Number} secondes - Le temps d'attente avant rafraichissement
  * @returns {void}
  */
 function reloadInterval(secondes)
@@ -142,7 +141,7 @@ function updateTimer(form,id)
 }
 
 /**
- * 
+ * Sélectionne une ligne dans une <p:DataTable> multiSelectable
  * @param {c} table - La table des données
  * @param {Number} index - Index de sélection sur la vue
  * @param {Number} maxRows - Le nombre de lignes par vue
@@ -162,7 +161,7 @@ function selectLine(table, index, maxRows)
 
 /**
  * Renvoi la largeur du navigateur
- * @returns {Number}
+ * @returns {Number} - Largeur du navigateur
  */
 function getNavigatorWidth()
 {
@@ -175,8 +174,8 @@ function getNavigatorWidth()
 }
 
 /**
- * Renvoi la heuteur du navigateur
- * @returns {Number}
+ * Renvoi la hauteur du navigateur
+ * @returns {Number} - Hauteur du navigateur
  */
 function getNavigatorHeight()
 {
@@ -186,4 +185,20 @@ function getNavigatorHeight()
         winH = document.body.offsetHeight;
     }
     return winH;
+}
+
+/**
+ * Permet de forcer le filtre d'une <p:DataTable> en
+ * possédant
+ * @param {c} filter - Filtre à forcer
+ * @returns {void}
+ */
+function forceFilter(filter)
+{
+    if(filter.filter()===undefined)
+    {
+        console.log('Force filter for table with id="'+filter.jqId.replace(/\\/,'')+'"');
+        filter.clearFilters();
+        filter.filter();
+    }
 }

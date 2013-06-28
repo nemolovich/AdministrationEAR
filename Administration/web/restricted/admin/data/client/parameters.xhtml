@@ -232,7 +232,7 @@
                                         <p:commandButton actionListener="#{mailView.entityDelete(clientView.entity, mail)}"
                                                          action="javascipt:void(0);"
                                                          icon="ui-icon-trash"
-                                                         oncomplete="clientMailTable.filter();clientMailTable.filter();"
+                                                         oncomplete="forceFilter(clientMailTable);"
                                                          update=":clientUpdate :clientUpdate:growlWizard :clientUpdate:clientMailList"
                                                          style="font-size: 60%;"
                                                          styleClass="red_icon"
@@ -286,7 +286,7 @@
                                                              actionListener="#{mailView.remove(clientView.entity,
                                                                                mailMultiView.multiSelection)}"
                                                              oncomplete="if(#{mailMultiView.checkEmptySelection()}!='true'){
-                                                                    clientMailTable.filter();clientMailTable.filter();}"
+                                                                    forceFilter(clientMailTable);}"
                                                              onclick="if(#{mailMultiView.emptySelection})
                                                                 {return false;}
                                                                 else{if(!confirm('#{mailView.deleteMessages(mailMultiView.multiSelectionCast)}')){return false;}}"/>
@@ -298,7 +298,7 @@
                                                                      styleClass="small_check"
                                                                      style="vertical-align: middle !important;margin-bottom: 5px !important;">  
                                                 <p:ajax update=":clientUpdate:clientMailList"
-                                                        oncomplete="clientMailTable.filter();clientMailTable.filter();"
+                                                        oncomplete="forceFilter(clientMailTable);"
                                                         immediate="false"/>  
                                             </p:selectBooleanCheckbox>
                                             <p:tooltip for="checkDisplayMailSleeping"
@@ -307,18 +307,24 @@
                                                        styleClass="tooltip"/>
                                         </p:outputPanel>
                                     </f:facet>
-                                    <script type="text/javascript">
-                                        $(document).on("ready",function()
-                                        {
-                                            clientMailTable.filter();
-                                        });
-                                    </script>
                                 </p:dataTable>
+                                <script type="text/javascript">
+                                    $(document).ready(function()
+                                    {
+                                        forceFilter(clientMailTable);
+                                    });
+                                </script>
                             </p:tab>
                             
                             <p:tab id="users" title="Utilisateurs">
                                 <p:fieldset legend="Utilisateurs">
                                     Utilisateurs
+                                </p:fieldset>
+                            </p:tab>
+                            
+                            <p:tab id="softwares" title="Logiciels">
+                                <p:fieldset legend="Logiciels">
+                                    Logiciels
                                 </p:fieldset>
                             </p:tab>
                             

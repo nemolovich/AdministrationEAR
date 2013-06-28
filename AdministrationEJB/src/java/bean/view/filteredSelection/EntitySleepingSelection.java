@@ -103,7 +103,6 @@ public abstract class EntitySleepingSelection<C> implements Serializable
         List<C> temp=this.filteredEntities!=null?
                 new ArrayList<C>(this.filteredEntities):
                 new ArrayList<C>();
-        System.err.println("Length temp: "+temp.size());
         
         if(!this.displaySleepingEntities&&this.filteredEntities!=null)
         {

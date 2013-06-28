@@ -63,6 +63,20 @@ INSERT INTO ROOT.C_USER (ID_CLIENT, "NAME", PHONE, OBSERVATIONS)
 	VALUES (1, 'MINNE', '06.78.45.28.82', 'MINNE HOEVE');
 
 UPDATE ROOT.CLIENT SET "ID_USER" = 1 WHERE ID = 1;
+
+INSERT INTO ROOT.MAIL
+		(ID_CLIENT, MAIL, POP, POP_PASSWORD, SMTP, SMTP_PASSWORD) 
+	VALUES (1, 'contact@admin-services.fr', '', '', '', '');
+
+INSERT INTO ROOT.WORKSTATION
+		(ID_CLIENT, WS_TYPE, BRAND, START_DATE, PROCESSOR,
+		MONITOR, VIDEO_CARD, OPERATING_SYSTEM, RAM, HARD_DRIVE) 
+	VALUES
+		(1, 'Fixe', 'ASUS', '2006-06-01',
+		'Intel Core 2 duo E8600 @2x3,30GHz', 'Philips 19"',
+		'NVIDIA GeForce 9800 GTX+ @ 1768Mo', 'UBUNTU 12.10 LTS x64',
+		'4Go - 2x2Go @ 800MHz', '320Go SEAGATE @ 7200t/m');
+
 	
 
 ------------------------- CLIENT 2 --------------------------
@@ -90,6 +104,51 @@ INSERT INTO ROOT.C_USER (ID_CLIENT, "NAME", PHONE, OBSERVATIONS)
 
 INSERT INTO ROOT.C_USER (ID_CLIENT, "NAME", PHONE, OBSERVATIONS)  
 	VALUES (2, 'USER4', '06.00.00.00.04', 'Utilisateur 4');
+	
+--------------------------- MAIL ----------------------------
+INSERT INTO ROOT.MAIL
+		(ID_CLIENT, MAIL, POP, POP_PASSWORD, SMTP, SMTP_PASSWORD) 
+	VALUES (2, 'mail2@mail.fr', 'pop2.pop', 'pop2pass',
+				'smtp2.smtp', 'smtp2pass');
+
+INSERT INTO ROOT.MAIL
+		(ID_CLIENT, MAIL, POP, POP_PASSWORD, SMTP, SMTP_PASSWORD) 
+	VALUES (2, 'mail3@mail.fr', 'pop3.pop', 'pop3pass',
+				'smtp3.smtp', 'smtp3pass');
+
+INSERT INTO ROOT.MAIL
+		(ID_CLIENT, MAIL, POP, POP_PASSWORD, SMTP, SMTP_PASSWORD) 
+	VALUES (2, 'mail4@mail.fr', 'pop4.pop', 'pop4pass',
+				'smtp4.smtp', 'smtp4pass');
+
+------------------------ WORKSTATION ------------------------
+INSERT INTO ROOT.WORKSTATION
+		(ID_CLIENT, WS_TYPE, BRAND, START_DATE, PROCESSOR,
+		MONITOR, VIDEO_CARD, OPERATING_SYSTEM, RAM, HARD_DRIVE) 
+	VALUES
+		(2, 'Fixe', 'ASUS', '2006-06-02',
+		'Intel Core 2 duo E8600 @2x3,30GHz', 'Philips 19"',
+		'NVIDIA GeForce 9800 GTX+ @ 1768Mo', 'UBUNTU 12.10 LTS x64',
+		'4Go - 2x2Go @ 800MHz', '320Go SEAGATE @ 7200t/m');
+
+INSERT INTO ROOT.WORKSTATION
+		(ID_CLIENT, WS_TYPE, BRAND, START_DATE, PROCESSOR,
+		MONITOR, VIDEO_CARD, OPERATING_SYSTEM, RAM, HARD_DRIVE) 
+	VALUES
+		(2, 'Fixe', 'ASUS', '2006-06-03',
+		'Intel Core 2 duo E8600 @2x3,30GHz', 'Philips 19"',
+		'NVIDIA GeForce 9800 GTX+ @ 1768Mo', 'UBUNTU 12.10 LTS x64',
+		'4Go - 2x2Go @ 800MHz', '320Go SEAGATE @ 7200t/m');
+
+INSERT INTO ROOT.WORKSTATION
+		(ID_CLIENT, WS_TYPE, BRAND, START_DATE, PROCESSOR,
+		MONITOR, VIDEO_CARD, OPERATING_SYSTEM, RAM, HARD_DRIVE) 
+	VALUES
+		(2, 'Fixe', 'ASUS', '2006-06-04',
+		'Intel Core 2 duo E8600 @2x3,30GHz', 'Philips 19"',
+		'NVIDIA GeForce 9800 GTX+ @ 1768Mo', 'UBUNTU 12.10 LTS x64',
+		'4Go - 2x2Go @ 800MHz', '320Go SEAGATE @ 7200t/m');
+
 
 ------------------------- CLIENT 3 --------------------------
 INSERT INTO ROOT.CLIENT
@@ -116,6 +175,51 @@ INSERT INTO ROOT.C_USER (ID_CLIENT, "NAME", PHONE, OBSERVATIONS)
 
 INSERT INTO ROOT.C_USER (ID_CLIENT, "NAME", PHONE, OBSERVATIONS)  
 	VALUES (3, 'USER7', '06.00.00.00.07', 'Utilisateur 7');
+	
+--------------------------- MAIL ----------------------------
+INSERT INTO ROOT.MAIL
+		(ID_CLIENT, MAIL, POP, POP_PASSWORD, SMTP, SMTP_PASSWORD) 
+	VALUES (3, 'mail5@mail.fr', 'pop5.pop', 'pop5pass',
+				'smtp5.smtp', 'smtp5pass');
+
+INSERT INTO ROOT.MAIL
+		(ID_CLIENT, MAIL, POP, POP_PASSWORD, SMTP, SMTP_PASSWORD) 
+	VALUES (3, 'mail6@mail.fr', 'pop6.pop', 'pop6pass',
+				'smtp6.smtp', 'smtp6pass');
+
+INSERT INTO ROOT.MAIL
+		(ID_CLIENT, MAIL, POP, POP_PASSWORD, SMTP, SMTP_PASSWORD) 
+	VALUES (3, 'mail7@mail.fr', 'pop7.pop', 'pop7pass',
+				'smtp7.smtp', 'smtp7pass');
+
+------------------------ WORKSTATION ------------------------
+INSERT INTO ROOT.WORKSTATION
+		(ID_CLIENT, WS_TYPE, BRAND, START_DATE, PROCESSOR,
+		MONITOR, VIDEO_CARD, OPERATING_SYSTEM, RAM, HARD_DRIVE) 
+	VALUES
+		(3, 'Fixe', 'ASUS', '2006-06-05',
+		'Intel Core 2 duo E8600 @2x3,30GHz', 'Philips 19"',
+		'NVIDIA GeForce 9800 GTX+ @ 1768Mo', 'UBUNTU 12.10 LTS x64',
+		'4Go - 2x2Go @ 800MHz', '320Go SEAGATE @ 7200t/m');
+
+INSERT INTO ROOT.WORKSTATION
+		(ID_CLIENT, WS_TYPE, BRAND, START_DATE, PROCESSOR,
+		MONITOR, VIDEO_CARD, OPERATING_SYSTEM, RAM, HARD_DRIVE) 
+	VALUES
+		(3, 'Fixe', 'ASUS', '2006-06-06',
+		'Intel Core 2 duo E8600 @2x3,30GHz', 'Philips 19"',
+		'NVIDIA GeForce 9800 GTX+ @ 1768Mo', 'UBUNTU 12.10 LTS x64',
+		'4Go - 2x2Go @ 800MHz', '320Go SEAGATE @ 7200t/m');
+
+INSERT INTO ROOT.WORKSTATION
+		(ID_CLIENT, WS_TYPE, BRAND, START_DATE, PROCESSOR,
+		MONITOR, VIDEO_CARD, OPERATING_SYSTEM, RAM, HARD_DRIVE) 
+	VALUES
+		(3, 'Fixe', 'ASUS', '2006-06-07',
+		'Intel Core 2 duo E8600 @2x3,30GHz', 'Philips 19"',
+		'NVIDIA GeForce 9800 GTX+ @ 1768Mo', 'UBUNTU 12.10 LTS x64',
+		'4Go - 2x2Go @ 800MHz', '320Go SEAGATE @ 7200t/m');
+
 
 ------------------------- CLIENT 4 --------------------------
 INSERT INTO ROOT.CLIENT
@@ -132,6 +236,7 @@ INSERT INTO ROOT.CLIENT
 		'SA',
 		NULL);
 		
+-------------------------- C_USER ---------------------------
 INSERT INTO ROOT.C_USER (ID_CLIENT, "NAME", PHONE, OBSERVATIONS)  
 	VALUES (4, 'USER8', '06.00.00.00.08', 'Utilisateur 8');
 UPDATE ROOT.CLIENT SET "ID_USER" = 8 WHERE ID = 4;
@@ -141,6 +246,51 @@ INSERT INTO ROOT.C_USER (ID_CLIENT, "NAME", PHONE, OBSERVATIONS)
 
 INSERT INTO ROOT.C_USER (ID_CLIENT, "NAME", PHONE, OBSERVATIONS)  
 	VALUES (4, 'USER10', '06.00.00.00.10', 'Utilisateur 10');
+	
+--------------------------- MAIL ----------------------------
+INSERT INTO ROOT.MAIL
+		(ID_CLIENT, MAIL, POP, POP_PASSWORD, SMTP, SMTP_PASSWORD) 
+	VALUES (4, 'mail8@mail.fr', 'pop8.pop', 'pop8pass',
+				'smtp8.smtp', 'smtp8pass');
+
+INSERT INTO ROOT.MAIL
+		(ID_CLIENT, MAIL, POP, POP_PASSWORD, SMTP, SMTP_PASSWORD) 
+	VALUES (4, 'mail9@mail.fr', 'pop9.pop', 'pop9pass',
+				'smtp9.smtp', 'smtp9pass');
+
+INSERT INTO ROOT.MAIL
+		(ID_CLIENT, MAIL, POP, POP_PASSWORD, SMTP, SMTP_PASSWORD) 
+	VALUES (4, 'mail10@mail.fr', 'pop10.pop', 'pop10pass',
+				'smtp10.smtp', 'smtp10pass');
+
+------------------------ WORKSTATION ------------------------
+INSERT INTO ROOT.WORKSTATION
+		(ID_CLIENT, WS_TYPE, BRAND, START_DATE, PROCESSOR,
+		MONITOR, VIDEO_CARD, OPERATING_SYSTEM, RAM, HARD_DRIVE) 
+	VALUES
+		(4, 'Fixe', 'ASUS', '2006-06-08',
+		'Intel Core 2 duo E8600 @2x3,30GHz', 'Philips 19"',
+		'NVIDIA GeForce 9800 GTX+ @ 1768Mo', 'UBUNTU 12.10 LTS x64',
+		'4Go - 2x2Go @ 800MHz', '320Go SEAGATE @ 7200t/m');
+
+INSERT INTO ROOT.WORKSTATION
+		(ID_CLIENT, WS_TYPE, BRAND, START_DATE, PROCESSOR,
+		MONITOR, VIDEO_CARD, OPERATING_SYSTEM, RAM, HARD_DRIVE) 
+	VALUES
+		(4, 'Fixe', 'ASUS', '2006-06-09',
+		'Intel Core 2 duo E8600 @2x3,30GHz', 'Philips 19"',
+		'NVIDIA GeForce 9800 GTX+ @ 1768Mo', 'UBUNTU 12.10 LTS x64',
+		'4Go - 2x2Go @ 800MHz', '320Go SEAGATE @ 7200t/m');
+
+INSERT INTO ROOT.WORKSTATION
+		(ID_CLIENT, WS_TYPE, BRAND, START_DATE, PROCESSOR,
+		MONITOR, VIDEO_CARD, OPERATING_SYSTEM, RAM, HARD_DRIVE) 
+	VALUES
+		(4, 'Fixe', 'ASUS', '2006-06-10',
+		'Intel Core 2 duo E8600 @2x3,30GHz', 'Philips 19"',
+		'NVIDIA GeForce 9800 GTX+ @ 1768Mo', 'UBUNTU 12.10 LTS x64',
+		'4Go - 2x2Go @ 800MHz', '320Go SEAGATE @ 7200t/m');
+
 
 ------------------------- CLIENT 5 --------------------------
 INSERT INTO ROOT.CLIENT
@@ -167,6 +317,122 @@ INSERT INTO ROOT.C_USER (ID_CLIENT, "NAME", PHONE, OBSERVATIONS)
 
 INSERT INTO ROOT.C_USER (ID_CLIENT, "NAME", PHONE, OBSERVATIONS)  
 	VALUES (5, 'USER13', '06.00.00.00.13', 'Utilisateur 13');
+	
+--------------------------- MAIL ----------------------------
+INSERT INTO ROOT.MAIL
+		(ID_CLIENT, MAIL, POP, POP_PASSWORD, SMTP, SMTP_PASSWORD) 
+	VALUES (5, 'mail11@mail.fr', 'pop11.pop', 'pop11pass',
+				'smtp11.smtp', 'smtp11pass');
+
+INSERT INTO ROOT.MAIL
+		(ID_CLIENT, MAIL, POP, POP_PASSWORD, SMTP, SMTP_PASSWORD) 
+	VALUES (5, 'mail12@mail.fr', 'pop12.pop', 'pop12pass',
+				'smtp12.smtp', 'smtp12pass');
+
+INSERT INTO ROOT.MAIL
+		(ID_CLIENT, MAIL, POP, POP_PASSWORD, SMTP, SMTP_PASSWORD) 
+	VALUES (5, 'mail13@mail.fr', 'pop13.pop', 'pop13pass',
+				'smtp13.smtp', 'smtp13pass');
+
+------------------------ WORKSTATION ------------------------
+INSERT INTO ROOT.WORKSTATION
+		(ID_CLIENT, WS_TYPE, BRAND, START_DATE, PROCESSOR,
+		MONITOR, VIDEO_CARD, OPERATING_SYSTEM, RAM, HARD_DRIVE) 
+	VALUES
+		(5, 'Fixe', 'ASUS', '2006-06-11',
+		'Intel Core 2 duo E8600 @2x3,30GHz', 'Philips 19"',
+		'NVIDIA GeForce 9800 GTX+ @ 1768Mo', 'UBUNTU 12.10 LTS x64',
+		'4Go - 2x2Go @ 800MHz', '320Go SEAGATE @ 7200t/m');
+
+INSERT INTO ROOT.WORKSTATION
+		(ID_CLIENT, WS_TYPE, BRAND, START_DATE, PROCESSOR,
+		MONITOR, VIDEO_CARD, OPERATING_SYSTEM, RAM, HARD_DRIVE) 
+	VALUES
+		(5, 'Fixe', 'ASUS', '2006-06-12',
+		'Intel Core 2 duo E8600 @2x3,30GHz', 'Philips 19"',
+		'NVIDIA GeForce 9800 GTX+ @ 1768Mo', 'UBUNTU 12.10 LTS x64',
+		'4Go - 2x2Go @ 800MHz', '320Go SEAGATE @ 7200t/m');
+
+INSERT INTO ROOT.WORKSTATION
+		(ID_CLIENT, WS_TYPE, BRAND, START_DATE, PROCESSOR,
+		MONITOR, VIDEO_CARD, OPERATING_SYSTEM, RAM, HARD_DRIVE) 
+	VALUES
+		(5, 'Fixe', 'ASUS', '2006-06-13',
+		'Intel Core 2 duo E8600 @2x3,30GHz', 'Philips 19"',
+		'NVIDIA GeForce 9800 GTX+ @ 1768Mo', 'UBUNTU 12.10 LTS x64',
+		'4Go - 2x2Go @ 800MHz', '320Go SEAGATE @ 7200t/m');
+
+
+------------------------- CLIENT 6 --------------------------
+INSERT INTO ROOT.CLIENT
+		(ID_USER, "NAME", ADDRESS, POSTALCODE, PHONE, 
+                FAX, MAIL, INTERVENTION_TYPE, OBSERVATIONS) 
+	VALUES (
+		NULL,
+		'SOCIETY6',
+		'SOCIETY CITY 6',
+                666666,
+		'02.00.00.00.06',
+		NULL,
+		'society_6@society.fr',
+		'SA',
+		NULL);
+
+-------------------------- C_USER ---------------------------
+INSERT INTO ROOT.C_USER (ID_CLIENT, "NAME", PHONE, OBSERVATIONS)  
+	VALUES (6, 'USER14', '06.00.00.00.14', 'Utilisateur 14');
+UPDATE ROOT.CLIENT SET "ID_USER" = 14 WHERE ID = 6;
+
+INSERT INTO ROOT.C_USER (ID_CLIENT, "NAME", PHONE, OBSERVATIONS)  
+	VALUES (6, 'USER15', '06.00.00.00.15', 'Utilisateur 15');
+
+INSERT INTO ROOT.C_USER (ID_CLIENT, "NAME", PHONE, OBSERVATIONS)  
+	VALUES (6, 'USER16', '06.00.00.00.16', 'Utilisateur 16');
+	
+--------------------------- MAIL ----------------------------
+INSERT INTO ROOT.MAIL
+		(ID_CLIENT, MAIL, POP, POP_PASSWORD, SMTP, SMTP_PASSWORD) 
+	VALUES (6, 'mail14@mail.fr', 'pop14.pop', 'pop14pass',
+				'smtp14.smtp', 'smtp14pass');
+
+INSERT INTO ROOT.MAIL
+		(ID_CLIENT, MAIL, POP, POP_PASSWORD, SMTP, SMTP_PASSWORD) 
+	VALUES (6, 'mail15@mail.fr', 'pop15.pop', 'pop15pass',
+				'smtp15.smtp', 'smtp15pass');
+
+INSERT INTO ROOT.MAIL
+		(ID_CLIENT, MAIL, POP, POP_PASSWORD, SMTP, SMTP_PASSWORD) 
+	VALUES (6, 'mail16@mail.fr', 'pop16.pop', 'pop16pass',
+				'smtp16.smtp', 'smtp16pass');
+
+------------------------ WORKSTATION ------------------------
+INSERT INTO ROOT.WORKSTATION
+		(ID_CLIENT, WS_TYPE, BRAND, START_DATE, PROCESSOR,
+		MONITOR, VIDEO_CARD, OPERATING_SYSTEM, RAM, HARD_DRIVE) 
+	VALUES
+		(6, 'Fixe', 'ASUS', '2006-06-14',
+		'Intel Core 2 duo E8600 @2x3,30GHz', 'Philips 19"',
+		'NVIDIA GeForce 9800 GTX+ @ 1768Mo', 'UBUNTU 12.10 LTS x64',
+		'4Go - 2x2Go @ 800MHz', '320Go SEAGATE @ 7200t/m');
+
+INSERT INTO ROOT.WORKSTATION
+		(ID_CLIENT, WS_TYPE, BRAND, START_DATE, PROCESSOR,
+		MONITOR, VIDEO_CARD, OPERATING_SYSTEM, RAM, HARD_DRIVE) 
+	VALUES
+		(6, 'Fixe', 'ASUS', '2006-06-15',
+		'Intel Core 2 duo E8600 @2x3,30GHz', 'Philips 19"',
+		'NVIDIA GeForce 9800 GTX+ @ 1768Mo', 'UBUNTU 12.10 LTS x64',
+		'4Go - 2x2Go @ 800MHz', '320Go SEAGATE @ 7200t/m');
+
+INSERT INTO ROOT.WORKSTATION
+		(ID_CLIENT, WS_TYPE, BRAND, START_DATE, PROCESSOR,
+		MONITOR, VIDEO_CARD, OPERATING_SYSTEM, RAM, HARD_DRIVE) 
+	VALUES
+		(6, 'Fixe', 'ASUS', '2006-06-16',
+		'Intel Core 2 duo E8600 @2x3,30GHz', 'Philips 19"',
+		'NVIDIA GeForce 9800 GTX+ @ 1768Mo', 'UBUNTU 12.10 LTS x64',
+		'4Go - 2x2Go @ 800MHz', '320Go SEAGATE @ 7200t/m');
+
 
 -- File successfully loaded!
 ;
