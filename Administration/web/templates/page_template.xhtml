@@ -20,6 +20,25 @@
     </h:head>
 
     <h:body>
+        <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+
+        <p:dialog id="ajaxStatus"
+                  modal="true"
+                  appendToBody="true"
+                  showHeader="false"
+                  showEffect="fade"
+                  hideEffect="fade"
+                  widgetVar="statusDialog"
+                  draggable="false"
+                  closable="false"
+                  styleClass="invisible_back"
+                  resizable="false">
+            <p:hotkey bind="esc" process="@this" handler="statusDialog.hide();"/>
+            <p:graphicImage value="/resources/img/ajaxloadingbar.gif"/>
+            <center>
+                <h:outputText value="Chargement en cours..."/>
+            </center>
+        </p:dialog>
         <div id="messages_container" class="ui-growl ui-widget" style="z-index: 1010;"></div>
         <p:growl id="growl" showDetail="true" life="30000" />
         <p:layout fullPage="true">

@@ -4,8 +4,10 @@
  */
 package bean.facade;
 
-import bean.facade.abstracts.AbstractFacade;
+import bean.facade.abstracts.AbstractEmbdedDataList;
 import entity.CUser;
+import entity.Client;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -15,7 +17,8 @@ import javax.persistence.PersistenceContext;
  * @author Brian GOHIER
  */
 @Stateless
-public class CUserFacade extends AbstractFacade<CUser> {
+public class CUserFacade extends AbstractEmbdedDataList<Client, CUser>
+{
     @PersistenceContext(unitName = "AdministrationEJBPU")
     private EntityManager em;
 
@@ -24,8 +27,10 @@ public class CUserFacade extends AbstractFacade<CUser> {
         return em;
     }
 
-    public CUserFacade() {
-        super(CUser.class);
+    public CUserFacade() throws NoSuchMethodException
+    {
+        super(CUser.class,Client.class.getMethod("getCUserList"),
+                Client.class.getMethod("setCUserList",new Class<?>[]{List.class}));
     }
     
 }

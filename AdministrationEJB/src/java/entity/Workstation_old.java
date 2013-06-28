@@ -7,7 +7,6 @@ package entity;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,21 +17,18 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author Brian GOHIER
  */
 @Entity
-@Table(name = "WORKSTATION")
+//@Table(name = "WORKSTATION")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Workstation.findAll", query = "SELECT w FROM Workstation w"),
@@ -48,7 +44,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Workstation.findByHardDrive", query = "SELECT w FROM Workstation w WHERE w.hardDrive = :hardDrive"),
     @NamedQuery(name = "Workstation.findByObservations", query = "SELECT w FROM Workstation w WHERE w.observations = :observations"),
     @NamedQuery(name = "Workstation.findBySleeping", query = "SELECT w FROM Workstation w WHERE w.sleeping = :sleeping")})
-public class Workstation implements Serializable
+public class Workstation_old implements Serializable
 {
     private static final long serialVersionUID = 1L;
     @Id
@@ -91,13 +87,11 @@ public class Workstation implements Serializable
     @JoinColumn(name = "ID_CLIENT", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Client idClient;
-    @OneToMany(mappedBy = "idWorkstation")
-    private List<Task> taskList;
 
-    public Workstation() {
+    public Workstation_old() {
     }
 
-    public Workstation(Integer id) {
+    public Workstation_old(Integer id) {
         this.id = id;
     }
 
@@ -205,15 +199,6 @@ public class Workstation implements Serializable
         this.idClient = idClient;
     }
 
-    @XmlTransient
-    public List<Task> getTaskList() {
-        return taskList;
-    }
-
-    public void setTaskList(List<Task> taskList) {
-        this.taskList = taskList;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -224,10 +209,10 @@ public class Workstation implements Serializable
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Workstation)) {
+        if (!(object instanceof Workstation_old)) {
             return false;
         }
-        Workstation other = (Workstation) object;
+        Workstation_old other = (Workstation_old) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }

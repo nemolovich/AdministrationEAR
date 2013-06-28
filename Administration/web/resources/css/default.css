@@ -546,3 +546,30 @@ TABLE.infos_header
     overflow:                   -moz-scrollbars-vertical;
     overflow-y:                 scroll;
 }
+
+.invisible_back
+{
+    background:                 0 !important;
+    padding:                    0 !important;
+    margin:                     0 !important;
+    -webkit-box-shadow:         none !important;
+    -moz-box-shadow:            none !important;
+    box-shadow:                 none !important;
+    border:                     none !important;
+}
+
+.invisible_back span
+{
+    color:                      #FFFFFF !important;
+    text-shadow:                1px 1px 0 rgba(25,25,25,0.7),
+                                1px 1px 0.2em rgba(25,25,25,0.7);
+}
+
+
+.invisible_back img
+{
+    border-radius:              4px;
+    -webkit-box-shadow:         1px 1px 0.2em rgba(25,25,25,0.7) !important;
+    -moz-box-shadow:            1px 1px 0.2em rgba(25,25,25,0.7) !important;
+    box-shadow:                 1px 1px 0.2em rgba(25,25,25,0.7) !important;
+}

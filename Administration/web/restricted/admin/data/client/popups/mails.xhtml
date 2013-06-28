@@ -21,7 +21,7 @@
                 <h:panelGrid columns="2" columnClasses="label,fields"
                              rendered="#{not empty mailView.entity}">
                     <p:outputLabel value="Adresse mail:" for="mmail" />
-                    <h:inputText id="mmail" value="#{mailView.entity.mail}"
+                    <p:inputText id="mmail" value="#{mailView.entity.mail}"
                                  title="Adresse mail"
                                  required="true"
                                  requiredMessage="Le champs 'Mail' ne peut être vide"
@@ -30,14 +30,14 @@
                         <f:validator binding="#{mailUniqueFieldValidator}"/>
                         <f:attribute name="fieldName" value="Mail" />
                         <f:attribute name="update_id" value="#{mailView.entity.id}" />
-                    </h:inputText>
+                    </p:inputText>
                     <h:outputText id="mmailV" value="#{mailView.entity.mail}"
                                   title="Adresse mail"
                                   rendered="#{not mailView.creating and
                                               not mailView.editing}"/>
 
                     <p:outputLabel value="Adresse POP:" for="mpop" />
-                    <h:inputText id="mpop" value="#{mailView.entity.pop}"
+                    <p:inputText id="mpop" value="#{mailView.entity.pop}"
                                  title="Adresse POP"
                                  rendered="#{mailView.creating or 
                                                 mailView.editing}"/>
@@ -47,7 +47,7 @@
                                               not mailView.editing}"/>
 
                     <p:outputLabel value="Mot de passe POP:" for="mpopPassword" />
-                    <h:inputText id="mpopPassword" value="#{mailView.entity.popPassword}"
+                    <p:inputText id="mpopPassword" value="#{mailView.entity.popPassword}"
                                  title="Mot de passe POP"
                                  rendered="#{mailView.creating or 
                                                 mailView.editing}"/>
@@ -57,7 +57,7 @@
                                               not mailView.editing}"/>
 
                     <p:outputLabel value="Adresse SMTP:" for="msmtp" />
-                    <h:inputText id="msmtp" value="#{mailView.entity.smtp}"
+                    <p:inputText id="msmtp" value="#{mailView.entity.smtp}"
                                  title="Adresse SMTP"
                                  rendered="#{mailView.creating or 
                                                 mailView.editing}"/>
@@ -67,7 +67,7 @@
                                               not mailView.editing}"/>
 
                     <p:outputLabel value="Mot de passe SMTP:" for="msmtpPassword" />
-                    <h:inputText id="msmtpPassword" value="#{mailView.entity.smtpPassword}"
+                    <p:inputText id="msmtpPassword" value="#{mailView.entity.smtpPassword}"
                                  title="Mot de passe SMTP"
                                  rendered="#{mailView.creating or 
                                                 mailView.editing}"/>
@@ -82,14 +82,14 @@
                     (<span class="red-star">*</span>: champs requis)<br />
                 </p:outputPanel>
                 <p:outputPanel rendered="#{mailView.creating}">
-                    <p:commandButton id="createWorkstation" value="Ajouter"
+                    <p:commandButton id="createMail" value="Ajouter"
                                      title="Ajouter cette adresse mail à la société"
                                      type="submit"
                                      actionListener="#{mailView.create(clientView.entity)}"
                                      icon="ui-icon-check"
                                      update=":clientUpdate :clientUpdate:growlWizard :createMailForm"
                                      styleClass="blue_icon"
-                                     oncomplete="createRequest(createMail, xhr, status, args);clientMailTable.filter();clientMailTable.filter();"
+                                     oncomplete="createRequest(createMail, xhr, status, args);forceFilter(clientMailTable);"
                                      />
                     <p:commandButton id="backCreateMail" value="Annuler"
                                      title="Annuler la création"
@@ -110,7 +110,7 @@
                                      icon="ui-icon-pencil"
                                      update=":clientUpdate :clientUpdate:growlWizard :createMailForm"
                                      styleClass="blue_icon"
-                                     oncomplete="createRequest(createMail, xhr, status, args);clientMailTable.filter();clientMailTable.filter();"
+                                     oncomplete="createRequest(createMail, xhr, status, args);forceFilter(clientMailTable);"
                                      />
                     <p:commandButton id="backEditMail" value="Annuler"
                                      title="Annuler les changements"
@@ -126,7 +126,7 @@
                 <p:outputPanel rendered="#{not mailView.creating and 
                                             not mailView.editing}">
                     <center>
-                        <p:commandButton id="backWorkstation" value="Fermer"
+                        <p:commandButton id="backMail" value="Fermer"
                                          title="Fermer la fenêtre"
                                          action="javascript:void(0);"
                                          type="reset"
@@ -146,7 +146,7 @@
                                     <span class="ui-messages-error-summary">
                                         Sélection incorrecte!
                                         <script type="text/javascript">
-//                                                    createmAIL.hide();
+//                                                    createMail.hide();
                                         </script>
                                     </span>
                                 </li>

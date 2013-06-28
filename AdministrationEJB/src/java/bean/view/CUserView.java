@@ -5,8 +5,9 @@
 package bean.view;
 
 import bean.facade.CUserFacade;
-import bean.view.struct.EntityView;
+import bean.view.struct.EmbdedDataListView;
 import entity.CUser;
+import entity.Client;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
@@ -18,15 +19,17 @@ import javax.inject.Named;
  */
 @Named(value = "cUserView")
 @SessionScoped
-public class CUserView extends EntityView<CUser, CUserFacade>
+public class CUserView extends EmbdedDataListView<Client, CUser, CUserFacade>
 {
     private static final long serialVersionUID = 1L;
     @EJB
     private CUserFacade cUserFacade;
     
-    public CUserView()
+    public CUserView() throws NoSuchMethodException
     {
-        super(CUser.class,"c_user");
+        super(CUser.class,"c_user",
+                CUser.class.getMethod("setIdClient",
+                                        new Class<?>[]{Client.class}));
     }
     
     @Override
@@ -57,8 +60,35 @@ public class CUserView extends EntityView<CUser, CUserFacade>
     public String getDeleteMessage(CUser entity)
     {
         return "Vous êtes sur le point de supprimer définitivement"
-                + " cet utilisateur ("+entity.getName()
-                + " id="+entity.getId()+"). Cette action est irreversible,"
-                + " êtes-vous certain(e) de vouloir continuer?";
+                    + " cet utilisateur ("+entity.getName()
+                    + " id="+entity.getId()+"). Cette action est irreversible,"
+                    + " êtes-vous certain(e) de vouloir continuer?";
+    }
+
+    @Override
+    public String deleteMessages(List<CUser> entities)
+    {
+        if(entities!=null)
+        {
+            String out="Vous êtes sur le point de supprimer définitivement tous"
+                + " les utilisateurs sélectionnés (";
+            boolean first=true;
+            for(CUser cuser:entities)
+            {
+                if(first)
+                {
+                    first=false;
+                }
+                else
+                {
+                    out+=", ";
+                }
+                out+=cuser.getName()+" id="+cuser.getId();
+            }
+            out+="). Cette action est irreversible, "
+                + "êtes-vous certain(e) de vouloir continuer?";
+            return out;
+        }
+        return "Erreur!";
     }
 }

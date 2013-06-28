@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Brian GOHIER
  */
 @Entity
-@Table(name = "C_USER")
+//@Table(name = "C_USER")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "CUser.findAll", query = "SELECT c FROM CUser c"),
@@ -37,7 +37,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "CUser.findByPhone", query = "SELECT c FROM CUser c WHERE c.phone = :phone"),
     @NamedQuery(name = "CUser.findByObservations", query = "SELECT c FROM CUser c WHERE c.observations = :observations"),
     @NamedQuery(name = "CUser.findBySleeping", query = "SELECT c FROM CUser c WHERE c.sleeping = :sleeping")})
-public class CUser implements Serializable
+public class CUser_old implements Serializable
 {
     private static final long serialVersionUID = 1L;
     @Id
@@ -61,20 +61,18 @@ public class CUser implements Serializable
     private Boolean sleeping=false;
     @OneToMany(mappedBy = "idUser")
     private List<Client> clientList;
-    @OneToMany(mappedBy = "idUser")
-    private List<Task> taskList;
     @JoinColumn(name = "ID_CLIENT", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Client idClient;
 
-    public CUser() {
+    public CUser_old() {
     }
 
-    public CUser(Integer id) {
+    public CUser_old(Integer id) {
         this.id = id;
     }
 
-    public CUser(Integer id, String name, String phone) {
+    public CUser_old(Integer id, String name, String phone) {
         this.id = id;
         this.name = name;
         this.phone = phone;
@@ -137,15 +135,6 @@ public class CUser implements Serializable
         this.idClient = idClient;
     }
 
-    @XmlTransient
-    public List<Task> getTaskList() {
-        return taskList;
-    }
-
-    public void setTaskList(List<Task> taskList) {
-        this.taskList = taskList;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -156,10 +145,10 @@ public class CUser implements Serializable
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof CUser)) {
+        if (!(object instanceof CUser_old)) {
             return false;
         }
-        CUser other = (CUser) object;
+        CUser_old other = (CUser_old) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }

@@ -12,6 +12,14 @@
 
 --- Supprime les tables si elles existent, sinon commenter --
 -- DROP TABLE ROOT.T_USER;
+ALTER TABLE ROOT.FACTURE DROP CONSTRAINT facture_intervention_id_fk;
+DROP TABLE ROOT.FACTURE;
+ALTER TABLE ROOT.INTERVENTION DROP CONSTRAINT intervention_task_id_fk;
+DROP TABLE ROOT.INTERVENTION;
+ALTER TABLE ROOT.TASK DROP CONSTRAINT task_c_user_id_fk;
+ALTER TABLE ROOT.TASK DROP CONSTRAINT task_client_id_fk;
+ALTER TABLE ROOT.TASK DROP CONSTRAINT task_workstation_id_fk;
+DROP TABLE ROOT.TASK;
 ALTER TABLE ROOT.CLIENT DROP CONSTRAINT client_c_user_id_fk;
 ALTER TABLE ROOT.MAIL DROP CONSTRAINT mail_client_id_fk;
 DROP TABLE ROOT.MAIL;
@@ -61,7 +69,7 @@ CREATE TABLE ROOT.CLIENT (
 		internet_login VARCHAR(30),
 		internet_password VARCHAR(64),
         observations VARCHAR(250),
-		sleeping BOOLEAN DEFAULT FALSE);
+		sleeping BOOLEAN NOT NULL DEFAULT FALSE);
 
 ---------------- Création de la table C_USER ----------------
 -- TABLE:			C_USER
@@ -74,7 +82,7 @@ CREATE TABLE ROOT.C_USER (
         name VARCHAR(45) NOT NULL DEFAULT 'unnamed',
         phone VARCHAR(14) NOT NULL,
         observations VARCHAR(250),
-		sleeping BOOLEAN DEFAULT FALSE,
+		sleeping BOOLEAN NOT NULL DEFAULT FALSE,
         CONSTRAINT user_client_id_fk
                 FOREIGN KEY (id_client)
                 REFERENCES ROOT.CLIENT(id));
@@ -100,7 +108,7 @@ CREATE TABLE ROOT.MAIL (
         pop_password VARCHAR(64),
         smtp VARCHAR(64),
         smtp_password VARCHAR(64),
-		sleeping BOOLEAN DEFAULT FALSE,
+		sleeping BOOLEAN NOT NULL DEFAULT FALSE,
         CONSTRAINT mail_client_id_fk
                 FOREIGN KEY (id_client)
                 REFERENCES ROOT.CLIENT(id));
@@ -123,7 +131,7 @@ CREATE TABLE ROOT.WORKSTATION (
 		ram VARCHAR(64),
 		hard_drive VARCHAR(64),
         observations VARCHAR(250),
-		sleeping BOOLEAN DEFAULT FALSE,
+		sleeping BOOLEAN NOT NULL DEFAULT FALSE,
         CONSTRAINT workstation_client_id_fk
                 FOREIGN KEY (id_client)
                 REFERENCES ROOT.CLIENT(id));
@@ -142,11 +150,68 @@ CREATE TABLE ROOT.SOFTWARE (
 		editor VARCHAR(64),
 		station_number INTEGER,
         observations VARCHAR(250),
-		sleeping BOOLEAN DEFAULT FALSE,
+		sleeping BOOLEAN NOT NULL DEFAULT FALSE,
         CONSTRAINT software_client_id_fk
                 FOREIGN KEY (id_client)
                 REFERENCES ROOT.CLIENT(id));
 
+----------------- Création de la table TASK -----------------
+-- TABLE:			TASK
+-- DESCRIPTION: 	Table concernant les tâches à effectuer
+--  ou déjà effectuées.
+CREATE TABLE ROOT.TASK (
+        id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY
+		(START WITH 1, INCREMENT BY 1),
+		id_client INTEGER NOT NULL,
+		id_user INTEGER,
+		id_workstation INTEGER,
+		description VARCHAR(250),
+        intended_duration VARCHAR(30),
+		deplacement BOOLEAN DEFAULT FALSE,
+		intervention_type VARCHAR(10),
+		CONSTRAINT intervention_type_ck
+			CHECK(intervention_type IN
+				('MATERIELLE','LOGICIELLE')),
+        observations VARCHAR(250),
+		sleeping BOOLEAN NOT NULL DEFAULT FALSE,
+        CONSTRAINT task_client_id_fk
+                FOREIGN KEY (id_client)
+                REFERENCES ROOT.CLIENT(id),
+        CONSTRAINT task_c_user_id_fk
+                FOREIGN KEY (id_user)
+                REFERENCES ROOT.C_USER(id),
+        CONSTRAINT task_workstation_id_fk
+                FOREIGN KEY (id_workstation)
+                REFERENCES ROOT.WORKSTATION(id));
+
+------------- Création de la table INTERVENTION -------------
+-- TABLE:			INTERVENTION
+-- DESCRIPTION: 	Table concernant les interventions
+--  effectuées.
+CREATE TABLE ROOT.INTERVENTION (
+        id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY
+		(START WITH 1, INCREMENT BY 1),
+		id_task INTEGER NOT NULL,
+		duration VARCHAR(30),
+		facture_number INTEGER,
+		sleeping BOOLEAN NOT NULL DEFAULT FALSE,
+		CONSTRAINT intervention_task_id_fk
+			FOREIGN KEY (id_task)
+			REFERENCES ROOT.TASK(id));
+
+---------------- Création de la table FACTURE ---------------
+-- TABLE:			FACTURE
+-- DESCRIPTION: 	Table concernant les factures des
+--  interventions.
+CREATE TABLE ROOT.FACTURE (
+        id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY
+		(START WITH 1, INCREMENT BY 1),
+		id_intervention INTEGER NOT NULL,
+		facture_number VARCHAR(7),
+		sleeping BOOLEAN NOT NULL DEFAULT FALSE,
+		CONSTRAINT facture_intervention_id_fk
+			FOREIGN KEY (id_intervention)
+			REFERENCES ROOT.INTERVENTION(id));
 
 -- File successfully loaded!
 ;

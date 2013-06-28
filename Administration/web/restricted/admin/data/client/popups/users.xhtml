@@ -1,0 +1,145 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <p:dialog id="dialogUser"
+                  appendToBody="true"
+                  header="Fenêtre d'utilisateur"
+                  widgetVar="createUser"
+                  resizable="false"
+                  draggable="false"
+                  modal="true"
+                  showEffect="clip"
+                  hideEffect="clip">
+            <h:form id="createUserForm">
+                <h:panelGrid columns="2" columnClasses="label,fields"
+                         rendered="#{not empty cUserView.entity}">
+                    <p:outputLabel value="Nom:" for="uname" />
+                    <p:inputText id="uname" value="#{cUserView.entity.name}"
+                                 title="Nom de l'utilisateur"
+                                 required="true"
+                                 requiredMessage="Le champs 'Nom' ne peut être vide"
+                                 rendered="#{cUserView.creating or 
+                                                cUserView.editing}">
+                        <f:validator binding="#{cUserUniqueFieldValidator}"/>
+                        <f:attribute name="fieldName" value="Name" />
+                        <f:attribute name="update_id" value="#{cUserView.entity.id}" />
+                    </p:inputText>
+                    <h:outputText id="unameV" value="#{cUserView.entity.name}"
+                                  title="Name"
+                                  rendered="#{not cUserView.creating and
+                                              not cUserView.editing}"/>
+                    
+                    <p:outputLabel value="Numéro de téléphone:" for="uphone" />
+                    <p:inputMask id="uphone" value="#{cUserView.entity.phone}" mask="99.99.99.99.99"
+                                 title="Numéro de téléphone de l'utilisateur"
+                                 required="true"
+                                 requiredMessage="Veuillez indiquer le numéro de téléphone de l'utilisateur"
+                                 rendered="#{cUserView.creating or 
+                                                cUserView.editing}">
+                        <f:validator binding="#{phonePatternValidator}"/>
+                    </p:inputMask>
+                    <h:outputText id="uphoneV" value="#{cUserView.entity.phone}"
+                                  title="Numéro de téléphone de l'utilisateur"
+                                  rendered="#{not cUserView.creating and
+                                              not cUserView.editing}"/>
+                    
+                    <p:outputLabel value="Observations:" for="uobservations" />
+                    <p:inputText id="uobservations" value="#{cUserView.entity.observations}"
+                                 title="Observations"
+                                 rendered="#{cUserView.creating or 
+                                                cUserView.editing}"/>
+                    <h:outputText id="uobservationsV" value="#{cUserView.entity.observations}"
+                                  title="Observations"
+                                  rendered="#{not cUserView.creating and
+                                              not cUserView.editing}"/>
+                    
+                </h:panelGrid>
+                <p:outputPanel rendered="#{cUserView.creating or
+                                            cUserView.editing}">
+                    (<span class="red-star">*</span>: champs requis)<br />
+                </p:outputPanel>
+                <p:outputPanel rendered="#{cUserView.creating}">
+                    <p:commandButton id="createUser" value="Ajouter"
+                                     title="Ajouter cet utilisateur à la société"
+                                     type="submit"
+                                     actionListener="#{cUserView.create(clientView.entity)}"
+                                     icon="ui-icon-check"
+                                     update=":clientUpdate :clientUpdate:growlWizard :createUserForm"
+                                     styleClass="blue_icon"
+                                     oncomplete="createRequest(createUser, xhr, status, args);forceFilter(clientUserTable);"
+                                     />
+                    <p:commandButton id="backCreateUser" value="Annuler"
+                                     title="Annuler la création"
+                                     action="javascript:void(0);"
+                                     styleClass="red_icon"
+                                     type="reset"
+                                     immediate="true"
+                                     ajax="true"
+                                     icon="ui-icon-closethick"
+                                     onclick="createUser.hide();"
+                                     />
+                </p:outputPanel>
+                <p:outputPanel rendered="#{cUserView.editing}">
+                    <p:commandButton  id="updateUser" value="Mettre à jour"
+                                     title="Enregistrer les changements"
+                                     type="submit"
+                                     actionListener="#{cUserView.update(clientView.entity)}"
+                                     icon="ui-icon-pencil"
+                                     update=":clientUpdate :clientUpdate:growlWizard :createUserForm"
+                                     styleClass="blue_icon"
+                                     oncomplete="createRequest(createUser, xhr, status, args);forceFilter(clientUserTable);"
+                                     />
+                    <p:commandButton id="backEditUser" value="Annuler"
+                                     title="Annuler les changements"
+                                     action="javascript:void(0);"
+                                     styleClass="red_icon"
+                                     type="reset"
+                                     immediate="true"
+                                     ajax="true"
+                                     icon="ui-icon-closethick"
+                                     onclick="createUser.hide();"
+                                     />
+                </p:outputPanel>
+                <p:outputPanel rendered="#{not cUserView.creating and 
+                                            not cUserView.editing}">
+                    <center>
+                        <p:commandButton id="backUser" value="Fermer"
+                                         title="Fermer la fenêtre"
+                                         action="javascript:void(0);"
+                                         type="reset"
+                                         immediate="true"
+                                         ajax="true"
+                                         onclick="createUser.hide();"
+                                         />
+                    </center>
+                </p:outputPanel>
+                <p:outputPanel id="selectionUserError" 
+                               rendered="#{empty cUserView.entity}">
+                    <div class="ui-messages ui-widget">
+                        <div class="ui-messages-error ui-corner-all">
+                            <span class="ui-messages-error-icon"/>
+                            <ul>
+                                <li>
+                                    <span class="ui-messages-error-summary">
+                                        Sélection incorrecte!
+                                        <script type="text/javascript">
+//                                                    createUser.hide();
+                                        </script>
+                                    </span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </p:outputPanel>
+            </h:form>
+        </p:dialog>
+    </h:body>
+</html>
+

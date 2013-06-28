@@ -29,7 +29,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Brian GOHIER
  */
 @Entity
-@Table(name = "CLIENT")
+//@Table(name = "CLIENT")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Client.findAll", query = "SELECT c FROM Client c"),
@@ -48,7 +48,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Client.findByInternetPassword", query = "SELECT c FROM Client c WHERE c.internetPassword = :internetPassword"),
     @NamedQuery(name = "Client.findByObservations", query = "SELECT c FROM Client c WHERE c.observations = :observations"),
     @NamedQuery(name = "Client.findBySleeping", query = "SELECT c FROM Client c WHERE c.sleeping = :sleeping")})
-public class Client implements Serializable
+public class Client_old implements Serializable
 {
     private static final long serialVersionUID = 1L;
     @Id
@@ -113,17 +113,15 @@ public class Client implements Serializable
     private List<Mail> mailList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idClient")
     private List<Software> softwareList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idClient")
-    private List<Task> taskList;
 
-    public Client() {
+    public Client_old() {
     }
 
-    public Client(Integer id) {
+    public Client_old(Integer id) {
         this.id = id;
     }
 
-    public Client(Integer id, String name, String address, int postalcode, String phone, String mail) {
+    public Client_old(Integer id, String name, String address, int postalcode, String phone, String mail) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -296,15 +294,6 @@ public class Client implements Serializable
         this.softwareList = softwareList;
     }
 
-    @XmlTransient
-    public List<Task> getTaskList() {
-        return taskList;
-    }
-
-    public void setTaskList(List<Task> taskList) {
-        this.taskList = taskList;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -315,10 +304,10 @@ public class Client implements Serializable
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Client)) {
+        if (!(object instanceof Client_old)) {
             return false;
         }
-        Client other = (Client) object;
+        Client_old other = (Client_old) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
