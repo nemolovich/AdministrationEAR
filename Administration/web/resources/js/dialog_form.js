@@ -202,3 +202,23 @@ function forceFilter(filter)
         filter.filter();
     }
 }
+
+function displayAllInfos(infos, shortInfos, formId)
+{
+    var currentInfos=$("#"+formId).text();
+    if(infos===currentInfos)
+    {
+        $("#"+formId).text(shortInfos);
+        $("#"+formId).css('height','17px !important');
+    }
+    else if(shortInfos===currentInfos)
+    {
+        $("#"+formId).text(infos);
+        $("#"+formId).css('height','150px !important');
+    }
+    else
+    {
+        $("#"+formId).text(infos);
+        $("#"+formId).css('height','150px !important');
+    }
+}

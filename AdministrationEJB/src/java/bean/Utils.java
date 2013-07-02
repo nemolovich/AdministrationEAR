@@ -14,8 +14,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 
