@@ -2,7 +2,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>Détails de l'utilisateur</title>
     </h:head>
@@ -10,21 +11,26 @@
         <f:view>
             <h:form id="cuserViewForm">
                 <h:panelGrid columns="2" columnClasses="label,fields">
-                        
+                    
                     <h:outputText value="Identifiant:"/>
-                    <h:outputText value="#{cUserView.entity.id}" title="Identifiant de l'utilisateurs"/>
+                    <h:outputText id="puidV" value="#{cUserView.entity.id}"
+                                  title="Identifiant de l'utilisateurs"/>
                     
                     <h:outputText value="Nom:"/>
-                    <h:outputText value="#{cUserView.entity.name}" title="Nom de l'utilisateur"/>
+                    <h:outputText id="punameV" value="#{cUserView.entity.name}"
+                                  title="Nom de l'utilisateur"/>
                     
-                    <h:outputText value="Téléphone:"/>
-                    <h:outputText value="#{cUserView.entity.phone}" title="Numéro de téléphone de l'utilisateur"/>
+                    <p:outputLabel value="Téléphone:"/>
+                    <h:outputText id="puphoneV" value="#{cUserView.entity.phone}"
+                                  title="Numéro de téléphone de l'utilisateur"/>
                     
                     <h:outputText value="Référence de la société"/>
-                    <h:outputText value="#{cUserView.entity.idClient}" title="Société pour laquelle travaille l'utilisateur"/>
+                    <h:outputText id="puidclientV" value="#{cUserView.entity.idClient}"
+                                  title="Société pour laquelle travaille l'utilisateur"/>
                     
                     <h:outputText value="Observations:"/>
-                    <h:outputText value="#{cUserView.entity.observations}" title="Observations"/>
+                    <h:outputText id="puobservationsV" value="#{cUserView.entity.observations}"
+                                  title="Observations"/>
                     
                 </h:panelGrid>
             </h:form>

@@ -4,9 +4,18 @@
  */
 package bean;
 
+import static bean.ApplicationLogger.displayError;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 
@@ -26,6 +35,113 @@ public class Utils
      * Le nombre maximum de ligne dans une liste de données
      */
     private int maxDataRows = 10;
+    /**
+     * Droits de l'application
+     */
+    public static final String UNKNOWN_RIGHTS = "UNKNOWN";
+    public static final String USER_RIGHTS = "USER";
+    public static final String ADMIN_RIGHTS = "ADMIN";
+    private static final List<String> RIGHTS = Arrays.asList(
+            Utils.UNKNOWN_RIGHTS,
+            Utils.USER_RIGHTS,
+            Utils.ADMIN_RIGHTS);
+    /**
+     * Formats de date en francais
+     */
+    private static final DateFormat formatFull = new SimpleDateFormat(
+            "EEEEE dd MMMMM yyyy à HH:mm:ss",
+            Locale.FRANCE);
+    private static final SimpleDateFormat formatMedium = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+    private static final SimpleDateFormat formatSmall = new SimpleDateFormat("dd/MM/yyyy");
+    
+    
+    /**
+     * Renvoi les droits connus par l'application
+     * @return {@link List}<{@link String}> - Liste des droits
+     */
+    public static List<String> getEnumRights()
+    {
+        return Utils.RIGHTS;
+    }
+    
+    /**
+     * Renvoi la date en chaîne de caractères en français
+     * @param date {@link java.util.Date} - La date à afficher
+     * @return {@link String} - La date en texte [EEEEE dd MMMMM yyyy à HH:mm:ss]
+     */
+    public static String fullDateFormat(Date date)
+    {
+        return formatFull.format(date);
+    }
+    
+    /**
+     * Renvoi la date en chaîne de caractères en français
+     * @param date {@link java.util.Date} - La date à afficher
+     * @return {@link String} - La date en texte [dd/MM/yyyy HH:mm:ss]
+     */
+    public static String dateFormat(Date date)
+    {
+        return formatMedium.format(date);
+    }
+    
+    /**
+     * Renvoi la date en chaîne de caractères en français
+     * @param date {@link java.util.Date} - La date à afficher
+     * @return {@link String} - La date en texte [dd/MM/yyyy]
+     */
+    public static String smallDateFormat(Date date)
+    {
+        return formatSmall.format(date);
+    }
+    
+    /**
+     * Parse une date suivant le format donné et renvoi la date trouvée
+     * @param dateString {@link String} - Date en format texte
+     * @param format {@link DateFormat} - Le format à utiliser pour parser
+     * @return {@link Date} - La date déduite du parsing
+     */
+    private static Date dateParseFormat(String dateString, DateFormat format)
+    {
+        try
+        {
+            return format.parse(dateString);
+        }
+        catch (ParseException ex)
+        {
+            displayError("Impossible de parser la date '"+dateString+"'", null);
+            return null;
+        }
+    }
+    
+    /**
+     * Renvoi une date depuis un format texte complet
+     * @param dateString {@link String} - La date à parser
+     * @return {@link Date} - La date trouvée
+     */
+    public static Date parseFullDate(String dateString)
+    {
+        return dateParseFormat(dateString, formatFull);
+    }
+    
+    /**
+     * Renvoi une date depuis un format texte
+     * @param dateString {@link String} - La date à parser
+     * @return {@link Date} - La date trouvée
+     */
+    public static Date parseDate(String dateString)
+    {
+        return dateParseFormat(dateString, formatMedium);
+    }
+    
+    /**
+     * Renvoi une date depuis un format texte réduit
+     * @param dateString {@link String} - La date à parser
+     * @return {@link Date} - La date trouvée
+     */
+    public static Date parseSmallDate(String dateString)
+    {
+        return dateParseFormat(dateString, formatSmall);
+    }
     
     /**
      * Renvoi le nombre max de lignes dans une liste de données

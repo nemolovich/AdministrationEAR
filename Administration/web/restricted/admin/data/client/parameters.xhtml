@@ -57,13 +57,13 @@
                                     });
                                 </script>
                                 <p:dataTable id="clientWorkstationList"
+                                             value="#{workstationMultiView.getData(clientView.entity.workstationList)}"
                                              var="poste"
                                              widgetVar="clientWorkstationTable"
                                              rowIndexVar="index"
                                              paginatorPosition="bottom"
                                              emptyMessage="Aucun poste n'a été trouvé"
                                              rowStyleClass="#{poste.sleeping?'sleeping_elmt':null}"
-                                             value="#{workstationMultiView.getData(clientView.entity.workstationList)}"
                                              paginator="true"
                                              rows="#{utils.maxDataRows}"
                                              sortBy="#{poste.id}"

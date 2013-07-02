@@ -4,8 +4,8 @@
  */
 package filter;
 
+import bean.Utils;
 import filter.struct.AccessFilter;
-import entity.TUser;
 import java.util.Arrays;
 
 /**
@@ -16,6 +16,6 @@ public class UserAccessFilter extends AccessFilter
 {
     public UserAccessFilter()
     {
-        super(Arrays.asList(TUser.ADMIN_RIGHTS,TUser.USER_RIGHTS));
+        super(Arrays.asList(Utils.ADMIN_RIGHTS,Utils.USER_RIGHTS));
     }   
 }

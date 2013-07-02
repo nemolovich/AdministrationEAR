@@ -5,6 +5,7 @@
 package bean.view;
 
 import bean.UserLogin;
+import bean.Utils;
 import bean.facade.TUserFacade;
 import bean.view.struct.EntityView;
 import entity.TUser;
@@ -41,7 +42,7 @@ public class TUserView extends EntityView<TUser, TUserFacade>
     public String entityUpdate(TUser entity, UserLogin currentUser)
     {
         super.entityUpdate(entity);
-        if(currentUser.getRights().equals(TUser.ADMIN_RIGHTS))
+        if(currentUser.getRights().equals(Utils.ADMIN_RIGHTS))
         {
             return "/restricted/admin/user/update";
         }
@@ -63,12 +64,17 @@ public class TUserView extends EntityView<TUser, TUserFacade>
     
     public String getAdmin_Rights()
     {
-        return TUser.ADMIN_RIGHTS;
+        return Utils.ADMIN_RIGHTS;
     }
     
     public String getUser_Rights()
     {
-        return TUser.USER_RIGHTS;
+        return Utils.USER_RIGHTS;
+    }
+    
+    public String getUnknown_Rights()
+    {
+        return Utils.UNKNOWN_RIGHTS;
     }
     
     @Override
@@ -78,11 +84,6 @@ public class TUserView extends EntityView<TUser, TUserFacade>
                 + " cet utilisateur ("+entity.getFirstname()+" "+entity.getName()
                 + " id="+entity.getId()+"). Cette action est irreversible,"
                 + " êtes-vous certain(e) de vouloir continuer?";
-    }
-    
-    public String getUnknown_Rights()
-    {
-        return TUser.UNKNOWN_RIGHTS;
     }
     
     @Override

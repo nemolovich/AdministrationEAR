@@ -5,6 +5,9 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,7 +19,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -36,7 +40,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Task.findByInterventionType", query = "SELECT t FROM Task t WHERE t.interventionType = :interventionType"),
     @NamedQuery(name = "Task.findByObservations", query = "SELECT t FROM Task t WHERE t.observations = :observations"),
     @NamedQuery(name = "Task.findBySleeping", query = "SELECT t FROM Task t WHERE t.sleeping = :sleeping")})
-public class Task implements Serializable {
+public class Task implements Serializable
+{
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,11 +51,14 @@ public class Task implements Serializable {
     @Size(max = 250)
     @Column(name = "DESCRIPTION")
     private String description;
+    @Column(name = "START_DATE")
+    @Temporal(TemporalType.DATE)
+    private Date startDate=Calendar.getInstance(Locale.FRANCE).getTime();
     @Size(max = 30)
     @Column(name = "INTENDED_DURATION")
     private String intendedDuration;
     @Column(name = "DEPLACEMENT")
-    private Serializable deplacement;
+    private Boolean deplacement=false;
     @Size(max = 10)
     @Column(name = "INTERVENTION_TYPE")
     private String interventionType;
@@ -92,6 +100,14 @@ public class Task implements Serializable {
         this.description = description;
     }
 
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
     public String getIntendedDuration() {
         return intendedDuration;
     }
@@ -100,11 +116,11 @@ public class Task implements Serializable {
         this.intendedDuration = intendedDuration;
     }
 
-    public Serializable getDeplacement() {
+    public Boolean getDeplacement() {
         return deplacement;
     }
 
-    public void setDeplacement(Serializable deplacement) {
+    public void setDeplacement(Boolean deplacement) {
         this.deplacement = deplacement;
     }
 
@@ -176,9 +192,15 @@ public class Task implements Serializable {
         return true;
     }
 
-    @Override
-    public String toString() {
-        return "entity.Task[ id=" + id + " ]";
+    public String getFullString()
+    {
+        return "entity.Task{" + "id=" + id + ", description=" + description + ", intendedDuration=" + intendedDuration + ", deplacement=" + deplacement + ", interventionType=" + interventionType + ", observations=" + observations + ", sleeping=" + sleeping + ", idWorkstation=" + idWorkstation + ", idUser=" + idUser + ", idClient=" + idClient + '}';
     }
-    
+
+    @Override
+    public String toString()
+    {
+        return this.description+" pour la société "+this.idClient.toString();
+    }
+
 }

@@ -166,6 +166,7 @@ CREATE TABLE ROOT.TASK (
 		id_user INTEGER,
 		id_workstation INTEGER,
 		description VARCHAR(250),
+        start_date DATE,
         intended_duration VARCHAR(30),
 		deplacement BOOLEAN DEFAULT FALSE,
 		intervention_type VARCHAR(10),

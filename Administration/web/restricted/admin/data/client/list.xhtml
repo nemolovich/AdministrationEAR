@@ -29,6 +29,7 @@
                           showEffect="clip"
                           hideEffect="clip">
                     <h:form id="clientDialogHeader">
+                        <p:hotkey bind="esc" handler="clientViewDialog.hide();"/>
                         <h3 class="tabheader">Détails de la société #{clientView.entity.name}:</h3>
                     </h:form>
                     <ui:include src="/restricted/admin/data/client/popupView.xhtml"/>
@@ -55,10 +56,10 @@
                           showEffect="clip"
                           hideEffect="clip">
                     <h:form id="cuserDialogHeader">
+                        <p:hotkey bind="esc" process="@this" handler="cuserViewDialog.hide();"/>
                         <h3 class="tabheader">Détails de l'utilisateur #{cUserView.entity.name}:</h3>
                     </h:form>
                     <ui:include src="/restricted/admin/data/c_user/popupView.xhtml"/>
-                    <p:hotkey bind="esc" handler="cuserViewDialog.hide();"/>
                     <h:form>
                         <p:outputPanel styleClass="buttons_panel">
                             <center>
@@ -111,16 +112,16 @@
                                       sortBy="#{item.idUser.name}"
                                       filterBy="#{item.idUser.name}"
                                       filterMatchMode="contains">
+                                <h:outputText value="#{item.idUser}" rendered="#{not empty item.idUser}"/>
+                                <p:spacer width="10px"/>
                                 <p:commandButton actionListener="#{cUserView.entityView(item.idUser)}"
                                                  icon="ui-icon-search"
                                                  update=":cuserViewForm :cuserDialogHeader"
-                                                 style="font-size: 40%;vertical-align: top !important;"
+                                                 style="font-size: 40%;vertical-align: top !important;float:right;"
                                                  oncomplete="cuserViewDialog.show();"
                                                  action="javascript:void(0);"
                                                  title="Afficher les détails de l'interlocuteur"
                                                  rendered="#{not empty item.idUser}"/>
-                                <p:spacer width="10px"/>
-                                <h:outputText value="#{item.idUser}" rendered="#{not empty item.idUser}"/>
                             </p:column>
                             <p:column headerText="Type d'intervention"
                                       filterMatchMode="contains">

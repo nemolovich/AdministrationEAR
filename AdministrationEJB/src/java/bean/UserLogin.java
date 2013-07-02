@@ -62,9 +62,9 @@ public class UserLogin implements Serializable
     /**
      * Identifiant du menu de droite
      */
-    private int menuRightSize=300;
+    private int menuRightSize=350;
     private boolean menuLeftClosed=false;
-    private boolean menuRightClosed=true;
+    private boolean menuRightClosed=false;
     /**
      * URL demandée
      */
@@ -327,7 +327,7 @@ public class UserLogin implements Serializable
     
     public String getRights()
     {
-        return this.user==null?TUser.UNKNOWN_RIGHTS:this.user.getRights();
+        return this.user==null?Utils.UNKNOWN_RIGHTS:this.user.getRights();
     }
     
     public void setRights(String rights)
@@ -363,8 +363,8 @@ public class UserLogin implements Serializable
             return this.askedURL;
         }
         return (this.user==null?null:
-                (this.user.getRights().equals(TUser.ADMIN_RIGHTS)?"/restricted/admin/index":
-                (this.user.getRights().equals(TUser.USER_RIGHTS)?"/restricted/user/index":
+                (this.user.getRights().equals(Utils.ADMIN_RIGHTS)?"/restricted/admin/index":
+                (this.user.getRights().equals(Utils.USER_RIGHTS)?"/restricted/user/index":
                 "/restricted/login")));
     }
     

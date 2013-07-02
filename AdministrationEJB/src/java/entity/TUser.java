@@ -5,13 +5,12 @@
 package entity;
 
 import bean.ApplicationLogger;
+import bean.Utils;
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -43,13 +42,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class TUser implements Serializable
 {
     private static final long serialVersionUID = 1L;
-    public static final String UNKNOWN_RIGHTS = "UNKNOWN";
-    public static final String USER_RIGHTS = "USER";
-    public static final String ADMIN_RIGHTS = "ADMIN";
-    private static final List<String> RIGHTS = Arrays.asList(
-            TUser.UNKNOWN_RIGHTS,
-            TUser.USER_RIGHTS,
-            TUser.ADMIN_RIGHTS);
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
@@ -79,7 +71,7 @@ public class TUser implements Serializable
     @Basic(optional = false)
     @NotNull
     @Column(name = "RIGHTS")
-    private String rights = TUser.UNKNOWN_RIGHTS;
+    private String rights = Utils.UNKNOWN_RIGHTS;
 
     public TUser() {
     }
@@ -182,7 +174,7 @@ public class TUser implements Serializable
     
     public void setRights(String rights)
     {
-        if(TUser.RIGHTS.contains(rights))
+        if(Utils.getEnumRights().contains(rights))
         {
             this.rights = rights;
         }
@@ -194,11 +186,6 @@ public class TUser implements Serializable
     
     public String getRights() {
         return this.rights;
-    }
-    
-    public List<String> getEnumRights()
-    {
-        return TUser.RIGHTS;
     }
     
     public void setEncryptedPassword(byte[] md5)

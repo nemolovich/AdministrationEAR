@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <f:view>
+            <h:form id="taskViewForm">
+                <h:panelGrid columns="2" columnClasses="label,fields">
+                    
+                    <h:outputText value="Id:"/>
+                    <h:outputText id="ptidV" value="#{taskView.entity.id}"
+                                  title="Id"/>
+                    
+                    <h:outputText value="Description de l'intervention:"/>
+                    <h:outputText id="ptdescriptionV" value="#{taskView.entity.description}"
+                                  title="Description"/>
+                    
+                    <h:outputText value="Société:"/>
+                    <h:outputText id="ptidClientV" value="#{taskView.entity.idClient}"
+                                  title="Société pour l'intervention"/>
+                    
+                    <h:outputText value="Utilisateur:"/>
+                    <h:outputText id="ptidUserV" value="#{taskView.entity.idUser}"
+                                  title="Utilisateur pour l'intervention"/>
+                    
+                    <h:outputText value="Poste de travail:"/>
+                    <h:outputText id="ptidWorkstationV" value="#{utils.getBreakLinesString(
+                                                                 utils.getShortString(
+                                                                 taskView.entity.idWorkstation.toString(),
+                                                                 40))}"
+                                  title="#{taskView.entity.idWorkstation}"/>
+                    
+                    <h:outputText value="StartDate:"/>
+                    <h:outputText id="ptstartDateV" value="#{taskView.entity.startDate}"
+                                  title="StartDate">
+                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                    </h:outputText>
+                    
+                    <h:outputText value="IntendedDuration:"/>
+                    <h:outputText id="ptintendedDurationV" value="#{taskView.entity.intendedDuration}"
+                                  title="IntendedDuration"/>
+                    
+                    <h:outputText value="Deplacement:"/>
+                    <h:outputText id="ptdeplacementV" value="#{taskView.entity.deplacement}"
+                                  title="Deplacement"/>
+                    
+                    <h:outputText value="InterventionType:"/>
+                    <h:outputText id="ptinterventionTypeV" value="#{taskView.entity.interventionType}"
+                                  title="InterventionType"/>
+                    
+                    <h:outputText value="Observations:"/>
+                    <h:outputText id="ptobservationsV" value="#{taskView.entity.observations}"
+                                  title="Observations"/>
+                    
+                    <h:outputText value="État:"/>
+                    <h:outputText id="ptstateV" value="#{taskView.entity.sleeping?'Faite':'À faire'}"
+                                  title="État de la tâche"/>
+                
+                </h:panelGrid>
+            </h:form>
+        </f:view>
+
+    </h:body>
+</html>
+

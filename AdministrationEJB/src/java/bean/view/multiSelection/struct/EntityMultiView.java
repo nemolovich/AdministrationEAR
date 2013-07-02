@@ -6,7 +6,6 @@ package bean.view.multiSelection.struct;
 
 import bean.view.filteredSelection.EntitySleepingSelection;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;

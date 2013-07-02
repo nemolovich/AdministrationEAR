@@ -62,6 +62,7 @@
                           collapsed="#{userLogin.menuLeftClosed}"
                           header="Menu"
                           resizable="true"
+                          gutter="2"
                           collapsible="true"
                           effect="drop"
                           effectSpeed="slow">  
@@ -75,9 +76,11 @@
                           collapsed="#{userLogin.menuRightClosed}"
                           header="Liste des utilisateurs"
                           resizable="true"
+                          gutter="3"
                           collapsible="true"
                           effect="drop"
-                          effectSpeed="slow">
+                          effectSpeed="slow"
+                          rendered="#{userLogin.rights.equals(tUserView.admin_Rights)}">
                 <ui:insert name="right">
                     <ui:include src="/templates/menu_right.xhtml"/>
                 </ui:insert>

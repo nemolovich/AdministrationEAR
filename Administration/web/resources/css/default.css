@@ -558,13 +558,12 @@ TABLE.infos_header
     border:                     none !important;
 }
 
-.invisible_back span
+.invisible_back center
 {
     color:                      #FFFFFF !important;
     text-shadow:                1px 1px 0 rgba(25,25,25,0.7),
                                 1px 1px 0.2em rgba(25,25,25,0.7);
 }
-
 
 .invisible_back img
 {
