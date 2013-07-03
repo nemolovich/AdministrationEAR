@@ -39,6 +39,7 @@ public class ClientConverter extends EntityConverter<Client, ClientFacade>
     public String getAsString(FacesContext context, UIComponent component,
         Object value)
     {
+        System.err.println(context+", "+component+", "+value);
         super.entityFacade=this.clientFacade;
         return super.getAsString(context, component, value);
     }

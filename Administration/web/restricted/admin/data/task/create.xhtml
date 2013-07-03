@@ -1,0 +1,123 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Création tâche</title>
+    </h:head>
+    <h:body>
+        <p:dialog id="createTaskPopup"
+                  dynamic="true"
+                  appendToBody="true"
+                  header="Création d'une tâche"
+                  widgetVar="createTaskDialog"
+                  resizable="false"
+                  draggable="true"
+                  maximizable="false"
+                  modal="true"
+                  showEffect="clip"
+                  hideEffect="clip">
+            <h:form id="taskCreate">
+                <h:panelGrid columns="2" columnClasses="label,fields">
+
+                    <p:outputLabel value="IdClient:" for="idClient" />
+                    <p:selectOneMenu id="idClient"
+                                     value="#{taskView.entity.idClient}"
+                                     effect="fade"
+                                     required="true"
+                                     requiredMessage="Veuillez sélectionner la société dans laquelle intervenir">
+                        <f:selectItem itemLabel="Sélectionnez une société" itemValue=""/>
+                        <f:selectItems value="#{clientView.entries}"/>
+                        <f:converter binding="#{clientConverter}"/>
+<!--                            <p:outputLabel value="IdWorkstation:" for="idWorkstation" />
+                    <h:selectOneMenu id="idWorkstation" value="#{taskView.entity.idWorkstation}" title="IdWorkstation" >
+                         TODO: update below reference to list of available items
+                        <f:selectItems value="#{fixme}"/>
+                    </h:selectOneMenu>
+
+                    <p:outputLabel value="IdUser:" for="idUser" />
+                    <h:selectOneMenu id="idUser" value="#{taskView.entity.idUser}" title="IdUser" >
+                         TODO: update below reference to list of available items
+                        <f:selectItems value="#{fixme}"/>
+                    </h:selectOneMenu>-->
+                    </p:selectOneMenu>
+
+
+                    <p:outputLabel value="Description:" for="description" />
+                    <p:inputText id="description"
+                                 maxlength="250"
+                                 value="#{taskView.entity.description}"
+                                 title="Description"
+                                 required="true"
+                                 requiredMessage="Veuillez entrer une description de l'intervention"/>
+
+                    <p:outputLabel value="Date de l'intervention:" for="startDate" />
+                    <p:inputMask id="startDate" value="#{taskView.entity.startDate}"
+                                 title="Date de prévue pour l'intervention"
+                                 mask="99/99/9999">
+                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                    </p:inputMask>
+
+                    <p:outputLabel value="IntendedDuration:" for="intendedDuration" />
+                    <p:inputText id="intendedDuration"
+                                 maxlength="30"
+                                 value="#{taskView.entity.intendedDuration}"
+                                 title="IntendedDuration" />
+
+                    <h:outputLabel value="Observations:" for="observations" />
+                    <h:inputTextarea id="observations"
+                                     class="textarea_primefaces_display"
+                                     rows="2"
+                                     value="#{taskView.entity.observations}"
+                                     title="Observations" />
+
+                    <f:facet name="footer">
+                        <p:outputPanel>
+
+<!--                    <p:outputLabel value="Deplacement:" for="deplacement" />
+                    <p:selectOneButton id="deplacement"
+                                       value="#{taskView.entity.deplacement}"
+                                       required="true"
+                                       requiredMessage="Veuillez sélectionner un type d'intervention">
+                        <f:selectItems value="#{utils.getYesNoButtons()}"/>
+                        <f:converter binding="#{yesNoConverter}"/>
+                    </p:selectOneButton>-->
+
+<!--                    <p:outputLabel value="Type d'intervention:" for="interventionType" />
+                    <p:selectOneButton id="interventionType"
+                                       value="#{taskView.entity.interventionType}"
+                                       required="true"
+                                       requiredMessage="Veuillez sélectionner un type d'intervention">
+                        <f:selectItems value="#{taskView.interventionTypes}"/>
+                    </p:selectOneButton>-->
+                            <p:commandButton id="createTaskButton"
+                                             action="javascript:void(0);"
+                                             actionListener="#{taskView.create()}"
+                                             value="Créer"
+                                             type="submit"
+                                             icon="ui-icon-check"
+                                             styleClass="blue_icon"
+                                             update=":growl"
+                                             title="Créer cette tâche"
+                                             oncomplete="createRequest(createTaskDialog, xhr, status, args);"/>
+                            <p:commandButton id="backTaskButton"
+                                             title="Annuler la création"
+                                             action="javascript:void(0);"
+                                             value="Annuler"
+                                             styleClass="red_icon"
+                                             type="reset"
+                                             immediate="true"
+                                             ajax="true"
+                                             icon="ui-icon-closethick"
+                                             onclick="createTaskDialog.hide();">
+                            </p:commandButton>
+                        </p:outputPanel>
+                    </f:facet>
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+    </h:body>
+</html>
+

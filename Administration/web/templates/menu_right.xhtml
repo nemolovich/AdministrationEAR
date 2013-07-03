@@ -9,13 +9,112 @@
         <title>Liste des tâches</title>
     </h:head>
     <h:body>
+        <p:dialog id="taskMenuDataPopup"
+                  dynamic="true"
+                  appendToBody="true"
+                  header="Liste des tâches"
+                  widgetVar="taskMenuDataDialog"
+                  resizable="false"
+                  draggable="true"
+                  maximizable="false"
+                  modal="true"
+                  showEffect="clip"
+                  hideEffect="clip">
+            <h:form id="taskMenuDataPopupForm">
+                <p:dataTable id="taskMenuDataTablePopup"
+                             value="#{taskMultiView.getData(taskView.entries)}"
+                             var="item"
+                             widgetVar="taskMenuTablePopup"
+                             rowIndexVar="index"
+                             paginatorPosition="bottom"
+                             emptyMessage="Aucune tâche n'a été trouvée"
+                             rowStyleClass="#{item.sleeping?'sleeping_elmt':null}"
+                             paginator="true"
+                             rows="#{utils.maxDataRows}"
+                             sortBy="#{utils.smallDateFormat(item.startDate)}"
+                             filteredValue="#{taskMultiView.filteredEntities}">
+                    
+                    <p:column headerText="Date"
+                              style="width:1%;"
+                              filterBy="#{utils.smallDateFormat(item.startDate)}"
+                              sortBy="#{utils.smallDateFormat(item.startDate)}"
+                              filterMatchMode="contains"
+                              filterStyle="width:60px;">
+                        <h:outputText value="#{utils.smallDateFormat(item.startDate)}"/>
+                    </p:column>
+                    
+                    <p:column headerText="Description"
+                              filterBy="#{item.description}"
+                              filterMatchMode="contains"
+                              filterStyle="width:70px;">
+                        <h:outputText value="#{utils.getBreakLinesString(
+                                               utils.getShortString(item.description,20))}"
+                                      title="#{item.description}"/>
+                    </p:column>
+                    
+                    <p:column headerText="Nom de la société"
+                              sortBy="#{item.idClient.name}"
+                              filterBy="#{item.idClient.name}"
+                              filterMatchMode="contains">
+                        <h:outputText value="#{item.idClient.name}"/>
+                    </p:column>
+                    
+                    <p:column headerText="Poste de travail"
+                              filterBy="#{item.idWorkstation}"
+                              filterMatchMode="contains">
+                        <h:outputText value="#{utils.getBreakLinesString(
+                                               utils.getShortString(
+                                               item.idWorkstation,20))}"
+                                      title="#{item.idWorkstation}"/>
+                    </p:column>
+                    
+                    <p:column headerText="Nom de l'utilisateur"
+                              sortBy="#{item.idUser.name}"
+                              filterBy="#{item.idUser.name}"
+                              filterMatchMode="contains">
+                        <h:outputText value="#{item.idUser!=null?item.idUser.name:''}"/>
+                    </p:column>
+                    
+                    <p:column headerText="Durée prévue">
+                        <h:outputText value="#{item.intendedDuration}"/>
+                    </p:column>
+                    
+                    <p:column headerText="Déplacement"
+                              sortBy="#{item.deplacement}">
+                        <h:outputText value="#{item.deplacement?'Oui':'Non'}"/>
+                    </p:column>
+                    
+                    <p:column headerText="Type d'intervention"
+                              sortBy="#{item.interventionType}"
+                              filterBy="#{item.interventionType}"
+                              filterMatchMode="contains">
+                        <h:outputText value="#{item.interventionType}"/>
+                    </p:column>
+                    
+                    <p:column headerText="Observations"
+                              filterBy="#{item.observations}"
+                              filterMatchMode="contains">
+                        <h:outputText value="#{utils.getBreakLinesString(
+                                               utils.getShortString(
+                                               item.observations,20))}"
+                                      title="#{item.observations}"/>
+                    </p:column>
+                    
+                    <p:column headerText="État"
+                              sortBy="#{item.sleeping}">
+                        <h:outputText value="#{item.sleeping?'Faite':'À faire'}"/>
+                    </p:column>
+                    
+                </p:dataTable>
+            </h:form>
+        </p:dialog>
         <p:dialog id="taskMenuViewPopup"
                   dynamic="true"
                   appendToBody="true"
                   header="Détails de la tâche"
                   widgetVar="taskMenuViewDialog"
                   resizable="false"
-                  draggable="false"
+                  draggable="true"
                   maximizable="false"
                   modal="true"
                   showEffect="clip"
@@ -56,9 +155,8 @@
                     <p:ajax event="rowDblselect"
                             update=":taskMenuDialogHeader :taskViewForm"
                             oncomplete="taskMenuViewDialog.show();"/>
-                    
-<!--                    <p:column selectionMode="multiple" style="width:2%">
-                    </p:column>-->
+                    <p:ajax event="filter" onstart="taskMenuTable.unselectAllRows();"
+                            onerror="console.log('error');"/>
                     
                     <p:column headerText="Date"
                               style="width:1%;"
@@ -70,8 +168,7 @@
                     </p:column>
                     
                     <p:column headerText="Description"
-                              filterBy="#{item.startDate}"
-                              sortBy="#{item.startDate}"
+                              filterBy="#{item.description}"
                               filterMatchMode="contains"
                               filterStyle="width:70px;">
                         <h:outputText value="#{utils.getBreakLinesString(
@@ -87,8 +184,13 @@
                     </p:column>
                 </p:dataTable>
             </h:form>
+            <script type="text/javascript">
+                $(document).ready(function()
+                {
+                    forceFilter(taskMenuTable);
+                });
+            </script>
         </f:view>
-
     </h:body>
 </html>
 

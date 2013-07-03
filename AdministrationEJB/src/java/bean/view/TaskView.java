@@ -8,6 +8,7 @@ package bean.view;
 import bean.facade.TaskFacade;
 import bean.view.struct.EntityView;
 import entity.Task;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -22,6 +23,8 @@ import javax.inject.Named;
 @SessionScoped
 public class TaskView extends EntityView<Task, TaskFacade>
 {
+    public static final String[] INTERVENTION_TYPES={"LOGICIELLE","MATERIELLE"};
+    
     private static final long serialVersionUID = 1L;
     @EJB
     private TaskFacade taskFacade;
@@ -29,6 +32,11 @@ public class TaskView extends EntityView<Task, TaskFacade>
     public TaskView()
     {
         super(Task.class,"task");
+    }
+    
+    public List<String> getInterventionTypes()
+    {
+        return Arrays.asList(INTERVENTION_TYPES);
     }
 
     @Override

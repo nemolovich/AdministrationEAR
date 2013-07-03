@@ -10,49 +10,42 @@
     </h:head>
     <h:body>
     	<ui:composition template="/templates/page_template.xhtml">
+            <ui:define name="title">
+                | Création utilisateur
+            </ui:define>
             <ui:define name="content">
+                <f:attribute name="header" value="Création d'un utilisateur"/>
                 <f:view>
                     <h:form>
-                        <p:panelGrid columns="3" columnClasses="label,field,message">
-                            <f:facet name="header">
-                                <p:outputPanel>
-                                    <h2><h:outputText value="Création d'un utilisateur"/></h2>
-                                </p:outputPanel>
-                            </f:facet>
-                            <h:outputLabel value="Mail:" for="mail"/>
-                            <h:inputText id="mail" value="#{tUserView.entity.mail}" title="Mail" required="true" requiredMessage="Le champs 'Mail' ne peut être vide">
+                        <h:panelGrid columns="2" columnClasses="label,fields">
+                            <p:outputLabel value="Mail:" for="mail"/>
+                            <p:inputText id="mail" value="#{tUserView.entity.mail}" title="Mail" required="true" requiredMessage="Le champs 'Mail' ne peut être vide">
                                 <f:validator binding="#{userUniqueFieldValidator}"/>
                                 <f:attribute name="fieldName" value="Mail" />
                                 <f:attribute name="update_id" value="#{tUserView.entity.id}" />
-                            </h:inputText>
-                            <p:message for="mail"/>
+                            </p:inputText>
 
-                            <h:outputLabel value="Nom:" for="name" />
-                            <h:inputText id="name" value="#{tUserView.entity.name}" title="Name" required="true" requiredMessage="Le champs 'Nom' ne peut être vide"/>
-                            <p:message for="name"/>
+                            <p:outputLabel value="Nom:" for="name" />
+                            <p:inputText id="name" value="#{tUserView.entity.name}" title="Name" required="true" requiredMessage="Le champs 'Nom' ne peut être vide"/>
 
-                            <h:outputLabel value="Prénom:" for="firstname" />
-                            <h:inputText id="firstname" value="#{tUserView.entity.firstname}" title="Firstname" required="true" requiredMessage="Le champs 'Prénom' ne peut être vide"/>
-                            <p:message for="firstname"/>
+                            <p:outputLabel value="Prénom:" for="firstname" />
+                            <p:inputText id="firstname" value="#{tUserView.entity.firstname}" title="Firstname" required="true" requiredMessage="Le champs 'Prénom' ne peut être vide"/>
 
-                            <h:outputLabel value="Droits:" for="rights" />
-                            <h:selectOneMenu id="rights" value="#{tUserView.entity.rights}">
-                                <f:selectItems value="#{tUserView.entity.enumRights}"/>
-                            </h:selectOneMenu>
-                            <p:message for="rights"/>
+                            <p:outputLabel value="Droits:" for="rights" />
+                            <p:selectOneMenu id="rights" value="#{tUserView.entity.rights}">
+                                <f:selectItems value="#{utils.getEnumRights()}"/>
+                            </p:selectOneMenu>
 
-                            <h:outputLabel for="password" value="Mot de passe" />
-                            <h:inputSecret id="password" value="#{tUserView.entity.password}">
+                            <p:outputLabel for="password" value="Mot de passe" />
+                            <p:password id="password" value="#{tUserView.entity.password}">
                                 <f:validator binding="#{passwordValidator}"/>
                                 <f:attribute name="update_id" value="#{tUserView.entity.id}" />
                                 <f:attribute name="confirm" value="#{confirm}" />
                                 <f:attribute name="min_length" value="#{true}" />
-                            </h:inputSecret>
-                            <p:message for="password"/>
+                            </p:password>
 
-                            <h:outputLabel for="confirm" value="Confirmation" />
-                            <h:inputSecret id="confirm" binding="#{confirm}"/>
-                            <p:message for="confirm"/>
+                            <p:outputLabel for="confirm" value="Confirmation" />
+                            <p:password id="confirm" binding="#{confirm}"/>
 
                             <f:facet name="footer">
                                 <p:outputPanel>
@@ -65,7 +58,7 @@
                                     </p:commandButton>
                                 </p:outputPanel>
                             </f:facet>
-                        </p:panelGrid>
+                        </h:panelGrid>
                     </h:form>
                 </f:view>
             </ui:define>

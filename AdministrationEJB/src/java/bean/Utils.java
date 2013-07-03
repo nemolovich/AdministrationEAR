@@ -51,7 +51,17 @@ public class Utils
             Locale.FRANCE);
     private static final SimpleDateFormat formatMedium = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
     private static final SimpleDateFormat formatSmall = new SimpleDateFormat("dd/MM/yyyy");
+    /**
+     * Pour les boutons oui ou non
+     */
+    public static final String YES_BUTTON="OUI";
+    public static final String NO_BUTTON="NON";
+    public static final String[] YES_NO_BUTTONS={YES_BUTTON,NO_BUTTON};
     
+    public static List<String> getYesNoButtons()
+    {
+        return Arrays.asList(YES_NO_BUTTONS);
+    }
     
     /**
      * Renvoi les droits connus par l'application

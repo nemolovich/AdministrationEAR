@@ -86,7 +86,10 @@
                 </ui:insert>
             </p:layoutUnit>
             <script type="text/javascript">
-                addExpandableButton("menu_right");
+                $(document).ready(function()
+                {
+                    addExpandableButton("menu_right", "taskMenuDataDialog");
+                });
             </script>
             <p:layoutUnit id="content_panel"
                           header="Admin-Services"

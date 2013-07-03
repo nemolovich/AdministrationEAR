@@ -30,7 +30,7 @@ public class EntityConverter<C,F extends AbstractFacade<C>> implements Converter
     {
         for(C entity:this.entityFacade.findAll())
         {
-            if(entity.toString().equals(value))
+            if(value!=null&&entity.toString().equals(value))
             {
                 return entity;
             }
@@ -44,12 +44,12 @@ public class EntityConverter<C,F extends AbstractFacade<C>> implements Converter
     {
         for(C entity:this.entityFacade.findAll())
         {
-            if(entity.equals(value))
+            if(value!=null&&entity.equals(value))
             {
                 return entity.toString();
             }
         }
-        return null;
+        return value==null?"":null;
     }
     
 }

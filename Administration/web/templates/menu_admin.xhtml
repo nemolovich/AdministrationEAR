@@ -8,13 +8,14 @@
     </h:head>
     <h:body>
         <ui:include src="/restricted/admin/data/log/logPopup.xhtml"/>
+        <ui:include src="/restricted/admin/data/task/create.xhtml"/>
         <h:form id="menu_Form">
-            <center>
+            <div style="margin-left: 16px;margin-bottom: 10px;">
                 <p:commandButton value="Journal"
                                  icon="ui-icon-document"
                                  title="Afficher le journal du serveur"
                                  onclick="logViewDialog.show();"/>
-            </center>
+            </div>
             <div class="menu">
                 <p:fieldset legend="Configuration">
                     <h:link outcome="/restricted/user/index" value="Panneau utilisateur" title="Afficher le panneau utilisateur" />
@@ -26,6 +27,15 @@
                     <h:link outcome="/restricted/admin/data/client/list" value="Liste des sociétés" title="Afficher la liste des sociétés"/>
                     <br />
                     <h:link outcome="/restricted/admin/data/c_user/list" value="Liste des utilisateurs" title="Afficher la liste des utilisateurs"/>
+                </p:fieldset>
+                <p:fieldset legend="Tâches">
+                    <p:commandLink actionListener="#{taskView.entityCreate()}"
+                                   ajax="true"
+                                   immediate="false"
+                                   onclick="createTaskDialog.show();"
+                                   value="Nouvelle tâche"
+                                   title="Créer une nouvelle tâche"/>
+                    <br />
                 </p:fieldset>
             </div>
         </h:form>
