@@ -20,7 +20,7 @@
                     <h:outputText id="punameV" value="#{cUserView.entity.name}"
                                   title="Nom de l'utilisateur"/>
                     
-                    <p:outputLabel value="Téléphone:"/>
+                    <h:outputText value="Téléphone:"/>
                     <h:outputText id="puphoneV" value="#{cUserView.entity.phone}"
                                   title="Numéro de téléphone de l'utilisateur"/>
                     
@@ -29,8 +29,11 @@
                                   title="Société pour laquelle travaille l'utilisateur"/>
                     
                     <h:outputText value="Observations:"/>
-                    <h:outputText id="puobservationsV" value="#{cUserView.entity.observations}"
-                                  title="Observations"/>
+                    <h:inputTextarea id="puobservationsV"
+                                     value="#{cUserView.entity.observations}"
+                                     styleClass="textarea_min"
+                                     title="Observations"
+                                     ondblclick="this.focus();this.select();"/>
                     
                 </h:panelGrid>
             </h:form>

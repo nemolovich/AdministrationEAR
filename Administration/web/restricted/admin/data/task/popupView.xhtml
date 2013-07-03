@@ -29,42 +29,38 @@
                                   title="Utilisateur pour l'intervention"/>
                     
                     <h:outputText value="Poste de travail:"/>
-                    <p:outputPanel>
-                    <span id="details_report_0_display" class="ui-inplace-display" style="background:none;display:inline">
-                        <a href="#" class="blankLink" title="Afficher les détails de l'erreur">Afficher</a>
-                    </span><br>
-                    <span id="details_report_0_content" class="ui-inplace-content" style="display:none">
-                        <a href="#" class="blankLink" name="details_report_0_hide" title="Masquer les détails" onclick="details_report_0_js.hide();">
-                            <h:outputText value="#{utils.getBreakLinesString(
-                                                   utils.getShortString(
-                                                    taskView.entity.idWorkstation.toString(),
-                                                    20))}"/>
-                        </a>
-                    </span>
-                
-                    </p:outputPanel>
+                    <h:inputTextarea id="ptidWorkstationFullV"
+                                     value="#{taskView.entity.idWorkstation.toString()}"
+                                     readonly="true"
+                                     styleClass="textarea_min"
+                                     ondblclick="this.focus();this.select();">
+                    </h:inputTextarea>
                     
-                    <h:outputText value="StartDate:"/>
+                    <h:outputText value="Date de début prévue:"/>
                     <h:outputText id="ptstartDateV" value="#{taskView.entity.startDate}"
-                                  title="StartDate">
+                                  title="Date de début">
                         <f:convertDateTime pattern="dd/MM/yyyy" />
                     </h:outputText>
                     
-                    <h:outputText value="IntendedDuration:"/>
+                    <h:outputText value="Durée prévue:"/>
                     <h:outputText id="ptintendedDurationV" value="#{taskView.entity.intendedDuration}"
-                                  title="IntendedDuration"/>
+                                  title="Durée prévue"/>
                     
-                    <h:outputText value="Deplacement:"/>
-                    <h:outputText id="ptdeplacementV" value="#{taskView.entity.deplacement}"
-                                  title="Deplacement"/>
+                    <h:outputText value="Déplacement:"/>
+                    <h:outputText id="ptdeplacementV" value="#{taskView.entity.deplacement?'Oui':'Non'}"
+                                  title="Déplacement requis"/>
                     
-                    <h:outputText value="InterventionType:"/>
+                    <h:outputText value="Type d'intervention:"/>
                     <h:outputText id="ptinterventionTypeV" value="#{taskView.entity.interventionType}"
-                                  title="InterventionType"/>
+                                  title="Type d'intervention"/>
                     
                     <h:outputText value="Observations:"/>
-                    <h:outputText id="ptobservationsV" value="#{taskView.entity.observations}"
-                                  title="Observations"/>
+                    <h:inputTextarea id="ptobservationsFullV"
+                                     value="#{taskView.entity.observations.toString()}"
+                                     readonly="true"
+                                     styleClass="textarea_min"
+                                     ondblclick="this.focus();this.select();">
+                    </h:inputTextarea>
                     
                     <h:outputText value="État:"/>
                     <h:outputText id="ptstateV" value="#{taskView.entity.sleeping?'Faite':'À faire'}"

@@ -74,7 +74,9 @@
                               sortBy="#{item.startDate}"
                               filterMatchMode="contains"
                               filterStyle="width:70px;">
-                        <h:outputText value="#{item.description}"/>
+                        <h:outputText value="#{utils.getBreakLinesString(
+                                               utils.getShortString(item.description,20))}"
+                                      title="#{item.description}"/>
                     </p:column>
                     
                     <p:column headerText="Nom de la société"

@@ -363,11 +363,11 @@ a:link:hover, a:visited:hover
     text-shadow:                rgba(255, 255, 255, 0.7) 0px 1px 0px;
     word-wrap:                  normal !important;
     border-radius:              3px !important;
-    min-width:                  100px !important;
+    min-width:                  165px !important;
     max-width:                  500px !important;
     min-height:                 30px !important;
     max-height:                 500px !important;
-    width:                      80% !important;
+    /*width:                      80% !important;*/
 }
 
 .textarea_auto
@@ -571,4 +571,16 @@ TABLE.infos_header
     -webkit-box-shadow:         1px 1px 0.2em rgba(25,25,25,0.7) !important;
     -moz-box-shadow:            1px 1px 0.2em rgba(25,25,25,0.7) !important;
     box-shadow:                 1px 1px 0.2em rgba(25,25,25,0.7) !important;
+}
+
+.copy_clipboard
+{
+    background:                 #FF0000 !important;
+    width:                      100px !important;
+    height:                     17px !important;
+    display:                    block !important;
+    position:                   absolute !important;
+/*    bottom:                     10px !important;
+    right:                      10px !important;*/
+    font-weight:                normal !important;
 }

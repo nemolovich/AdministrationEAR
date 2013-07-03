@@ -22,6 +22,7 @@
                          rendered="#{not empty cUserView.entity}">
                     <p:outputLabel value="Nom:" for="uname" />
                     <p:inputText id="uname" value="#{cUserView.entity.name}"
+                                 maxlength="45"
                                  title="Nom de l'utilisateur"
                                  required="true"
                                  requiredMessage="Le champs 'Nom' ne peut être vide"
@@ -32,7 +33,7 @@
                         <f:attribute name="update_id" value="#{cUserView.entity.id}" />
                     </p:inputText>
                     <h:outputText id="unameV" value="#{cUserView.entity.name}"
-                                  title="Name"
+                                  title="Nom de l'utilisateur"
                                   rendered="#{not cUserView.creating and
                                               not cUserView.editing}"/>
                     
@@ -53,6 +54,7 @@
                     <p:outputLabel value="Observations:" for="uobservations" />
                     <p:inputText id="uobservations" value="#{cUserView.entity.observations}"
                                  title="Observations"
+                                 maxlength="250"
                                  rendered="#{cUserView.creating or 
                                                 cUserView.editing}"/>
                     <h:outputText id="uobservationsV" value="#{cUserView.entity.observations}"

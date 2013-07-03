@@ -203,22 +203,18 @@ function forceFilter(filter)
     }
 }
 
-function displayAllInfos(infos, shortInfos, formId)
+function addExpandableButton(id)
 {
-    var currentInfos=$("#"+formId).text();
-    if(infos===currentInfos)
-    {
-        $("#"+formId).text(shortInfos);
-        $("#"+formId).css('height','17px !important');
-    }
-    else if(shortInfos===currentInfos)
-    {
-        $("#"+formId).text(infos);
-        $("#"+formId).css('height','150px !important');
-    }
-    else
-    {
-        $("#"+formId).text(infos);
-        $("#"+formId).css('height','150px !important');
-    }
+    console.log("addAppend");
+    var panel=$("#"+id);
+    var parent=panel.find("div.ui-layout-unit-header.ui-widget-header.ui-corner-all");
+    var link=document.createElement("a");
+    link.className="ui-layout-unit-header-icon ui-state-default ui-corner-all";
+    link.href="javascript:void(0);";
+    link.title="Agrandir";
+    var span=document.createElement("span");
+    span.className="ui-icon ui-icon-extlink";
+    link.appendChild(span);
+    parent.append(link);
+//    '<a href="javascript:void(0)" class="ui-layout-unit-header-icon ui-state-default ui-corner-all" title="Masquer la liste des tâches"><span class="ui-icon ui-icon-triangle-1-e"></span></a>';
 }

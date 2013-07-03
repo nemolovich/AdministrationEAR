@@ -23,6 +23,7 @@
                     <p:outputLabel value="Marque:" for="wbrand" />
                     <p:inputText id="wbrand" value="#{workstationView.entity.brand}"
                                  title="Marque de la machine"
+                                 maxlength="64"
                                  required="true"
                                  requiredMessage="Le champs 'Marque' ne peut être vide"
                                  rendered="#{workstationView.creating or 
@@ -35,6 +36,7 @@
                     <p:outputLabel value="Type de station:" for="wwsType" />
                     <p:inputText id="wwsType" value="#{workstationView.entity.wsType}"
                                  title="Type de station"
+                                 maxlength="64"
                                  rendered="#{workstationView.creating or 
                                                 workstationView.editing}"/>
                     <h:outputText id="wwsTypeV" value="#{workstationView.entity.wsType}"
@@ -58,6 +60,7 @@
                     <p:outputLabel value="Processeur:" for="wprocessor" />
                     <p:inputText id="wprocessor" value="#{workstationView.entity.processor}"
                                  title="Processeur"
+                                 maxlength="64"
                                  rendered="#{workstationView.creating or 
                                                 workstationView.editing}"/>
                     <h:outputText id="wprocessorV" value="#{workstationView.entity.processor}"
@@ -68,6 +71,7 @@
                     <p:outputLabel value="Moniteur:" for="wmonitor" />
                     <p:inputText id="wmonitor" value="#{workstationView.entity.monitor}"
                                  title="Moniteur"
+                                 maxlength="64"
                                  rendered="#{workstationView.creating or 
                                                 workstationView.editing}"/>
                     <h:outputText id="wmonitorV" value="#{workstationView.entity.monitor}"
@@ -78,6 +82,7 @@
                     <p:outputLabel value="Carte graphique:" for="wvideoCard" />
                     <p:inputText id="wvideoCard" value="#{workstationView.entity.videoCard}"
                                  title="Carte graphique"
+                                 maxlength="64"
                                  rendered="#{workstationView.creating or 
                                                 workstationView.editing}"/>
                     <h:outputText id="wvideoCardV" value="#{workstationView.entity.videoCard}"
@@ -88,6 +93,7 @@
                     <p:outputLabel value="Système d'exploitation:" for="woperatingSystem" />
                     <p:inputText id="woperatingSystem" value="#{workstationView.entity.operatingSystem}"
                                  title="Système d'exploitation"
+                                 maxlength="64"
                                  rendered="#{workstationView.creating or 
                                                 workstationView.editing}"/>
                     <h:outputText id="woperatingSystemV" value="#{workstationView.entity.operatingSystem}"
@@ -98,6 +104,7 @@
                     <p:outputLabel value="Mémoire vive:" for="wram" />
                     <p:inputText id="wram" value="#{workstationView.entity.ram}"
                                  title="Mémoire vive"
+                                 maxlength="64"
                                  rendered="#{workstationView.creating or 
                                                 workstationView.editing}"/>
                     <h:outputText id="wramV" value="#{workstationView.entity.ram}"
@@ -108,6 +115,7 @@
                     <p:outputLabel value="Disque dur:" for="whardDrive" />
                     <p:inputText id="whardDrive" value="#{workstationView.entity.hardDrive}"
                                  title="Dique dur"
+                                 maxlength="64"
                                  rendered="#{workstationView.creating or 
                                                 workstationView.editing}"/>
                     <h:outputText id="whardDriveV" value="#{workstationView.entity.hardDrive}"
@@ -118,6 +126,7 @@
                     <p:outputLabel value="Observations:" for="wobservations" />
                     <p:inputText id="wobservations" value="#{workstationView.entity.observations}"
                                  title="Observations"
+                                 maxlength="250"
                                  rendered="#{workstationView.creating or 
                                                 workstationView.editing}"/>
                     <h:outputText id="wobservationsV" value="#{workstationView.entity.observations}"

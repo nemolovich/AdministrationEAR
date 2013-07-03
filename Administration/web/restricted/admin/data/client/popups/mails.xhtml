@@ -23,6 +23,7 @@
                     <p:outputLabel value="Adresse mail:" for="mmail" />
                     <p:inputText id="mmail" value="#{mailView.entity.mail}"
                                  title="Adresse mail"
+                                 maxlength="64"
                                  required="true"
                                  requiredMessage="Le champs 'Mail' ne peut être vide"
                                  rendered="#{mailView.creating or 
@@ -39,9 +40,10 @@
                     <p:outputLabel value="Adresse POP:" for="mpop" />
                     <p:inputText id="mpop" value="#{mailView.entity.pop}"
                                  title="Adresse POP"
+                                 maxlength="64"
                                  rendered="#{mailView.creating or 
                                                 mailView.editing}"/>
-                    <h:outputText id="mpopV" value="#{mailView.entity.mail}"
+                    <h:outputText id="mpopV" value="#{mailView.entity.pop}"
                                   title="Adresse POP"
                                   rendered="#{not mailView.creating and
                                               not mailView.editing}"/>
@@ -49,9 +51,10 @@
                     <p:outputLabel value="Mot de passe POP:" for="mpopPassword" />
                     <p:inputText id="mpopPassword" value="#{mailView.entity.popPassword}"
                                  title="Mot de passe POP"
+                                 maxlength="64"
                                  rendered="#{mailView.creating or 
                                                 mailView.editing}"/>
-                    <h:outputText id="mpopPasswordV" value="#{mailView.entity.mail}"
+                    <h:outputText id="mpopPasswordV" value="#{mailView.entity.popPassword}"
                                   title="Mot de passe POP"
                                   rendered="#{not mailView.creating and
                                               not mailView.editing}"/>
@@ -59,9 +62,10 @@
                     <p:outputLabel value="Adresse SMTP:" for="msmtp" />
                     <p:inputText id="msmtp" value="#{mailView.entity.smtp}"
                                  title="Adresse SMTP"
+                                 maxlength="64"
                                  rendered="#{mailView.creating or 
                                                 mailView.editing}"/>
-                    <h:outputText id="msmtpV" value="#{mailView.entity.mail}"
+                    <h:outputText id="msmtpV" value="#{mailView.entity.smtp}"
                                   title="Adresse SMTP"
                                   rendered="#{not mailView.creating and
                                               not mailView.editing}"/>
@@ -69,9 +73,10 @@
                     <p:outputLabel value="Mot de passe SMTP:" for="msmtpPassword" />
                     <p:inputText id="msmtpPassword" value="#{mailView.entity.smtpPassword}"
                                  title="Mot de passe SMTP"
+                                 maxlength="64"
                                  rendered="#{mailView.creating or 
                                                 mailView.editing}"/>
-                    <h:outputText id="msmtpPasswordV" value="#{mailView.entity.mail}"
+                    <h:outputText id="msmtpPasswordV" value="#{mailView.entity.smtpPassword}"
                                   title="Mot de passe SMTP"
                                   rendered="#{not mailView.creating and
                                               not mailView.editing}"/>

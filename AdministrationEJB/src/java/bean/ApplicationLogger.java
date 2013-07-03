@@ -118,7 +118,7 @@ public class ApplicationLogger
         if(style==null&&lastStyle!=null)
         {
             div+=
-            "        </ul><!-- pour style"+lastStyle+"-->\n"+
+            "        </ul><!-- Fin pour le style \""+lastStyle+"\" -->\n"+
             "    </div>\n"+
             "</div>\n";
             lastStyle=null;
@@ -136,7 +136,7 @@ public class ApplicationLogger
             div+=
             "        </ul>\n"+
             "    </div>\n"+
-            "</div><!-- Fermeture du style\"+lastStyle+\"-->\n";
+            "</div><!-- Fermeture du style \""+lastStyle+"\" -->\n";
             div+=
             "<div class=\"ui-messages ui-widget\">\n"+
             "    <div class=\"ui-messages-"+classe+" ui-corner-all\">\n"+
