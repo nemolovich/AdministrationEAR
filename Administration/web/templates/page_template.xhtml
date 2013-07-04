@@ -20,7 +20,7 @@
     </h:head>
 
     <h:body>
-        <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+        <p:ajaxStatus widgetVar="ajaxStatusVar" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
 
         <p:dialog id="ajaxStatus"
                   modal="true"

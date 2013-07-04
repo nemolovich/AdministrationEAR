@@ -10,61 +10,155 @@
     <h:body>
         <f:view>
             <h:form id="taskViewForm">
+                <p:outputPanel rendered="#{taskView.creating or taskView.editing}">
+                    <script type="text/javascript">
+                            $(document).ready(function()
+                            {
+                                addRedStarsToRequieredFields();
+                            });
+                    </script>
+                    <p>
+                        Veuillez renseigner les informations pour cette tâche.
+                        <br />
+                        (<span class="red-star">*</span>: champs requis)
+                    </p>
+                </p:outputPanel>
                 <h:panelGrid columns="2" columnClasses="label,fields">
                     
-                    <h:outputText value="Id:"/>
-                    <h:outputText id="ptidV" value="#{taskView.entity.id}"
-                                  title="Id"/>
-                    
-                    <h:outputText value="Description de l'intervention:"/>
-                    <h:outputText id="ptdescriptionV" value="#{taskView.entity.description}"
-                                  title="Description"/>
+                    <h:outputLabel value="Description de l'intervention:" for="ptdescription"/>
+                    <h:outputText id="ptdescriptionV" value="#{taskView.entityPopup.description}"
+                                  title="Description"
+                                  rendered="#{not taskView.creating and
+                                              not taskView.editing}"/>
+                    <p:inputText id="ptdescription"
+                                 maxlength="250"
+                                 value="#{taskView.entityPopup.description}"
+                                 title="Description de l'intervention"
+                                 rendered="#{taskView.creating or
+                                             taskView.editing}">
+                        <f:validator binding="#{notNullFieldValidator}"/>
+                        <f:attribute name="requieredMessage"
+                                     value="Veuillez entrer une description de l'intervention"/>
+                        <f:attribute name="requieredTitle"
+                                     value="Champs 'Description' invalide"/>
+                    </p:inputText>
                     
                     <h:outputText value="Société:"/>
-                    <h:outputText id="ptidClientV" value="#{taskView.entity.idClient}"
-                                  title="Société pour l'intervention"/>
+                    <h:outputText id="ptidClientV" value="#{taskView.entityPopup.idClient}"
+                                  title="Société pour l'intervention"
+                                  rendered="#{not taskView.creating and
+                                              not taskView.editing}"/>
+                    <p:selectOneMenu id="ptidClient"
+                                     value="#{taskView.entityPopup.idClient}"
+                                     effect="fade"
+                                     rendered="#{taskView.creating or
+                                                 taskView.editing}">
+                        <f:validator binding="#{notNullFieldValidator}"/>
+                        <f:attribute name="requieredMessage"
+                                     value="Veuillez sélectionner la société dans laquelle intervenir"/>
+                        <f:attribute name="requieredTitle"
+                                     value="Champs 'Société' invalide"/>
+                        <f:selectItem itemLabel="Sélectionnez&nbsp;une&nbsp;société" itemValue=""/>
+                        <f:selectItems value="#{clientView.entries}"/>
+                        <f:converter binding="#{clientConverter}"/>
+                    </p:selectOneMenu>
                     
                     <h:outputText value="Utilisateur:"/>
-                    <h:outputText id="ptidUserV" value="#{taskView.entity.idUser}"
+                    <h:outputText id="ptidUserV" value="#{taskView.entityPopup.idUser}"
                                   title="Utilisateur pour l'intervention"/>
                     
                     <h:outputText value="Poste de travail:"/>
                     <h:inputTextarea id="ptidWorkstationFullV"
-                                     value="#{taskView.entity.idWorkstation.toString()}"
+                                     value="#{taskView.entityPopup.idWorkstation.toString()}"
                                      readonly="true"
                                      styleClass="textarea_min"
                                      ondblclick="this.focus();this.select();">
                     </h:inputTextarea>
                     
-                    <h:outputText value="Date de début prévue:"/>
-                    <h:outputText id="ptstartDateV" value="#{taskView.entity.startDate}"
-                                  title="Date de début">
+                    <h:outputText value="Date de début:"/>
+                    <h:outputText id="ptstartDateV" value="#{taskView.entityPopup.startDate}"
+                                  title="Date de début prévue de l'intervention">
                         <f:convertDateTime pattern="dd/MM/yyyy" />
                     </h:outputText>
                     
                     <h:outputText value="Durée prévue:"/>
-                    <h:outputText id="ptintendedDurationV" value="#{taskView.entity.intendedDuration}"
-                                  title="Durée prévue"/>
+                    <h:outputText id="ptintendedDurationV" value="#{taskView.entityPopup.intendedDuration}"
+                                  title="Durée prévue pour l'intervention"/>
                     
                     <h:outputText value="Déplacement:"/>
-                    <h:outputText id="ptdeplacementV" value="#{taskView.entity.deplacement?'Oui':'Non'}"
-                                  title="Déplacement requis"/>
+                    <h:outputText id="ptdeplacementV" value="#{taskView.entityPopup.deplacement?'Oui':'Non'}"
+                                  title="#{taskView.entityPopup.deplacement?'Déplacement requis':'Déplacement non requis'}"/>
                     
                     <h:outputText value="Type d'intervention:"/>
-                    <h:outputText id="ptinterventionTypeV" value="#{taskView.entity.interventionType}"
+                    <h:outputText id="ptinterventionTypeV" value="#{taskView.entityPopup.interventionType}"
                                   title="Type d'intervention"/>
                     
                     <h:outputText value="Observations:"/>
                     <h:inputTextarea id="ptobservationsFullV"
-                                     value="#{taskView.entity.observations.toString()}"
+                                     value="#{taskView.entityPopup.observations.toString()}"
+                                     title="Observations"
                                      readonly="true"
                                      styleClass="textarea_min"
-                                     ondblclick="this.focus();this.select();">
+                                     ondblclick="this.focus();this.select();"
+                                     rendered="#{not taskView.creating and
+                                                 not taskView.editing}">
+                    </h:inputTextarea>
+                    <h:inputTextarea id="ptobservationsFull"
+                                     class="textarea_primefaces_display"
+                                     rows="2"
+                                     value="#{taskView.entityPopup.observations}"
+                                     title="Observations"
+                                     rendered="#{taskView.creating or
+                                                 taskView.editing}">
                     </h:inputTextarea>
                     
                     <h:outputText value="État:"/>
-                    <h:outputText id="ptstateV" value="#{taskView.entity.sleeping?'Faite':'À faire'}"
-                                  title="État de la tâche"/>
+                    <h:outputText id="ptstateV" value="#{taskView.entityPopup.sleeping?'Faite':'À faire'}"
+                                  title="#{taskView.entityPopup.sleeping?'La taâche est accomplie':'La tâche est à faire'}"/>
+                    
+                    <f:facet name="footer">
+                        <hr/>
+                        <p:outputPanel styleClass="buttons_panel"
+                                       rendered="#{not taskView.creating and
+                                                   not taskView.editing}">
+                            <p:commandButton title="Modifier cette tâche"
+                                             value="Modifier"
+                                             icon="ui-icon-wrench"
+                                             update=":taskViewForm"
+                                             action="javascript:void(0);"
+                                             actionListener="#{taskView.entityUpdate(taskView.entityPopup)}"/>
+                            <p:commandButton title="Fermer la fenêtre"
+                                             action="javascript:void(0);"
+                                             icon="ui-icon-closethick"
+                                             styleClass="red_icon"
+                                             onclick="taskMenuViewDialog.hide();"
+                                             value="Fermer"/>
+                        </p:outputPanel>
+                        <p:outputPanel styleClass="buttons_panel"
+                                       rendered="#{not taskView.creating and
+                                                   taskView.editing}">
+                            <p:commandButton id="ptcreateTaskButton"
+                                             action="javascript:void(0);"
+                                             actionListener="#{taskView.update()}"
+                                             title="Enresitrer les changements"
+                                             type="submit"
+                                             icon="ui-icon-check"
+                                             styleClass="green_icon"
+                                             update=":taskViewForm :growl :taskMenuDataForm"
+                                             value="Modifier"
+                                             oncomplete="if(createRequest(taskMenuViewDialog, xhr, status, args, function(){void(0);})){forceFilter(taskMenuTable);}else{return false;}"/>
+                            <p:commandButton id="ptbackTaskButton"
+                                             title="Annuler la modification"
+                                             actionListener="#{taskView.cancelCreate()}"
+                                             value="Annuler"
+                                             immediate="true"
+                                             styleClass="red_icon"
+                                             update=":taskViewForm"
+                                             icon="ui-icon-closethick"
+                                             oncomplete="resetForm('taskViewForm');">
+                            </p:commandButton>
+                        </p:outputPanel>
+                    </f:facet>
                 
                 </h:panelGrid>
             </h:form>

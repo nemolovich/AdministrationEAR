@@ -99,6 +99,15 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> extends EntitySl
         this.entityFacade.edit(this.entity);
         return this.webFolder+"list";
     }
+    
+    public String cancelCreate()
+    {
+        System.err.println("CANCELED!");
+        this.creating = false;
+        this.editing = false;
+        this.entity = null;
+        return this.webFolder+"view";
+    }
 
     public String entityView(C entity)
     {

@@ -40,6 +40,16 @@ public class TaskView extends EntityView<Task, TaskFacade>
     {
         return Arrays.asList(INTERVENTION_TYPES);
     }
+
+    @Override
+    public String entityView(Task entity)
+    {
+        System.err.println("VIEW!");
+        super.setCreating(false);
+        super.setEditing(false);
+        this.entityPopup = entity;
+        return "view";
+    }
     
     @Override
     public String entityCreate()
@@ -66,12 +76,32 @@ public class TaskView extends EntityView<Task, TaskFacade>
     }
     
     @Override
+    public String entityUpdate(Task entity)
+    {
+        System.err.println("UPDATE!");
+        super.setCreating(false);
+        super.setEditing(true);
+        this.entityPopup = entity;
+        return "update";
+    }
+    
+    @Override
     public String create()
     {
         super.setCreating(false);
         super.setEditing(false);
         this.setFacade();
         this.taskFacade.create(this.entityPopup);
+        return "list";
+    }
+    
+    @Override
+    public String update()
+    {
+        super.setCreating(false);
+        super.setEditing(false);
+        this.setFacade();
+        this.taskFacade.edit(this.entityPopup);
         return "list";
     }
     

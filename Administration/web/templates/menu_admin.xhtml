@@ -32,6 +32,7 @@
                     <p:commandLink actionListener="#{taskView.entityCreate()}"
                                    ajax="true"
                                    immediate="false"
+                                   update=":taskCreate"
                                    onclick="createTaskDialog.show();"
                                    value="Nouvelle tâche"
                                    title="Créer une nouvelle tâche"/>

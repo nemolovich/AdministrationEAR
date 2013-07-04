@@ -117,7 +117,7 @@ public class Task implements Serializable
     }
 
     public Boolean getDeplacement() {
-        return deplacement;
+        return deplacement==null?false:deplacement;
     }
 
     public void setDeplacement(Boolean deplacement) {

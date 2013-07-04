@@ -17,6 +17,11 @@
         <param-name>com.sun.faces.numberOfLogicalViews</param-name>
         <param-value>500</param-value>
     </context-param>
+    <context-param>
+        <description>Pour afficher les date en format local français</description>
+        <param-name>javax.faces.DATETIMECONVERTER_DEFAULT_TIMEZONE_IS_SYSTEM_TIMEZONE</param-name>
+        <param-value>true</param-value>
+    </context-param>
     <filter>
         <description>Autorise uniquement les administrateurs</description>
         <filter-name>AdminAccessFilter</filter-name>

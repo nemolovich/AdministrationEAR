@@ -108,6 +108,9 @@
                 </p:dataTable>
             </h:form>
         </p:dialog>
+        <script type="text/javascript">
+            var taskMenuViewDialog;
+        </script>
         <p:dialog id="taskMenuViewPopup"
                   dynamic="true"
                   appendToBody="true"
@@ -124,16 +127,9 @@
             </h:form>
             <ui:include src="/restricted/admin/data/task/popupView.xhtml"/>
             <p:hotkey bind="esc" process=":taskMenuViewPopup" handler="taskMenuViewDialog.hide();"/>
-            <h:form>
-                <p:outputPanel styleClass="buttons_panel">
-                    <center>
-                        <p:commandButton title="Fermer la fenêtre"
-                                         action="javascript:void(0);"
-                                         onclick="taskMenuViewDialog.hide();"
-                                         value="Fermer"/>
-                    </center>
-                </p:outputPanel>
-            </h:form>
+            <p:ajax event="close" listener="#{taskView.cancelCreate()}"
+                    process="@this"
+                    update="taskMenuViewPopup"/>
         </p:dialog>
         <f:view>
             <h:form id="taskMenuDataForm">
@@ -154,6 +150,7 @@
                     
                     <p:ajax event="rowDblselect"
                             update=":taskMenuDialogHeader :taskViewForm"
+                            listener="#{taskView.entityView(taskView.entity)}"
                             oncomplete="taskMenuViewDialog.show();"/>
                     <p:ajax event="filter" onstart="taskMenuTable.unselectAllRows();"
                             onerror="console.log('error');"/>

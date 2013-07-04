@@ -4,12 +4,12 @@
  */
 package converter;
 
-import bean.Utils;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
+import javax.faces.convert.FacesConverter;
 
 /**
  *
@@ -17,23 +17,24 @@ import javax.faces.convert.Converter;
  */
 @ManagedBean
 @RequestScoped
-public class YesNoConverter implements Converter
+@FacesConverter("durationConverter")
+public class DurationConverter implements Converter
 {
 
     @Override
     public Object getAsObject(FacesContext context, UIComponent component,
-        String value)
+    String value)
     {
-        return (Boolean)(value.equalsIgnoreCase(Utils.YES_BUTTON)?true:
-                (value.equalsIgnoreCase(Utils.NO_BUTTON)?false:null));
+        String duration=value;
+        return duration.substring(0, 2)+" h "+duration.substring(3, 5)+" mins";
     }
 
     @Override
     public String getAsString(FacesContext context, UIComponent component,
-        Object value)
+    Object value)
     {
-        return ((String)value).equalsIgnoreCase(Utils.YES_BUTTON)?Utils.YES_BUTTON:
-                (((String)value).equalsIgnoreCase(Utils.NO_BUTTON)?Utils.NO_BUTTON:null);
+        String duration=((String)value).substring(0, 2)+":"+((String)value).substring(5, 7);
+        return duration;
     }
     
 }

@@ -15,6 +15,22 @@ var appName='Administration';
  */
 function createRequest(form, xhr, status, args)
 {
+    createRequest(form, xhr, status, args, form.hide)
+}
+
+/**
+ * @see @link{createRequest}
+ * De même que la fonction précédente mais effectue une fonction
+ * personnalisée en cas de réussite de l'envoi du formulaire
+ * @param {c} form - La boite de dialogue contenant le formulaire
+ * @param {Object} xhr - HttpRequest 
+ * @param {Object} status - Etat du formulaire
+ * @param {String} args - Retour du formulaire
+ * @param {function} fun - Fonction à exécuter
+ * @returns {Boolean} - Vrai si le formulaire est correcte
+ */
+function createRequest(form, xhr, status, args, fun)
+{
     if(args.validationFailed)
     {
         form.jq.effect("shake", { times:2 }, 100);
@@ -22,7 +38,7 @@ function createRequest(form, xhr, status, args)
     }
     else
     {
-        form.hide();
+        fun();
         return true;
     }
 }
@@ -238,3 +254,71 @@ function addRedStarsToRequieredFields()
     span.className="red-star";
     $(".requiered").append(span);
 }
+
+/**
+ * Remet à zéro un formulaire
+ * @param {String} formId - Identifiant du formaulaire
+ * @returns {void}
+ */
+function resetForm(formId)
+{
+    $('#'+formId).each(function()
+    {
+        this.reset();
+    });
+}
+
+/**!
+ * jQuery insertAtIndex
+ * project-site: https://github.com/oberlinkwebdev/jQuery.insertAtIndex
+ * @author: Jesse Oberlin
+ * @version 1.0
+ * Copyright 2012, Jesse Oberlin
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+*/
+(function ($) { 
+$.fn.insertAtIndex = function(index,selector){
+    var opts = $.extend({
+        index: 0,
+        selector: '<div/>'
+    }, {index: index, selector: selector});
+    return this.each(function() {
+        var p = $(this);  
+        var i = ($.isNumeric(opts.index) ? parseInt(opts.index) : 0);
+        if(i <= 0)
+            p.prepend(opts.selector);
+        else if( i > p.children().length-1 )
+            p.append(opts.selector);
+        else
+            p.children().eq(i).before(opts.selector);       
+    });
+};  
+})( jQuery );
+
+PrimeFaces.locales['fr'] =
+{
+    closeText: 'Fermer',
+    prevText: 'Précédent',
+    nextText: 'Suivant',
+    monthNames: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre' ],
+    monthNamesShort: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc' ],
+    dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+    dayNamesShort: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
+    dayNamesMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+    weekHeader: 'Semaine',
+    firstDay: 1,
+    isRTL: false,
+    showMonthAfterYear: false,
+    yearSuffix:'',
+    timeOnlyTitle: 'Choisir une durée',
+    timeText: 'Heure',
+    hourText: 'Heures',
+    minuteText: 'Minutes',
+    secondText: 'Secondes',
+    currentText: 'Maintenant',
+    ampm: false,
+    month: 'Mois',
+    week: 'Semaine',
+    day: 'Jour',
+    allDayText: 'Toute la journée'
+};
