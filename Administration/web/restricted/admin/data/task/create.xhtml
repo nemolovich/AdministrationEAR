@@ -20,78 +20,130 @@
                   showEffect="clip"
                   hideEffect="clip">
             <h:form id="taskCreate">
+                <script type="text/javascript">
+                        $(document).ready(function()
+                        {
+                            addRedStarsToRequieredFields();
+                        });
+                </script>
+                <p>
+                    Veuillez renseigner les informations pour cette tâche.
+                    <br />
+                    (<span class="red-star">*</span>: champs requis)
+                </p>
                 <h:panelGrid columns="2" columnClasses="label,fields">
 
-                    <p:outputLabel value="IdClient:" for="idClient" />
+                    <p:outputLabel value="Société:"
+                                   for="idClient"
+                                   styleClass="requiered"/>
                     <p:selectOneMenu id="idClient"
-                                     value="#{taskView.entity.idClient}"
-                                     effect="fade"
-                                     required="true"
-                                     requiredMessage="Veuillez sélectionner la société dans laquelle intervenir">
+                                     value="#{taskView.entityPopup.idClient}"
+                                     effect="fade">
+                        <f:validator binding="#{notNullFieldValidator}"/>
+                        <f:attribute name="requieredMessage"
+                                     value="Veuillez sélectionner la société dans laquelle intervenir"/>
+                        <f:attribute name="requieredTitle"
+                                     value="Champs 'Société' invalide"/>
                         <f:selectItem itemLabel="Sélectionnez une société" itemValue=""/>
                         <f:selectItems value="#{clientView.entries}"/>
                         <f:converter binding="#{clientConverter}"/>
-<!--                            <p:outputLabel value="IdWorkstation:" for="idWorkstation" />
-                    <h:selectOneMenu id="idWorkstation" value="#{taskView.entity.idWorkstation}" title="IdWorkstation" >
-                         TODO: update below reference to list of available items
-                        <f:selectItems value="#{fixme}"/>
-                    </h:selectOneMenu>
-
-                    <p:outputLabel value="IdUser:" for="idUser" />
-                    <h:selectOneMenu id="idUser" value="#{taskView.entity.idUser}" title="IdUser" >
-                         TODO: update below reference to list of available items
-                        <f:selectItems value="#{fixme}"/>
-                    </h:selectOneMenu>-->
                     </p:selectOneMenu>
 
+                    <p:outputLabel value="Poste de travail:" for="idWorkstation" />
+                    <p:selectOneMenu id="idWorkstation"
+                                     value="#{taskView.entityPopup.idWorkstation}"
+                                     effect="fade"
+                                     var="poste">
+                        <f:selectItem itemLabel="Sélectionnez une machine" itemValue=""/>
+                        <f:selectItems value="#{workstationView.entries}"/>
+                        <f:converter binding="#{workstationConverter}"/>
+                        <p:column>  
+                            #{poste.brand}  
+                        </p:column>  
+                    </p:selectOneMenu>
 
-                    <p:outputLabel value="Description:" for="description" />
+                    <p:outputLabel value="Utilisateur:" for="idUser" />
+                    <p:selectOneMenu id="idUser"
+                                     value="#{taskView.entityPopup.idUser}"
+                                     effect="fade">
+                        <f:selectItem itemLabel="Sélectionnez un utilisateur" itemValue=""/>
+                        <f:selectItems value="#{cUserView.entries}"/>
+                        <f:converter binding="#{cUserConverter}"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel value="Description:"
+                                   for="description"
+                                   styleClass="requiered">
+                    </p:outputLabel>
                     <p:inputText id="description"
                                  maxlength="250"
-                                 value="#{taskView.entity.description}"
-                                 title="Description"
-                                 required="true"
-                                 requiredMessage="Veuillez entrer une description de l'intervention"/>
+                                 value="#{taskView.entityPopup.description}"
+                                 title="Description de l'intervention">
+                        <f:validator binding="#{notNullFieldValidator}"/>
+                        <f:attribute name="requieredMessage"
+                                     value="Veuillez entrer une description de l'intervention"/>
+                        <f:attribute name="requieredTitle"
+                                     value="Champs 'Description' invalide"/>
+                    </p:inputText>
 
-                    <p:outputLabel value="Date de l'intervention:" for="startDate" />
-                    <p:inputMask id="startDate" value="#{taskView.entity.startDate}"
+                    <p:outputLabel value="Date de l'intervention:"
+                                   for="startDate"
+                                   styleClass="requiered"/>
+                    <p:inputMask id="startDate" value="#{taskView.entityPopup.startDate}"
                                  title="Date de prévue pour l'intervention"
                                  mask="99/99/9999">
+                        <f:validator binding="#{notNullFieldValidator}"/>
+                        <f:attribute name="requieredMessage"
+                                     value="Veuillez entrer la date prévue pour l'intervention"/>
+                        <f:attribute name="requieredTitle"
+                                     value="Champs 'Date de l'intervention' invalide"/>
                         <f:convertDateTime pattern="dd/MM/yyyy" />
                     </p:inputMask>
 
-                    <p:outputLabel value="IntendedDuration:" for="intendedDuration" />
+                    <p:outputLabel value="Durée prévue:"
+                                   for="intendedDuration"/>
                     <p:inputText id="intendedDuration"
                                  maxlength="30"
-                                 value="#{taskView.entity.intendedDuration}"
-                                 title="IntendedDuration" />
+                                 value="#{taskView.entityPopup.intendedDuration}"
+                                 title="Durée prévue pour l'intervention" />
+                    
+                    <p:outputLabel value="Déplacement:"
+                                   for="deplacement"
+                                   styleClass="requiered"/>
+                    <p:selectOneButton id="deplacement"
+                                       value="#{taskView.entityPopup.deplacement}">
+                        <f:validator binding="#{notNullFieldValidator}"/>
+                        <f:attribute name="requieredMessage"
+                                     value="Veuillez indiquez si l'intervention requiert un déplacement"/>
+                        <f:attribute name="requieredTitle"
+                                     value="Champs 'Déplacement' invalide"/>
+                        <f:selectItems value="#{utils.getYesNoButtons()}"/>
+                        <f:converter binding="#{yesNoConverter}"/>
+                    </p:selectOneButton>
+                    
+                    <p:outputLabel value="Type d'intervention:"
+                                   for="interventionType"
+                                   styleClass="requiered"/>
+                    <p:selectOneButton id="interventionType"
+                                       value="#{taskView.entityPopup.interventionType}">
+                        <f:validator binding="#{notNullFieldValidator}"/>
+                        <f:attribute name="requieredMessage"
+                                     value="Veuillez indiquez le type d'intervention"/>
+                        <f:attribute name="requieredTitle"
+                                     value="Champs 'Type d'intervention' invalide"/>
+                        <f:selectItems value="#{taskView.getInterventionTypes()}"/>
+                    </p:selectOneButton>
 
                     <h:outputLabel value="Observations:" for="observations" />
                     <h:inputTextarea id="observations"
                                      class="textarea_primefaces_display"
                                      rows="2"
-                                     value="#{taskView.entity.observations}"
-                                     title="Observations" />
+                                     value="#{taskView.entityPopup.observations}"
+                                     title="Observations">
+                    </h:inputTextarea>
 
                     <f:facet name="footer">
                         <p:outputPanel>
-
-<!--                    <p:outputLabel value="Deplacement:" for="deplacement" />
-                    <p:selectOneButton id="deplacement"
-                                       value="#{taskView.entity.deplacement}"
-                                       required="true"
-                                       requiredMessage="Veuillez sélectionner un type d'intervention">
-                        <f:selectItems value="#{utils.getYesNoButtons()}"/>
-                        <f:converter binding="#{yesNoConverter}"/>
-                    </p:selectOneButton>-->
-
-<!--                    <p:outputLabel value="Type d'intervention:" for="interventionType" />
-                    <p:selectOneButton id="interventionType"
-                                       value="#{taskView.entity.interventionType}"
-                                       required="true"
-                                       requiredMessage="Veuillez sélectionner un type d'intervention">
-                        <f:selectItems value="#{taskView.interventionTypes}"/>
-                    </p:selectOneButton>-->
                             <p:commandButton id="createTaskButton"
                                              action="javascript:void(0);"
                                              actionListener="#{taskView.create()}"
@@ -99,9 +151,9 @@
                                              type="submit"
                                              icon="ui-icon-check"
                                              styleClass="blue_icon"
-                                             update=":growl"
+                                             update=":taskCreate :growl :taskMenuDataForm"
                                              title="Créer cette tâche"
-                                             oncomplete="createRequest(createTaskDialog, xhr, status, args);"/>
+                                             oncomplete="if(createRequest(createTaskDialog, xhr, status, args)){forceFilter(taskMenuTable);}else{return false;}"/>
                             <p:commandButton id="backTaskButton"
                                              title="Annuler la création"
                                              action="javascript:void(0);"
@@ -110,6 +162,7 @@
                                              type="reset"
                                              immediate="true"
                                              ajax="true"
+                                             update=":taskCreate"
                                              icon="ui-icon-closethick"
                                              onclick="createTaskDialog.hide();">
                             </p:commandButton>

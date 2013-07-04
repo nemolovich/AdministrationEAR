@@ -224,3 +224,17 @@ function addExpandableButton(id, widgetName)
     link.appendChild(span);
     parent.append(link);
 }
+
+/**
+ * Ajoute une petite etoile rouge après le label d'un champs
+ * pour indiquer qu'il est requis. S'applique sur tous les
+ * éléments de la classe 'requiered'.
+ * @returns {void}
+ */
+function addRedStarsToRequieredFields()
+{
+    var span=document.createElement("span");
+    span.innerHTML="*";
+    span.className="red-star";
+    $(".requiered").append(span);
+}

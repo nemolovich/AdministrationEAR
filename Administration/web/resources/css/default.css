@@ -306,6 +306,7 @@ fieldset
 {
     color:                      #FF0000;
     font-weight:                bold;
+    margin-left:                5px;
 }
 
 .ui-layout-center .insert-content button

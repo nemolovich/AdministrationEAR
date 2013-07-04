@@ -27,9 +27,7 @@ import validator.EmailPatternValidator;
 public abstract class UniqueFieldValidator<C, F extends AbstractFacade<C>> implements Validator
 {
     private Class<C> entityClass;
-    protected F entityFacade;
-    private String fieldName = null;
-    private Integer update_ID = null;
+    protected F entityFacade;;
 
     public UniqueFieldValidator()
     {
@@ -46,11 +44,11 @@ public abstract class UniqueFieldValidator<C, F extends AbstractFacade<C>> imple
     {
         String field = (String) value;
         
-        this.fieldName=(String) component.getAttributes().get("fieldName");
-        this.update_ID=(Integer) component.getAttributes().get("update_id");
+        String fieldName=(String) component.getAttributes().get("fieldName");
+        Integer update_ID=(Integer) component.getAttributes().get("update_id");
         
-        if(this.fieldName==null || this.fieldName.isEmpty()
-            || this.update_ID==null )
+        if(fieldName==null || fieldName.isEmpty()
+            || update_ID==null )
         {
             ApplicationLogger.writeWarning("Dans le validateur \""+this.getClass().getName()+
                     "\". Vous devez spécifier un attribut \"fieldName\" pour ce validateur ainsi qu'un attribut \"update_id\". "
@@ -94,11 +92,11 @@ public abstract class UniqueFieldValidator<C, F extends AbstractFacade<C>> imple
                 {
                     equals=((String)m.invoke(entity)).equalsIgnoreCase(field);
                 }
-                if((equals||m.invoke(entity).equals(field))&&((Integer)getId.invoke(entity))!=this.update_ID)
+                if((equals||m.invoke(entity).equals(field))&&((Integer)getId.invoke(entity))!=update_ID)
                 {
                     FacesMessage message=new FacesMessage(FacesMessage.SEVERITY_ERROR,
                             "Champs '"+fieldName+"' incorrect",
-                            "La valeur '"+field+"' pour le champs '"+this.fieldName+
+                            "La valeur '"+field+"' pour le champs '"+fieldName+
                             "' est déjà utilisé par une autre entrée");
                     throw new ValidatorException(message);
                 }
@@ -122,7 +120,7 @@ public abstract class UniqueFieldValidator<C, F extends AbstractFacade<C>> imple
                         this.entityClass+"\"", ex);
             }
         }
-        if(this.fieldName.equalsIgnoreCase("Mail"))
+        if(fieldName.equalsIgnoreCase("Mail"))
         {
             EmailPatternValidator mailValidator = new EmailPatternValidator();
             mailValidator.validate(context, component, value);

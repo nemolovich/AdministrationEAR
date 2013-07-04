@@ -24,7 +24,6 @@ import javax.faces.validator.ValidatorException;
 @RequestScoped
 public class PasswordValidator implements Validator
 {
-    private Integer update_id = null;
     
     @Override
     public void validate(FacesContext context, UIComponent component, Object value)
@@ -34,7 +33,7 @@ public class PasswordValidator implements Validator
 
         UIInput confirmComponent = (UIInput) component.getAttributes().get("confirm");
         String confirm = (String)confirmComponent.getSubmittedValue();
-        this.update_id = (Integer)component.getAttributes().get("update_id");
+        Integer update_id = (Integer)component.getAttributes().get("update_id");
         Boolean passwordMinLength = (Boolean)component.getAttributes().get("min_length");
         if(passwordMinLength==null)
         {
@@ -54,7 +53,7 @@ public class PasswordValidator implements Validator
             return;
         }
         
-        if(this.update_id==null)
+        if(update_id==null)
         {
             ApplicationLogger.writeWarning("Dans le validateur \""+this.getClass().getName()+
                     "\". Vous devez spécifier un attribut \"update_id\" pour ce validateur. "
@@ -74,20 +73,20 @@ public class PasswordValidator implements Validator
 //        ApplicationLogger.writeWarning("Status: ID="+this.update_id+" - password=\""+password+"\" - confirmation=\""+
 //                confirm+"\" minLength="+passwordMinLength);
 
-        if (this.update_id==-1 && (password == null || (passwordMinLength &&
+        if (update_id==-1 && (password == null || (passwordMinLength &&
                 (password.isEmpty() || password.length()<8)) ||
                 password.length()>32))
         {
             throw new ValidatorException(message1);
         }
         
-        if(this.update_id==-1 && (confirm == null || confirm.isEmpty()) &&(passwordMinLength))
+        if(update_id==-1 && confirm.isEmpty() &&(passwordMinLength))
         {
             confirmComponent.setValid(false);
             throw new ValidatorException(message2);
         }
         
-        if(this.update_id!=-1 && (confirm == null || confirm.isEmpty()) && password.isEmpty())
+        if(update_id!=-1 && confirm.isEmpty() && password.isEmpty())
         {
             ApplicationLogger.writeWarning("Le mot de passe n'a pas été modifié");
         }
@@ -99,7 +98,7 @@ public class PasswordValidator implements Validator
             {
                 throw new ValidatorException(message1);
             }
-            if((confirm == null || confirm.isEmpty()) && passwordMinLength)
+            if(confirm.isEmpty() && passwordMinLength)
             {
                 confirmComponent.setValid(false);
                 throw new ValidatorException(message2);

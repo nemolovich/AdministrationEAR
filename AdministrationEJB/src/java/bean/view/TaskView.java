@@ -5,6 +5,7 @@
 
 package bean.view;
 
+import bean.ApplicationLogger;
 import bean.facade.TaskFacade;
 import bean.view.struct.EntityView;
 import entity.Task;
@@ -28,6 +29,7 @@ public class TaskView extends EntityView<Task, TaskFacade>
     private static final long serialVersionUID = 1L;
     @EJB
     private TaskFacade taskFacade;
+    private Task entityPopup;
     
     public TaskView()
     {
@@ -37,6 +39,50 @@ public class TaskView extends EntityView<Task, TaskFacade>
     public List<String> getInterventionTypes()
     {
         return Arrays.asList(INTERVENTION_TYPES);
+    }
+    
+    @Override
+    public String entityCreate()
+    {
+        super.setCreating(true);
+        super.setEditing(false);
+        String message="Création d'une entité de la classe \""+Task.class.getName()+"\"";
+        ApplicationLogger.writeInfo(message);
+        try
+        {
+            this.entityPopup = Task.class.newInstance();
+        }
+        catch (InstantiationException ex)
+        {
+            ApplicationLogger.writeError("Impossible d'instancier un objet de la"
+                    + " classe \""+Task.class.getName()+"\"", ex);
+        }
+        catch (IllegalAccessException ex)
+        {
+            ApplicationLogger.writeError("Droits refusés pour l'instanciation"
+                    + " d'un objet de la classe \""+Task.class.getName()+"\"", ex);
+        }
+        return "create";
+    }
+    
+    @Override
+    public String create()
+    {
+        super.setCreating(false);
+        super.setEditing(false);
+        this.setFacade();
+        this.taskFacade.create(this.entityPopup);
+        return "list";
+    }
+    
+    public Task getEntityPopup()
+    {
+        return this.entityPopup;
+    }
+    
+    public void setEntityPopup(Task entity)
+    {
+        this.entityPopup = entity;
     }
 
     @Override

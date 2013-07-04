@@ -24,18 +24,16 @@ public class YesNoConverter implements Converter
     public Object getAsObject(FacesContext context, UIComponent component,
         String value)
     {
-        System.err.println(value);
-        return value.equalsIgnoreCase(Utils.YES_BUTTON)?true:
-                (value.equalsIgnoreCase(Utils.YES_BUTTON)?false:null);
+        return (Boolean)(value.equalsIgnoreCase(Utils.YES_BUTTON)?true:
+                (value.equalsIgnoreCase(Utils.NO_BUTTON)?false:null));
     }
 
     @Override
     public String getAsString(FacesContext context, UIComponent component,
         Object value)
     {
-        System.err.println(value);
         return ((String)value).equalsIgnoreCase(Utils.YES_BUTTON)?Utils.YES_BUTTON:
-                (((String)value).equalsIgnoreCase(Utils.YES_BUTTON)?Utils.NO_BUTTON:null);
+                (((String)value).equalsIgnoreCase(Utils.NO_BUTTON)?Utils.NO_BUTTON:null);
     }
     
 }
