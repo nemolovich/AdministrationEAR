@@ -8,7 +8,6 @@
     </h:head>
     <h:body>
         <ui:include src="/restricted/admin/data/log/logPopup.xhtml"/>
-        <ui:include src="/restricted/admin/data/task/create.xhtml"/>
         <h:form id="menu_Form">
             <div style="margin-left: 16px;margin-bottom: 10px;">
                 <p:commandButton value="Journal"
@@ -32,8 +31,8 @@
                     <p:commandLink actionListener="#{taskView.entityCreate()}"
                                    ajax="true"
                                    immediate="false"
-                                   update=":taskCreate"
-                                   onclick="createTaskDialog.show();"
+                                   update=":taskMenuViewPopup :taskMenuDialogHeader :taskViewForm"
+                                   oncomplete="taskMenuViewDialog.show();"
                                    value="Nouvelle tâche"
                                    title="Créer une nouvelle tâche"/>
                     <br />

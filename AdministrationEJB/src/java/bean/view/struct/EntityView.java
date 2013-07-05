@@ -111,6 +111,7 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> extends EntitySl
 
     public String entityView(C entity)
     {
+        System.err.println("VIEW!!");
         this.creating = false;
         this.editing = false;
         this.entity = entity;

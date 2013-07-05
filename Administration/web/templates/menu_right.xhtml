@@ -126,7 +126,11 @@
                 <h3 class="tabheader">
                     <h:outputText value="#{taskView.creating?'Création':
                                             (taskView.editing?'Modification':
-                                            'Détails')} de la tâche #{taskView.entityPopup}"/>
+                                            'Détails')}"/>
+                    <h:outputText value=" de la tâche n°#{taskView.entityPopup.id}"
+                                  rendered="#{not taskView.creating}"/>
+                    <h:outputText value=" d'une nouvelle tâche"
+                                  rendered="#{taskView.creating}"/>
                 </h3>
             </h:form>
             <ui:include src="/restricted/admin/data/task/popupView.xhtml"/>

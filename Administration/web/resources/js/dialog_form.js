@@ -3,6 +3,11 @@
  * @type String
  */
 var appName='Administration';
+/**
+ * Définir à 'true' pour afficher les détails
+ * @type Boolean
+ */
+var debug=false;
 
 /**
  * Inspecte le formulaire contenu dans un <p:dialog> pour
@@ -228,7 +233,10 @@ function forceFilter(filter)
 {
     if(filter.filter()===undefined)
     {
-        console.log('Force filter for table with id="'+filter.jqId.replace(/\\/,'')+'"');
+        if(debug===true)
+        {
+            console.log('Force filter for table with id="'+filter.jqId.replace(/\\/,'')+'"');
+        }
         filter.clearFilters();
         filter.filter();
     }
@@ -283,6 +291,52 @@ function resetForm(formId)
     });
 }
 
+function displayBlock(id)
+{
+    $("#"+id).css("display","block");
+}
+
+function hideBlock(id)
+{
+    $("#"+id).css("display","none");
+}
+
+/**
+ * Permet de charger les préférences de langue pour les calendriers
+ * primefaces <p:calendar>
+ * @returns {void}
+ */
+function loadLocales()
+{
+    PrimeFaces.locales['fr'] =
+    {
+        closeText: 'Fermer',
+        prevText: 'Précédent',
+        nextText: 'Suivant',
+        monthNames: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre' ],
+        monthNamesShort: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc' ],
+        dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+        dayNamesShort: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
+        dayNamesMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+        weekHeader: 'Semaine',
+        firstDay: 1,
+        isRTL: false,
+        showMonthAfterYear: false,
+        yearSuffix:'',
+        timeOnlyTitle: 'Choisir une durée',
+        timeText: 'Heure',
+        hourText: 'Heures',
+        minuteText: 'Minutes',
+        secondText: 'Secondes',
+        currentText: 'Maintenant',
+        ampm: false,
+        month: 'Mois',
+        week: 'Semaine',
+        day: 'Jour',
+        allDayText: 'Toute la journée'
+    };
+}
+
 /**!
  * jQuery insertAtIndex
  * project-site: https://github.com/oberlinkwebdev/jQuery.insertAtIndex
@@ -309,31 +363,3 @@ $.fn.insertAtIndex = function(index,selector){
     });
 };  
 })( jQuery );
-
-PrimeFaces.locales['fr'] =
-{
-    closeText: 'Fermer',
-    prevText: 'Précédent',
-    nextText: 'Suivant',
-    monthNames: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre' ],
-    monthNamesShort: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc' ],
-    dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
-    dayNamesShort: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
-    dayNamesMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
-    weekHeader: 'Semaine',
-    firstDay: 1,
-    isRTL: false,
-    showMonthAfterYear: false,
-    yearSuffix:'',
-    timeOnlyTitle: 'Choisir une durée',
-    timeText: 'Heure',
-    hourText: 'Heures',
-    minuteText: 'Minutes',
-    secondText: 'Secondes',
-    currentText: 'Maintenant',
-    ampm: false,
-    month: 'Mois',
-    week: 'Semaine',
-    day: 'Jour',
-    allDayText: 'Toute la journée'
-};

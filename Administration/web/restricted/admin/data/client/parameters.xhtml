@@ -43,12 +43,12 @@
                             </div>
                         </div>
                         <p:growl id="growlWizard" showDetail="true" life="30000" autoUpdate="false" escape="false"/>
-                        <p:wizard id="clientUpdateWizard"
+<!--                        <p:wizard id="clientUpdateWizard"
                                   backLabel="Retour"
                                   nextLabel="Suivant"
                                   widgetVar="clientWizard"
-                                  showNavBar="true">
-                            
+                                  showNavBar="true">-->
+                        <p:tabView id="clientTabView" cache="true" dynamic="true" effect="slide">
                             <p:tab id="postes" title="Postes">
                                 <script type="text/javascript">
                                     $(document).ready(function()
@@ -107,7 +107,7 @@
                                                          action="javascipt:void(0);"
                                                          icon="ui-icon-trash"
                                                          oncomplete="clientWorkstationTable.filter();"
-                                                         update=":clientUpdate :clientUpdate:growlWizard :clientUpdate:clientWorkstationList"
+                                                         update=":clientUpdate :clientUpdate:growlWizard :clientUpdate:clientTabView:clientWorkstationList"
                                                          style="font-size: 60%;"
                                                          styleClass="red_icon"
                                                          onclick="if(!confirm('#{workstationView.getDeleteMessage(poste)}')){return false;}"
@@ -121,7 +121,7 @@
                                         <p:commandButton actionListener="#{workstationView.entityWake(clientView.entity,poste)}"
                                                          action="javascript:void(0);"
                                                          icon="ui-icon-play"
-                                                         update=":clientUpdate:growlWizard :clientUpdate:clientWorkstationList"
+                                                         update=":clientUpdate:growlWizard :clientUpdate:clientTabView:clientWorkstationList"
                                                          style="font-size: 60%;float:right;"
                                                          styleClass="blue_icon"
                                                          title="Réactiver ce poste"
@@ -131,7 +131,7 @@
                                                          action="javascript:void(0);"
                                                          icon="ui-icon-pause"
                                                          oncomplete="clientWorkstationTable.filter();"
-                                                         update=":clientUpdate:growlWizard :clientUpdate:clientWorkstationList"
+                                                         update=":clientUpdate:growlWizard :clientUpdate:clientTabView:clientWorkstationList"
                                                          style="font-size: 60%;float:right;"
                                                          onclick="if(!confirm('Voulez vous vraiment mettre ce poste en standby?\n'+
                                                                         '(Vous pourrez le réactiver quand vous le souhaitez)'))
@@ -155,7 +155,7 @@
                                                              icon="ui-icon-trash"
                                                              styleClass="red_icon"
                                                              title="Supprimer les postes sélectionnés"
-                                                             update=":clientUpdate :clientUpdate:growlWizard :clientUpdate:clientWorkstationList @this"
+                                                             update=":clientUpdate :clientUpdate:growlWizard :clientUpdate:clientTabView:clientWorkstationList @this"
                                                              disabled="#{workstationMultiView.emptySelection}"
                                                              actionListener="#{workstationView.remove(clientView.entity,
                                                                                workstationMultiView.multiSelection)}"
@@ -242,7 +242,7 @@
                                                          action="javascipt:void(0);"
                                                          icon="ui-icon-trash"
                                                          oncomplete="forceFilter(clientMailTable);"
-                                                         update=":clientUpdate :clientUpdate:growlWizard :clientUpdate:clientMailList"
+                                                         update=":clientUpdate :clientUpdate:growlWizard :clientUpdate:clientTabView:clientMailList"
                                                          style="font-size: 60%;"
                                                          styleClass="red_icon"
                                                          onclick="if(!confirm('#{mailView.getDeleteMessage(mail)}')){return false;}"
@@ -256,7 +256,7 @@
                                         <p:commandButton actionListener="#{mailView.entityWake(clientView.entity,mail)}"
                                                          action="javascript:void(0);"
                                                          icon="ui-icon-play"
-                                                         update=":clientUpdate:growlWizard :clientUpdate:clientMailList"
+                                                         update=":clientUpdate:growlWizard :clientUpdate:clientTabView:clientMailList"
                                                          style="font-size: 60%;float:right;"
                                                          styleClass="blue_icon"
                                                          title="Réactiver cette adresse mail"
@@ -266,7 +266,7 @@
                                                          action="javascript:void(0);"
                                                          icon="ui-icon-pause"
                                                          oncomplete="clientMailTable.filter();"
-                                                         update=":clientUpdate:growlWizard :clientUpdate:clientMailList"
+                                                         update=":clientUpdate:growlWizard :clientUpdate:clientTabView:clientMailList"
                                                          style="font-size: 60%;float:right;"
                                                          onclick="if(!confirm('Voulez vous vraiment mettre cette adresse mail en standby?\n'+
                                                                         '(Vous pourrez la réactiver quand vous le souhaitez)'))
@@ -290,7 +290,7 @@
                                                              icon="ui-icon-trash"
                                                              styleClass="red_icon"
                                                              title="Supprimer les adresses mail sélectionnées"
-                                                             update=":clientUpdate :clientUpdate:growlWizard :clientUpdate:clientMailList @this"
+                                                             update=":clientUpdate :clientUpdate:growlWizard :clientUpdate:clientTabView:clientMailList @this"
                                                              disabled="#{mailMultiView.emptySelection}"
                                                              actionListener="#{mailView.remove(clientView.entity,
                                                                                mailMultiView.multiSelection)}"
@@ -306,7 +306,7 @@
                                                                      value="#{mailMultiView.displaySleepingEntities}"
                                                                      styleClass="small_check"
                                                                      style="vertical-align: middle !important;margin-bottom: 5px !important;">  
-                                                <p:ajax update=":clientUpdate:clientMailList"
+                                                <p:ajax update=":clientUpdate:clientTabView:clientMailList"
                                                         oncomplete="forceFilter(clientMailTable);"
                                                         immediate="false"/>  
                                             </p:selectBooleanCheckbox>
@@ -377,7 +377,7 @@
                                                          action="javascipt:void(0);"
                                                          icon="ui-icon-trash"
                                                          oncomplete="forceFilter(clientUserTable);"
-                                                         update=":clientUpdate :clientUpdate:growlWizard :clientUpdate:clientUserList"
+                                                         update=":clientUpdate :clientUpdate:growlWizard :clientUpdate:clientTabView:clientUserList"
                                                          style="font-size: 60%;"
                                                          styleClass="red_icon"
                                                          onclick="if(!confirm('#{cUserView.getDeleteMessage(cuser)}')){return false;}"
@@ -391,7 +391,7 @@
                                         <p:commandButton actionListener="#{cUserView.entityWake(clientView.entity,cuser)}"
                                                          action="javascript:void(0);"
                                                          icon="ui-icon-play"
-                                                         update=":clientUpdate:growlWizard :clientUpdate:clientUserList"
+                                                         update=":clientUpdate:growlWizard :clientUpdate:clientTabView:clientUserList"
                                                          style="font-size: 60%;float:right;"
                                                          styleClass="blue_icon"
                                                          title="Réactiver cet utilisateur"
@@ -401,7 +401,7 @@
                                                          action="javascript:void(0);"
                                                          icon="ui-icon-pause"
                                                          oncomplete="clientUserTable.filter();"
-                                                         update=":clientUpdate:growlWizard :clientUpdate:clientUserList"
+                                                         update=":clientUpdate:growlWizard :clientUpdate:clientTabView:clientUserList"
                                                          style="font-size: 60%;float:right;"
                                                          onclick="if(!confirm('Voulez vous vraiment mettre cet utilisateur en standby?\n'+
                                                                         '(Vous pourrez le réactiver quand vous le souhaitez)'))
@@ -425,7 +425,7 @@
                                                              icon="ui-icon-trash"
                                                              styleClass="red_icon"
                                                              title="Supprimer les utilisateurs sélectionnés"
-                                                             update=":clientUpdate :clientUpdate:growlWizard :clientUpdate:clientUserList @this"
+                                                             update=":clientUpdate :clientUpdate:growlWizard :clientUpdate:clientTabView:clientUserList @this"
                                                              disabled="#{cUserMultiView.emptySelection}"
                                                              actionListener="#{cUserView.remove(clientView.entity,
                                                                                cUserMultiView.multiSelection)}"
@@ -441,7 +441,7 @@
                                                                      value="#{cUserMultiView.displaySleepingEntities}"
                                                                      styleClass="small_check"
                                                                      style="vertical-align: middle !important;margin-bottom: 5px !important;">  
-                                                <p:ajax update=":clientUpdate:clientUserList"
+                                                <p:ajax update=":clientUpdate:clientTabView:clientUserList"
                                                         oncomplete="forceFilter(clientUserTable);"
                                                         immediate="false"/>  
                                             </p:selectBooleanCheckbox>
@@ -465,8 +465,8 @@
                                     Logiciels
                                 </p:fieldset>
                             </p:tab>
-                            
-                        </p:wizard>
+                        </p:tabView>
+                        <!--</p:wizard>-->
                     </h:form>
                 </f:view>
             </ui:define>
