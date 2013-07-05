@@ -74,7 +74,7 @@
                                      actionListener="#{cUserView.create(clientView.entity)}"
                                      icon="ui-icon-check"
                                      update=":clientUpdate :clientUpdate:growlWizard :createUserForm"
-                                     styleClass="blue_icon"
+                                     styleClass="green_icon"
                                      oncomplete="createRequest(createUser, xhr, status, args);forceFilter(clientUserTable);"
                                      />
                     <p:commandButton id="backCreateUser" value="Annuler"
@@ -93,9 +93,9 @@
                                      title="Enregistrer les changements"
                                      type="submit"
                                      actionListener="#{cUserView.update(clientView.entity)}"
-                                     icon="ui-icon-pencil"
+                                     icon="ui-icon-disk"
                                      update=":clientUpdate :clientUpdate:growlWizard :createUserForm"
-                                     styleClass="blue_icon"
+                                     styleClass="green_icon"
                                      oncomplete="createRequest(createUser, xhr, status, args);forceFilter(clientUserTable);"
                                      />
                     <p:commandButton id="backEditUser" value="Annuler"

@@ -41,7 +41,8 @@
         </p:dialog>
         <div id="messages_container" class="ui-growl ui-widget" style="z-index: 1010;"></div>
         <p:growl id="growl" showDetail="true" life="30000" />
-        <p:layout fullPage="true">
+        <p:layout fullPage="true"
+                  stateful="true">
             <p:ajax event="resize"
                     listener="#{userLogin.handleResize}"/>
             <p:ajax event="toggle"
@@ -103,7 +104,7 @@
             </p:layoutUnit>
             <p:layoutUnit id="footer"
                           position="south"
-                          size="25">
+                          size="20">
                 <ui:insert name="bottom">
                     <ui:include src="/templates/footer.xhtml"/>
                 </ui:insert>

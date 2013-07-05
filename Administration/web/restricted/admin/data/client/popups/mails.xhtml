@@ -93,7 +93,7 @@
                                      actionListener="#{mailView.create(clientView.entity)}"
                                      icon="ui-icon-check"
                                      update=":clientUpdate :clientUpdate:growlWizard :createMailForm"
-                                     styleClass="blue_icon"
+                                     styleClass="green_icon"
                                      oncomplete="createRequest(createMail, xhr, status, args);forceFilter(clientMailTable);"
                                      />
                     <p:commandButton id="backCreateMail" value="Annuler"
@@ -112,9 +112,9 @@
                                      title="Enregistrer les changements"
                                      type="submit"
                                      actionListener="#{mailView.update(clientView.entity)}"
-                                     icon="ui-icon-pencil"
+                                     icon="ui-icon-disk"
                                      update=":clientUpdate :clientUpdate:growlWizard :createMailForm"
-                                     styleClass="blue_icon"
+                                     styleClass="green_icon"
                                      oncomplete="createRequest(createMail, xhr, status, args);forceFilter(clientMailTable);"
                                      />
                     <p:commandButton id="backEditMail" value="Annuler"

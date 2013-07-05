@@ -246,6 +246,8 @@
                                     <p:commandButton value="Confirmer"
                                                      immediate="true"
                                                      ajax="false"
+                                                     icon="ui-icon-check"
+                                                     styleClass="green_icon"
                                                      title="Veuillez lire les informations avant de valider"
                                                      actionListener="#{clientView.create()}"
                                                      type="submit"
@@ -253,6 +255,8 @@
                                                      action="#{clientView.entityParameter(clientView.entity)}"/>
                                     <p:commandButton
                                         action="javascript:void(0);"
+                                        styleClass="blue_icon"
+                                        type="button"
                                         title="Si vous confirmez vous créez cette nouvelle société et vous serez redirigé vers la finalisation de celle-ci"
                                         style="cursor:pointer;font-size: 30%;"
                                         icon="ui-icon-info"/>

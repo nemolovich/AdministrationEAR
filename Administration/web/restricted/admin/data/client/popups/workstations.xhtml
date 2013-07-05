@@ -146,7 +146,7 @@
                                      actionListener="#{workstationView.create(clientView.entity)}"
                                      icon="ui-icon-check"
                                      update=":clientUpdate :clientUpdate:growlWizard :createWorkstationForm"
-                                     styleClass="blue_icon"
+                                     styleClass="green_icon"
                                      oncomplete="createRequest(createWorstation, xhr, status, args);clientWorkstationTable.filter();"
                                      />
                     <p:commandButton id="backCreateWorkstation" value="Annuler"
@@ -165,9 +165,9 @@
                                      title="Enregistrer les changements"
                                      type="submit"
                                      actionListener="#{workstationView.update(clientView.entity)}"
-                                     icon="ui-icon-pencil"
+                                     icon="ui-icon-disk"
                                      update=":clientUpdate :clientUpdate:growlWizard :createWorkstationForm"
-                                     styleClass="blue_icon"
+                                     styleClass="green_icon"
                                      oncomplete="createRequest(createWorstation, xhr, status, args);clientWorkstationTable.filter();"
                                      />
                     <p:commandButton id="backEditWorkstation" value="Annuler"

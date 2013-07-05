@@ -124,7 +124,7 @@
                             <p:commandButton title="Modifier cette tâche"
                                              value="Modifier"
                                              icon="ui-icon-wrench"
-                                             update=":taskViewForm"
+                                             update=":taskViewForm :taskMenuDialogHeader"
                                              action="javascript:void(0);"
                                              actionListener="#{taskView.entityUpdate(taskView.entityPopup)}"/>
                             <p:commandButton title="Fermer la fenêtre"
@@ -144,16 +144,17 @@
                                              type="submit"
                                              icon="ui-icon-check"
                                              styleClass="green_icon"
-                                             update=":taskViewForm :growl :taskMenuDataForm"
+                                             update=":taskViewForm :taskMenuDialogHeader :growl :taskMenuDataForm"
                                              value="Modifier"
-                                             oncomplete="if(createRequest(taskMenuViewDialog, xhr, status, args, function(){void(0);})){forceFilter(taskMenuTable);}else{return false;}"/>
+                                             oncomplete="if(createRequestVoid(taskMenuViewDialog, xhr, status, args)){
+                                                        forceFilter(taskMenuTable);}else{return false;}"/>
                             <p:commandButton id="ptbackTaskButton"
                                              title="Annuler la modification"
                                              actionListener="#{taskView.cancelCreate()}"
                                              value="Annuler"
                                              immediate="true"
                                              styleClass="red_icon"
-                                             update=":taskViewForm"
+                                             update=":taskViewForm :taskMenuDialogHeader"
                                              icon="ui-icon-closethick"
                                              oncomplete="resetForm('taskViewForm');">
                             </p:commandButton>

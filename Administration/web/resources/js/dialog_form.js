@@ -11,25 +11,10 @@ var appName='Administration';
  * @param {Object} xhr - HttpRequest 
  * @param {Object} status - Etat du formulaire
  * @param {String} args - Retour du formulaire
+ * @param {Boolean} hide - Indique si on ferme le <p:dialog>
  * @returns {Boolean} - Vrai si le formulaire est correcte
  */
-function createRequest(form, xhr, status, args)
-{
-    createRequest(form, xhr, status, args, form.hide)
-}
-
-/**
- * @see @link{createRequest}
- * De même que la fonction précédente mais effectue une fonction
- * personnalisée en cas de réussite de l'envoi du formulaire
- * @param {c} form - La boite de dialogue contenant le formulaire
- * @param {Object} xhr - HttpRequest 
- * @param {Object} status - Etat du formulaire
- * @param {String} args - Retour du formulaire
- * @param {function} fun - Fonction à exécuter
- * @returns {Boolean} - Vrai si le formulaire est correcte
- */
-function createRequest(form, xhr, status, args, fun)
+function createRequestFun(form, xhr, status, args, hide)
 {
     if(args.validationFailed)
     {
@@ -38,9 +23,39 @@ function createRequest(form, xhr, status, args, fun)
     }
     else
     {
-        fun();
+        if(hide===true)
+        {
+            form.hide();
+        }
         return true;
     }
+}
+/**
+ * @see @link{createRequestFun}
+ * @param {c} form - La boite de dialogue contenant le formulaire
+ * @param {Object} xhr - HttpRequest 
+ * @param {Object} status - Etat du formulaire
+ * @param {String} args - Retour du formulaire
+ * @returns {Boolean} - Vrai si le formulaire est correcte
+ */
+function createRequest(form, xhr, status, args)
+{
+    return createRequestFun(form, xhr, status, args, true);
+}
+
+/**
+ * @see @link{createRequestFun}
+ * De même que la fonction précédente mais ne ferme pas
+ * le <p:dialog> après validation du formulaire.
+ * @param {c} form - La boite de dialogue contenant le formulaire
+ * @param {Object} xhr - HttpRequest 
+ * @param {Object} status - Etat du formulaire
+ * @param {String} args - Retour du formulaire
+ * @returns {Boolean} - Vrai si le formulaire est correcte
+ */
+function createRequestVoid(form, xhr, status, args)
+{
+    return createRequestFun(form, xhr, status, args, false);
 }
 
 /**
