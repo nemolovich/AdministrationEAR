@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Poste de travail</title>
+    </h:head>
+    <h:body>
+        <f:view>
+            <h:form id="workstationViewForm">
+                <h:panelGrid columns="2" columnClasses="label,fields">
+                    
+                    <h:outputText value="Société:"/>
+                    <h:outputText id="idClientV" value="#{workstationView.entity.idClient}"
+                                  title="Société à laquelle appartient ce poste de travail"/>
+                    
+                    <h:outputText value="Brand:"/>
+                    <h:outputText id="brandV" value="#{workstationView.entity.brand}"
+                                  title="Brand"/>
+                    
+                    <h:outputText value="WsType:"/>
+                    <h:outputText id="wsTypeV" value="#{workstationView.entity.wsType}"
+                                  title="WsType"/>
+                    
+                    <h:outputText value="StartDate:"/>
+                    <h:outputText id="startDateV" value="#{workstationView.entity.startDate}"
+                                  title="StartDate" >
+                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                    </h:outputText>
+                    
+                    <h:outputText value="Processor:"/>
+                    <h:outputText id="processorV" value="#{workstationView.entity.processor}"
+                                  title="Processor"/>
+                    
+                    <h:outputText value="Monitor:"/>
+                    <h:outputText id="monitorV" value="#{workstationView.entity.monitor}"
+                                  title="Monitor"/>
+                    
+                    <h:outputText value="VideoCard:"/>
+                    <h:outputText id="videoCardV" value="#{workstationView.entity.videoCard}"
+                                  title="VideoCard"/>
+                    
+                    <h:outputText value="OperatingSystem:"/>
+                    <h:outputText id="operatingSystemV" value="#{workstationView.entity.operatingSystem}"
+                                  title="OperatingSystem"/>
+                    
+                    <h:outputText value="Ram:"/>
+                    <h:outputText id="ramV" value="#{workstationView.entity.ram}"
+                                  title="Ram"/>
+                    
+                    <h:outputText value="HardDrive:"/>
+                    <h:outputText id="hardDriveV" value="#{workstationView.entity.hardDrive}"
+                                  title="HardDrive"/>
+                    
+                    <h:outputText value="Observations:"/>
+                    <h:outputText id="observationsV" value="#{workstationView.entity.observations}"
+                                  title="Observations"/>
+                    
+                </h:panelGrid>
+            </h:form>
+        </f:view>
+
+    </h:body>
+</html>
+

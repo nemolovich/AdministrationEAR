@@ -291,14 +291,42 @@ function resetForm(formId)
     });
 }
 
+var concurrents={};
+
 function displayBlock(id)
 {
-    $("#"+id).css("display","block");
+    var ok=true;
+    $.each(concurrents,function(k,v)
+    {
+        if(k===id)
+        {
+            if(!hideBlock(v))
+            {
+                ok=false;
+            }
+        }
+    });
+    if(ok)
+    {
+        $("#"+id).css("display","block");
+        return true;
+    }
+    return false;
 }
 
 function hideBlock(id)
 {
     $("#"+id).css("display","none");
+    return true;
+}
+
+function addConcurrentBlock(id,listId)
+{
+    $.each(listId,function(i,v)
+    {
+        concurrents[id]=v;
+        concurrents[v]=id;
+    });
 }
 
 /**
@@ -342,6 +370,8 @@ function loadLocales()
  * project-site: https://github.com/oberlinkwebdev/jQuery.insertAtIndex
  * @author: Jesse Oberlin
  * @version 1.0
+ * @param {JQueryElement} $
+ * @returns {Boolean}
  * Copyright 2012, Jesse Oberlin
  * Dual licensed under the MIT or GPL Version 2 licenses.
 */
@@ -363,3 +393,5 @@ $.fn.insertAtIndex = function(index,selector){
     });
 };  
 })( jQuery );
+
+

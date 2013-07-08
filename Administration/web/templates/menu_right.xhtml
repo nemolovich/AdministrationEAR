@@ -176,9 +176,8 @@
                               filterBy="#{item.description}"
                               filterMatchMode="contains"
                               filterStyle="width:70px;">
-                        <h:outputText value="#{utils.getBreakLinesString(
-                                               utils.getShortString(item.description,20))}"
-                                      title="#{item.description}"/>
+                        <h:outputText value="#{utils.getShortString(item.description,15)}"
+                                      title="#{item.description}" style="white-space: nowrap;"/>
                     </p:column>
                     
                     <p:column headerText="Nom de la société"
