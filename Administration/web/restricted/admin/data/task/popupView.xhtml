@@ -11,7 +11,8 @@
     <h:body>
         <f:view>
             <h:form id="taskViewForm">
-                <p:outputPanel rendered="#{not empty taskView.entityPopup}"
+                <p:outputPanel id="taskViewFormDetails"
+                               rendered="#{not empty taskView.entityPopup}"
                                style="float:left;">
                     <p:outputPanel rendered="#{taskView.creating or taskView.editing}">
                         <script type="text/javascript">
@@ -55,6 +56,7 @@
                             <p:selectOneMenu id="ptidClient"
                                              value="#{taskView.entityPopup.idClient}"
                                              effect="fade"
+                                             var="client"
                                              rendered="#{taskView.creating or
                                                          taskView.editing}">
                                 <f:validator binding="#{notNullFieldValidator}"/>
@@ -65,16 +67,27 @@
                                 <f:selectItem itemLabel="Sélectionnez&nbsp;une&nbsp;société" itemValue=""/>
                                 <f:selectItems value="#{clientView.entries}"/>
                                 <f:converter binding="#{clientConverter}"/>
+                                <p:ajax update="taskViewForm:ptidUser
+                                        taskViewForm:ptidWorkstationFull
+                                        taskViewForm:displayTclientDetails
+                                        taskViewForm:tClientViewForm
+                                        taskViewForm:ptidClient"
+                                        oncomplete="$('taskViewForm\\\\:displayTclientDetails').css('display','inline');"
+                                        listener="#{taskView.ajaxSelect}"/>
+                                
+                                <p:column>
+                                    #{client}
+                                </p:column>
                             </p:selectOneMenu>
                             
-                            <p:commandButton actionListener="#{clientView.entityView(taskView.entityPopup.idClient)}"
+                            <p:commandButton id="displayTclientDetails"
+                                             actionListener="#{clientView.entityView(taskView.entityPopup.idClient)}"
                                              icon="ui-icon-search"
                                              update="taskViewForm:tclientDetails"
                                              style="font-size: 40%;vertical-align: top !important;margin-left: 10px;"
                                              oncomplete="displayBlock('taskViewForm\\:tclientDetails');"
                                              action="javascript:void(0);"
-                                             title="Afficher les détails de la société"
-                                             rendered="#{not empty taskView.entityPopup.idClient}"/>
+                                             title="Afficher les détails de la société #{taskView.entityPopup.idClient}"/>
                         </p:outputPanel>
 
                         <h:outputLabel value="Poste de travail:" for="ptidWorkstationFull"/>
@@ -95,12 +108,25 @@
                                              rendered="#{taskView.creating or
                                                          taskView.editing}">
                                 <f:selectItem itemLabel="Sélectionnez&nbsp;une&nbsp;machine" itemValue=""/>
-                                <f:selectItems value="#{workstationView.entries}"/>
+                                <f:selectItems value="#{taskView.entityPopup.idClient.workstationList}"/>
                                 <f:converter binding="#{workstationConverter}"/>
+                                <p:ajax update="taskViewForm:displayTworkstationDetails"
+                                        listener="#{taskView.ajaxSelect}"/>
+                                
                                 <p:column>
-                                    #{utils.getBreakLinesString(utils.getShortString(poste,20))}
+                                    #{utils.getShortString(poste,20)}
                                 </p:column>
                             </p:selectOneMenu>
+                            
+                            <p:commandButton id="displayTworkstationDetails"
+                                             actionListener="#{workstationView.entityView(taskView.entityPopup.idWorkstation)}"
+                                             icon="ui-icon-search"
+                                             update="taskViewForm:tworkstationDetails"
+                                             style="font-size: 40%;vertical-align: top !important;margin-left: 10px;"
+                                             oncomplete="displayBlock('taskViewForm\\:tworkstationDetails');"
+                                             action="javascript:void(0);"
+                                             title="Afficher les détails du poste de travail"
+                                             rendered="#{not empty taskView.entityPopup.idWorkstation}"/>
                             
                         </p:outputPanel>
 
@@ -113,21 +139,29 @@
                             <p:selectOneMenu id="ptidUser"
                                              value="#{taskView.entityPopup.idUser}"
                                              effect="fade"
+                                             var="cuser"
                                              rendered="#{taskView.creating or
                                                          taskView.editing}">
                                 <f:selectItem itemLabel="Sélectionnez&nbsp;un&nbsp;utilisateur" itemValue=""/>
-                                <f:selectItems value="#{cUserView.entries}"/>
+                                <f:selectItems value="#{taskView.entityPopup.idClient.CUserList}"/>
                                 <f:converter binding="#{cUserConverter}"/>
+                                <p:ajax update="taskViewForm:displayTcuserDetails"
+                                        listener="#{taskView.ajaxSelect}"/>
+                                
+                                <p:column>
+                                    #{cuser}
+                                </p:column>
                             </p:selectOneMenu>
                             
-                            <p:commandButton actionListener="#{cUserView.entityView(taskView.entityPopup.idUser)}"
+                            <p:commandButton id="displayTcuserDetails"
+                                             actionListener="#{cUserView.entityView(taskView.entityPopup.idUser)}"
                                              icon="ui-icon-search"
                                              update="taskViewForm:tcuserDetails"
                                              style="font-size: 40%;vertical-align: top !important;margin-left: 10px;"
                                              oncomplete="displayBlock('taskViewForm\\:tcuserDetails');"
                                              action="javascript:void(0);"
                                              title="Afficher les détails de l'utilisateur"
-                                             rendered="#{not empty taskView.entityPopup.idUser}"/>
+                                             rendered="#{not empty taskView.entityPopup.idUser and not taskView.creating}"/>
                         </p:outputPanel>
 
                         <h:outputLabel value="Date de début:" for="ptstartDate"/>
@@ -323,22 +357,39 @@
                                    styleClass="inside_dialog">
                         <p:commandButton icon="ui-icon-closethick"
                                          styleClass="red_icon"
+                                         title="Chacher les information sur la société"
                                          onclick="hideBlock('taskViewForm\\:tclientDetails');"/>
-                        <ui:include src="/restricted/admin/data/client/popupView.xhtml"/>
+                        <ui:include src="/restricted/admin/data/task/popups/clients.xhtml"/>
+                    </p:outputPanel>
+                    <p:outputPanel id="tworkstationDetails"
+                                   styleClass="inside_dialog"
+                                   style="display:none;">
+                        <p:commandButton icon="ui-icon-closethick"
+                                         styleClass="red_icon"
+                                         title="Chacher les information sur le poste de travail"
+                                         onclick="hideBlock('taskViewForm\\:tworkstationDetails');"/>
+                        <ui:include src="/restricted/admin/data/workstation/popupView.xhtml"/>
                     </p:outputPanel>
                     <p:outputPanel id="tcuserDetails"
                                    styleClass="inside_dialog"
                                    style="display:none;">
                         <p:commandButton icon="ui-icon-closethick"
                                          styleClass="red_icon"
+                                         title="Chacher les information sur l'utilisateur"
                                          onclick="hideBlock('taskViewForm\\:tcuserDetails');"/>
                         <ui:include src="/restricted/admin/data/c_user/popupView.xhtml"/>
                     </p:outputPanel>
                     <script type="text/javascript">
                         $(document).ready(function()
                         {
+                            if(#{taskView.creating})
+                            {
+                                hideBlock('taskViewForm\\:displayTclientDetails');
+                            }
                             hideBlock('taskViewForm\\:tclientDetails');
-                            addConcurrentBlock('taskViewForm\\:tclientDetails',['taskViewForm\\:tcuserDetails'])
+                            addConcurrentBlock('taskViewForm\\:tclientDetails',
+                                        ['taskViewForm\\:tworkstationDetails',
+                                            'taskViewForm\\:tcuserDetails']);
                         });
                     </script>
                 </p:outputPanel>

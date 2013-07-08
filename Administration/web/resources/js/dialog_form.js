@@ -291,21 +291,31 @@ function resetForm(formId)
     });
 }
 
-var concurrents={};
+var concurrents=[];
 
 function displayBlock(id)
 {
     var ok=true;
-    $.each(concurrents,function(k,v)
+    if(containsElement(concurrents,id))
     {
-        if(k===id)
+        $.each(concurrents,function(k,v)
         {
-            if(!hideBlock(v))
+            if(id===v[0])
             {
-                ok=false;
+                if(!hideBlock(v[1]))
+                {
+                    ok=false;
+                }
             }
-        }
-    });
+            else if(id===v[1])
+            {
+                if(!hideBlock(v[0]))
+                {
+                    ok=false;
+                }
+            }
+        });
+    }
     if(ok)
     {
         $("#"+id).css("display","block");
@@ -322,11 +332,75 @@ function hideBlock(id)
 
 function addConcurrentBlock(id,listId)
 {
+    var temp=[];
     $.each(listId,function(i,v)
     {
-        concurrents[id]=v;
-        concurrents[v]=id;
+        temp[temp.length]=v;
+        if(!contains(concurrents,[id,v]))
+        {
+            concurrents[concurrents.length]=[id,v];
+        }
     });
+    var index=0;
+    $.each(temp,function(i,v)
+    {
+        for(var i=index;i<=temp.length/2;i++)
+        {
+            if(!contains(concurrents,[temp[i],v])&&temp[i]!==v)
+            {
+                concurrents[concurrents.length]=[temp[i],v];
+            }
+        }
+        index++;
+    });
+}
+
+function indexOf(arr,pair)
+{
+    var index=-1;
+    $.each(arr,function(k,v)
+    {
+        if((pair[0]===v[0]&&pair[1]===v[1])||
+            (pair[1]===v[0]&&pair[0]===v[1]))
+        {
+            index=k;
+            return false;
+        }
+    });
+    return index;
+}
+
+function containsElement(arr,e)
+{
+    var contains=false;
+    $.each(arr,function(k,v)
+    {
+        if(e===v[0]||e===v[1])
+        {
+            contains=true;
+            return false;
+        }
+    });
+    return contains;
+}
+
+function contains(arr,pair)
+{
+    return (indexOf(arr,pair)!==-1);
+}
+
+function getAt(arr,index)
+{
+    var value=null;
+    $.each(arr,function(k,v)
+    {
+        if(k===index)
+        {
+            value=v;
+            return false;
+        }
+    });
+    return value;
 }
 
 /**

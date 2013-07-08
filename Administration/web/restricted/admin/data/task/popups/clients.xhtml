@@ -1,0 +1,129 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Société de la tâche</title>
+    </h:head>
+    <h:body>
+        <h:form id="tClientViewForm">
+            <h:panelGrid columns="2" class="full_table">
+                <p:column>
+
+                    <p:fieldset legend="Informations générales">
+                        <h:panelGrid columns="2" columnClasses="label,fields">
+
+                            <h:outputText value="Identifiant:"/>
+                            <h:outputText value="#{taskView.entityPopup.idClient.id}" title="Identifiant de la société"/>
+
+                            <h:outputText value="Nom de la société:"/>
+                            <h:outputText value="#{taskView.entityPopup.idClient.name}" title="Nom de la société"/>
+
+                            <h:outputText value="Interlocuteur:"/>
+                            <h:outputText value="#{taskView.entityPopup.idClient.idUser}"
+                                          title="Interlocuteur de la société"/>
+
+                            <h:outputText value="Adresse:"/>
+                            <h:outputText value="#{taskView.entityPopup.idClient.address}" title="Adresse"/>
+
+                            <h:outputText value="Code postal:"/>
+                            <h:outputText value="#{taskView.entityPopup.idClient.postalcode}" title="Code postal"/>
+
+                            <h:outputText value="Téléphone:"/>
+                            <h:outputText value="#{taskView.entityPopup.idClient.phone}" title="Numéro de téléphone"/>
+
+                            <h:outputText value="Adresse mail:"/>
+                            <h:outputText value="#{taskView.entityPopup.idClient.mail}" title="Adresse mail de la société"/>
+
+                            <h:outputText value="Fax:"/>
+                            <h:outputText value="#{taskView.entityPopup.idClient.fax}" title="Numéro de fax"/>
+                        </h:panelGrid>
+                    </p:fieldset>
+
+                </p:column>
+                <p:column>
+
+                    <p:fieldset legend="Détails">
+                        <h:panelGrid columns="2" cellspacing="5">
+                            <p:column>
+
+                                <h4 class="tabheader">Tarifs:</h4>
+                                <h:panelGrid columns="2" columnClasses="label,fields">
+                                    <h:outputText value="Tarif d'intervention:" />
+                                    <h:outputText value="#{taskView.entityPopup.idClient.tarif} €"
+                                                  rendered="#{not empty taskView.entityPopup.idClient.tarif}"/>
+                                    <h:outputText value="aucun"
+                                                  rendered="#{empty taskView.entityPopup.idClient.tarif}"/>
+
+                                    <h:outputText value="Frais de déplacement:"/>
+                                    <h:outputText value="#{taskView.entityPopup.idClient.deplacement} €"
+                                                  rendered="#{not empty taskView.entityPopup.idClient.deplacement}"/>
+                                    <h:outputText value="aucun"
+                                                  rendered="#{empty taskView.entityPopup.idClient.deplacement}"/>
+                                </h:panelGrid>
+
+                            </p:column>
+                            <p:column>
+
+                                <h4 class="tabheader">Connexion Internet:</h4>
+                                <h:panelGrid columns="2" columnClasses="label,fields">
+
+                                    <h:outputText value="Operateur:"/>
+                                    <h:outputText value="#{taskView.entityPopup.idClient.operator}" title="Operateur Internet"/>
+
+                                    <h:outputText value="Identifiant Internet:"/>
+                                    <h:outputText value="#{taskView.entityPopup.idClient.internetLogin}" title="Identifiant Internet"/>
+
+                                    <h:outputText value="Mot&nbsp;de&nbsp;passe&nbsp;Internet:"/>
+                                    <p:outputPanel rendered="#{not empty taskView.entityPopup.idClient.internetPassword}">
+                                        <p:commandButton
+                                            onmousedown="setFormFieldValue('tClientDetails','internetPasswordView',
+                                                        '#{taskView.entityPopup.idClient.internetPassword}');"
+                                            onmouseup="setFormFieldValue('tClientDetails','internetPasswordView',
+                                                     '#{utils.getHiddenString(taskView.entityPopup.idClient.internetPassword)}');"
+                                            onmouseout="setFormFieldValue('tClientDetails','internetPasswordView',
+                                                     '#{utils.getHiddenString(taskView.entityPopup.idClient.internetPassword)}');"
+                                            id="password_unlocker"
+                                            icon="ui-icon-unlocked"
+                                            title="Afficher le mot de passe"
+                                            style="font-size:50%;vertical-align: bottom;"/>
+                                        <h:outputText id="internetPasswordView"
+                                                      value="#{utils.getHiddenString(taskView.entityPopup.idClient.internetPassword)}"/>
+                                    </p:outputPanel>
+                                    <h:outputText value="" rendered="#{empty taskView.entityPopup.idClient.internetPassword}"/>
+                                </h:panelGrid>
+
+                            </p:column>
+
+                        </h:panelGrid>
+                        <h:panelGrid columns="2" styleClass="full_table">
+
+                            <p:column>
+
+                                <h4 class="tabheader">Type d'interventions:</h4>
+                                <h:inputTextarea value="#{taskView.entityPopup.idClient.interventionType}"
+                                                 title="Type d'interventions dans la société"
+                                                 readonly="true"
+                                                 rows="3"
+                                                 styleClass="textarea_min"/>
+
+                            </p:column>
+                            <p:column>
+
+                                <h4 class="tabheader">Observations:</h4>
+                                <h:inputTextarea value="#{taskView.entityPopup.idClient.observations}"
+                                                 title="Observations"
+                                                 readonly="true"
+                                                 rows="3"
+                                                 styleClass="textarea_min"/>
+
+                            </p:column>
+                        </h:panelGrid>
+                    </p:fieldset>
+                </p:column>
+            </h:panelGrid>
+        </h:form>
+    </h:body>
+</html>
+

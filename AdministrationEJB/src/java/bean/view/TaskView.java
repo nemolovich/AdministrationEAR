@@ -8,12 +8,14 @@ package bean.view;
 import bean.ApplicationLogger;
 import bean.facade.TaskFacade;
 import bean.view.struct.EntityView;
+import entity.CUser;
 import entity.Task;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Named;
 
 /**
@@ -146,5 +148,9 @@ public class TaskView extends EntityView<Task, TaskFacade>
     public void setEntity(Task entity)
     {
         super.setInstance(entity);
+    }
+    
+    public void ajaxSelect(AjaxBehaviorEvent e)
+    {
     }
 }
