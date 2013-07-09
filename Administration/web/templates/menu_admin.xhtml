@@ -9,35 +9,48 @@
     <h:body>
         <ui:include src="/restricted/admin/data/log/logPopup.xhtml"/>
         <h:form id="menu_Form">
-            <div style="margin-left: 16px;margin-bottom: 10px;">
-                <p:commandButton value="Journal"
-                                 icon="ui-icon-document"
-                                 title="Afficher le journal du serveur"
-                                 onclick="logViewDialog.show();"/>
-            </div>
-            <div class="menu">
-                <p:fieldset legend="Configuration">
-                    <h:link outcome="/restricted/user/index" value="Panneau utilisateur" title="Afficher le panneau utilisateur" />
-                    <br />
-                    <h:link outcome="/restricted/admin/index" value="Panneau administrateur" title="Afficher le panneau administrateur"/>
-                    <br />
-                </p:fieldset>
-                <p:fieldset legend="Données">
-                    <h:link outcome="/restricted/admin/data/client/list" value="Liste des sociétés" title="Afficher la liste des sociétés"/>
-                    <br />
-                    <h:link outcome="/restricted/admin/data/c_user/list" value="Liste des utilisateurs" title="Afficher la liste des utilisateurs"/>
-                </p:fieldset>
-                <p:fieldset legend="Tâches">
-                    <p:commandLink actionListener="#{taskView.entityCreate()}"
-                                   ajax="true"
-                                   immediate="false"
-                                   update=":taskMenuViewPopup :taskMenuDialogHeader :taskViewForm"
-                                   oncomplete="taskMenuViewDialog.show();"
-                                   value="Nouvelle tâche"
-                                   title="Créer une nouvelle tâche"/>
-                    <br />
-                </p:fieldset>
-            </div>
+            <p:panelMenu styleClass="menu"
+                         widgetVar="menu_admin">
+                <p:submenu label="Journal">
+                    <p:menuitem value="Afficher"
+                                     icon="ui-icon-document"
+                                     title="Afficher le journal du serveur"
+                                     onclick="logViewDialog.show();"/>
+                </p:submenu>
+                <p:submenu label="Configuration">
+                    <p:menuitem outcome="/restricted/user/index"
+                                value="Panneau utilisateur"
+                                icon="ui-icon-arrowreturn-1-e"
+                                title="Afficher le panneau utilisateur" /> 
+                    <p:menuitem outcome="/restricted/admin/index"
+                                value="Panneau administrateur"
+                                icon="ui-icon-arrowreturnthick-1-e"
+                                title="Afficher le panneau administrateur"/>
+                </p:submenu>
+                <p:submenu label="Données">
+                    <p:menuitem outcome="/restricted/admin/data/client/list" 
+                                value="Liste des sociétés"
+                                icon="ui-icon-copy"
+                                title="Afficher la liste des sociétés"/>
+                    <p:menuitem outcome="/restricted/admin/data/c_user/list"
+                                value="Liste des utilisateurs"
+                                icon="ui-icon-copy"
+                                title="Afficher la liste des utilisateurs"/>
+                </p:submenu>
+                <p:submenu label="Tâches">
+                    <p:menuitem actionListener="#{taskView.entityCreate()}"
+                                immediate="false"
+                                icon="ui-icon-circle-plus"
+                                styleClass="green_icon"
+                                update=":taskMenuViewPopup :taskMenuDialogHeader :taskViewForm"
+                                oncomplete="taskMenuViewDialog.show();"
+                                value="Nouvelle tâche"
+                                title="Créer une nouvelle tâche"/>
+                </p:submenu>
+            </p:panelMenu>
+            <script type="text/javascript">
+                expandPanelMenu();
+            </script>
         </h:form>
     </h:body>
 </html>

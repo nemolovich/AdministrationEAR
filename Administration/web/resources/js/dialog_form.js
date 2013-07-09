@@ -231,6 +231,10 @@ function getNavigatorHeight()
  */
 function forceFilter(filter)
 {
+    if(typeof( window[filter] ) === "undefined")
+    {
+        return;
+    }
     if(filter.filter()===undefined)
     {
         if(debug===true)
@@ -291,8 +295,17 @@ function resetForm(formId)
     });
 }
 
+/**
+ * Variable globale des bloques concurrents
+ * @type Array
+ */
 var concurrents=[];
 
+/**
+ * Affiche un bloque et cache ses éventuels concurrents
+ * @param {type} id - Identifiant du bloque à afficher
+ * @returns {Boolean} - Vrai si tous ses concurrents on bien été cachés
+ */
 function displayBlock(id)
 {
     var ok=true;
@@ -324,12 +337,25 @@ function displayBlock(id)
     return false;
 }
 
+/**
+ * Cache un bloque
+ * @param {String} id - Identifiant du bloque à chacher
+ * @returns {Boolean} - Toujours vrai
+ */
 function hideBlock(id)
 {
     $("#"+id).css("display","none");
     return true;
 }
 
+/**
+ * Permet de définir des bloques concurrents à celui donné afin de cacher ceux-ci
+ * si on veut l'afficher et réciproquement. La liste est enregistrée dans une
+ * variable globale.
+ * @param {String} id - Identifiant du bloque
+ * @param {String[]} listId - Liste des identifiants des bloques concurrents
+ * @returns {void}
+ */
 function addConcurrentBlock(id,listId)
 {
     var temp=[];
@@ -355,6 +381,12 @@ function addConcurrentBlock(id,listId)
     });
 }
 
+/**
+ * Renvoi l'index où se trouve la paire donnée
+ * @param {Array} arr - Le tableau dans lequel chercher
+ * @param {String[]} pair - La pair à rechercher
+ * @returns {Number} - L'index où se trouve la paire dans le tableau
+ */
 function indexOf(arr,pair)
 {
     var index=-1;
@@ -370,6 +402,12 @@ function indexOf(arr,pair)
     return index;
 }
 
+/**
+ * Indique si un tableau contient l'élément donné
+ * @param {type} arr - Le tableau dans lequel chercher
+ * @param {type} e - L'élément à rechercher
+ * @returns {Boolean} - Vrai si le tableau contient l'élément recherché
+ */
 function containsElement(arr,e)
 {
     var contains=false;
@@ -384,11 +422,23 @@ function containsElement(arr,e)
     return contains;
 }
 
+/**
+ * Indique si un tableau contient la paire donnée
+ * @param {Array} arr - Le tableau dans lequel chercher
+ * @param {String[]} pair - La paire à rechercher
+ * @returns {Boolean} - Vrai si le tableau contient la paire recherchée
+ */
 function contains(arr,pair)
 {
     return (indexOf(arr,pair)!==-1);
 }
 
+/**
+ * Renvoi la valeur d'un tableau à un index précis
+ * @param {Array} arr - Le tableau dans lequel chercher
+ * @param {Number} index - L'index de recherche
+ * @returns {String[]} - La paire à l'index donné dans le tableau
+ */
 function getAt(arr,index)
 {
     var value=null;
@@ -401,6 +451,35 @@ function getAt(arr,index)
         }
     });
     return value;
+}
+
+/**
+ * Permet de dérouler les menu par défaut au chargement de la page
+ * @returns {void}
+ */
+function expandPanelMenu()
+{
+    $(document).ready(function()
+    {
+        $(".ui-panelmenu-content").css("display","block"); //shows the menuitems
+        $(".ui-panelmenu-header").addClass("ui-state-active"); //sets the submenu header to active state
+        $(".ui-icon-triangle-1-e").removeClass("ui-icon-triangle-1-e").addClass("ui-icon-triangle-1-s"); //sets the triangle icon to "expaned" version
+    });
+}
+
+function switchState(id1,id2,stateS)
+{
+    var state=(stateS!=='false');
+    if(state)
+    {
+        $("#"+id1).css("display","block");
+        $("#"+id2).css("display","none");
+    }
+    else
+    {
+        $("#"+id1).css("display","none");
+        $("#"+id2).css("display","block");
+    }
 }
 
 /**

@@ -46,7 +46,6 @@ public class TaskView extends EntityView<Task, TaskFacade>
     @Override
     public String entityView(Task entity)
     {
-        System.err.println("VIEW!");
         super.setCreating(false);
         super.setEditing(false);
         this.entityPopup = entity;
@@ -80,7 +79,6 @@ public class TaskView extends EntityView<Task, TaskFacade>
     @Override
     public String entityUpdate(Task entity)
     {
-        System.err.println("UPDATE!");
         super.setCreating(false);
         super.setEditing(true);
         this.entityPopup = entity;
@@ -138,9 +136,10 @@ public class TaskView extends EntityView<Task, TaskFacade>
     @Override
     public String getDeleteMessage(Task entity)
     {
+        String details=entity!=null?" ("+entity.toString()
+                + " id="+entity.getId()+")":"";
         return "Vous êtes sur le point de supprimer définitivement"
-                + " cette tâche ("+entity.toString()
-                + " id="+entity.getId()+"). Cette action est irreversible,"
+                + " cette tâche"+details+". Cette action est irreversible,"
                 + " êtes-vous certain(e) de vouloir continuer?";
     }
 

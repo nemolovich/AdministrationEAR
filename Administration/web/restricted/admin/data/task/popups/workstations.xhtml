@@ -8,53 +8,53 @@
     </h:head>
     <h:body>
         <f:view>
-            <h:form id="workstationViewForm">
+            <h:form id="tWorkstationViewForm">
                 <h:panelGrid columns="2" columnClasses="label,fields">
                     
                     <h:outputText value="Société:"/>
-                    <h:outputText id="idClientV" value="#{workstationView.entity.idClient}"
+                    <h:outputText id="tidClientV" value="#{taskView.entityPopup.idWorkstation.idClient}"
                                   title="Société à laquelle appartient ce poste de travail"/>
                     
                     <h:outputText value="Modèle:"/>
-                    <h:outputText id="brandV" value="#{workstationView.entity.brand}"
+                    <h:outputText id="tbrandV" value="#{taskView.entityPopup.idWorkstation.brand}"
                                   title="Marque de la machine"/>
                     
                     <h:outputText value="Type de machine:"/>
-                    <h:outputText id="wsTypeV" value="#{workstationView.entity.wsType}"
+                    <h:outputText id="twsTypeV" value="#{taskView.entityPopup.idWorkstation.wsType}"
                                   title="Type de la machine"/>
                     
                     <h:outputText value="Date de mise en service:"/>
-                    <h:outputText id="startDateV" value="#{workstationView.entity.startDate}"
+                    <h:outputText id="tstartDateV" value="#{taskView.entityPopup.idWorkstation.startDate}"
                                   title="Date de mise en service de la machine" >
                         <f:convertDateTime pattern="dd/MM/yyyy"/>
                     </h:outputText>
                     
                     <h:outputText value="Processeur:"/>
-                    <h:outputText id="processorV" value="#{workstationView.entity.processor}"
+                    <h:outputText id="tprocessorV" value="#{taskView.entityPopup.idWorkstation.processor}"
                                   title="Processeur de la machine"/>
                     
                     <h:outputText value="Moniteur:"/>
-                    <h:outputText id="monitorV" value="#{workstationView.entity.monitor}"
+                    <h:outputText id="tmonitorV" value="#{taskView.entityPopup.idWorkstation.monitor}"
                                   title="Moniteur de la machine"/>
                     
                     <h:outputText value="Carte graphique:"/>
-                    <h:outputText id="videoCardV" value="#{workstationView.entity.videoCard}"
+                    <h:outputText id="tvideoCardV" value="#{taskView.entityPopup.idWorkstation.videoCard}"
                                   title="Carte graphique de la machine"/>
                     
                     <h:outputText value="Système d'exploitation:"/>
-                    <h:outputText id="operatingSystemV" value="#{workstationView.entity.operatingSystem}"
+                    <h:outputText id="toperatingSystemV" value="#{taskView.entityPopup.idWorkstation.operatingSystem}"
                                   title="Système d'exploitation de la machine"/>
                     
                     <h:outputText value="Mémoire vive:"/>
-                    <h:outputText id="ramV" value="#{workstationView.entity.ram}"
+                    <h:outputText id="tramV" value="#{taskView.entityPopup.idWorkstation.ram}"
                                   title="Mémoire vive de la machine"/>
                     
                     <h:outputText value="Disque dur:"/>
-                    <h:outputText id="hardDriveV" value="#{workstationView.entity.hardDrive}"
+                    <h:outputText id="thardDriveV" value="#{taskView.entityPopup.idWorkstation.hardDrive}"
                                   title="Disque dur de la machine"/>
                     
                     <h:outputText value="Observations:"/>
-                    <h:outputText id="observationsV" value="#{workstationView.entity.observations}"
+                    <h:outputText id="tobservationsV" value="#{taskView.entityPopup.idWorkstation.observations}"
                                   title="Observations"/>
                     
                 </h:panelGrid>

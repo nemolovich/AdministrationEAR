@@ -20,7 +20,7 @@
                   modal="true"
                   showEffect="clip"
                   hideEffect="clip">
-            <h:form id="taskMenuDataPopupForm">
+            <h:form id="taskMenuDataPopupForm"> 
                 <p:dataTable id="taskMenuDataTablePopup"
                              value="#{taskMultiView.getData(taskView.entries)}"
                              var="item"
@@ -110,6 +110,8 @@
         </p:dialog>
         <script type="text/javascript">
             var taskMenuViewDialog;
+            var taskMenuTable;
+            
         </script>
         <p:dialog id="taskMenuViewPopup"
                   dynamic="true"
@@ -141,6 +143,59 @@
         </p:dialog>
         <f:view>
             <h:form id="taskMenuDataForm">
+                <p:outputPanel id="deleteMessageScript">
+                    <script type="text/javascript">
+                        var taskDeleteMessage='#{taskView.getDeleteMessage(taskView.entity)}';
+                        switchState('taskMenuDataForm\\:taskWakeContextMenu',
+                                    'taskMenuDataForm\\:taskSleepContextMenu',
+                                    '#{taskView.entity.sleeping}');
+                    </script>
+                </p:outputPanel>
+                <p:contextMenu id="taskContextMenu"
+                               for="taskMenuDataTable">  
+                    <p:menuitem value="Afficher"
+                                title="Affiche les détails de cette tâche"
+                                update=":taskMenuViewPopup :taskMenuDialogHeader :taskViewForm"
+                                icon="ui-icon-search"
+                                oncomplete="taskMenuViewDialog.show()"
+                                actionListener="#{taskView.entityView(taskView.entity)}"/>
+                    <p:menuitem value="Modifier"
+                                title="Modifier cette tâche"
+                                update=":taskMenuViewPopup :taskMenuDialogHeader :taskViewForm"
+                                icon="ui-icon-pencil"
+                                styleClass="blue_icon"
+                                oncomplete="taskMenuViewDialog.show()"
+                                actionListener="#{taskView.entityUpdate(taskView.entity)}"/>
+                    <p:separator/>
+                    <p:menuitem id="taskSleepContextMenu"
+                                value="Archiver"
+                                title="Définir cette tâche comme accomplie"
+                                icon="ui-icon-folder-collapsed"
+                                update=":growl :taskMenuDataForm"
+                                onclick="if(!confirm('Voulez-vous définir cette tâche comme accomplie?\n'+
+                                                     '(Vous pourrez la réactiver quand vous le souhaitez)'))
+                                                     {return false;}"
+                                oncomplete="forceFilter(taskMenuTable);"
+                                actionListener="#{taskView.entitySleep(taskView.entity)}"/>
+                    <p:menuitem id="taskWakeContextMenu"
+                                value="Réactiver"
+                                title="Définir cette tâche comme à faire"
+                                icon="ui-icon-refresh"
+                                update=":growl :taskMenuDataForm"
+                                oncomplete="forceFilter(taskMenuTable);"
+                                actionListener="#{taskView.entityWake(taskView.entity)}"/>
+                    <p:separator/>
+                    <p:menuitem id="taskDeleteContextMenu"
+                                title="Supprime cette tâche"
+                                value="Supprimer"
+                                update=":growl :taskMenuDataForm"
+                                icon="ui-icon-trash"
+                                styleClass="red_icon"
+                                action="javascript:void(0);"
+                                oncomplete="forceFilter(taskMenuTable);"
+                                onclick="if(!confirm(taskDeleteMessage)){return false;}"
+                                actionListener="#{taskView.entityDelete(taskView.entity)}"/>
+                </p:contextMenu> 
                 <p:dataTable id="taskMenuDataTable"
                              value="#{taskMultiView.getData(taskView.entries)}"
                              var="item"
@@ -156,12 +211,15 @@
                              selection="#{taskView.entity}"
                              selectionMode="single">
                     
+                    <p:ajax event="contextMenu"
+                            process="@this"
+                            update=":taskMenuDataForm:deleteMessageScript"/>
                     <p:ajax event="rowDblselect"
                             update=":taskMenuViewPopup :taskMenuDialogHeader :taskViewForm"
                             listener="#{taskView.entityView(taskView.entity)}"
                             oncomplete="taskMenuViewDialog.show();"/>
                     <p:ajax event="filter" onstart="taskMenuTable.unselectAllRows();"
-                            onerror="console.log('error');"/>
+                            onerror="console.log('Erreur de filtre sur les tâches');"/>
                     
                     <p:column headerText="Date"
                               style="width:1%;"
@@ -186,6 +244,26 @@
                               filterMatchMode="contains">
                         <h:outputText value="#{item.idClient.name}"/>
                     </p:column>
+                    
+                    <f:facet name="header">
+                        <p:outputPanel style="float:left;">
+                            <p:outputLabel for="checkDisplaySleepingTask"
+                                           value="Afficher tout"
+                                           style="font-size:75%;margin-bottom: 10px !important;margin-left: 10px;"/>
+                            <p:selectBooleanCheckbox id="checkDisplaySleepingTask"
+                                                     value="#{taskMultiView.displaySleepingEntities}"
+                                                     styleClass="small_check"
+                                                     style="vertical-align: middle !important;margin-bottom: 5px !important;">  
+                                <p:ajax update=":taskMenuDataForm:taskMenuDataTable"
+                                        oncomplete="forceFilter(taskMenuTable);"
+                                        immediate="false"/>  
+                            </p:selectBooleanCheckbox>
+                            <p:tooltip for="checkDisplaySleepingTask"
+                                       value="Affiche les tâche accomplies en plus de celles à faire"
+                                       showEffect="fade" hideEffect="fade"
+                                       styleClass="tooltip"/>
+                        </p:outputPanel>
+                    </f:facet>
                 </p:dataTable>
             </h:form>
             <script type="text/javascript">

@@ -70,8 +70,7 @@
                                 <p:ajax update="taskViewForm:ptidUser
                                         taskViewForm:ptidWorkstationFull
                                         taskViewForm:displayTclientDetails
-                                        taskViewForm:tClientViewForm
-                                        taskViewForm:ptidClient"
+                                        taskViewForm:tClientViewForm"
                                         oncomplete="$('taskViewForm\\\\:displayTclientDetails').css('display','inline');"
                                         listener="#{taskView.ajaxSelect}"/>
                                 
@@ -87,11 +86,11 @@
                                              style="font-size: 40%;vertical-align: top !important;margin-left: 10px;"
                                              oncomplete="displayBlock('taskViewForm\\:tclientDetails');"
                                              action="javascript:void(0);"
-                                             title="Afficher les détails de la société #{taskView.entityPopup.idClient}"/>
+                                             title="Afficher les détails de la société"/>
                         </p:outputPanel>
 
                         <h:outputLabel value="Poste de travail:" for="ptidWorkstationFull"/>
-                        <p:outputPanel>
+                        <p:outputPanel style="white-space: nowrap;">
                             <h:inputTextarea id="ptidWorkstationFullV"
                                              value="#{taskView.entityPopup.idWorkstation.toString()}"
                                              readonly="true"
@@ -110,7 +109,9 @@
                                 <f:selectItem itemLabel="Sélectionnez&nbsp;une&nbsp;machine" itemValue=""/>
                                 <f:selectItems value="#{taskView.entityPopup.idClient.workstationList}"/>
                                 <f:converter binding="#{workstationConverter}"/>
-                                <p:ajax update="taskViewForm:displayTworkstationDetails"
+                                <p:ajax update="taskViewForm:displayTworkstationDetails
+                                        taskViewForm:tWorkstationViewForm"
+                                        oncomplete="$('taskViewForm\\\\:displayTworkstationDetails').css('display','inline');"
                                         listener="#{taskView.ajaxSelect}"/>
                                 
                                 <p:column>
@@ -125,8 +126,7 @@
                                              style="font-size: 40%;vertical-align: top !important;margin-left: 10px;"
                                              oncomplete="displayBlock('taskViewForm\\:tworkstationDetails');"
                                              action="javascript:void(0);"
-                                             title="Afficher les détails du poste de travail"
-                                             rendered="#{not empty taskView.entityPopup.idWorkstation}"/>
+                                             title="Afficher les détails du poste de travail"/>
                             
                         </p:outputPanel>
 
@@ -145,7 +145,9 @@
                                 <f:selectItem itemLabel="Sélectionnez&nbsp;un&nbsp;utilisateur" itemValue=""/>
                                 <f:selectItems value="#{taskView.entityPopup.idClient.CUserList}"/>
                                 <f:converter binding="#{cUserConverter}"/>
-                                <p:ajax update="taskViewForm:displayTcuserDetails"
+                                <p:ajax update="taskViewForm:displayTcuserDetails
+                                        taskViewForm:tCuserViewForm"
+                                        oncomplete="$('taskViewForm\\\\:displayTcuserDetails').css('display','inline');"
                                         listener="#{taskView.ajaxSelect}"/>
                                 
                                 <p:column>
@@ -160,8 +162,7 @@
                                              style="font-size: 40%;vertical-align: top !important;margin-left: 10px;"
                                              oncomplete="displayBlock('taskViewForm\\:tcuserDetails');"
                                              action="javascript:void(0);"
-                                             title="Afficher les détails de l'utilisateur"
-                                             rendered="#{not empty taskView.entityPopup.idUser and not taskView.creating}"/>
+                                             title="Afficher les détails de l'utilisateur"/>
                         </p:outputPanel>
 
                         <h:outputLabel value="Date de début:" for="ptstartDate"/>
@@ -368,7 +369,7 @@
                                          styleClass="red_icon"
                                          title="Chacher les information sur le poste de travail"
                                          onclick="hideBlock('taskViewForm\\:tworkstationDetails');"/>
-                        <ui:include src="/restricted/admin/data/workstation/popupView.xhtml"/>
+                        <ui:include src="/restricted/admin/data/task/popups/workstations.xhtml"/>
                     </p:outputPanel>
                     <p:outputPanel id="tcuserDetails"
                                    styleClass="inside_dialog"
@@ -377,7 +378,7 @@
                                          styleClass="red_icon"
                                          title="Chacher les information sur l'utilisateur"
                                          onclick="hideBlock('taskViewForm\\:tcuserDetails');"/>
-                        <ui:include src="/restricted/admin/data/c_user/popupView.xhtml"/>
+                        <ui:include src="/restricted/admin/data/task/popups/cusers.xhtml"/>
                     </p:outputPanel>
                     <script type="text/javascript">
                         $(document).ready(function()
@@ -385,6 +386,8 @@
                             if(#{taskView.creating})
                             {
                                 hideBlock('taskViewForm\\:displayTclientDetails');
+                                hideBlock('taskViewForm\\:displayTworkstationDetails');
+                                hideBlock('taskViewForm\\:displayTcuserDetails');
                             }
                             hideBlock('taskViewForm\\:tclientDetails');
                             addConcurrentBlock('taskViewForm\\:tclientDetails',
