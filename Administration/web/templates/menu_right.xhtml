@@ -101,18 +101,14 @@
                     </p:column>
                     
                     <p:column headerText="État"
-                              sortBy="#{item.sleeping}">
+                              sortBy="#{item.sleeping}"
+                              style="width:2%;">
                         <h:outputText value="#{item.sleeping?'Faite':'À faire'}"/>
                     </p:column>
                     
                 </p:dataTable>
             </h:form>
         </p:dialog>
-        <script type="text/javascript">
-            var taskMenuViewDialog;
-            var taskMenuTable;
-            
-        </script>
         <p:dialog id="taskMenuViewPopup"
                   dynamic="true"
                   appendToBody="true"
@@ -195,7 +191,13 @@
                                 oncomplete="forceFilter(taskMenuTable);"
                                 onclick="if(!confirm(taskDeleteMessage)){return false;}"
                                 actionListener="#{taskView.entityDelete(taskView.entity)}"/>
-                </p:contextMenu> 
+                </p:contextMenu>
+                <script type="text/javascript">
+                    $(document).ready(function()
+                    {
+                        taskMenuTable.filter();
+                    });
+                </script>
                 <p:dataTable id="taskMenuDataTable"
                              value="#{taskMultiView.getData(taskView.entries)}"
                              var="item"
@@ -220,6 +222,9 @@
                             oncomplete="taskMenuViewDialog.show();"/>
                     <p:ajax event="filter" onstart="taskMenuTable.unselectAllRows();"
                             onerror="console.log('Erreur de filtre sur les tâches');"/>
+<!--                    <p:ajax event="sort" onstart="taskMenuTable.unselectAllRows();"
+                            oncomplete="forceFilter(taskMenuTable);"
+                            onerror="console.log('Erreur de filtre sur les tâches');"/>-->
                     
                     <p:column headerText="Date"
                               style="width:1%;"
@@ -254,9 +259,9 @@
                                                      value="#{taskMultiView.displaySleepingEntities}"
                                                      styleClass="small_check"
                                                      style="vertical-align: middle !important;margin-bottom: 5px !important;">  
-                                <p:ajax update=":taskMenuDataForm:taskMenuDataTable"
+                                <p:ajax update=":taskMenuDataPopupForm :taskMenuDataForm :taskMenuDataForm:taskMenuDataTable"
                                         oncomplete="forceFilter(taskMenuTable);"
-                                        immediate="false"/>  
+                                        immediate="false"/>
                             </p:selectBooleanCheckbox>
                             <p:tooltip for="checkDisplaySleepingTask"
                                        value="Affiche les tâche accomplies en plus de celles à faire"
@@ -266,12 +271,6 @@
                     </f:facet>
                 </p:dataTable>
             </h:form>
-            <script type="text/javascript">
-                $(document).ready(function()
-                {
-                    forceFilter(taskMenuTable);
-                });
-            </script>
         </f:view>
     </h:body>
 </html>
