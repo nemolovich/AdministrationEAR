@@ -58,16 +58,15 @@ public class Client implements Serializable
     private Integer id;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 2, max = 45)
+    @Size(max = 45)
     @Column(name = "NAME")
     private String name;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 100)
+    @Size(max = 100)
     @Column(name = "ADDRESS")
     private String address;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "POSTALCODE")
     private int postalcode;
     @Basic(optional = false)

@@ -20,7 +20,7 @@
     </h:head>
 
     <h:body>
-        <p:ajaxStatus widgetVar="ajaxStatusVar" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+        <p:ajaxStatus widgetVar="ajaxStatusVar" onstart="startAjax();" onsuccess="statusDialog.hide();"/>
 
         <p:dialog id="ajaxStatus"
                   modal="true"
@@ -67,7 +67,7 @@
                           effect="drop"
                           effectSpeed="slow">  
                 <ui:insert name="left">
-                    <ui:include src="/templates/menu_#{userLogin.template}.xhtml"/>
+                    <ui:include src="/templates/menu.xhtml"/>
                 </ui:insert>
             </p:layoutUnit>
             <p:layoutUnit id="menu_right"
@@ -89,6 +89,7 @@
                 $(document).ready(function()
                 {
                     addExpandableButton("menu_right", "taskMenuDataDialog");
+                    addRedStarsTorequiredFields();
                 });
             </script>
             <p:layoutUnit id="content_panel"
@@ -96,7 +97,7 @@
                           position="center">
                 <div class="insert-content">
                     <ui:insert name="content">
-                        Content
+                        Admin Services
                     </ui:insert>
                 </div>
 

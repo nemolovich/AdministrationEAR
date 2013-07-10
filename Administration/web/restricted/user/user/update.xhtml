@@ -11,33 +11,57 @@
     <h:body>
     	<ui:composition template="/templates/page_template.xhtml">
             <ui:define name="title">
-                | Modification paramètres
+                | Modification Compte
             </ui:define>
             <ui:define name="content">
                 <f:attribute name="header" value="Modification des paramètres"/>
                 <f:view>
                     <h:form id="userUpdate" rendered="#{not empty tUserView.entity}">
                         <p>
-                            Veuillez compléter les informations ci-dessous et valider por modifier vos paramètres.
+                            Veuillez compléter les informations ci-dessous et valider pour modifier vos paramètres.
                             <br />
                             (<span class="red-star">*</span>: Champs obligatoires)
                         </p>
-                        <h:panelGrid columns="2" columnClasses="label,field">
-                            <p:outputLabel value="Mail:" for="mail"/>
-                            <p:inputText id="mail" value="#{tUserView.entity.mail}" title="Mail" required="true" requiredMessage="Le champs 'Mail' ne peut être vide">
+                        <h:panelGrid columns="2" columnClasses="label,fields"><p:outputLabel value="Mail:" for="mail"
+                                           styleClass="required"/>
+                            <p:inputText id="mail" value="#{tUserView.entity.mail}"
+                                         title="Adresse mail de l'utilisateur">
+                                <f:validator binding="#{notNullFieldValidator}"/>
+                                <f:attribute name="requiredMessage"
+                                             value="Le champs 'Mail' ne peut être vide"/>
+                                <f:attribute name="requiredTitle"
+                                             value="Champs 'Mail' vide"/>
                                 <f:validator binding="#{userUniqueFieldValidator}"/>
                                 <f:attribute name="fieldName" value="Mail" />
                                 <f:attribute name="update_id" value="#{tUserView.entity.id}" />
                             </p:inputText>
 
-                            <p:outputLabel value="Nom:" for="name" />
-                            <p:inputText id="name" value="#{tUserView.entity.name}" title="Name" required="true" requiredMessage="Le champs 'Nom' ne peut être vide"/>
+                            <p:outputLabel value="Nom:" for="name"
+                                           styleClass="required"/>
+                            <p:inputText id="name" value="#{tUserView.entity.name}"
+                                         title="Nom de l'utilisateur">
+                                <f:validator binding="#{notNullFieldValidator}"/>
+                                <f:attribute name="requiredMessage"
+                                             value="Le champs 'Nom' ne peut être vide"/>
+                                <f:attribute name="requiredTitle"
+                                             value="Champs 'Nom' vide"/>
+                            </p:inputText>
 
-                            <p:outputLabel value="Prénom:" for="firstname" />
-                            <p:inputText id="firstname" value="#{tUserView.entity.firstname}" title="Firstname" required="true" requiredMessage="Le champs 'Prénom' ne peut être vide"/>
+                            <p:outputLabel value="Prénom:" for="firstname"
+                                           styleClass="required"/>
+                            <p:inputText id="firstname" value="#{tUserView.entity.firstname}"
+                                         title="Prénom de l'utilisateur">
+                                <f:validator binding="#{notNullFieldValidator}"/>
+                                <f:attribute name="requiredMessage"
+                                             value="Le champs 'Prénom' ne peut être vide"/>
+                                <f:attribute name="requiredTitle"
+                                             value="Champs 'Prénom' vide"/>
+                            </p:inputText>
 
-                            <p:outputLabel for="password" value="Mot de passe" />
-                            <p:password id="password" value="#{tUserView.entity.password}"
+                            <p:outputLabel for="password" value="Mot de passe"
+                                           styleClass="required"/>
+                            <p:password id="password"
+                                        value="#{tUserView.entity.password}"
                                         feedback="true"
                                         strongLabel="Sécurité forte"
                                         goodLabel="Sécurité bonne"
@@ -49,18 +73,22 @@
                                 <f:attribute name="min_length" value="#{true}" />
                             </p:password>
 
-                            <p:outputLabel for="confirm" value="Confirmation" />
+                            <p:outputLabel for="confirm" value="Confirmation"
+                                           styleClass="required"/>
                             <p:password id="confirm" binding="#{confirm}"/>
 
                         </h:panelGrid>
                         <p:outputPanel styleClass="buttons_panel">
                             <p:commandButton id="update" value="Mettre à jour"
                                              action="#{tUserView.update(userLogin)}"
+                                             title="Enregistrer les modifications"
+                                             type="submit"
                                              icon="ui-icon-disk"
                                              styleClass="green_icon"
                                              ajax="false"/>
                             <p:commandButton id="back" value="Annuler"
                                              action="view"
+                                             title="Annuler les changements"
                                              icon="ui-icon-closethick"
                                              styleClass="red_icon"
                                              ajax="false" immediate="true">

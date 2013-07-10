@@ -7,8 +7,10 @@ package entity;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,11 +20,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -76,6 +80,8 @@ public class Task implements Serializable
     @JoinColumn(name = "ID_CLIENT", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Client idClient;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTask")
+    private List<Intervention> interventionList;
 
     public Task() {
     }
@@ -170,6 +176,17 @@ public class Task implements Serializable
 
     public void setIdClient(Client idClient) {
         this.idClient = idClient;
+    }
+
+    @XmlTransient
+    public List<Intervention> getInterventionList()
+    {
+        return interventionList;
+    }
+
+    public void setInterventionList(List<Intervention> interventionList)
+    {
+        this.interventionList = interventionList;
     }
 
     @Override

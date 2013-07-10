@@ -13,34 +13,35 @@
             <ui:define name="content">
                 <f:view>
                     <h:form>
-                        <p:panelGrid columns="2">
-                            <f:facet name="header">
-                                <p:outputPanel>
-                                    <h2><h:outputText value="Détails de l'utilisateur"/></h2>
-                                </p:outputPanel>
-                            </f:facet>
-                            <h:outputText value="Id:"/>
-                            <h:outputText value="#{tUserView.entity.id}" title="Identifiant"/>
-                            <h:outputText value="Mail:"/>
-                            <h:outputText value="#{tUserView.entity.mail}" title="Mail"/>
+                        <h:panelGrid columns="2" columnClasses="label,fields">
+                            <h:outputText value="Identifiant:"/>
+                            <h:outputText value="#{tUserView.entity.id}" title="Identifiant de l'utilisateur"/>
+                            <h:outputText value="Adresse mail"/>
+                            <h:outputText value="#{tUserView.entity.mail}" title="Adresse mail de l'utilisateur"/>
                             <h:outputText value="Nom:"/>
-                            <h:outputText value="#{tUserView.entity.name}" title="Nom"/>
+                            <h:outputText value="#{tUserView.entity.name}" title="Nom de l'utilisateur"/>
                             <h:outputText value="Prénom:"/>
-                            <h:outputText value="#{tUserView.entity.firstname}" title="Prénom"/>
+                            <h:outputText value="#{tUserView.entity.firstname}" title="Prénom de l'utilisateur"/>
                             <h:outputText value="Droits:"/>
-                            <h:outputText value="#{tUserView.entity.rights}" title="Droits"/>
-                            <f:facet name="footer">
-                                <p:outputPanel>
-                                    <p:commandButton id="update" value="Modifier"
-                                                     action="#{tUserView.entityUpdate(tUserView.entity,userLogin)}"
-                                                     ajax="false" immediate="true"/>
-                                    <p:commandButton id="back" value="Retour"
-                                                     action="list"
-                                                     ajax="false" immediate="true">
-                                    </p:commandButton>
-                                </p:outputPanel>
-                            </f:facet>
-                        </p:panelGrid>
+                            <h:outputText value="#{tUserView.entity.rights}" title="Droits de l'utilisateur"/>
+                        </h:panelGrid>
+                        <p:outputPanel styleClass="buttons_panel">
+                            <p:commandButton id="update" value="Modifier"
+                                             icon="ui-icon-wrench"
+                                             title="Modifier cet utilisateur"
+                                             action="#{tUserView.entityUpdate(tUserView.entity,userLogin)}"
+                                             ajax="false"
+                                             immediate="true"/>
+                            <p:commandButton id="back" value="Retour"
+                                             actionListener="#{tUserView.cancelCreate()}"
+                                             icon="ui-icon-closethick"
+                                             styleClass="red_icon"
+                                             title="Retour à la liste des utilisateurs"
+                                             action="list"
+                                             ajax="false"
+                                             immediate="true">
+                            </p:commandButton>
+                        </p:outputPanel>
                     </h:form>
                 </f:view>
             </ui:define>

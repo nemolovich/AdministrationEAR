@@ -19,6 +19,15 @@
                 <f:view>
                     <h:form id="clientCreate">
                         <p:growl id="growlWizard" showDetail="true" life="30000" autoUpdate="true"/>
+                        <p:commandButton action="list"
+                                         actionListener="#{clientView.cancelCreate()}"
+                                         value="Retour à la liste des sociétés"
+                                         title="Annuler et retourner à la liste des sociétés"
+                                         immediate="true"
+                                         style="margin-bottom:30px;"
+                                         icon="ui-icon-arrowthick-1-w"
+                                         styleClass="red_icon"
+                                         ajax="true"/>
                         <p:wizard id="clientCreateWizard"
                                   backLabel="Retour"
                                   nextLabel="Suivant"
@@ -36,47 +45,59 @@
                                     </p>
                                     <h:panelGrid columns="2" columnClasses="label,fields">
                                         
-                                        <p:outputLabel value="Nom de la société" for="name"/>
+                                        <p:outputLabel value="Nom de la société" for="name"
+                                                       styleClass="required"/>
                                         <p:inputText id="name" value="#{clientView.entity.name}" maxlength="45"
-                                                     title="Nom de la société"
-                                                     required="true"
-                                                     requiredMessage="Le nom de la société ne peut être vide">
+                                                     title="Nom de la société">
+                                            <f:validator binding="#{notNullFieldValidator}"/>
+                                            <f:attribute name="requiredMessage"
+                                                         value="Le champs 'Nom de la société' ne peut être vide"/>
+                                            <f:attribute name="requiredTitle"
+                                                         value="Champs 'Nom de la société' vide"/>
                                             <f:validator binding="#{clientUniqueFieldValidator}"/>
                                             <f:attribute name="fieldName" value="Name" />
                                             <f:attribute name="update_id" value="#{clientView.entity.id}" />
                                         </p:inputText>
                                         
-                                        <p:outputLabel value="Adresse:" for="address"/>
+                                        <p:outputLabel value="Adresse:" for="address"
+                                                       styleClass="required"/>
                                         <p:inputText id="address" value="#{clientView.entity.address}" maxlength="100"
-                                                     title="Adresse de la société"
-                                                     required="true"
-                                                     requiredMessage="Veuillez indiquer l'adresse de la société"/>
+                                                     title="Adresse de la société">
+                                            <f:validator binding="#{notNullFieldValidator}"/>
+                                            <f:attribute name="requiredMessage"
+                                                         value="Le champs 'Adresse' ne peut être vide"/>
+                                            <f:attribute name="requiredTitle"
+                                                         value="Champs 'Adresse' vide"/>
+                                        </p:inputText>
 
-                                        <p:outputLabel value="Code postal:" for="postalcode" />
+                                        <p:outputLabel value="Code postal:" for="postalcode"
+                                                       styleClass="required"/>
                                         <p:inputMask id="postalcode" value="#{clientView.entity.postalcode}" mask="99999"
-                                                     title="Code postal de la société"
-                                                     required="true"
-                                                     requiredMessage="Veuillez indiquer le code postal de la société"/>
+                                                     title="Code postal de la société">
+                                            <f:validator binding="#{notNullFieldValidator}"/>
+                                            <f:attribute name="requiredMessage"
+                                                         value="Le champs 'Code postal' ne peut être vide"/>
+                                            <f:attribute name="requiredTitle"
+                                                         value="Champs 'Code postal' vide"/>
+                                        </p:inputMask>
 
-                                        <p:outputLabel value="Téléphone:" for="phone" />
+                                        <p:outputLabel value="Téléphone:" for="phone"
+                                                       styleClass="required"/>
                                         <p:inputMask id="phone" value="#{clientView.entity.phone}" mask="99.99.99.99.99"
-                                                     title="Numéro de téléphone de la société"
-                                                     required="true"
-                                                     requiredMessage="Veuillez indiquer le numéro de téléphone de la société">
+                                                     title="Numéro de téléphone de la société">
                                             <f:validator binding="#{phonePatternValidator}"/>
                                         </p:inputMask>
 
-                                        <p:outputLabel value="Fax:" for="fax" />
+                                        <p:outputLabel value="Fax:" for="fax"/>
                                         <p:inputMask id="fax" value="#{clientView.entity.fax}"  mask="99.99.99.99.99"
                                                      title="Numéro de fax de la société">
                                             <f:validator binding="#{faxPatternValidator}"/>
                                         </p:inputMask>
                                         
-                                        <p:outputLabel value="Adresse mail:" for="mail" />
+                                        <p:outputLabel value="Adresse mail:" for="mail"
+                                                       styleClass="required"/>
                                         <p:inputText id="mail" value="#{clientView.entity.mail}" maxlength="30"
-                                                     title="Adresse mail de la société"
-                                                     required="true"
-                                                     requiredMessage="Veuillez indiquer l'adresse mail de la société">
+                                                     title="Adresse mail de la société">
                                             <f:validator binding="#{emailPatternValidator}"/>
                                         </p:inputText>
                                     

@@ -1,0 +1,108 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Liste des interventions</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/page_template.xhtml">
+            <ui:define name="title">
+                | Liste Interventions
+            </ui:define>
+            <ui:define name="content">
+                <f:attribute name="header" value="Liste des interventions"/>
+                <f:view>
+                    <h:form id="interventionDataForm">
+                        <p:dataTable id="interventionDataTable"
+                                     value="#{interventionView.entries}"
+                                     var="item"
+                                     widgetVar="interventionTable"
+                                     rowIndexVar="index"
+                                     paginatorPosition="bottom"
+                                     emptyMessage="Aucune intervention n'a été trouvée"
+                                     rowStyleClass="#{item.sleeping?'sleeping_elmt':null}"
+                                     paginator="true"
+                                     rows="#{utils.maxDataRows}"
+                                     sortBy="#{item.id}"
+                                     filteredValue="#{interventionView.filteredEntities}">
+                            
+                            <p:column headerText="Identifiant"
+                                      style="width:1%;text-align: right;"
+                                      filterBy="#{item.id}"
+                                      sortBy="#{item.id}"
+                                      filterMatchMode="exact"
+                                      filterStyle="width:60px;">
+                                <h:outputText value="#{item.id}"/>
+                            </p:column>
+                            
+                            <p:column headerText="Durée"
+                                      filterBy="#{item.duration}"
+                                      filterMatchMode="contains">
+                                <h:outputText value="#{item.duration}"
+                                              title="Durée de l'intervention"/>
+                            </p:column>
+                            
+                            <p:column headerText="Facture"
+                                      filterBy="#{item.factureNumber}"
+                                      filterMatchMode="contains">
+                                <h:outputText value="#{item.factureNumber}"/>
+                            </p:column>
+                            
+                            <p:column headerText="Tâche à accomplir"
+                                      filterBy="#{item.idTask.toString()}"
+                                      filterMatchMode="contains">
+                                <h:outputText value="#{item.idTask.toString()}"/>
+                            </p:column>
+                            
+                            <p:column headerText="Facturée"
+                                      style="width:1%;"
+                                      filterBy="#{item.sleeping}"
+                                      sortBy="#{item.sleeping}"
+                                      filterMatchMode="contains"
+                                      filterStyle="width:60px;">
+                                <h:outputText value="#{item.sleeping?'Oui':'Non'}"/>
+                            </p:column>
+                            
+                            <f:facet name="footer">
+                                <p:outputPanel style="float:left">
+                                    <h:outputText value="Rechercher:"/>
+                                    <p:inputText id="interventionFilter" onkeyup="interventionTable.filter();"
+                                                 style="width:150px;margin-left:20px">
+                                    </p:inputText>
+                                    <p:commandButton value="Ajouter une intervention"
+                                                     action="#{interventionView.entityCreate()}"
+                                                     title="Ajouter une intervention"
+                                                     icon="ui-icon-circle-plus"
+                                                     styleClass="green_icon"
+                                                     immediate="true"
+                                                     ajax="false"/>
+                                    <p:outputLabel for="checkDisplaySleeping"
+                                                   value="Afficher tout"
+                                                   style="font-size:75%;margin-bottom: 10px !important;margin-left: 10px;"/>
+                                    <p:selectBooleanCheckbox id="checkDisplaySleeping"
+                                                             value="#{interventionView.displaySleepingEntities}"
+                                                             styleClass="small_check"
+                                                             style="vertical-align: middle !important;margin-bottom: 5px !important;">  
+                                        <p:ajax update=":interventionDataForm"
+                                                immediate="false"/>  
+                                    </p:selectBooleanCheckbox>
+                                    <p:tooltip for="checkDisplaySleeping"
+                                               value="Affiche les interventions déjà facturées en plus de celles qui ne le sont pas"
+                                               showEffect="fade" hideEffect="fade"
+                                               styleClass="tooltip"/>
+                                </p:outputPanel>
+                            </f:facet>
+                            
+                        </p:dataTable>
+                    </h:form>
+                </f:view>
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

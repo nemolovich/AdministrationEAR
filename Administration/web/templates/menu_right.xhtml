@@ -171,14 +171,14 @@
                                 onclick="if(!confirm('Voulez-vous définir cette tâche comme accomplie?\n'+
                                                      '(Vous pourrez la réactiver quand vous le souhaitez)'))
                                                      {return false;}"
-                                oncomplete="forceFilter(taskMenuTable);"
+                                oncomplete="forceUpdate('taskMenuDataForm:taskSleepContextMenu','taskMenuDataForm');"
                                 actionListener="#{taskView.entitySleep(taskView.entity)}"/>
                     <p:menuitem id="taskWakeContextMenu"
                                 value="Réactiver"
                                 title="Définir cette tâche comme à faire"
                                 icon="ui-icon-refresh"
                                 update=":growl :taskMenuDataForm"
-                                oncomplete="forceFilter(taskMenuTable);"
+                                oncomplete="forceUpdate('taskMenuDataForm:taskWakeContextMenu','taskMenuDataForm');"
                                 actionListener="#{taskView.entityWake(taskView.entity)}"/>
                     <p:separator/>
                     <p:menuitem id="taskDeleteContextMenu"
@@ -188,7 +188,7 @@
                                 icon="ui-icon-trash"
                                 styleClass="red_icon"
                                 action="javascript:void(0);"
-                                oncomplete="forceFilter(taskMenuTable);"
+                                oncomplete="forceUpdate('taskMenuDataForm:taskDeleteContextMenu','taskMenuDataForm');"
                                 onclick="if(!confirm(taskDeleteMessage)){return false;}"
                                 actionListener="#{taskView.entityDelete(taskView.entity)}"/>
                 </p:contextMenu>
@@ -222,9 +222,6 @@
                             oncomplete="taskMenuViewDialog.show();"/>
                     <p:ajax event="filter" onstart="taskMenuTable.unselectAllRows();"
                             onerror="console.log('Erreur de filtre sur les tâches');"/>
-<!--                    <p:ajax event="sort" onstart="taskMenuTable.unselectAllRows();"
-                            oncomplete="forceFilter(taskMenuTable);"
-                            onerror="console.log('Erreur de filtre sur les tâches');"/>-->
                     
                     <p:column headerText="Date"
                               style="width:1%;"
@@ -252,18 +249,37 @@
                     
                     <f:facet name="header">
                         <p:outputPanel style="float:left;">
-                            <p:outputLabel for="checkDisplaySleepingTask"
+                            <p:outputLabel for="checkDisplaySleepingTaskTop"
                                            value="Afficher tout"
                                            style="font-size:75%;margin-bottom: 10px !important;margin-left: 10px;"/>
-                            <p:selectBooleanCheckbox id="checkDisplaySleepingTask"
+                            <p:selectBooleanCheckbox id="checkDisplaySleepingTaskTop"
                                                      value="#{taskMultiView.displaySleepingEntities}"
                                                      styleClass="small_check"
                                                      style="vertical-align: middle !important;margin-bottom: 5px !important;">  
-                                <p:ajax update=":taskMenuDataPopupForm :taskMenuDataForm :taskMenuDataForm:taskMenuDataTable"
-                                        oncomplete="forceFilter(taskMenuTable);"
+                                <p:ajax update=":taskMenuDataPopupForm @form"
+                                        oncomplete="forceUpdate('taskMenuDataForm:checkDisplaySleepingTaskTop','taskMenuDataForm');"
                                         immediate="false"/>
                             </p:selectBooleanCheckbox>
-                            <p:tooltip for="checkDisplaySleepingTask"
+                            <p:tooltip for="checkDisplaySleepingTaskTop"
+                                       value="Affiche les tâche accomplies en plus de celles à faire"
+                                       showEffect="fade" hideEffect="fade"
+                                       styleClass="tooltip"/>
+                        </p:outputPanel>
+                    </f:facet>
+                    <f:facet name="footer">
+                        <p:outputPanel style="float:left;">
+                            <p:outputLabel for="checkDisplaySleepingTaskBottom"
+                                           value="Afficher tout"
+                                           style="font-size:75%;margin-bottom: 10px !important;margin-left: 10px;"/>
+                            <p:selectBooleanCheckbox id="checkDisplaySleepingTaskBottom"
+                                                     value="#{taskMultiView.displaySleepingEntities}"
+                                                     styleClass="small_check"
+                                                     style="vertical-align: middle !important;margin-bottom: 5px !important;">  
+                                <p:ajax update=":taskMenuDataPopupForm @form"
+                                        oncomplete="forceUpdate('taskMenuDataForm:checkDisplaySleepingTaskBottom','taskMenuDataForm');"
+                                        immediate="false"/>
+                            </p:selectBooleanCheckbox>
+                            <p:tooltip for="checkDisplaySleepingTaskBottom"
                                        value="Affiche les tâche accomplies en plus de celles à faire"
                                        showEffect="fade" hideEffect="fade"
                                        styleClass="tooltip"/>

@@ -16,49 +16,116 @@
             <ui:define name="content">
                 <f:attribute name="header" value="Création d'un utilisateur"/>
                 <f:view>
-                    <h:form>
+                    <h:form rendered="#{not empty tUserView.entity}">
+                        <p>
+                            Veuillez compléter les informations ci-dessous et valider pour créer un utilisateur.
+                            <br />
+                            (<span class="red-star">*</span>: Champs obligatoires)
+                        </p>
                         <h:panelGrid columns="2" columnClasses="label,fields">
-                            <p:outputLabel value="Mail:" for="mail"/>
-                            <p:inputText id="mail" value="#{tUserView.entity.mail}" title="Mail" required="true" requiredMessage="Le champs 'Mail' ne peut être vide">
+                            <p:outputLabel value="Mail:" for="mail"
+                                           styleClass="required"/>
+                            <p:inputText id="mail" value="#{tUserView.entity.mail}"
+                                         title="Adresse mail de l'utilisateur">
+                                <f:validator binding="#{notNullFieldValidator}"/>
+                                <f:attribute name="requiredMessage"
+                                             value="Le champs 'Mail' ne peut être vide"/>
+                                <f:attribute name="requiredTitle"
+                                             value="Champs 'Mail' vide"/>
                                 <f:validator binding="#{userUniqueFieldValidator}"/>
                                 <f:attribute name="fieldName" value="Mail" />
                                 <f:attribute name="update_id" value="#{tUserView.entity.id}" />
                             </p:inputText>
 
-                            <p:outputLabel value="Nom:" for="name" />
-                            <p:inputText id="name" value="#{tUserView.entity.name}" title="Name" required="true" requiredMessage="Le champs 'Nom' ne peut être vide"/>
+                            <p:outputLabel value="Nom:" for="name"
+                                           styleClass="required"/>
+                            <p:inputText id="name" value="#{tUserView.entity.name}"
+                                         title="Nom de l'utilisateur">
+                                <f:validator binding="#{notNullFieldValidator}"/>
+                                <f:attribute name="requiredMessage"
+                                             value="Le champs 'Nom' ne peut être vide"/>
+                                <f:attribute name="requiredTitle"
+                                             value="Champs 'Nom' vide"/>
+                            </p:inputText>
 
-                            <p:outputLabel value="Prénom:" for="firstname" />
-                            <p:inputText id="firstname" value="#{tUserView.entity.firstname}" title="Firstname" required="true" requiredMessage="Le champs 'Prénom' ne peut être vide"/>
+                            <p:outputLabel value="Prénom:" for="firstname"
+                                           styleClass="required"/>
+                            <p:inputText id="firstname" value="#{tUserView.entity.firstname}"
+                                         title="Prénom de l'utilisateur">
+                                <f:validator binding="#{notNullFieldValidator}"/>
+                                <f:attribute name="requiredMessage"
+                                             value="Le champs 'Prénom' ne peut être vide"/>
+                                <f:attribute name="requiredTitle"
+                                             value="Champs 'Prénom' vide"/>
+                            </p:inputText>
 
-                            <p:outputLabel value="Droits:" for="rights" />
+                            <p:outputLabel value="Droits:" for="rights"
+                                           styleClass="required"/>
                             <p:selectOneMenu id="rights" value="#{tUserView.entity.rights}">
                                 <f:selectItems value="#{utils.getEnumRights()}"/>
                             </p:selectOneMenu>
 
-                            <p:outputLabel for="password" value="Mot de passe" />
-                            <p:password id="password" value="#{tUserView.entity.password}">
-                                <f:validator binding="#{passwordValidator}"/>
-                                <f:attribute name="update_id" value="#{tUserView.entity.id}" />
+                            <p:outputLabel for="password" value="Mot de passe"
+                                           styleClass="required"/>
+                            <p:password id="password"
+                                        value="#{tUserView.entity.password}"
+                                        feedback="true"
+                                        strongLabel="Sécurité forte"
+                                        goodLabel="Sécurité bonne"
+                                        weakLabel="Sécurité faible"
+                                        promptLabel="Entrez un mot de passe">
+                                <f:validator binding="#{passwordValidator}" />
                                 <f:attribute name="confirm" value="#{confirm}" />
+                                <f:attribute name="update_id" value="#{tUserView.entity.id}" />
                                 <f:attribute name="min_length" value="#{true}" />
                             </p:password>
 
-                            <p:outputLabel for="confirm" value="Confirmation" />
+                            <p:outputLabel for="confirm" value="Confirmation"
+                                           styleClass="required"/>
                             <p:password id="confirm" binding="#{confirm}"/>
 
-                            <f:facet name="footer">
-                                <p:outputPanel>
-                                    <p:commandButton id="create" value="Créer"
-                                                     action="#{tUserView.create()}"
-                                                     ajax="false"/>
-                                    <p:commandButton id="back" value="Annuler"
-                                                     action="list"
-                                                     ajax="false" immediate="true">
-                                    </p:commandButton>
-                                </p:outputPanel>
-                            </f:facet>
                         </h:panelGrid>
+                        <p:outputPanel styleClass="buttons_panel">
+                            <p:commandButton id="create" value="Créer"
+                                             icon="ui-icon-check"
+                                             styleClass="green_icon"
+                                             title="Créer cet utilisateur"
+                                             action="#{tUserView.create()}"
+                                             ajax="false"/>
+                            <p:commandButton id="back" value="Annuler"
+                                             actionListener="#{tUserView.cancelCreate()}"
+                                             icon="ui-icon-closethick"
+                                             styleClass="red_icon"
+                                             title="Annuler la création"
+                                             action="list"
+                                             ajax="false" immediate="true">
+                            </p:commandButton>
+                        </p:outputPanel>
+                    </h:form>
+                    <h:form id="emptyDataErrorForm" rendered="#{empty tUserView.entity}">
+                        <div class="ui-messages">
+                            <div class="ui-messages-error">
+                                <span class="ui-messages-error-icon"/>
+                                <ul>
+                                    <li>
+                                        <span class="ui-messages-error-summary">
+                                            Erreur veuillez recharger le formulaire
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <p>
+                            Vous allez être redirigez vers l'accueil dans
+                            <h:outputText id="countDown" value="5"/> secondes
+                        </p>
+                        <script type="text/javascript">
+                            $(document).ready(function(){
+                                setTimer(5);
+                            });
+                        </script>
+                        <p:poll interval="1" update="emptyDataErrorForm:countDown"
+                                oncomplete="updateTimer('emptyDataErrorForm','countDown');"/>
                     </h:form>
                 </f:view>
             </ui:define>

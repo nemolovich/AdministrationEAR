@@ -49,19 +49,17 @@ public class TUser implements Serializable
     private Integer id;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 64)
+    @Size(max = 64)
     @Column(name = "MAIL")
     private String mail;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 30,
-    message = "Le nom doit contenir entre 1 et 30 caractères")
+    @Size(max = 30)
     @Column(name = "NAME")
     private String name;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 30,
-    message = "Le prénom doit contenir entre 1 et 30 caractères")
+    @Size(max = 30)
     @Column(name = "FIRSTNAME")
     private String firstname;
     @Basic(optional = false)
@@ -268,7 +266,7 @@ public class TUser implements Serializable
     
     public String getFullString()
     {
-        return "entity.TUser{" + "id=" + id + ", mail=" + mail + ", name=" + name + ", firstname=" + firstname + ", password=" + password + ", rights=" + rights + '}';
+        return "entity.TUser{" + "id=" + id + ", mail=" + mail + ", name=" + name + ", firstname=" + firstname + ", rights=" + rights + '}';
     }
 
     @Override

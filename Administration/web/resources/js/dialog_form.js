@@ -8,6 +8,23 @@ var appName='Administration';
  * @type Boolean
  */
 var debug=false;
+/**
+ * Permet d'afficher l'état des requêtes ajax en modal
+ * @type Boolean
+ */
+var displayAjaxStatus=true;
+
+/**
+ * Affiche une fenêtre modale pour le chargement des requêtes ajax
+ * @returns {undefined}
+ */
+function startAjax()
+{
+    if(displayAjaxStatus)
+    {
+        statusDialog.show();
+    }
+}
 
 /**
  * Inspecte le formulaire contenu dans un <p:dialog> pour
@@ -170,6 +187,7 @@ function setTimer(time)
 function updateTimer(form,id)
 {
     setFormFieldValue(form,id,--counter);
+    displayAjaxStatus=false;
     if(counter<=0)
     {
         window.location='/'+appName;
@@ -226,24 +244,35 @@ function getNavigatorHeight()
 /**
  * Permet de forcer le filtre d'une <p:DataTable> en
  * possédant
- * @param {c} filter - Filtre à forcer
+ * @param {c} table - Table sur laquelle forcer le filtre
  * @returns {void}
  */
-function forceFilter(filter)
+function forceFilter(table)
 {
-    if(typeof( window[filter] ) === "undefined")
+    if(typeof( window[table] ) === "undefined")
     {
         return;
     }
-    if(filter.filter()===undefined)
+    if(table.filter()===undefined)
     {
         if(debug===true)
         {
-            console.log('Force filter for table with id="'+filter.jqId.replace(/\\/,'')+'"');
+            console.log('Force filter for table with id="'+table.jqId.replace(/\\/,'')+'"');
         }
-        filter.clearFilters();
-        filter.filter();
+        table.clearFilters();
+        table.filter();
     }
+}
+
+/**
+ * Permet de forcer la mise à jour d'un composant primefaces
+ * @param {String} source - Identifiant de l'élément source
+ * @param {String} formId - identifiant de l'élément à actualiser
+ * @returns {Boolean} - Toujours faux (réponse javascript d'un bouton)
+ */
+function forceUpdate(source,formId)
+{
+    PrimeFaces.ab({source:source,update:'growl '+formId,oncomplete:function(xhr,status,args){},formId:formId});return false;
 }
 
 /**
@@ -271,15 +300,15 @@ function addExpandableButton(id, widgetName)
 /**
  * Ajoute une petite etoile rouge après le label d'un champs
  * pour indiquer qu'il est requis. S'applique sur tous les
- * éléments de la classe 'requiered'.
+ * éléments de la classe 'required'.
  * @returns {void}
  */
-function addRedStarsToRequieredFields()
+function addRedStarsTorequiredFields()
 {
     var span=document.createElement("span");
     span.innerHTML="*";
     span.className="red-star";
-    $(".requiered").append(span);
+    $(".required").append(span);
 }
 
 /**
@@ -467,6 +496,13 @@ function expandPanelMenu()
     });
 }
 
+/**
+ * Affiche l'un ou l'autre des éléments donné suivant l'état donné
+ * @param {String} id1 - Identifiant du premier élément
+ * @param {String} id2 - Identifiant du second élément
+ * @param {String} stateS - État, sous forme de chaine de caractère ('true' ou 'false')
+ * @returns {void}
+ */
 function switchState(id1,id2,stateS)
 {
     var state=(stateS!=='false');

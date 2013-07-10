@@ -15,12 +15,6 @@
                                rendered="#{not empty taskView.entityPopup}"
                                style="float:left;">
                     <p:outputPanel rendered="#{taskView.creating or taskView.editing}">
-                        <script type="text/javascript">
-                            $(document).ready(function()
-                            {
-                                addRedStarsToRequieredFields();
-                            });
-                        </script>
                         <p>
                             Veuillez renseigner les informations pour cette tâche.
                             <br />
@@ -41,9 +35,9 @@
                                      rendered="#{taskView.creating or
                                                  taskView.editing}">
                             <f:validator binding="#{notNullFieldValidator}"/>
-                            <f:attribute name="requieredMessage"
+                            <f:attribute name="requiredMessage"
                                          value="Veuillez entrer une description de l'intervention"/>
-                            <f:attribute name="requieredTitle"
+                            <f:attribute name="requiredTitle"
                                          value="Champs 'Description' vide"/>
                         </p:inputText>
 
@@ -60,9 +54,9 @@
                                              rendered="#{taskView.creating or
                                                          taskView.editing}">
                                 <f:validator binding="#{notNullFieldValidator}"/>
-                                <f:attribute name="requieredMessage"
+                                <f:attribute name="requiredMessage"
                                              value="Veuillez sélectionner la société dans laquelle intervenir"/>
-                                <f:attribute name="requieredTitle"
+                                <f:attribute name="requiredTitle"
                                              value="Champs 'Société' invalide"/>
                                 <f:selectItem itemLabel="Sélectionnez&nbsp;une&nbsp;société" itemValue=""/>
                                 <f:selectItems value="#{clientView.entries}"/>
@@ -71,6 +65,7 @@
                                         taskViewForm:ptidWorkstationFull
                                         taskViewForm:displayTclientDetails
                                         taskViewForm:tClientViewForm"
+                                        process="@this"
                                         oncomplete="$('taskViewForm\\\\:displayTclientDetails').css('display','inline');"
                                         listener="#{taskView.ajaxSelect}"/>
                                 
@@ -111,6 +106,7 @@
                                 <f:converter binding="#{workstationConverter}"/>
                                 <p:ajax update="taskViewForm:displayTworkstationDetails
                                         taskViewForm:tWorkstationViewForm"
+                                        process="@this"
                                         oncomplete="$('taskViewForm\\\\:displayTworkstationDetails').css('display','inline');"
                                         listener="#{taskView.ajaxSelect}"/>
                                 
@@ -147,6 +143,7 @@
                                 <f:converter binding="#{cUserConverter}"/>
                                 <p:ajax update="taskViewForm:displayTcuserDetails
                                         taskViewForm:tCuserViewForm"
+                                        process="@this"
                                         oncomplete="$('taskViewForm\\\\:displayTcuserDetails').css('display','inline');"
                                         listener="#{taskView.ajaxSelect}"/>
                                 
@@ -188,9 +185,9 @@
                                 $(document).ready(function(){loadLocales();});
                             </script>
                             <f:validator binding="#{notNullFieldValidator}"/>
-                            <f:attribute name="requieredMessage"
+                            <f:attribute name="requiredMessage"
                                          value="Veuillez entrer la date prévue pour l'intervention"/>
-                            <f:attribute name="requieredTitle"
+                            <f:attribute name="requiredTitle"
                                          value="Champs 'Date de l'intervention' vide"/>
                             <f:convertDateTime pattern="dd/MM/yyyy"/>
                         </p:calendar>
@@ -231,9 +228,9 @@
                                                rendered="#{taskView.creating or
                                                            taskView.editing}">
                             <f:validator binding="#{notNullFieldValidator}"/>
-                            <f:attribute name="requieredMessage"
+                            <f:attribute name="requiredMessage"
                                          value="Veuillez indiquez si l'intervention requiert un déplacement"/>
-                            <f:attribute name="requieredTitle"
+                            <f:attribute name="requiredTitle"
                                          value="Champs 'Déplacement' invalide"/>
                         </p:selectBooleanButton>
 
@@ -247,9 +244,9 @@
                                            rendered="#{taskView.creating or
                                                        taskView.editing}">
                             <f:validator binding="#{notNullFieldValidator}"/>
-                            <f:attribute name="requieredMessage"
+                            <f:attribute name="requiredMessage"
                                          value="Veuillez indiquez le type d'intervention"/>
-                            <f:attribute name="requieredTitle"
+                            <f:attribute name="requiredTitle"
                                          value="Champs 'Type d'intervention' invalide"/>
                             <f:selectItems value="#{taskView.getInterventionTypes()}"/>
                         </p:selectOneButton>
@@ -311,8 +308,9 @@
                                                  styleClass="green_icon"
                                                  update=":taskViewForm :taskMenuDialogHeader :growl :taskMenuDataForm"
                                                  value="Modifier"
-                                                 oncomplete="if(createRequestVoid(taskMenuViewDialog, xhr, status, args)){
-                                                            forceFilter(taskMenuTable);}else{return false;}"/>
+                                                 oncomplete="if(createRequestVoid(taskMenuViewDialog, xhr, status, args))
+                                                        {forceUpdate('taskViewForm:ptupdateTaskButton','taskMenuDataForm');}
+                                                        else{return false;}"/>
                                 <p:commandButton id="ptbackUTaskButton"
                                                  title="Annuler la modification"
                                                  actionListener="#{taskView.cancelCreate()}"
@@ -336,8 +334,9 @@
                                                  styleClass="green_icon"
                                                  update=":taskViewForm :taskMenuDialogHeader :growl :taskMenuDataForm"
                                                  value="Valider"
-                                                 oncomplete="if(createRequest(taskMenuViewDialog, xhr, status, args)){
-                                                            forceFilter(taskMenuTable);}else{return false;}"/>
+                                                 oncomplete="if(createRequest(taskMenuViewDialog, xhr, status, args))
+                                                        {forceUpdate('taskViewForm:ptcreateTaskButton','taskMenuDataForm');}
+                                                        else{return false;}"/>
                                 <p:commandButton id="ptbackCTaskButton"
                                                  title="Annuler la création"
                                                  actionListener="#{taskView.cancelCreate()}"

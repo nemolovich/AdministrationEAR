@@ -19,6 +19,15 @@
                 <f:view>
                     <h:form id="clientUpdate" rendered="#{not empty clientView.entity}">
                         <p:growl id="growlWizard" showDetail="true" life="30000" autoUpdate="true"/>
+                        <p:commandButton action="list"
+                                         actionListener="#{clientView.cancelCreate()}"
+                                         value="Retour à la liste des sociétés"
+                                         title="Annuler et retourner à la liste des sociétés"
+                                         immediate="true"
+                                         style="margin-bottom:30px;"
+                                         icon="ui-icon-arrowthick-1-w"
+                                         styleClass="red_icon"
+                                         ajax="true"/>
                         <p:wizard id="clientUpdateWizard"
                                   backLabel="Retour"
                                   nextLabel="Suivant"

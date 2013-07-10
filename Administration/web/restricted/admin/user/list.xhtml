@@ -10,22 +10,25 @@
     </h:head>
     <h:body>
     	<ui:composition template="/templates/page_template.xhtml">
+            <ui:define name="title">
+                | Liste Utilisateurs
+            </ui:define>
             <ui:define name="content">
+                <f:attribute name="header" value="Liste des utilisateurs"/>
                 <f:view>
                     <h:form id="displayUsers">
                         <p:dataTable value="#{tUserView.entries}"
                                      var="item"
                                      emptyMessage="Aucun utilisateur n'a été trouvé"   
                                      widgetVar="userTable"
-                                     rows="10"
+                                     rows="#{utils.maxDataRows}"
                                      rowKey="#{item.id}"
-                                     paginator="true">
-                            <f:facet name="header">
-                                <p:outputPanel>
-                                    <h2><h:outputText value="Liste des utilisateurs"/></h2>
-                                </p:outputPanel>
-                            </f:facet>
+                                     rowIndexVar="idex"
+                                     sortBy="#{item.id}"
+                                     paginator="true"
+                                     paginatorPosition="top">
                             <p:column headerText="Identifiant"
+                                      style="width:1%;text-align: right;"
                                       sortBy="#{item.id}"
                                       filterBy="#{item.id}"
                                       filterMatchMode="exact">
@@ -55,24 +58,25 @@
                                       filterMatchMode="contains">
                                 <h:outputText value="#{item.rights}"/>
                             </p:column>
-                            <p:column headerText="Actions">
+                            <p:column headerText="Actions"
+                                      style="width:1% !important;white-space: nowrap;">
                                 <p:commandButton action="#{tUserView.entityView(item)}"
-                                                 title="Afficher les détails"
+                                                 title="Afficher les détails de cet utilisateur"
                                                  icon="ui-icon-search"
-                                                 style="font-size: 75%;"
+                                                 style="font-size: 60%;"
                                                  ajax="false"
                                                  immediate="true"/>&nbsp;
                                 <p:commandButton action="#{tUserView.entityUpdate(item,userLogin)}"
-                                                 title="Modifier"
+                                                 title="Modifier cet utilisateur"
                                                  icon="ui-icon-pencil"
-                                                 style="font-size: 75%;"
+                                                 style="font-size: 60%;"
                                                  ajax="false"
                                                  immediate="true"/>&nbsp;
                                 <p:commandButton onclick="return (confirm('#{tUserView.getDeleteMessage(item)}'));"
                                                  action="#{tUserView.entityDelete(item)}"
-                                                 title="Supprimer"
+                                                 title="Supprimer cet utilisateur"
                                                  icon="ui-icon-trash"
-                                                 style="font-size: 75%;"
+                                                 style="font-size: 60%;"
                                                  styleClass="red_icon"
                                                  ajax="false"
                                                  immediate="true"/>
@@ -81,14 +85,24 @@
                                 <p:outputPanel style="float:left">
                                     <h:outputText value="Rechercher:"/>
                                     <p:inputText id="globalFilter" onkeyup="userTable.filter();"
+                                                 title="Rechercher parmis tous les champs"
                                                  style="width:150px;margin-left:20px" />
+                                    <p:commandButton id="create" value="Ajouter un utilisateur"
+                                                     icon="ui-icon-circle-plus"
+                                                     styleClass="green_icon"
+                                                     title="Ajouter un utilisateur à la liste"
+                                                     action="#{tUserView.entityCreate()}"
+                                                     ajax="false" immediate="true"
+                                                     style="margin-left:20px">
+                                    </p:commandButton>
                                 </p:outputPanel>
-                                <p:commandButton id="create" value="Ajouter une entrée"
-                                                 action="#{tUserView.entityCreate()}"
-                                                 ajax="false" immediate="true"
-                                                 style="margin-left:20px">
-                                </p:commandButton>
                             </f:facet>
+                            <script type="text/javascript">
+                                $(document).ready(function()
+                                {
+                                    userTable.filter();
+                                });
+                            </script>
                         </p:dataTable>
                     </h:form>
                 </f:view>

@@ -33,11 +33,12 @@ public class TUserFacade extends AbstractFacade<TUser>
     
     public TUser update(TUser user)
     {  
-        return this.em.merge(user);
+        super.edit(user);
+        return user;
     }
   
     public void persist(Object object)
     {  
-        this.em.persist(object);  
+        super.create((TUser)object);  
     }
 }
