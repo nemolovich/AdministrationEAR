@@ -6,6 +6,7 @@ package bean.view;
 
 import bean.facade.InterventionFacade;
 import bean.view.struct.EmbdedDataListView;
+import bean.view.struct.EntityView;
 import entity.Intervention;
 import entity.Task;
 import java.util.List;
@@ -30,6 +31,12 @@ public class InterventionView extends EmbdedDataListView<Task, Intervention, Int
         super(Intervention.class,"intervention",
                 Intervention.class.getMethod("setIdTask",
                                         new Class<?>[]{Task.class}));
+    }
+    
+    public String cancelCreate(EntityView<?,?> entity)
+    {
+        entity.cancelCreate();
+        return super.cancelCreate();
     }
     
     @Override

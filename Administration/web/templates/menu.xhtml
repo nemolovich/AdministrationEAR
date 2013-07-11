@@ -74,6 +74,14 @@
                                 oncomplete="taskMenuViewDialog.show();"
                                 value="Nouvelle tâche"
                                 title="Créer une nouvelle tâche"/>
+                    <p:menuitem actionListener="#{taskView.entityCreate()}"
+                                immediate="false"
+                                icon="ui-icon-circle-plus"
+                                styleClass="green_icon"
+                                update=":interventionMenuViewPopup :interventionMenuDialogHeader :interventionViewForm"
+                                oncomplete="interventionMenuViewDialog.show();"
+                                value="Nouvelle intervention"
+                                title="Créer une nouvelle intervention"/>
                 </p:submenu>
             </p:panelMenu>
             <script type="text/javascript">

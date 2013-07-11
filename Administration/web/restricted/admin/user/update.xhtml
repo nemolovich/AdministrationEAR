@@ -16,16 +16,16 @@
             <ui:define name="content">
                 <f:attribute name="header" value="Modification de l'utilisateur"/>
                 <f:view>
-                    <h:form id="userUpdate" rendered="#{not empty tUserView.entity}">
+                    <h:form id="userAccountUpdate" rendered="#{not empty tUserView.entity}">
                         <p>
                             Veuillez compléter les informations ci-dessous et valider pour modifier cet utilisateur.
                             <br />
                             (<span class="red-star">*</span>: Champs obligatoires)
                         </p>
                         <h:panelGrid columns="2" columnClasses="label,fields">
-                            <p:outputLabel value="Mail:" for="mail"
+                            <p:outputLabel value="Mail:" for="mailAccount"
                                            styleClass="required"/>
-                            <p:inputText id="mail" value="#{tUserView.entity.mail}"
+                            <p:inputText id="mailAccount" value="#{tUserView.entity.mail}"
                                          title="Adresse mail de l'utilisateur">
                                 <f:validator binding="#{notNullFieldValidator}"/>
                                 <f:attribute name="requiredMessage"
@@ -37,9 +37,9 @@
                                 <f:attribute name="update_id" value="#{tUserView.entity.id}" />
                             </p:inputText>
 
-                            <p:outputLabel value="Nom:" for="name"
+                            <p:outputLabel value="Nom:" for="nameAccount"
                                            styleClass="required"/>
-                            <p:inputText id="name" value="#{tUserView.entity.name}"
+                            <p:inputText id="nameAccount" value="#{tUserView.entity.name}"
                                          title="Nom de l'utilisateur">
                                 <f:validator binding="#{notNullFieldValidator}"/>
                                 <f:attribute name="requiredMessage"
@@ -48,9 +48,9 @@
                                              value="Champs 'Nom' vide"/>
                             </p:inputText>
 
-                            <p:outputLabel value="Prénom:" for="firstname"
+                            <p:outputLabel value="Prénom:" for="firstnameAccount"
                                            styleClass="required"/>
-                            <p:inputText id="firstname" value="#{tUserView.entity.firstname}"
+                            <p:inputText id="firstnameAccount" value="#{tUserView.entity.firstname}"
                                          title="Prénom de l'utilisateur">
                                 <f:validator binding="#{notNullFieldValidator}"/>
                                 <f:attribute name="requiredMessage"
@@ -59,15 +59,15 @@
                                              value="Champs 'Prénom' vide"/>
                             </p:inputText>
 
-                            <p:outputLabel value="Droits:" for="rights"
+                            <p:outputLabel value="Droits:" for="rightsAccount"
                                            styleClass="required"/>
-                            <p:selectOneMenu id="rights" value="#{tUserView.entity.rights}">
+                            <p:selectOneMenu id="rightsAccount" value="#{tUserView.entity.rights}">
                                 <f:selectItems value="#{utils.getEnumRights()}"/>
                             </p:selectOneMenu>
 
-                            <p:outputLabel for="password" value="Mot de passe"
+                            <p:outputLabel for="passwordAccount" value="Mot de passe"
                                            styleClass="required"/>
-                            <p:password id="password"
+                            <p:password id="passwordAccount"
                                         value="#{tUserView.entity.password}"
                                         feedback="true"
                                         strongLabel="Sécurité forte"
@@ -80,26 +80,26 @@
                                 <f:attribute name="min_length" value="#{true}" />
                             </p:password>
 
-                            <p:outputLabel for="confirm" value="Confirmation"
+                            <p:outputLabel for="confirmAccount" value="Confirmation"
                                            styleClass="required"/>
-                            <p:password id="confirm" binding="#{confirm}"/>
+                            <p:password id="confirmAccount" binding="#{confirm}"/>
 
                         </h:panelGrid>
                         <p:outputPanel styleClass="buttons_panel">
-                            <p:commandButton id="update" value="Mettre à jour"
+                            <p:commandButton id="updateAccount" value="Mettre à jour"
                                              icon="ui-icon-disk"
                                              styleClass="green_icon"
                                              title="Enregistrer les modifications"
                                              action="#{tUserView.update(null)}"
                                              ajax="false"/>
-                            <p:commandButton id="delete"  value="Supprimer"
+                            <p:commandButton id="deleteAccount"  value="Supprimer"
                                              icon="ui-icon-trash"
                                              styleClass="red_icon"
                                              title="Supprimer cet utilisateur"
                                              onclick="return (confirm('#{tUserView.getDeleteMessage(tUserView.entity)}'));"
                                              action="#{tUserView.entityDelete(tUserView.entity)}"
                                              ajax="false"/>
-                            <p:commandButton id="back" value="Annuler"
+                            <p:commandButton id="backAccount" value="Annuler"
                                              actionListener="#{tUserView.cancelCreate()}"
                                              icon="ui-icon-closethick"
                                              styleClass="red_icon"
@@ -109,7 +109,7 @@
                             </p:commandButton>
                         </p:outputPanel>
                     </h:form>
-                    <h:form id="emptyDataErrorForm" rendered="#{empty tUserView.entity}">
+                    <h:form id="emptyAccountErrorForm" rendered="#{empty tUserView.entity}">
                         <div class="ui-messages">
                             <div class="ui-messages-error">
                                 <span class="ui-messages-error-icon"/>
@@ -131,8 +131,8 @@
                                 setTimer(5);
                             });
                         </script>
-                        <p:poll interval="1" update="emptyDataErrorForm:countDown"
-                                oncomplete="updateTimer('emptyDataErrorForm','countDown');"/>
+                        <p:poll interval="1" update="emptyAccountErrorForm:countDown"
+                                oncomplete="updateTimer('emptyAccountErrorForm','countDown');"/>
                     </h:form>
                 </f:view>
             </ui:define>

@@ -137,6 +137,35 @@
                     process="@this"
                     update="taskMenuViewPopup"/>
         </p:dialog>
+        <p:dialog id="interventionMenuViewPopup"
+                  dynamic="true"
+                  appendToBody="true"
+                  header="Options de l'intervention"
+                  widgetVar="interventionMenuViewDialog"
+                  resizable="false"
+                  draggable="true"
+                  maximizable="false"
+                  modal="true"
+                  showEffect="clip"
+                  hideEffect="clip">
+            <h:form id="interventionMenuDialogHeader">
+                <h3 class="tabheader">
+                    <h:outputText value="#{taskView.creating?'Création':
+                                            (taskView.editing?'Modification':
+                                            'Détails')}"/>
+                    <h:outputText value=" de la intervention n°#{taskView.entityPopup.id}"
+                                  rendered="#{not taskView.creating}"/>
+                    <h:outputText value=" d'une nouvelle intervention"
+                                  rendered="#{taskView.creating}"/>
+                </h3>
+            </h:form>
+            <ui:include src="/restricted/admin/data/intervention/popupView.xhtml"/>
+            <p:hotkey bind="esc" process=":interventionMenuViewPopup" handler="interventionMenuViewDialog.hide();"/>
+            <p:ajax event="close" listener="#{interventionView.cancelCreate(taskView)}"
+                    process="@this"
+                    update="interventionMenuViewPopup">
+            </p:ajax>
+        </p:dialog>
         <f:view>
             <h:form id="taskMenuDataForm">
                 <p:outputPanel id="deleteMessageScript">

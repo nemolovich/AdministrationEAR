@@ -26,13 +26,13 @@
                             <h:outputText value="#{tUserView.entity.rights}" title="Droits de l'utilisateur"/>
                         </h:panelGrid>
                         <p:outputPanel styleClass="buttons_panel">
-                            <p:commandButton id="update" value="Modifier"
+                            <p:commandButton id="updateAccount" value="Modifier"
                                              icon="ui-icon-wrench"
                                              title="Modifier cet utilisateur"
                                              action="#{tUserView.entityUpdate(tUserView.entity,userLogin)}"
                                              ajax="false"
                                              immediate="true"/>
-                            <p:commandButton id="back" value="Retour"
+                            <p:commandButton id="backAccount" value="Retour"
                                              actionListener="#{tUserView.cancelCreate()}"
                                              icon="ui-icon-closethick"
                                              styleClass="red_icon"

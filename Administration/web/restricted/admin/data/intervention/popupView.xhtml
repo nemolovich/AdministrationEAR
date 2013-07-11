@@ -10,27 +10,27 @@
     </h:head>
     <h:body>
         <f:view>
-            <h:form id="taskViewForm">
-                <p:outputPanel id="taskViewFormDetails"
+            <h:form id="interventionViewForm">
+                <p:outputPanel id="interventionViewFormDetails"
                                rendered="#{not empty taskView.entityPopup}"
                                style="float:left;">
                     <p:outputPanel rendered="#{taskView.creating or taskView.editing}">
                         <p>
-                            Veuillez renseigner les informations pour cette tâche.
+                            Veuillez renseigner les informations pour cette intervention.
                             <br />
                             (<span class="red-star">*</span>: champs requis)
                         </p>
                     </p:outputPanel>
                     <h:panelGrid columns="2" columnClasses="label,fields">
 
-                        <h:outputLabel value="Description de l'intervention:" for="ptdescription"
+                        <h:outputLabel value="Description de l'intervention:" for="pidescription"
                                        styleClass="#{(taskView.creating or
                                                      taskView.editing)?'required':''}"/>
-                        <h:outputText id="ptdescriptionV" value="#{taskView.entityPopup.description}"
+                        <h:outputText id="pidescriptionV" value="#{taskView.entityPopup.description}"
                                       title="Description"
                                       rendered="#{not taskView.creating and
                                                   not taskView.editing}"/>
-                        <p:inputText id="ptdescription"
+                        <p:inputText id="pidescription"
                                      maxlength="250"
                                      value="#{taskView.entityPopup.description}"
                                      title="Description de l'intervention"
@@ -43,15 +43,15 @@
                                          value="Champs 'Description' vide"/>
                         </p:inputText>
 
-                        <h:outputLabel value="Société:" for="ptidClient"
+                        <h:outputLabel value="Société:" for="piidClient"
                                        styleClass="#{(taskView.creating or
                                                      taskView.editing)?'required':''}"/>
                         <p:outputPanel>
-                            <h:outputText id="ptidClientV" value="#{taskView.entityPopup.idClient}"
+                            <h:outputText id="piidClientV" value="#{taskView.entityPopup.idClient}"
                                           title="Société pour l'intervention"
                                           rendered="#{not taskView.creating and
                                                       not taskView.editing}"/>
-                            <p:selectOneMenu id="ptidClient"
+                            <p:selectOneMenu id="piidClient"
                                              value="#{taskView.entityPopup.idClient}"
                                              effect="fade"
                                              var="client"
@@ -65,12 +65,12 @@
                                 <f:selectItem itemLabel="Sélectionnez&nbsp;une&nbsp;société" itemValue=""/>
                                 <f:selectItems value="#{clientView.entries}"/>
                                 <f:converter binding="#{clientConverter}"/>
-                                <p:ajax update="taskViewForm:ptidUser
-                                        taskViewForm:ptidWorkstationFull
-                                        taskViewForm:displayTclientDetails
-                                        taskViewForm:tClientViewForm"
+                                <p:ajax update="interventionViewForm:piidUser
+                                        interventionViewForm:piidWorkstationFull
+                                        interventionViewForm:displayIclientDetails
+                                        interventionViewForm:tClientViewForm"
                                         process="@this"
-                                        oncomplete="$('taskViewForm\\\\:displayTclientDetails').css('display','inline');"
+                                        oncomplete="$('interventionViewForm\\\\:displayIclientDetails').css('display','inline');"
                                         listener="#{taskView.ajaxSelect}"/>
                                 
                                 <p:column>
@@ -78,19 +78,19 @@
                                 </p:column>
                             </p:selectOneMenu>
                             
-                            <p:commandButton id="displayTclientDetails"
+                            <p:commandButton id="displayIclientDetails"
                                              actionListener="#{clientView.entityView(taskView.entityPopup.idClient)}"
                                              icon="ui-icon-search"
-                                             update="taskViewForm:tclientDetails"
+                                             update="interventionViewForm:iclientDetails"
                                              style="font-size: 40%;vertical-align: top !important;margin-left: 10px;"
-                                             oncomplete="displayBlock('taskViewForm\\:tclientDetails');"
+                                             oncomplete="displayBlock('interventionViewForm\\:iclientDetails');"
                                              action="javascript:void(0);"
                                              title="Afficher les détails de la société"/>
                         </p:outputPanel>
 
-                        <h:outputLabel value="Poste de travail:" for="ptidWorkstationFull"/>
+                        <h:outputLabel value="Poste de travail:" for="piidWorkstationFull"/>
                         <p:outputPanel style="white-space: nowrap;">
-                            <h:inputTextarea id="ptidWorkstationFullV"
+                            <h:inputTextarea id="piidWorkstationFullV"
                                              value="#{taskView.entityPopup.idWorkstation.toString()}"
                                              readonly="true"
                                              styleClass="textarea_min"
@@ -98,7 +98,7 @@
                                             rendered="#{not taskView.creating and
                                                         not taskView.editing}">
                             </h:inputTextarea>
-                            <p:selectOneMenu id="ptidWorkstationFull"
+                            <p:selectOneMenu id="piidWorkstationFull"
                                              value="#{taskView.entityPopup.idWorkstation}"
                                              effect="fade"
                                              style="width:90%;"
@@ -108,10 +108,10 @@
                                 <f:selectItem itemLabel="Sélectionnez&nbsp;une&nbsp;machine" itemValue=""/>
                                 <f:selectItems value="#{taskView.entityPopup.idClient.workstationList}"/>
                                 <f:converter binding="#{workstationConverter}"/>
-                                <p:ajax update="taskViewForm:displayTworkstationDetails
-                                        taskViewForm:tWorkstationViewForm"
+                                <p:ajax update="interventionViewForm:displayIworkstationDetails
+                                        interventionViewForm:tWorkstationViewForm"
                                         process="@this"
-                                        oncomplete="$('taskViewForm\\\\:displayTworkstationDetails').css('display','inline');"
+                                        oncomplete="$('interventionViewForm\\\\:displayIworkstationDetails').css('display','inline');"
                                         listener="#{taskView.ajaxSelect}"/>
                                 
                                 <p:column>
@@ -119,24 +119,24 @@
                                 </p:column>
                             </p:selectOneMenu>
                             
-                            <p:commandButton id="displayTworkstationDetails"
+                            <p:commandButton id="displayIworkstationDetails"
                                              actionListener="#{workstationView.entityView(taskView.entityPopup.idWorkstation)}"
                                              icon="ui-icon-search"
-                                             update="taskViewForm:tworkstationDetails"
+                                             update="interventionViewForm:iworkstationDetails"
                                              style="font-size: 40%;vertical-align: top !important;margin-left: 10px;"
-                                             oncomplete="displayBlock('taskViewForm\\:tworkstationDetails');"
+                                             oncomplete="displayBlock('interventionViewForm\\:iworkstationDetails');"
                                              action="javascript:void(0);"
                                              title="Afficher les détails du poste de travail"/>
                             
                         </p:outputPanel>
 
-                        <h:outputLabel value="Utilisateur:" for="ptidUser"/>
+                        <h:outputLabel value="Utilisateur:" for="piidUser"/>
                         <p:outputPanel>
-                            <h:outputText id="ptidUserV" value="#{taskView.entityPopup.idUser}"
+                            <h:outputText id="piidUserV" value="#{taskView.entityPopup.idUser}"
                                           title="Utilisateur pour l'intervention"
                                           rendered="#{not taskView.creating and
                                                       not taskView.editing}"/>
-                            <p:selectOneMenu id="ptidUser"
+                            <p:selectOneMenu id="piidUser"
                                              value="#{taskView.entityPopup.idUser}"
                                              effect="fade"
                                              var="cuser"
@@ -145,10 +145,10 @@
                                 <f:selectItem itemLabel="Sélectionnez&nbsp;un&nbsp;utilisateur" itemValue=""/>
                                 <f:selectItems value="#{taskView.entityPopup.idClient.CUserList}"/>
                                 <f:converter binding="#{cUserConverter}"/>
-                                <p:ajax update="taskViewForm:displayTcuserDetails
-                                        taskViewForm:tCuserViewForm"
+                                <p:ajax update="interventionViewForm:displayIcuserDetails
+                                        interventionViewForm:tCuserViewForm"
                                         process="@this"
-                                        oncomplete="$('taskViewForm\\\\:displayTcuserDetails').css('display','inline');"
+                                        oncomplete="$('interventionViewForm\\\\:displayIcuserDetails').css('display','inline');"
                                         listener="#{taskView.ajaxSelect}"/>
                                 
                                 <p:column>
@@ -156,26 +156,26 @@
                                 </p:column>
                             </p:selectOneMenu>
                             
-                            <p:commandButton id="displayTcuserDetails"
+                            <p:commandButton id="displayIcuserDetails"
                                              actionListener="#{cUserView.entityView(taskView.entityPopup.idUser)}"
                                              icon="ui-icon-search"
-                                             update="taskViewForm:tcuserDetails"
+                                             update="interventionViewForm:icuserDetails"
                                              style="font-size: 40%;vertical-align: top !important;margin-left: 10px;"
-                                             oncomplete="displayBlock('taskViewForm\\:tcuserDetails');"
+                                             oncomplete="displayBlock('interventionViewForm\\:icuserDetails');"
                                              action="javascript:void(0);"
                                              title="Afficher les détails de l'utilisateur"/>
                         </p:outputPanel>
 
-                        <h:outputLabel value="Date de début:" for="ptstartDate"
+                        <h:outputLabel value="Date de début:" for="pistartDate"
                                        styleClass="#{(taskView.creating or
                                                      taskView.editing)?'required':''}"/>
-                        <h:outputText id="ptstartDateV" value="#{taskView.entityPopup.startDate}"
+                        <h:outputText id="pistartDateV" value="#{taskView.entityPopup.startDate}"
                                       title="Date de début prévue de l'intervention"
                                       rendered="#{not taskView.creating and
                                                   not taskView.editing}">
                             <f:convertDateTime pattern="dd/MM/yyyy" />
                         </h:outputText>
-                        <p:calendar id="ptstartDate" value="#{taskView.entityPopup.startDate}"
+                        <p:calendar id="pistartDate" value="#{taskView.entityPopup.startDate}"
                                      title="Date de prévue pour l'intervention"
                                      disabledWeekends="false"
                                      effect="slideDown"
@@ -198,13 +198,13 @@
                             <f:convertDateTime pattern="dd/MM/yyyy"/>
                         </p:calendar>
 
-                        <h:outputLabel value="Durée prévue:" for="ptintendedDuration"/>
-                        <h:outputText id="ptintendedDurationV" value="#{taskView.entityPopup.intendedDuration}"
-                                      title="Durée prévue pour l'intervention"
+                        <h:outputLabel value="Temps effectué:" for="piintendedDuration"/>
+                        <h:outputText id="piintendedDurationV" value="#{interventionView.entity.duration}"
+                                      title="Temps qu'a duré l'intervention"
                                       rendered="#{not taskView.creating and
                                                   not taskView.editing}"/>
-                        <p:calendar id="ptintendedDuration" value="#{taskView.entityPopup.intendedDuration}"
-                                     title="Durée de prévue pour l'intervention"
+                        <p:calendar id="piintendedDuration" value="#{interventionView.entity.duration}"
+                                     title="Temps qu'a duré l'intervention"
                                      disabledWeekends="true"
                                      effect="slideDown"
                                      locale="fr"
@@ -218,14 +218,14 @@
                             <f:converter binding="#{durationConverter}"/>
                         </p:calendar>
 
-                        <h:outputLabel value="Déplacement:" for="ptdeplacement"
+                        <h:outputLabel value="Déplacement:" for="pideplacement"
                                        styleClass="#{(taskView.creating or
                                                      taskView.editing)?'required':''}"/>
-                        <h:outputText id="ptdeplacementV" value="#{taskView.entityPopup.deplacement?'Oui':'Non'}"
+                        <h:outputText id="pideplacementV" value="#{taskView.entityPopup.deplacement?'Oui':'Non'}"
                                       title="#{taskView.entityPopup.deplacement?'Déplacement requis':'Déplacement non requis'}"
                                       rendered="#{not taskView.creating and
                                                   not taskView.editing}"/>
-                        <p:selectBooleanButton id="ptdeplacement"
+                        <p:selectBooleanButton id="pideplacement"
                                                offLabel="NON"
                                                onLabel="OUI"
                                                onIcon="ui-icon-check"
@@ -242,14 +242,14 @@
                                          value="Champs 'Déplacement' invalide"/>
                         </p:selectBooleanButton>
 
-                        <h:outputLabel value="Type d'intervention:" for="ptinterventionType"
+                        <h:outputLabel value="Type d'intervention:" for="piinterventionType"
                                        styleClass="#{(taskView.creating or
                                                      taskView.editing)?'required':''}"/>
-                        <h:outputText id="ptinterventionTypeV" value="#{taskView.entityPopup.interventionType}"
+                        <h:outputText id="piinterventionTypeV" value="#{taskView.entityPopup.interventionType}"
                                       title="Type d'intervention"
                                       rendered="#{not taskView.creating and
                                                   not taskView.editing}"/>
-                        <p:selectOneButton id="ptinterventionType"
+                        <p:selectOneButton id="piinterventionType"
                                            value="#{taskView.entityPopup.interventionType}"
                                            rendered="#{taskView.creating or
                                                        taskView.editing}">
@@ -261,8 +261,8 @@
                             <f:selectItems value="#{taskView.getInterventionTypes()}"/>
                         </p:selectOneButton>
 
-                        <h:outputLabel value="Observations:" for="ptobservationsFull"/>
-                        <h:inputTextarea id="ptobservationsFullV"
+                        <h:outputLabel value="Observations:" for="piobservationsFull"/>
+                        <h:inputTextarea id="piobservationsFullV"
                                          value="#{taskView.entityPopup.observations.toString()}"
                                          title="Observations"
                                          readonly="true"
@@ -271,7 +271,7 @@
                                          rendered="#{not taskView.creating and
                                                      not taskView.editing}">
                         </h:inputTextarea>
-                        <h:inputTextarea id="ptobservationsFull"
+                        <h:inputTextarea id="piobservationsFull"
                                          class="textarea_primefaces_display"
                                          rows="2"
                                          value="#{taskView.entityPopup.observations}"
@@ -280,13 +280,25 @@
                                                      taskView.editing}">
                         </h:inputTextarea>
 
-                        <h:outputLabel value="État:" for="ptstateV"
-                                       rendered="#{not taskView.creating and
-                                                   not taskView.editing}"/>
-                        <h:outputText id="ptstateV" value="#{taskView.entityPopup.sleeping?'Faite':'À faire'}"
+                        <h:outputLabel value="État:" for="pistate"
+                                       styleClass="#{(taskView.creating or
+                                                     taskView.editing)?'required':''}"/>
+                        <h:outputText id="pistateV" value="#{taskView.entityPopup.sleeping?'Faite':'À faire'}"
                                       title="#{taskView.entityPopup.sleeping?'La tâche est accomplie':'La tâche est à faire'}"
                                       rendered="#{not taskView.creating and
                                                   not taskView.editing}"/>
+                        <p:selectOneButton id="pistate"
+                                           value="#{taskView.entityPopup.interventionType}"
+                                           rendered="#{taskView.creating or
+                                                       taskView.editing}">
+                            <f:validator binding="#{notNullFieldValidator}"/>
+                            <f:attribute name="requiredMessage"
+                                         value="Veuillez indiquez si la tâche est terminée ou non"/>
+                            <f:attribute name="requiredTitle"
+                                         value="Champs 'État' invalide"/>
+                            <f:selectItems value="#{taskView.getTaskState()}"/>
+                            <f:converter binding="#{stateConverter}"/>
+                        </p:selectOneButton>
 
                         <f:facet name="footer">
                             <hr/>
@@ -296,66 +308,66 @@
                                 <p:commandButton title="Modifier cette tâche"
                                                  value="Modifier"
                                                  icon="ui-icon-wrench"
-                                                 update=":taskViewForm :taskMenuDialogHeader"
+                                                 update=":interventionViewForm :interventionMenuDialogHeader"
                                                  action="javascript:void(0);"
                                                  actionListener="#{taskView.entityUpdate(taskView.entityPopup)}"/>
                                 <p:commandButton title="Fermer la fenêtre"
                                                  action="javascript:void(0);"
                                                  icon="ui-icon-closethick"
                                                  styleClass="red_icon"
-                                                 onclick="taskMenuViewDialog.hide();"
+                                                 onclick="interventionMenuViewDialog.hide();"
                                                  value="Fermer"/>
                             </p:outputPanel>
                             <p:outputPanel styleClass="buttons_panel"
                                            rendered="#{not taskView.creating and
                                                        taskView.editing}">
-                                <p:commandButton id="ptupdateTaskButton"
+                                <p:commandButton id="piupdateTaskButton"
                                                  action="javascript:void(0);"
                                                  actionListener="#{taskView.update()}"
                                                  title="Enresitrer les changements"
                                                  type="submit"
                                                  icon="ui-icon-disk"
                                                  styleClass="green_icon"
-                                                 update=":taskViewForm :taskMenuDialogHeader :growl :taskMenuDataForm"
+                                                 update=":interventionViewForm :interventionMenuDialogHeader :growl"
                                                  value="Modifier"
-                                                 oncomplete="if(createRequestVoid(taskMenuViewDialog, xhr, status, args))
-                                                        {forceUpdate('taskViewForm:ptupdateTaskButton','taskMenuDataForm');}
+                                                 oncomplete="if(createRequestVoid(interventionMenuViewDialog, xhr, status, args))
+                                                        {}
                                                         else{return false;}"/>
-                                <p:commandButton id="ptbackUTaskButton"
+                                <p:commandButton id="pibackUTaskButton"
                                                  title="Annuler la modification"
-                                                 actionListener="#{taskView.cancelCreate()}"
+                                                 actionListener="#{interventionView.cancelCreate(taskView)}"
                                                  value="Annuler"
                                                  immediate="true"
                                                  styleClass="red_icon"
-                                                 update=":taskViewForm :taskMenuDialogHeader"
+                                                 update=":interventionViewForm :interventionMenuDialogHeader"
                                                  icon="ui-icon-closethick"
-                                                 oncomplete="resetForm('taskViewForm');">
+                                                 oncomplete="resetForm('interventionViewForm');">
                                 </p:commandButton>
                             </p:outputPanel>
                             <p:outputPanel styleClass="buttons_panel"
                                            rendered="#{taskView.creating and
                                                        not taskView.editing}">
-                                <p:commandButton id="ptcreateTaskButton"
+                                <p:commandButton id="picreateTaskButton"
                                                  action="javascript:void(0);"
                                                  actionListener="#{taskView.create()}"
                                                  title="Créer cette tâche"
                                                  type="submit"
                                                  icon="ui-icon-check"
                                                  styleClass="green_icon"
-                                                 update=":taskViewForm :taskMenuDialogHeader :growl :taskMenuDataForm"
+                                                 update=":interventionViewForm :interventionMenuDialogHeader :growl"
                                                  value="Valider"
-                                                 oncomplete="if(createRequest(taskMenuViewDialog, xhr, status, args))
-                                                        {forceUpdate('taskViewForm:ptcreateTaskButton','taskMenuDataForm');}
+                                                 oncomplete="if(createRequest(interventionMenuViewDialog, xhr, status, args))
+                                                        {}
                                                         else{return false;}"/>
-                                <p:commandButton id="ptbackCTaskButton"
+                                <p:commandButton id="pibackCTaskButton"
                                                  title="Annuler la création"
-                                                 actionListener="#{taskView.cancelCreate()}"
+                                                 actionListener="#{interventionView.cancelCreate(taskView)}"
                                                  value="Annuler"
                                                  immediate="true"
                                                  styleClass="red_icon"
-                                                 update=":taskViewForm :taskMenuDialogHeader"
+                                                 update=":interventionViewForm :interventionMenuDialogHeader"
                                                  icon="ui-icon-closethick"
-                                                 oncomplete="resetForm('taskViewForm');taskMenuViewDialog.hide();">
+                                                 oncomplete="resetForm('interventionViewForm');interventionMenuViewDialog.hide();">
                                 </p:commandButton>
                             </p:outputPanel>
                         </f:facet>
@@ -363,30 +375,30 @@
                     </h:panelGrid>
                 </p:outputPanel>
                 <p:outputPanel style="float:right;">
-                    <p:outputPanel id="tclientDetails"
+                    <p:outputPanel id="iclientDetails"
                                    styleClass="inside_dialog">
                         <p:commandButton icon="ui-icon-closethick"
                                          styleClass="red_icon"
                                          title="Chacher les information sur la société"
-                                         onclick="hideBlock('taskViewForm\\:tclientDetails');"/>
+                                         onclick="hideBlock('interventionViewForm\\:iclientDetails');"/>
                         <ui:include src="/restricted/admin/data/task/popups/clients.xhtml"/>
                     </p:outputPanel>
-                    <p:outputPanel id="tworkstationDetails"
+                    <p:outputPanel id="iworkstationDetails"
                                    styleClass="inside_dialog"
                                    style="display:none;">
                         <p:commandButton icon="ui-icon-closethick"
                                          styleClass="red_icon"
                                          title="Chacher les information sur le poste de travail"
-                                         onclick="hideBlock('taskViewForm\\:tworkstationDetails');"/>
+                                         onclick="hideBlock('interventionViewForm\\:iworkstationDetails');"/>
                         <ui:include src="/restricted/admin/data/task/popups/workstations.xhtml"/>
                     </p:outputPanel>
-                    <p:outputPanel id="tcuserDetails"
+                    <p:outputPanel id="icuserDetails"
                                    styleClass="inside_dialog"
                                    style="display:none;">
                         <p:commandButton icon="ui-icon-closethick"
                                          styleClass="red_icon"
                                          title="Chacher les information sur l'utilisateur"
-                                         onclick="hideBlock('taskViewForm\\:tcuserDetails');"/>
+                                         onclick="hideBlock('interventionViewForm\\:icuserDetails');"/>
                         <ui:include src="/restricted/admin/data/task/popups/cusers.xhtml"/>
                     </p:outputPanel>
                     <script type="text/javascript">
@@ -394,14 +406,14 @@
                         {
                             if(#{taskView.creating})
                             {
-                                hideBlock('taskViewForm\\:displayTclientDetails');
-                                hideBlock('taskViewForm\\:displayTworkstationDetails');
-                                hideBlock('taskViewForm\\:displayTcuserDetails');
+                                hideBlock('interventionViewForm\\:displayIclientDetails');
+                                hideBlock('interventionViewForm\\:displayIworkstationDetails');
+                                hideBlock('interventionViewForm\\:displayIcuserDetails');
                             }
-                            hideBlock('taskViewForm\\:tclientDetails');
-                            addConcurrentBlock('taskViewForm\\:tclientDetails',
-                                        ['taskViewForm\\:tworkstationDetails',
-                                            'taskViewForm\\:tcuserDetails']);
+                            hideBlock('interventionViewForm\\:iclientDetails');
+                            addConcurrentBlock('interventionViewForm\\:iclientDetails',
+                                        ['interventionViewForm\\:iworkstationDetails',
+                                            'interventionViewForm\\:icuserDetails']);
                             addRedStarsTorequiredFields();
                         });
                     </script>
@@ -415,7 +427,7 @@
                                     <span class="ui-messages-error-summary">
                                         Sélection incorrecte!
                                         <script type="text/javascript">
-//                                                    taskMenuViewDialog.hide();
+//                                                    interventionMenuViewDialog.hide();
                                         </script>
                                     </span>
                                 </li>
