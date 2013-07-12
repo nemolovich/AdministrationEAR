@@ -17,6 +17,12 @@
                 <f:attribute name="header" value="Liste des interventions"/>
                 <f:view>
                     <h:form id="interventionDataForm">
+                        <script type="text/javascript">
+                            $(document).ready(function()
+                            {
+                                interventionTable.filter();
+                            });
+                        </script>
                         <p:dataTable id="interventionDataTable"
                                      value="#{interventionView.entries}"
                                      var="item"
@@ -46,7 +52,8 @@
                                               title="Durée de l'intervention"/>
                             </p:column>
                             
-                            <p:column headerText="Facture"
+                            <p:column headerText="Facturée"
+                                      style="width:1%;"
                                       filterBy="#{item.factureNumber}"
                                       filterMatchMode="contains">
                                 <h:outputText value="#{item.factureNumber}"/>
@@ -56,6 +63,24 @@
                                       filterBy="#{item.idTask.toString()}"
                                       filterMatchMode="contains">
                                 <h:outputText value="#{item.idTask.toString()}"/>
+                                <p:commandButton actionListener="#{taskView.entityView(item.idTask)}"
+                                                 action="javascript:void(0);"
+                                                 title="Afficher les détails de cette tâche"
+                                                 icon="ui-icon-search"
+                                                 style="font-size: 40%;vertical-align: top !important;float:right;"
+                                                 update=":taskMenuViewPopup :taskMenuDialogHeader :taskViewForm"
+                                                 oncomplete="taskMenuViewDialog.show();"/>
+                            </p:column>
+                            
+                            <p:column headerText="Actions"
+                                      style="width:1%;">
+                                <p:commandButton actionListener="#{interventionView.entityView(taskView,item)}"
+                                                 action="javascript:void(0);"
+                                                 title="Afficher les détails de cette tâche"
+                                                 icon="ui-icon-search"
+                                                 style="font-size: 60%;"
+                                                 update=":interventionMenuViewPopup :interventionMenuDialogHeader :interventionViewForm"
+                                                 oncomplete="interventionMenuViewDialog.show();"/>
                             </p:column>
                             
                             <p:column headerText="Facturée"
@@ -74,12 +99,13 @@
                                                  style="width:150px;margin-left:20px">
                                     </p:inputText>
                                     <p:commandButton value="Ajouter une intervention"
-                                                     action="#{interventionView.entityCreate()}"
+                                                     action="javascript:void(0);"
+                                                     actionListener="#{interventionView.entityCreate(taskView,true)}"
                                                      title="Ajouter une intervention"
                                                      icon="ui-icon-circle-plus"
                                                      styleClass="green_icon"
-                                                     immediate="true"
-                                                     ajax="false"/>
+                                                     update=":interventionMenuViewPopup :interventionMenuDialogHeader :interventionViewForm"
+                                                     oncomplete="interventionMenuViewDialog.show();"/>
                                     <p:outputLabel for="checkDisplaySleeping"
                                                    value="Afficher tout"
                                                    style="font-size:75%;margin-bottom: 10px !important;margin-left: 10px;"/>

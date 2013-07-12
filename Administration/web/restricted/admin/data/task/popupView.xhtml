@@ -198,7 +198,9 @@
                             <f:convertDateTime pattern="dd/MM/yyyy"/>
                         </p:calendar>
 
-                        <h:outputLabel value="Durée prévue:" for="ptintendedDuration"/>
+                        <h:outputLabel value="Durée prévue:" for="ptintendedDuration"
+                                       styleClass="#{(taskView.creating or
+                                                     taskView.editing)?'required':''}"/>
                         <h:outputText id="ptintendedDurationV" value="#{taskView.entityPopup.intendedDuration}"
                                       title="Durée prévue pour l'intervention"
                                       rendered="#{not taskView.creating and
@@ -215,6 +217,11 @@
                                      widgetVar="intendedDurationCalendar"
                                      rendered="#{taskView.creating or
                                                  taskView.editing}">
+                            <f:validator binding="#{notNullFieldValidator}"/>
+                            <f:attribute name="requiredMessage"
+                                         value="Veuillez indiquez la durée prévue pour l'intervention"/>
+                            <f:attribute name="requiredTitle"
+                                         value="Champs 'Durée prévue' invalide"/>
                             <f:converter binding="#{durationConverter}"/>
                         </p:calendar>
 

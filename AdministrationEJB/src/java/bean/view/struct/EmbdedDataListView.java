@@ -35,7 +35,7 @@ public abstract class EmbdedDataListView<C,O,F extends AbstractEmbdedDataList<C,
     {
         super.entityCreate();
         Utils.callMethod(this.setReferenceMethod,
-                "méthode de récupération des données",this.getInstance(),
+                "méthode de définition de la référence",this.getInstance(),
                 entity);
         return "create";
     }

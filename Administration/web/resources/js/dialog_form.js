@@ -265,9 +265,31 @@ function forceFilter(table)
 }
 
 /**
+ * Permet d'essayer de forcer la mise à jour d'un composant primefaces
+ * si celui-ci existe bien
+ * @param {String} source - Identifiant de l'élément source
+ * @param {String} formId - Identifiant de l'élément à actualiser
+ * @returns {void}
+ */
+function tryUpdate(source, formId)
+{
+    var id=formId;
+    if(id.length>0&&id[0]===':')
+    {
+        id=id.substring(1,id.length);
+    }
+    id=id.replace(/:/,"\\\\:");
+    var form=$('#'+id);
+    if(form.length!==0)
+    {
+        forceUpdate(source, formId);
+    }
+}
+
+/**
  * Permet de forcer la mise à jour d'un composant primefaces
  * @param {String} source - Identifiant de l'élément source
- * @param {String} formId - identifiant de l'élément à actualiser
+ * @param {String} formId - Identifiant de l'élément à actualiser
  * @returns {Boolean} - Toujours faux (réponse javascript d'un bouton)
  */
 function forceUpdate(source,formId)
@@ -497,7 +519,8 @@ function expandPanelMenu()
 }
 
 /**
- * Affiche l'un ou l'autre des éléments donné suivant l'état donné
+ * Affiche l'un ou l'autre des éléments donné suivant l'état donné, le
+ * premier élément sera par défaut activé si l'état est à 'true'
  * @param {String} id1 - Identifiant du premier élément
  * @param {String} id2 - Identifiant du second élément
  * @param {String} stateS - État, sous forme de chaine de caractère ('true' ou 'false')
@@ -506,15 +529,37 @@ function expandPanelMenu()
 function switchState(id1,id2,stateS)
 {
     var state=(stateS!=='false');
+    var elm1=null;
+    var elm2=null;
+    if(id1!=="")
+    {
+        elm1=$("#"+id1);
+    }
+    if(id2!=="")
+    {
+        elm2=$("#"+id2);
+    }
     if(state)
     {
-        $("#"+id1).css("display","block");
-        $("#"+id2).css("display","none");
+        if(elm1!==null)
+        {
+            elm1.css("display","block");
+        }
+        if(elm2!==null)
+        {
+            elm2.css("display","none");
+        }
     }
     else
     {
-        $("#"+id1).css("display","none");
-        $("#"+id2).css("display","block");
+        if(elm1!==null)
+        {
+            elm1.css("display","none");
+        }
+        if(elm2!==null)
+        {
+            elm2.css("display","block");
+        }
     }
 }
 

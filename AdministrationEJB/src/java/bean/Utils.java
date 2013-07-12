@@ -209,13 +209,13 @@ public class Utils
         }
         catch (IllegalArgumentException ex)
         {
-           ApplicationLogger.writeError("Les arguments pour la méthode \"get"+
+           ApplicationLogger.writeError("Les arguments pour la méthode \""+
                     m.getName()+"\" sont incorrects pour la classe \""+
                     target.getClass().getName()+"\"", ex);
         }
         catch (InvocationTargetException ex)
         {
-            ApplicationLogger.writeError("La méthode \"get"+m.getName()+"\" n'est"+
+            ApplicationLogger.writeError("La méthode \""+m.getName()+"\" n'est"+
                     " pas applicable pour la classe \""+target.getClass().getName()+
                     "\"", ex);
         }
@@ -275,5 +275,27 @@ public class Utils
                     "\"", ex);
         }
         return null;
+    }
+    
+    /**
+     * Renvoi la durée sous forme "HH:mm" pour une durée sous la forme "HH h mm mins"
+     * @param value {@link String} - Durée sous la forme "HH h mm mins"
+     * @return {@link String} - Durée sous la forme "HH:mm"
+     */
+    public static String getDurationString(Object value)
+    {
+        String duration=((String)value).substring(0, 2)+":"+((String)value).substring(5, 7);
+        return duration;
+    }
+    
+    /**
+     * Renvoi la durée sous forme "HH h mm mins" pour une durée sous la forme "HH:mm"
+     * @param value {@link String} - Durée sous la forme "HH:mm"
+     * @return {@link String} - Durée sous la forme "HH h mm mins"
+     */
+    public static Object getDurationObject(String value)
+    {
+        String duration=value;
+        return duration.substring(0, 2)+" h "+duration.substring(3, 5)+" mins";
     }
 }

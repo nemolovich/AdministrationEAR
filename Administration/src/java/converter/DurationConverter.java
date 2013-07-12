@@ -4,6 +4,7 @@
  */
 package converter;
 
+import bean.Utils;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.component.UIComponent;
@@ -25,16 +26,14 @@ public class DurationConverter implements Converter
     public Object getAsObject(FacesContext context, UIComponent component,
     String value)
     {
-        String duration=value;
-        return duration.substring(0, 2)+" h "+duration.substring(3, 5)+" mins";
+        return Utils.getDurationObject(value);
     }
 
     @Override
     public String getAsString(FacesContext context, UIComponent component,
     Object value)
     {
-        String duration=((String)value).substring(0, 2)+":"+((String)value).substring(5, 7);
-        return duration;
+        return Utils.getDurationString(value);
     }
     
 }

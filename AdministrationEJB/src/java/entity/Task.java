@@ -221,7 +221,7 @@ public class Task implements Serializable
     @Override
     public String toString()
     {
-        return this.description+" pour la société "+this.idClient.toString();
+        return this.description+" pour la société "+this.idClient;
     }
 
 }

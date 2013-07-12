@@ -150,13 +150,13 @@
                   hideEffect="clip">
             <h:form id="interventionMenuDialogHeader">
                 <h3 class="tabheader">
-                    <h:outputText value="#{taskView.creating?'Création':
-                                            (taskView.editing?'Modification':
+                    <h:outputText value="#{interventionView.creating?'Création':
+                                            (interventionView.editing?'Modification':
                                             'Détails')}"/>
-                    <h:outputText value=" de la intervention n°#{taskView.entityPopup.id}"
-                                  rendered="#{not taskView.creating}"/>
+                    <h:outputText value=" de la intervention n°#{interventionView.entity.id}"
+                                  rendered="#{not interventionView.creating}"/>
                     <h:outputText value=" d'une nouvelle intervention"
-                                  rendered="#{taskView.creating}"/>
+                                  rendered="#{interventionView.creating}"/>
                 </h3>
             </h:form>
             <ui:include src="/restricted/admin/data/intervention/popupView.xhtml"/>
@@ -174,9 +174,16 @@
                         switchState('taskMenuDataForm\\:taskWakeContextMenu',
                                     'taskMenuDataForm\\:taskSleepContextMenu',
                                     '#{taskView.entity.sleeping}');
+                        switchState('',
+                                    'taskMenuDataForm\\:taskInterventionCreateContextMenu',
+                                    '#{taskView.entity.sleeping}');
+                        switchState('',
+                                    'taskMenuDataForm\\:Sep1ContextMenu',
+                                    '#{taskView.entity.sleeping}');
                     </script>
                 </p:outputPanel>
                 <p:contextMenu id="taskContextMenu"
+                               style="width:200px;margin:auto;padding:auto;"
                                for="taskMenuDataTable">  
                     <p:menuitem value="Afficher"
                                 title="Affiche les détails de cette tâche"
@@ -191,6 +198,17 @@
                                 styleClass="blue_icon"
                                 oncomplete="taskMenuViewDialog.show()"
                                 actionListener="#{taskView.entityUpdate(taskView.entity)}"/>
+                    <p:menuitem id="Sep1ContextMenu"
+                                styleClass="ui-separator ui-state-default"/>
+                    <p:menuitem id="taskInterventionCreateContextMenu"
+                                value="Créer une intervention"
+                                title="Créer une intervention depuis cette tâche"
+                                update=":interventionMenuViewPopup :interventionMenuDialogHeader :interventionViewForm"
+                                icon="ui-icon-circle-plus"
+                                style="white-space: nowrap;"
+                                styleClass="green_icon"
+                                oncomplete="interventionMenuViewDialog.show();"
+                                actionListener="#{interventionView.entityCreate(taskView,false)}"/>
                     <p:separator/>
                     <p:menuitem id="taskSleepContextMenu"
                                 value="Archiver"
@@ -217,7 +235,8 @@
                                 icon="ui-icon-trash"
                                 styleClass="red_icon"
                                 action="javascript:void(0);"
-                                oncomplete="forceUpdate('taskMenuDataForm:taskDeleteContextMenu','taskMenuDataForm');"
+                                oncomplete="forceUpdate('taskMenuDataForm:taskDeleteContextMenu','taskMenuDataForm');
+                                            tryUpdate('taskMenuDataForm:taskDeleteContextMenu','interventionDataForm');"
                                 onclick="if(!confirm(taskDeleteMessage)){return false;}"
                                 actionListener="#{taskView.entityDelete(taskView.entity)}"/>
                 </p:contextMenu>
@@ -319,4 +338,3 @@
         </f:view>
     </h:body>
 </html>
-

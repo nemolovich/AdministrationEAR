@@ -80,7 +80,6 @@ public class EntityMultiView<C> extends EntitySleepingSelection<C>
 
     public void setMultiDataModel(List<C> list)
     {
-//        System.err.println("IS SETTING DATA MODEL: "+Arrays.toString(list.toArray()));
         this.fullList=list;
         this.multiDataModel = new EntityDataModel<C>(list,this.entityClass){};
     }

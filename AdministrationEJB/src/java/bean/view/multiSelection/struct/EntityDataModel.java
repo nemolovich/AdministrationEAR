@@ -59,10 +59,8 @@ public abstract class EntityDataModel<C> extends ListDataModel<C>
     public C getRowData(String rowKey)
     {
         Integer rowId=Integer.parseInt(rowKey);
-//        System.out.println("Row: '"+rowId+"'");
         for(C c:(List<C>)this.getWrappedData())
         {
-//            System.out.println("toString: '"+Utils.getDataModelFormat(c.toString())+"'");
             if(rowId==Utils.callMethod(getId, "récupération de l'identifiant", c))
             {
                 return c;
