@@ -74,6 +74,7 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> extends EntitySl
     
     public String create()
     {
+        System.err.println("create: "+this.entityClass.getName());
         this.creating=false;
         this.editing=false;
         this.setFacade();
@@ -102,6 +103,7 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> extends EntitySl
     
     public String cancelCreate()
     {
+        System.err.println("CancelCreate, "+this.entityClass.getName());
         this.creating = false;
         this.editing = false;
         this.entity = null;

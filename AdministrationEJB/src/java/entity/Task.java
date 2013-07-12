@@ -150,6 +150,10 @@ public class Task implements Serializable
         return sleeping;
     }
 
+    public void setSleeping(String sleeping) {
+        this.sleeping = Boolean.valueOf(sleeping);
+    }
+
     public void setSleeping(Boolean sleeping) {
         this.sleeping = sleeping;
     }

@@ -27,8 +27,6 @@ import javax.inject.Named;
 public class TaskView extends EntityView<Task, TaskFacade>
 {
     public static final String[] INTERVENTION_TYPES={"LOGICIELLE","MATERIELLE"};
-    // États dans le sens {False, True} (l'ordre est important)
-    public static final String[] TASK_STATE={"A FAIRE","ACCOMPLIE"};
     
     private static final long serialVersionUID = 1L;
     @EJB
@@ -43,11 +41,6 @@ public class TaskView extends EntityView<Task, TaskFacade>
     public List<String> getInterventionTypes()
     {
         return Arrays.asList(INTERVENTION_TYPES);
-    }
-    
-    public List<String> getTaskState()
-    {
-        return Arrays.asList(TASK_STATE);
     }
 
     @Override

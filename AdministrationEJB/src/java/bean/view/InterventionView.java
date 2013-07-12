@@ -33,10 +33,25 @@ public class InterventionView extends EmbdedDataListView<Task, Intervention, Int
                                         new Class<?>[]{Task.class}));
     }
     
-    public String cancelCreate(EntityView<?,?> entity)
+    public String entityCreate(TaskView view)
     {
-        entity.cancelCreate();
+        System.err.println("Call entityCreate");
+        view.entityCreate();
+        return super.entityCreate(view.getEntity());
+    }
+    
+    public String cancelCreate(TaskView view)
+    {
+        System.err.println("Call cancel");
+        view.cancelCreate();
         return super.cancelCreate();
+    }
+    
+    public String create(TaskView view)
+    {
+        System.err.println("Call create");
+        view.create();
+        return super.create(view.getEntity());
     }
     
     @Override

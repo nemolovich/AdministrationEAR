@@ -74,7 +74,7 @@
                                 oncomplete="taskMenuViewDialog.show();"
                                 value="Nouvelle tâche"
                                 title="Créer une nouvelle tâche"/>
-                    <p:menuitem actionListener="#{taskView.entityCreate()}"
+                    <p:menuitem actionListener="#{interventionView.entityCreate(taskView)}"
                                 immediate="false"
                                 icon="ui-icon-circle-plus"
                                 styleClass="green_icon"

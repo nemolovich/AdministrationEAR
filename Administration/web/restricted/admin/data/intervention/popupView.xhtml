@@ -287,18 +287,21 @@
                                       title="#{taskView.entityPopup.sleeping?'La tâche est accomplie':'La tâche est à faire'}"
                                       rendered="#{not taskView.creating and
                                                   not taskView.editing}"/>
-                        <p:selectOneButton id="pistate"
-                                           value="#{taskView.entityPopup.interventionType}"
-                                           rendered="#{taskView.creating or
+                        <p:selectBooleanButton id="pistate"
+                                               onLabel="ACCOMPLIE"
+                                               offLabel="A FAIRE"
+                                               onIcon="ui-icon-check"
+                                               offIcon="ui-icon-closethick"
+                                               styleClass="yes_no_button"
+                                               value="#{taskView.entityPopup.sleeping}"
+                                               rendered="#{taskView.creating or
                                                        taskView.editing}">
                             <f:validator binding="#{notNullFieldValidator}"/>
                             <f:attribute name="requiredMessage"
                                          value="Veuillez indiquez si la tâche est terminée ou non"/>
                             <f:attribute name="requiredTitle"
                                          value="Champs 'État' invalide"/>
-                            <f:selectItems value="#{taskView.getTaskState()}"/>
-                            <f:converter binding="#{stateConverter}"/>
-                        </p:selectOneButton>
+                        </p:selectBooleanButton>
 
                         <f:facet name="footer">
                             <hr/>
@@ -331,8 +334,7 @@
                                                  update=":interventionViewForm :interventionMenuDialogHeader :growl"
                                                  value="Modifier"
                                                  oncomplete="if(createRequestVoid(interventionMenuViewDialog, xhr, status, args))
-                                                        {}
-                                                        else{return false;}"/>
+                                                        {}else{return false;}"/>
                                 <p:commandButton id="pibackUTaskButton"
                                                  title="Annuler la modification"
                                                  actionListener="#{interventionView.cancelCreate(taskView)}"
@@ -349,15 +351,15 @@
                                                        not taskView.editing}">
                                 <p:commandButton id="picreateTaskButton"
                                                  action="javascript:void(0);"
-                                                 actionListener="#{taskView.create()}"
-                                                 title="Créer cette tâche"
+                                                 actionListener="#{interventionView.create(taskView)}"
+                                                 title="Créer cette intervention"
                                                  type="submit"
                                                  icon="ui-icon-check"
                                                  styleClass="green_icon"
                                                  update=":interventionViewForm :interventionMenuDialogHeader :growl"
                                                  value="Valider"
                                                  oncomplete="if(createRequest(interventionMenuViewDialog, xhr, status, args))
-                                                        {}
+                                                        {forceUpdate('interventionViewForm:picreateTaskButton','taskMenuDataForm');}
                                                         else{return false;}"/>
                                 <p:commandButton id="pibackCTaskButton"
                                                  title="Annuler la création"
