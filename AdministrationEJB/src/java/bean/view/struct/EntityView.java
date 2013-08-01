@@ -5,16 +5,20 @@
 package bean.view.struct;
 
 import bean.ApplicationLogger;
+import bean.Files;
 import bean.Utils;
+import bean.facade.FilePathFacade;
 import bean.facade.abstracts.AbstractFacade;
 import bean.view.filteredSelection.EntitySleepingSelection;
+import entity.FilePath;
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import org.primefaces.event.SelectEvent;
-import org.primefaces.event.UnselectEvent;
 
 /**
  *
@@ -29,6 +33,9 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> extends EntitySl
     private F entityFacade;
     private boolean creating=false;
     private boolean editing=false;
+    
+    @EJB
+    private FilePathFacade filePathFacade;
     
     public EntityView()
     {
@@ -78,6 +85,7 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> extends EntitySl
         this.editing=false;
         this.setFacade();
         this.entityFacade.create(this.entity);
+        this.setEntityPathFilePath();
         return this.webFolder+"list";
     }
     
@@ -107,14 +115,6 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> extends EntitySl
         this.entity = null;
         return this.webFolder+"view";
     }
-
-    public String entityView(C entity)
-    {
-        this.creating = false;
-        this.editing = false;
-        this.entity = entity;
-        return this.webFolder+"view";
-    }
     
     public C checkSingle(C[] entities)
     {
@@ -128,6 +128,90 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> extends EntitySl
             return null;
         }
         return entities[0];
+    }
+    
+    public boolean setEntityFilePath(FilePath filePath)
+    {
+        try
+        {
+            Method m=entity.getClass().getMethod("setIdFilePath", FilePath.class);
+            Utils.callMethod(m, "définition du répertoire de stockage", entity,
+                    filePath);
+            return true;
+        }
+        catch (NoSuchMethodException ex)
+        {
+            ApplicationLogger.writeError("La méthode \"setIdFilePath\" n'a pas"+
+                    " été trouvée pour la classe \""+this.entityClass.getName()+"\"",
+                    null);
+        }
+        return false;
+    }
+    
+    public FilePath getEntityFilePath()
+    {
+        try
+        {
+            Method m=entity.getClass().getMethod("getIdFilePath");
+            FilePath filePath=(FilePath)Utils.callMethod(m,
+                    "récupération du répertoire de stockage", entity);
+            if(filePath!=null)
+            {
+                return filePath;
+            }
+        }
+        catch (NoSuchMethodException ex)
+        {
+            ApplicationLogger.writeError("La méthode \"getIdFilePath\" n'a pas"+
+                    " été trouvée pour la classe \""+this.entityClass.getName()+"\"",
+                    null);
+        }
+        return null;
+    }
+    
+    public void setEntityPathFilePath()
+    {
+        FilePath filePath=this.getEntityFilePath();
+        Integer id=this.getId();
+        if(filePath!=null)
+        {
+            String message="Modification du chemin \""+filePath.getFilePath()+
+                    "\" pour l'instance de la classe \""+this.entityClass.getName()+"\"";
+            ApplicationLogger.writeInfo(message);
+            String path=filePath.getFilePath();
+            path=path.substring(0, path.lastIndexOf(File.separator));
+            path+=File.separator+String.format("%04d", id);
+            try
+            {
+                Files.move(new File(Utils.getUploadsPath()+filePath.getFilePath()),
+                        new File(Utils.getUploadsPath()+path));
+                filePath.setFilePath(path);
+                this.filePathFacade.edit(filePath);
+            }
+            catch (IOException ex)
+            {
+                ApplicationLogger.writeError("Erreur lors du déplacement du "
+                        + "dossier \""+Utils.getUploadsPath()+
+                        filePath.getFilePath()+"\"", ex);
+            }
+        }
+    }
+    
+    public String getEntityPathFilePath()
+    {
+        if(this.getEntityFilePath()!=null)
+        {
+            return this.getEntityFilePath().getFilePath();
+        }
+        return null;
+    }
+
+    public String entityView(C entity)
+    {
+        this.creating = false;
+        this.editing = false;
+        this.entity = entity;
+        return this.webFolder+"view";
     }
     
     public String entityUpdate(C entity)
@@ -207,6 +291,24 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> extends EntitySl
             ApplicationLogger.writeError("Droits refusés pour l'instanciation"
                     + " d'un objet de la classe \""+this.entityClass.getName()+"\"", ex);
         }
+        message="Vérification de l'existance d'une association de fichiers pour "
+                + "la classe \""+this.entityClass.getName()+"\"";
+        ApplicationLogger.writeInfo(message);
+        FilePath filePath=new FilePath(this.entityClass.getSimpleName()+
+                File.separator+FilePath.TEMP_FOLDER);
+        if(this.setEntityFilePath(filePath))
+        {
+            message="Association d'une entity \""+FilePath.class.getName()+
+                    "\" pour l'instance de la classe \""+this.entityClass.getName()+"\"";
+            ApplicationLogger.writeInfo(message);
+            this.filePathFacade.create(filePath);
+        }
+        else
+        {
+            message="Impossible d'associer des fichiers pour "
+                    + "la classe \""+this.entityClass.getName()+"\"";
+            ApplicationLogger.writeWarning(message);
+        }
         return this.webFolder+"create";
     }
     
@@ -240,6 +342,35 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> extends EntitySl
             result=new ArrayList<C>();
         }
         return result;
+    }
+    
+    /**
+     * Toutes les entités sont censées avoir un champs 'Id', on peut donc
+     * utiliser la réflexion pour récupérer ce que renvoi cette methode sur
+     * l'entité sur laquelle on travaille
+     * @return {@link Integer} - L'identifiant de l'entité
+     */
+    public Integer getId()
+    {
+        Integer id = -1;
+        try
+        {
+            id=(Integer) Utils.callMethod(this.entityClass.getMethod("getId"),
+                    "récupération de l'identifiant", this.entity);
+        }
+        catch (NoSuchMethodException ex)
+        {
+            ApplicationLogger.writeError("La méthode de récupération de"
+                    + " l'identifiant pour la class \""+entityClass.getName()+"\""
+                    + " n'a pas été trouvée", ex);
+        }
+        catch (SecurityException ex)
+        {
+            ApplicationLogger.writeError("La méthode de récupération de"
+                    + " l'identifiant pour la class \""+entityClass.getName()+"\""
+                    + " n'est pas accessible", ex);
+        }
+        return id;
     }
     
     // <editor-fold defaultstate="collapsed" desc="Les methodes abstraites">

@@ -5,7 +5,6 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
         <title>Ressources manager</title>
     </h:head>
     <h:body>
@@ -15,16 +14,21 @@
             </ui:define>
             <ui:define name="content">
 
-                <h:link outcome="restricted/login" value="Se connecter" title="Accès à l'administration"/>
-                <br />
-                <h:link outcome="restricted/user/index" value="Panneau utilisateur" title="Afficher le panneau utilisateur" />
-                <br/>
-                <h:link outcome="restricted/admin/index" value="Panneau administrateur" title="Afficher le panneau administrateur"/>
-                <br />
-                <h:link outcome="tests" value="Page de tests" title="Lient temporaire"/>
-                <br />
-                <h:link outcome="welcomePrimefaces" value="Primefaces welcome page" />
-                <br />
+                <h:form>
+                    <h:link outcome="restricted/login" value="Se connecter" title="Accès à l'administration"/>
+                    <br />
+                    <h:link outcome="restricted/user/index" value="Panneau utilisateur" title="Afficher le panneau utilisateur" />
+                    <br/>
+                    <h:link outcome="restricted/admin/index" value="Panneau administrateur" title="Afficher le panneau administrateur"/>
+                    <br />
+                    <p:commandLink action="tests" value="Page de tests" title="Lient temporaire"
+                                   actionListener="#{cUserView.entityCreate(clientView.entries.get(0))}"
+                                   immediate="true"
+                                   ajax="false"/>
+                    <br />
+                    <h:link outcome="welcomePrimefaces" value="Primefaces welcome page" />
+                    <br />
+                </h:form>
             </ui:define>
         </ui:composition>
     </h:body>

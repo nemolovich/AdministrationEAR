@@ -11,12 +11,39 @@
         <h:form id="menu_Form">
             <p:panelMenu styleClass="menu"
                          widgetVar="menu_admin">
-                <p:submenu label="Journal"
+                <p:submenu label="Tâches"
                            rendered="#{userLogin.rights.equalsIgnoreCase(tUserView.admin_Rights)}">
-                    <p:menuitem value="Afficher"
-                                     icon="ui-icon-document"
-                                     title="Afficher le journal du serveur"
-                                     onclick="logViewDialog.show();"/>
+                    <p:menuitem actionListener="#{taskView.entityCreate()}"
+                                immediate="false"
+                                icon="ui-icon-circle-plus"
+                                styleClass="green_icon"
+                                update=":taskMenuViewPopup :taskMenuDialogHeader :taskViewForm"
+                                oncomplete="taskMenuViewDialog.show();"
+                                value="Nouvelle tâche"
+                                title="Créer une nouvelle tâche"/>
+                    <p:menuitem actionListener="#{interventionView.entityCreate(taskView, true)}"
+                                immediate="false"
+                                icon="ui-icon-circle-plus"
+                                styleClass="green_icon"
+                                update=":interventionMenuViewPopup :interventionMenuDialogHeader :interventionViewForm"
+                                oncomplete="interventionMenuViewDialog.show();"
+                                value="Nouvelle intervention"
+                                title="Créer une nouvelle intervention"/>
+                </p:submenu>
+                <p:submenu label="Données"
+                           rendered="#{userLogin.rights.equalsIgnoreCase(tUserView.admin_Rights)}">
+                    <p:menuitem outcome="/restricted/admin/data/client/list" 
+                                value="Liste des sociétés"
+                                icon="ui-icon-copy"
+                                title="Afficher la liste des sociétés"/>
+                    <p:menuitem outcome="/restricted/admin/data/c_user/list"
+                                value="Liste des utilisateurs"
+                                icon="ui-icon-copy"
+                                title="Afficher la liste des utilisateurs"/>
+                    <p:menuitem outcome="/restricted/admin/data/intervention/list"
+                                value="Liste des interventions"
+                                icon="ui-icon-copy"
+                                title="Afficher la liste des interventions"/>
                 </p:submenu>
                 <p:submenu label="Configurations"
                            rendered="#{userLogin.rights.equalsIgnoreCase(tUserView.admin_Rights) or
@@ -30,6 +57,7 @@
                         <p:menuitem action="#{tUserView.entityUpdate(userLogin.user)}"
                                     value="Modifier mon profil"
                                     icon="ui-icon-wrench"
+                                    styleClass="blue_icon"
                                     immediate="true"
                                     ajax="false"
                                     title="Modifier les détails de votre comtpte"/>
@@ -49,39 +77,12 @@
                                     title="Ajouter un utilisateur à la liste"/>
                     </p:submenu>
                 </p:submenu>
-                <p:submenu label="Données"
+                <p:submenu label="Journal"
                            rendered="#{userLogin.rights.equalsIgnoreCase(tUserView.admin_Rights)}">
-                    <p:menuitem outcome="/restricted/admin/data/client/list" 
-                                value="Liste des sociétés"
-                                icon="ui-icon-copy"
-                                title="Afficher la liste des sociétés"/>
-                    <p:menuitem outcome="/restricted/admin/data/c_user/list"
-                                value="Liste des utilisateurs"
-                                icon="ui-icon-copy"
-                                title="Afficher la liste des utilisateurs"/>
-                    <p:menuitem outcome="/restricted/admin/data/intervention/list"
-                                value="Liste des interventions"
-                                icon="ui-icon-copy"
-                                title="Afficher la liste des interventions"/>
-                </p:submenu>
-                <p:submenu label="Tâches"
-                           rendered="#{userLogin.rights.equalsIgnoreCase(tUserView.admin_Rights)}">
-                    <p:menuitem actionListener="#{taskView.entityCreate()}"
-                                immediate="false"
-                                icon="ui-icon-circle-plus"
-                                styleClass="green_icon"
-                                update=":taskMenuViewPopup :taskMenuDialogHeader :taskViewForm"
-                                oncomplete="taskMenuViewDialog.show();"
-                                value="Nouvelle tâche"
-                                title="Créer une nouvelle tâche"/>
-                    <p:menuitem actionListener="#{interventionView.entityCreate(taskView, true)}"
-                                immediate="false"
-                                icon="ui-icon-circle-plus"
-                                styleClass="green_icon"
-                                update=":interventionMenuViewPopup :interventionMenuDialogHeader :interventionViewForm"
-                                oncomplete="interventionMenuViewDialog.show();"
-                                value="Nouvelle intervention"
-                                title="Créer une nouvelle intervention"/>
+                    <p:menuitem value="Afficher"
+                                     icon="ui-icon-document"
+                                     title="Afficher le journal du serveur"
+                                     onclick="logViewDialog.show();"/>
                 </p:submenu>
             </p:panelMenu>
             <script type="text/javascript">

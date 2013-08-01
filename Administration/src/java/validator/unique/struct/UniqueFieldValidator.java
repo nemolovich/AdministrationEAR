@@ -27,7 +27,7 @@ import validator.EmailPatternValidator;
 public abstract class UniqueFieldValidator<C, F extends AbstractFacade<C>> implements Validator
 {
     private Class<C> entityClass;
-    protected F entityFacade;;
+    protected F entityFacade;
 
     public UniqueFieldValidator()
     {

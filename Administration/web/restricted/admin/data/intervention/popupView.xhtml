@@ -6,7 +6,7 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://java.sun.com/jsf/facelets">
     <h:head>
-        <title>Facelet Title</title>
+        <title>Intervention</title>
     </h:head>
     <h:body>
         <f:view>
@@ -209,14 +209,14 @@
                             <f:converter binding="#{durationConverter}"/>
                         </p:calendar>
 
-                            <h:outputLabel value="Temps effectué:" for="piduration"
-                                           styleClass="#{(interventionView.creating or
-                                                         interventionView.editing)?'required':''}"/>
+                        <h:outputLabel value="Temps effectué:" for="piduration"
+                                       styleClass="#{(interventionView.creating or
+                                                     interventionView.editing)?'required':''}"/>
+                        <p:outputPanel>
                             <h:outputText id="pidurationV" value="#{interventionView.entity.duration}"
                                           title="Temps qu'a duré l'intervention"
                                           rendered="#{not interventionView.creating and
                                                       not interventionView.editing}"/>
-                        <p:outputPanel>
                             <p:calendar id="piduration" value="#{interventionView.entity.duration}"
                                          title="Temps qu'a duré l'intervention"
                                          disabledWeekends="true"
@@ -238,6 +238,17 @@
                             </p:calendar><br/>
                             <p:outputPanel rendered="#{interventionView.creating}">
                                 <h:outputText value="Temps déjà accompli: "
+                                              style="font-size: 80%;font-style: italic;font-weight: normal;color: #808080;"
+                                              rendered="#{not taskView.getAccomplishedTime(taskView.entityPopup)
+                                                          .equalsIgnoreCase('00 h 00 mins')}"/>
+                                <h:outputText value="#{taskView.getAccomplishedTime(taskView.entityPopup)}"
+                                              style="font-size: 80%;font-style: italic;color: #404040;"
+                                              rendered="#{not taskView.getAccomplishedTime(taskView.entityPopup)
+                                                          .equalsIgnoreCase('00 h 00 mins')}"/>
+                            </p:outputPanel>
+                            <p:outputPanel rendered="#{not interventionView.creating and
+                                                       not interventionView.editing}">
+                                <h:outputText value="Total effectué: "
                                               style="font-size: 80%;font-style: italic;font-weight: normal;color: #808080;"
                                               rendered="#{not taskView.getAccomplishedTime(taskView.entityPopup)
                                                           .equalsIgnoreCase('00 h 00 mins')}"/>

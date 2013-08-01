@@ -59,7 +59,8 @@
             <p:layoutUnit id="menu"
                           position="west"
                           size="#{userLogin.menuLeftSize}"
-                          collapsed="#{userLogin.menuLeftClosed}"
+                          collapsed="#{userLogin.menuLeftClosed or
+                                       userLogin.rights.equals(tUserView.unknown_Rights)}"
                           header="Menu"
                           resizable="true"
                           gutter="2"

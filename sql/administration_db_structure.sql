@@ -28,7 +28,9 @@ DROP TABLE ROOT.WORKSTATION;
 ALTER TABLE ROOT.SOFTWARE DROP CONSTRAINT software_client_id_fk;
 DROP TABLE ROOT.SOFTWARE;
 ALTER TABLE ROOT.C_USER DROP CONSTRAINT user_client_id_fk;
+ALTER TABLE ROOT.C_USER DROP CONSTRAINT user_file_path_id_fk;
 DROP TABLE ROOT.CLIENT;
+DROP TABLE ROOT.FILE_PATH;
 DROP TABLE ROOT.C_USER;
 
 ---------------- Création de la table T_USER ----------------
@@ -71,6 +73,15 @@ CREATE TABLE ROOT.CLIENT (
         observations VARCHAR(250),
 		sleeping BOOLEAN NOT NULL DEFAULT FALSE);
 
+--------------- Création de la table FILE_PATH --------------
+-- TABLE:			FILE_PATH
+-- DESCRIPTION: 	Table concernant un dossier de fichiers
+--  associé à une entité.
+CREATE TABLE ROOT.FILE_PATH (
+        id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY
+		(START WITH 1, INCREMENT BY 1),
+		file_path VARCHAR(250) NOT NULL);
+
 ---------------- Création de la table C_USER ----------------
 -- TABLE:			C_USER
 -- DESCRIPTION: 	Table concernant les utilisateurs
@@ -79,13 +90,17 @@ CREATE TABLE ROOT.C_USER (
         id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY
 		(START WITH 1, INCREMENT BY 1),
         id_client INTEGER NOT NULL,
+		id_file_path INTEGER,
         name VARCHAR(45) NOT NULL DEFAULT 'unnamed',
         phone VARCHAR(14) NOT NULL,
         observations VARCHAR(250),
 		sleeping BOOLEAN NOT NULL DEFAULT FALSE,
         CONSTRAINT user_client_id_fk
                 FOREIGN KEY (id_client)
-                REFERENCES ROOT.CLIENT(id));
+                REFERENCES ROOT.CLIENT(id),
+        CONSTRAINT user_file_path_id_fk
+                FOREIGN KEY (id_file_path)
+                REFERENCES ROOT.FILE_PATH(id));
 
 
 -------------- Modification de la table C_USER --------------

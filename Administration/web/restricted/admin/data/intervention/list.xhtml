@@ -47,12 +47,13 @@
                             
                             <p:column headerText="Durée"
                                       filterBy="#{item.duration}"
-                                      filterMatchMode="contains">
+                                      filterMatchMode="contains"
+                                      filterStyle="width:70px;">
                                 <h:outputText value="#{item.duration}"
                                               title="Durée de l'intervention"/>
                             </p:column>
                             
-                            <p:column headerText="Facturée"
+                            <p:column headerText="#Facture"
                                       style="width:1%;"
                                       filterBy="#{item.factureNumber}"
                                       filterMatchMode="contains">
@@ -61,13 +62,14 @@
                             
                             <p:column headerText="Tâche à accomplir"
                                       filterBy="#{item.idTask.toString()}"
+                                      style="white-space: nowrap;" 
                                       filterMatchMode="contains">
-                                <h:outputText value="#{item.idTask.toString()}"/>
+                                <h:outputText style="white-space: nowrap;" value="#{item.idTask.toString()}"/>
                                 <p:commandButton actionListener="#{taskView.entityView(item.idTask)}"
                                                  action="javascript:void(0);"
                                                  title="Afficher les détails de cette tâche"
                                                  icon="ui-icon-search"
-                                                 style="font-size: 40%;vertical-align: top !important;float:right;"
+                                                 style="font-size: 40%;vertical-align: top !important;"
                                                  update=":taskMenuViewPopup :taskMenuDialogHeader :taskViewForm"
                                                  oncomplete="taskMenuViewDialog.show();"/>
                             </p:column>
@@ -88,7 +90,7 @@
                                       filterBy="#{item.sleeping}"
                                       sortBy="#{item.sleeping}"
                                       filterMatchMode="contains"
-                                      filterStyle="width:60px;">
+                                      filterStyle="width:50px;">
                                 <h:outputText value="#{item.sleeping?'Oui':'Non'}"/>
                             </p:column>
                             

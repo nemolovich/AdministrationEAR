@@ -52,6 +52,7 @@ public abstract class EmbdedDataListView<C,O,F extends AbstractEmbdedDataList<C,
     {
         this.setFacade();
         super.getEntityFacade().addToDataList(entity,this.getInstance());
+        super.setEntityPathFilePath();
         return "list";
     }
     

@@ -5,6 +5,7 @@
 package bean;
 
 import static bean.ApplicationLogger.displayError;
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.DateFormat;
@@ -15,7 +16,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import javax.enterprise.context.ApplicationScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import javax.servlet.ServletContext;
 
 /**
  *
@@ -29,6 +32,10 @@ public class Utils
      * Nom de l'application
      */
     public static final String APPLICATION_NAME="Administration";
+    /**
+     * Répertoire des fichier uploadés sur le serveur
+     */
+    private static String UPLOADS_PATH="D:\\temp\\uploads\\";
     /**
      * Le nombre maximum de ligne dans une liste de données
      */
@@ -51,6 +58,37 @@ public class Utils
             Locale.FRANCE);
     private static final SimpleDateFormat formatMedium = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
     private static final SimpleDateFormat formatSmall = new SimpleDateFormat("dd/MM/yyyy");
+
+    public Utils()
+    {
+    }
+    
+    /**
+     * Renvoi le contexte courant de l'application
+     * @return {@link ServletContext} - Contexte courant
+     */
+    public static ServletContext getServletContext()
+    {
+        return (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+    }
+    
+    /**
+     * Renvoi le répertoire courant de l'application
+     * @return {@link String} - Répertoire courant
+     */
+    public static String getRealPath()
+    {
+        return Utils.getServletContext().getRealPath("") + File.separator;
+    }
+    
+    /**
+     * Renvopi le répertoire où sont stoqués les fichier uploadés sur le serveur
+     * @return {@link String} - Répertoire des téléchargements
+     */
+    public static String getUploadsPath()
+    {
+        return Utils.UPLOADS_PATH;
+    }
     
     /**
      * Renvoi les droits connus par l'application
