@@ -86,13 +86,14 @@
                                             mailView.editing}">
                     (<span class="red-star">*</span>: champs requis)<br />
                 </p:outputPanel>
-                <p:outputPanel rendered="#{mailView.creating}">
+                <p:outputPanel styleClass="buttons_panel"
+                               rendered="#{mailView.creating}">
                     <p:commandButton id="createMail" value="Ajouter"
                                      title="Ajouter cette adresse mail à la société"
                                      type="submit"
                                      actionListener="#{mailView.create(clientView.entity)}"
                                      icon="ui-icon-check"
-                                     update=":clientUpdate :clientUpdate:growlWizard :createMailForm"
+                                     update=":clientUpdate :growl :createMailForm"
                                      styleClass="green_icon"
                                      oncomplete="createRequest(createMail, xhr, status, args);forceFilter(clientMailTable);"
                                      />
@@ -107,13 +108,14 @@
                                      onclick="createMail.hide();"
                                      />
                 </p:outputPanel>
-                <p:outputPanel rendered="#{mailView.editing}">
+                <p:outputPanel styleClass="buttons_panel"
+                               rendered="#{mailView.editing}">
                     <p:commandButton  id="updateMail" value="Mettre à jour"
                                      title="Enregistrer les changements"
                                      type="submit"
                                      actionListener="#{mailView.update(clientView.entity)}"
                                      icon="ui-icon-disk"
-                                     update=":clientUpdate :clientUpdate:growlWizard :createMailForm"
+                                     update=":clientUpdate :growl :createMailForm"
                                      styleClass="green_icon"
                                      oncomplete="createRequest(createMail, xhr, status, args);forceFilter(clientMailTable);"
                                      />
@@ -128,7 +130,8 @@
                                      onclick="createMail.hide();"
                                      />
                 </p:outputPanel>
-                <p:outputPanel rendered="#{not mailView.creating and 
+                <p:outputPanel styleClass="buttons_panel"
+                               rendered="#{not mailView.creating and 
                                             not mailView.editing}">
                     <center>
                         <p:commandButton id="backMail" value="Fermer"

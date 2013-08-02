@@ -509,9 +509,9 @@ fieldset
 .tooltip
 {
     margin:                     0 !important;
-    padding:                    2px 5px !important;
+    padding:                    0px 5px !important;
     padding-top:                0px !important;
-    color:                      #575757 !important;
+    color:                      #353535 !important;
     border:                     1px solid #767676 !important;
     font-family:                'Lucida Sans Unicode', 'Lucida Grande', sans-serif !important;
     background:                 #F8F6F0 !important; /* Old browsers */

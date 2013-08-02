@@ -112,6 +112,9 @@
                             </p:tab>
                             
                             <p:tab id="details" title="Détails">
+                                <f:event type="postAddToView"
+                                         listener="#{fileUploadController.setFilePath(
+                                                     clientView.entity.idFilePath)}"/>
                                 <table width="100%">
                                     <tr>
                                         <td style="vertical-align: top !important;">
@@ -156,15 +159,94 @@
                                                 </h:panelGrid>
                                             </p:fieldset>
                                         </td>
-                                        <td style="vertical-align: top !important;">
+                                        <td style="vertical-align: top !important;height: 100%;">
                                             <p:fieldset legend="Observations">
 
                                                 <p:outputLabel value="Observations:" for="observations"/>
                                                 <br />
                                                 <h:inputTextarea id="observations" value="#{clientView.entity.observations}"
-                                                                 styleClass="textarea_primefaces_display"
+                                                                 styleClass="textarea_primefaces_display textarea_auto"
                                                                  rows="4"
                                                                  title="Observations"/>
+                                            </p:fieldset>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <p:fieldset legend="Fichiers">
+                                                <table style="width:100%;">
+                                                    <tr>
+                                                        <td style="vertical-align:top !important;">
+                                                            <p:fileUpload fileUploadListener="#{fileUploadController.handleFileUpload}"
+                                                                          mode="advanced"
+                                                                          dragDropSupport="true"
+                                                                          multiple="true"
+                                                                          process="@this"
+                                                                          update=":clientCreate:clientFiles"
+                                                                          sizeLimit="800000000"
+                                                                          label="Parcourir..."
+                                                                          uploadLabel="Envoyer"
+                                                                          cancelLabel="Annuler"
+                                                                          onstart="startAjax();"
+                                                                          invalidFileMessage="Type de fichier invalide"
+                                                                          invalidSizeMessage="Taille du fichier invalide"
+                                                                          widgetVar="fileUploadVar"
+                                                                          style="float:left;height:100% !important;vertical-align: top !important"
+                                                                          allowTypes="/(\.|\/)(pdf|doc?x|txt|odt)$/" >
+                                                            </p:fileUpload>
+                                                        </td>
+                                                        <td style="vertical-align:top !important;float:right;">
+                                                            <p:dataTable id="clientFiles"
+                                                                         value="#{clientView.entity.idFilePath.filesInPath}"
+                                                                         var="file"
+                                                                         rows="#{utils.maxDataRows}"
+                                                                         emptyMessage="Aucun fichier n'est présent"
+                                                                         paginatorPosition="top"
+                                                                         sortBy="#{file.name}"
+                                                                         style="float:right;"
+                                                                         paginator="true">
+
+                                                                <p:column headerText="Nom">
+                                                                    <h:outputText value="#{file.name}"/>
+                                                                </p:column>
+
+                                                                <p:column headerText="Taille">
+                                                                    <h:outputText value="#{files.getStringSize(file.length())}"/>
+                                                                </p:column>
+
+                                                                <p:column>
+                                                                    <p:commandButton icon="ui-icon-trash"
+                                                                                     styleClass="red_icon"
+                                                                                     style="font-size:60%;"
+                                                                                     ajax="false"
+                                                                                     immediate="true"
+                                                                                     onclick="if(!confirm('#{fileUploadController.getDeleteMessage(file)}'))
+                                                                                     {return false;}"
+                                                                                     actionListener="#{fileUploadController.deleteFile(file)}"
+                                                                                     title="Supprimer ce fichier"
+                                                                                     update=":clientCreate:clientFiles"/>
+                                                                </p:column>
+
+                                                                <f:facet name="footer">
+                                                                    <p:outputPanel style="float:left;">
+                                                                        <p:commandButton action="#{fileUploadController.deleteAllFiles()}"
+                                                                                         icon="ui-icon-trash"
+                                                                                         styleClass="red_icon"
+                                                                                         ajax="false"
+                                                                                         immediate="true"
+                                                                                         onclick="if(!confirm('#{fileUploadController.deleteAllMessage}'))
+                                                                                                    {return false;}"
+                                                                                         title="Supprimer tous les fichier du serveur"
+                                                                                         value="Tout supprimer"
+                                                                                         update=":growlWizard :clientCreate:clientFiles"
+                                                                                         disabled="#{fileUploadController.emptyFolder}"/>
+                                                                    </p:outputPanel>
+                                                                </f:facet>
+
+                                                            </p:dataTable>
+                                                        </td>
+                                                    </tr>
+                                                </table>
                                             </p:fieldset>
                                         </td>
                                     </tr>
@@ -272,7 +354,6 @@
                                                      title="Veuillez lire les informations avant de valider"
                                                      actionListener="#{clientView.create()}"
                                                      type="submit"
-                                                     update=":growl"
                                                      action="#{clientView.entityParameter(clientView.entity)}"/>
                                     <p:commandButton
                                         action="javascript:void(0);"

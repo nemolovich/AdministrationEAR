@@ -145,7 +145,7 @@
                                      type="submit"
                                      actionListener="#{workstationView.create(clientView.entity)}"
                                      icon="ui-icon-check"
-                                     update=":clientUpdate :clientUpdate:growlWizard :createWorkstationForm"
+                                     update=":clientUpdate :growl :createWorkstationForm"
                                      styleClass="green_icon"
                                      oncomplete="createRequest(createWorstation, xhr, status, args);clientWorkstationTable.filter();"
                                      />
@@ -166,7 +166,7 @@
                                      type="submit"
                                      actionListener="#{workstationView.update(clientView.entity)}"
                                      icon="ui-icon-disk"
-                                     update=":clientUpdate :clientUpdate:growlWizard :createWorkstationForm"
+                                     update=":clientUpdate :growl :createWorkstationForm"
                                      styleClass="green_icon"
                                      oncomplete="createRequest(createWorstation, xhr, status, args);clientWorkstationTable.filter();"
                                      />

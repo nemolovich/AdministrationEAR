@@ -42,7 +42,7 @@
                                 </ul>
                             </div>
                         </div>
-                        <p:growl id="growlWizard" showDetail="true" life="30000" autoUpdate="false" escape="false"/>
+                        <!--<p:growl id="growlWizard" showDetail="true" life="30000" autoUpdate="false" escape="false"/>-->
 <!--                        <p:wizard id="clientUpdateWizard"
                                   backLabel="Retour"
                                   nextLabel="Suivant"
@@ -107,7 +107,7 @@
                                                          action="javascipt:void(0);"
                                                          icon="ui-icon-trash"
                                                          oncomplete="clientWorkstationTable.filter();"
-                                                         update=":clientUpdate :clientUpdate:growlWizard :clientUpdate:clientTabView:clientWorkstationList"
+                                                         update=":clientUpdate :growl :clientUpdate:clientTabView:clientWorkstationList"
                                                          style="font-size: 60%;"
                                                          styleClass="red_icon"
                                                          onclick="if(!confirm('#{workstationView.getDeleteMessage(poste)}')){return false;}"
@@ -121,7 +121,7 @@
                                         <p:commandButton actionListener="#{workstationView.entityWake(clientView.entity,poste)}"
                                                          action="javascript:void(0);"
                                                          icon="ui-icon-play"
-                                                         update=":clientUpdate:growlWizard :clientUpdate:clientTabView:clientWorkstationList"
+                                                         update=":growl :clientUpdate:clientTabView:clientWorkstationList"
                                                          style="font-size: 60%;float:right;"
                                                          styleClass="blue_icon"
                                                          title="Réactiver ce poste"
@@ -131,7 +131,7 @@
                                                          action="javascript:void(0);"
                                                          icon="ui-icon-pause"
                                                          oncomplete="clientWorkstationTable.filter();"
-                                                         update=":clientUpdate:growlWizard :clientUpdate:clientTabView:clientWorkstationList"
+                                                         update=":growl :clientUpdate:clientTabView:clientWorkstationList"
                                                          style="font-size: 60%;float:right;"
                                                          onclick="if(!confirm('Voulez vous vraiment mettre ce poste en standby?\n'+
                                                                         '(Vous pourrez le réactiver quand vous le souhaitez)'))
@@ -155,7 +155,7 @@
                                                              icon="ui-icon-trash"
                                                              styleClass="red_icon"
                                                              title="Supprimer les postes sélectionnés"
-                                                             update=":clientUpdate :clientUpdate:growlWizard :clientUpdate:clientTabView:clientWorkstationList @this"
+                                                             update=":clientUpdate :growl :clientUpdate:clientTabView:clientWorkstationList @this"
                                                              disabled="#{workstationMultiView.emptySelection}"
                                                              actionListener="#{workstationView.remove(clientView.entity,
                                                                                workstationMultiView.multiSelection)}"
@@ -242,7 +242,7 @@
                                                          action="javascipt:void(0);"
                                                          icon="ui-icon-trash"
                                                          oncomplete="forceFilter(clientMailTable);"
-                                                         update=":clientUpdate :clientUpdate:growlWizard :clientUpdate:clientTabView:clientMailList"
+                                                         update=":clientUpdate :growl :clientUpdate:clientTabView:clientMailList"
                                                          style="font-size: 60%;"
                                                          styleClass="red_icon"
                                                          onclick="if(!confirm('#{mailView.getDeleteMessage(mail)}')){return false;}"
@@ -256,7 +256,7 @@
                                         <p:commandButton actionListener="#{mailView.entityWake(clientView.entity,mail)}"
                                                          action="javascript:void(0);"
                                                          icon="ui-icon-play"
-                                                         update=":clientUpdate:growlWizard :clientUpdate:clientTabView:clientMailList"
+                                                         update=":growl :clientUpdate:clientTabView:clientMailList"
                                                          style="font-size: 60%;float:right;"
                                                          styleClass="blue_icon"
                                                          title="Réactiver cette adresse mail"
@@ -266,7 +266,7 @@
                                                          action="javascript:void(0);"
                                                          icon="ui-icon-pause"
                                                          oncomplete="clientMailTable.filter();"
-                                                         update=":clientUpdate:growlWizard :clientUpdate:clientTabView:clientMailList"
+                                                         update=":growl :clientUpdate:clientTabView:clientMailList"
                                                          style="font-size: 60%;float:right;"
                                                          onclick="if(!confirm('Voulez vous vraiment mettre cette adresse mail en standby?\n'+
                                                                         '(Vous pourrez la réactiver quand vous le souhaitez)'))
@@ -290,7 +290,7 @@
                                                              icon="ui-icon-trash"
                                                              styleClass="red_icon"
                                                              title="Supprimer les adresses mail sélectionnées"
-                                                             update=":clientUpdate :clientUpdate:growlWizard :clientUpdate:clientTabView:clientMailList @this"
+                                                             update=":clientUpdate :growl :clientUpdate:clientTabView:clientMailList @this"
                                                              disabled="#{mailMultiView.emptySelection}"
                                                              actionListener="#{mailView.remove(clientView.entity,
                                                                                mailMultiView.multiSelection)}"
@@ -377,7 +377,7 @@
                                                          action="javascipt:void(0);"
                                                          icon="ui-icon-trash"
                                                          oncomplete="forceFilter(clientUserTable);"
-                                                         update=":clientUpdate :clientUpdate:growlWizard :clientUpdate:clientTabView:clientUserList"
+                                                         update=":clientUpdate :growl :clientUpdate:clientTabView:clientUserList"
                                                          style="font-size: 60%;"
                                                          styleClass="red_icon"
                                                          onclick="if(!confirm('#{cUserView.getDeleteMessage(cuser)}')){return false;}"
@@ -391,7 +391,7 @@
                                         <p:commandButton actionListener="#{cUserView.entityWake(clientView.entity,cuser)}"
                                                          action="javascript:void(0);"
                                                          icon="ui-icon-play"
-                                                         update=":clientUpdate:growlWizard :clientUpdate:clientTabView:clientUserList"
+                                                         update=":growl :clientUpdate:clientTabView:clientUserList"
                                                          style="font-size: 60%;float:right;"
                                                          styleClass="blue_icon"
                                                          title="Réactiver cet utilisateur"
@@ -401,7 +401,7 @@
                                                          action="javascript:void(0);"
                                                          icon="ui-icon-pause"
                                                          oncomplete="clientUserTable.filter();"
-                                                         update=":clientUpdate:growlWizard :clientUpdate:clientTabView:clientUserList"
+                                                         update=":growl :clientUpdate:clientTabView:clientUserList"
                                                          style="font-size: 60%;float:right;"
                                                          onclick="if(!confirm('Voulez vous vraiment mettre cet utilisateur en standby?\n'+
                                                                         '(Vous pourrez le réactiver quand vous le souhaitez)'))
@@ -425,7 +425,7 @@
                                                              icon="ui-icon-trash"
                                                              styleClass="red_icon"
                                                              title="Supprimer les utilisateurs sélectionnés"
-                                                             update=":clientUpdate :clientUpdate:growlWizard :clientUpdate:clientTabView:clientUserList @this"
+                                                             update=":clientUpdate :growl :clientUpdate:clientTabView:clientUserList @this"
                                                              disabled="#{cUserMultiView.emptySelection}"
                                                              actionListener="#{cUserView.remove(clientView.entity,
                                                                                cUserMultiView.multiSelection)}"
@@ -463,6 +463,85 @@
                             <p:tab id="softwares" title="Logiciels">
                                 <p:fieldset legend="Logiciels">
                                     Logiciels
+                                </p:fieldset>
+                            </p:tab>
+                            
+                            <p:tab id="files" title="Fichiers">
+                                <f:event type="postAddToView"
+                                                     listener="#{fileUploadController.setFilePath(
+                                                                 clientView.entity.idFilePath)}"/>
+                                <p:fieldset legend="Fichiers">
+                                    <table style="width:100%;">
+                                        <tr>
+                                            <td style="vertical-align:top !important;">
+                                                <p:fileUpload fileUploadListener="#{fileUploadController.handleFileUpload}"
+                                                              mode="advanced"
+                                                              dragDropSupport="true"
+                                                              multiple="true"
+                                                              process="@this"
+                                                              update=":growl :clientUpdate:clientTabView:clientFiles"
+                                                              sizeLimit="800000000"
+                                                              label="Parcourir..."
+                                                              uploadLabel="Envoyer"
+                                                              cancelLabel="Annuler"
+                                                              onstart="startAjax();"
+                                                              invalidFileMessage="Type de fichier invalide"
+                                                              invalidSizeMessage="Taille du fichier invalide"
+                                                              widgetVar="fileUploadVar"
+                                                              allowTypes="/(\.|\/)(pdf|doc?x|txt|odt)$/" >
+                                                </p:fileUpload>
+                                            </td>
+                                            <td style="vertical-align:top !important;float:right;">
+                                                <p:dataTable id="clientFiles"
+                                                             value="#{clientView.entity.idFilePath.filesInPath}"
+                                                             var="file"
+                                                             rows="#{utils.maxDataRows}"
+                                                             emptyMessage="Aucun fichier n'est présent"
+                                                             paginatorPosition="top"
+                                                             sortBy="#{file.name}"
+                                                             paginator="true">
+
+                                                    <p:column headerText="Nom">
+                                                        <h:outputText value="#{file.name}"/>
+                                                    </p:column>
+
+                                                    <p:column headerText="Taille">
+                                                        <h:outputText value="#{files.getStringSize(file.length())}"/>
+                                                    </p:column>
+
+                                                    <p:column>
+                                                        <p:commandButton icon="ui-icon-trash"
+                                                                         styleClass="red_icon"
+                                                                         style="font-size:60%;"
+                                                                         ajax="false"
+                                                                         immediate="true"
+                                                                         onclick="if(!confirm('#{fileUploadController.getDeleteMessage(file)}'))
+                                                                         {return false;}"
+                                                                         actionListener="#{fileUploadController.deleteFile(file)}"
+                                                                         title="Supprimer ce fichier"
+                                                                         update=":growl :clientUpdate:clientTabView:clientFiles"/>
+                                                    </p:column>
+
+                                                    <f:facet name="footer">
+                                                        <p:outputPanel style="float:left;">
+                                                            <p:commandButton action="#{fileUploadController.deleteAllFiles()}"
+                                                                             icon="ui-icon-trash"
+                                                                             styleClass="red_icon"
+                                                                             ajax="false"
+                                                                             immediate="true"
+                                                                             onclick="if(!confirm('#{fileUploadController.deleteAllMessage}'))
+                                                                                        {return false;}"
+                                                                             title="Supprimer tous les fichier du serveur"
+                                                                             value="Tout supprimer"
+                                                                             update=":growl :clientUpdate:clientFiles"
+                                                                             disabled="#{fileUploadController.emptyFolder}"/>
+                                                        </p:outputPanel>
+                                                    </f:facet>
+
+                                                </p:dataTable>
+                                            </td>
+                                        </tr>
+                                    </table>
                                 </p:fieldset>
                             </p:tab>
                         </p:tabView>

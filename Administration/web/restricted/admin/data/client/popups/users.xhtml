@@ -67,13 +67,14 @@
                                             cUserView.editing}">
                     (<span class="red-star">*</span>: champs requis)<br />
                 </p:outputPanel>
-                <p:outputPanel rendered="#{cUserView.creating}">
+                <p:outputPanel  styleClass="buttons_panel"
+                               rendered="#{cUserView.creating}">
                     <p:commandButton id="createUser" value="Ajouter"
                                      title="Ajouter cet utilisateur à la société"
                                      type="submit"
                                      actionListener="#{cUserView.create(clientView.entity)}"
                                      icon="ui-icon-check"
-                                     update=":clientUpdate :clientUpdate:growlWizard :createUserForm"
+                                     update=":clientUpdate :growl :createUserForm"
                                      styleClass="green_icon"
                                      oncomplete="createRequest(createUser, xhr, status, args);forceFilter(clientUserTable);"
                                      />
@@ -88,13 +89,14 @@
                                      onclick="createUser.hide();"
                                      />
                 </p:outputPanel>
-                <p:outputPanel rendered="#{cUserView.editing}">
+                <p:outputPanel styleClass="buttons_panel"
+                               rendered="#{cUserView.editing}">
                     <p:commandButton  id="updateUser" value="Mettre à jour"
                                      title="Enregistrer les changements"
                                      type="submit"
                                      actionListener="#{cUserView.update(clientView.entity)}"
                                      icon="ui-icon-disk"
-                                     update=":clientUpdate :clientUpdate:growlWizard :createUserForm"
+                                     update=":clientUpdate :growl :createUserForm"
                                      styleClass="green_icon"
                                      oncomplete="createRequest(createUser, xhr, status, args);forceFilter(clientUserTable);"
                                      />
@@ -109,7 +111,8 @@
                                      onclick="createUser.hide();"
                                      />
                 </p:outputPanel>
-                <p:outputPanel rendered="#{not cUserView.creating and 
+                <p:outputPanel styleClass="buttons_panel"
+                               rendered="#{not cUserView.creating and 
                                             not cUserView.editing}">
                     <center>
                         <p:commandButton id="backUser" value="Fermer"

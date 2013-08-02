@@ -18,6 +18,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -104,6 +105,9 @@ public class Client implements Serializable
     @JoinColumn(name = "ID_USER", referencedColumnName = "ID")
     @ManyToOne
     private CUser idUser;
+    @JoinColumn(name = "ID_FILE_PATH", referencedColumnName = "ID")
+    @OneToOne(optional = true)
+    private FilePath idFilePath;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idClient")
     private List<CUser> cUserList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idClient")
@@ -257,6 +261,14 @@ public class Client implements Serializable
 
     public void setIdUser(CUser idUser) {
         this.idUser = idUser;
+    }
+
+    public FilePath getIdFilePath() {
+        return idFilePath;
+    }
+
+    public void setIdFilePath(FilePath idFilepath) {
+        this.idFilePath = idFilepath;
     }
 
     @XmlTransient
