@@ -20,7 +20,7 @@
                 <ui:include src="/restricted/admin/data/client/popups/mails.xhtml"/>
                 <ui:include src="/restricted/admin/data/client/popups/users.xhtml"/>
                 <f:view>
-                    <h:form id="clientUpdate">
+                    <h:form id="clientUpdate" enctype="multipart/form-data">
                         
                         <p:commandButton action="list"
                                          value="Retour à la liste des sociétés"
@@ -467,9 +467,9 @@
                             </p:tab>
                             
                             <p:tab id="files" title="Fichiers">
-                                <f:event type="postAddToView"
-                                                     listener="#{fileUploadController.setFilePath(
-                                                                 clientView.entity.idFilePath)}"/>
+                                <f:event type="preRenderComponent"
+                                         listener="#{fileUploadController.setFilePath(
+                                                     clientView.entity.idFilePath)}"/>
                                 <p:fieldset legend="Fichiers">
                                     <table style="width:100%;">
                                         <tr>
@@ -488,7 +488,7 @@
                                                               invalidFileMessage="Type de fichier invalide"
                                                               invalidSizeMessage="Taille du fichier invalide"
                                                               widgetVar="fileUploadVar"
-                                                              allowTypes="/(\.|\/)(pdf|doc?x|txt|odt)$/" >
+                                                              allowTypes="#{utils.getTextFilesExtensions()}" >
                                                 </p:fileUpload>
                                             </td>
                                             <td style="vertical-align:top !important;float:right;">
@@ -513,8 +513,6 @@
                                                         <p:commandButton icon="ui-icon-trash"
                                                                          styleClass="red_icon"
                                                                          style="font-size:60%;"
-                                                                         ajax="false"
-                                                                         immediate="true"
                                                                          onclick="if(!confirm('#{fileUploadController.getDeleteMessage(file)}'))
                                                                          {return false;}"
                                                                          actionListener="#{fileUploadController.deleteFile(file)}"
@@ -527,13 +525,11 @@
                                                             <p:commandButton action="#{fileUploadController.deleteAllFiles()}"
                                                                              icon="ui-icon-trash"
                                                                              styleClass="red_icon"
-                                                                             ajax="false"
-                                                                             immediate="true"
                                                                              onclick="if(!confirm('#{fileUploadController.deleteAllMessage}'))
                                                                                         {return false;}"
                                                                              title="Supprimer tous les fichier du serveur"
                                                                              value="Tout supprimer"
-                                                                             update=":growl :clientUpdate:clientFiles"
+                                                                             update=":growl :clientUpdate:clientTabView:clientFiles"
                                                                              disabled="#{fileUploadController.emptyFolder}"/>
                                                         </p:outputPanel>
                                                     </f:facet>

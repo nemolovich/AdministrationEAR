@@ -31,17 +31,17 @@
                         <h:outputText id="pidescriptionV" value="#{taskView.entityPopup.description}"
                                       title="Description"
                                       rendered="#{not taskView.creating}"/>
-                        <p:inputText id="pidescription"
-                                     maxlength="250"
-                                     value="#{taskView.entityPopup.description}"
-                                     title="Description de l'intervention"
-                                     rendered="#{taskView.creating}">
+                        <h:inputTextarea id="pidescription"
+                                         styleClass="textarea_min"
+                                         value="#{taskView.entityPopup.description}"
+                                         title="Description de l'intervention"
+                                         rendered="#{taskView.creating}">
                             <f:validator binding="#{notNullFieldValidator}"/>
                             <f:attribute name="requiredMessage"
                                          value="Veuillez entrer une description de l'intervention"/>
                             <f:attribute name="requiredTitle"
                                          value="Champs 'Description' vide"/>
-                        </p:inputText>
+                        </h:inputTextarea>
 
                         <h:outputLabel value="Société:" for="piidClient"
                                        styleClass="#{(taskView.creating)?'required':''}"/>
@@ -92,7 +92,7 @@
                                              readonly="true"
                                              styleClass="textarea_min"
                                              ondblclick="this.focus();this.select();"
-                                            rendered="#{not taskView.creating}">
+                                             rendered="#{not taskView.creating}">
                             </h:inputTextarea>
                             <p:selectOneMenu id="piidWorkstationFull"
                                              value="#{taskView.entityPopup.idWorkstation}"
@@ -306,7 +306,7 @@
                                          rendered="#{not taskView.creating}">
                         </h:inputTextarea>
                         <h:inputTextarea id="piobservationsFull"
-                                         class="textarea_primefaces_display"
+                                         class="textarea_min"
                                          rows="2"
                                          value="#{taskView.entityPopup.observations}"
                                          title="Observations"

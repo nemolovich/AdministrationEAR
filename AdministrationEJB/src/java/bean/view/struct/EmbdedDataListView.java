@@ -44,7 +44,9 @@ public abstract class EmbdedDataListView<C,O,F extends AbstractEmbdedDataList<C,
     public String entityDelete(C entity, O instance)
     {
         this.setFacade();
+        super.setInstance(instance);
         super.getEntityFacade().removeToDataList(entity,instance);
+        super.removeFilePath();
         return "list";
     }
     
@@ -110,6 +112,11 @@ public abstract class EmbdedDataListView<C,O,F extends AbstractEmbdedDataList<C,
         }
         this.setFacade();
         super.getEntityFacade().removeToDataList(entity,instances);
+        for(O instance:instances)
+        {
+            super.setInstance(instance);
+            super.removeFilePath();
+        }
         return "list";
     }
     

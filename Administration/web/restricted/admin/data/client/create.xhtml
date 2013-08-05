@@ -17,7 +17,8 @@
             <ui:define name="content">
                 <f:attribute name="header" value="Création d'une société"/>
                 <f:view>
-                    <h:form id="clientCreate">
+                    <h:form id="clientCreate"
+                            enctype="multipart/form-data">
                         <p:growl id="growlWizard" showDetail="true" life="30000" autoUpdate="true"/>
                         <p:commandButton action="list"
                                          actionListener="#{clientView.cancelCreate()}"
@@ -193,7 +194,7 @@
                                                                           invalidSizeMessage="Taille du fichier invalide"
                                                                           widgetVar="fileUploadVar"
                                                                           style="float:left;height:100% !important;vertical-align: top !important"
-                                                                          allowTypes="/(\.|\/)(pdf|doc?x|txt|odt)$/" >
+                                                                          allowTypes="#{utils.getTextFilesExtensions()}" >
                                                             </p:fileUpload>
                                                         </td>
                                                         <td style="vertical-align:top !important;float:right;">

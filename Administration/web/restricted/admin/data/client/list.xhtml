@@ -50,7 +50,7 @@
                           header="Détails de l'utilisateur"
                           widgetVar="cuserViewDialog"
                           resizable="false"
-                          draggable="false"
+                          draggable="true"
                           maximizable="false"
                           modal="true"
                           showEffect="clip"
@@ -194,8 +194,9 @@
                             <f:facet name="footer">
                                 <p:outputPanel style="float:left">
                                     <h:outputText value="Rechercher:"/>
-                                    <p:inputText id="clientFilter" onkeyup="clientTable.filter();"
-                                                 style="width:150px;margin-left:20px">
+                                    <p:inputText id="globalFilter" onkeyup="doAfterInterval('clientTable.filter();',1);"
+                                                 style="width:150px;margin-left:20px"
+                                                 title="Rechercher dans tous les champs de recherche">
                                     </p:inputText>
                                     <p:commandButton value="Ajouter une société"
                                                      action="#{clientView.entityCreate()}"

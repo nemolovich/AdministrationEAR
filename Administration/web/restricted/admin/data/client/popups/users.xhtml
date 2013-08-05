@@ -13,7 +13,7 @@
                   header="Fenêtre d'utilisateur"
                   widgetVar="createUser"
                   resizable="false"
-                  draggable="false"
+                  draggable="true"
                   modal="true"
                   showEffect="clip"
                   hideEffect="clip">
@@ -52,17 +52,92 @@
                                               not cUserView.editing}"/>
                     
                     <p:outputLabel value="Observations:" for="uobservations" />
-                    <p:inputText id="uobservations" value="#{cUserView.entity.observations}"
-                                 title="Observations"
-                                 maxlength="250"
-                                 rendered="#{cUserView.creating or 
-                                                cUserView.editing}"/>
-                    <h:outputText id="uobservationsV" value="#{cUserView.entity.observations}"
-                                  title="Observations"
-                                  rendered="#{not cUserView.creating and
-                                              not cUserView.editing}"/>
+                    <h:inputTextarea id="uobservations" value="#{cUserView.entity.observations}"
+                                     title="Observations"
+                                     styleClass="textarea_min"
+                                     rendered="#{cUserView.creating or 
+                                                 cUserView.editing}"/>
+                    <h:inputTextarea id="uobservationsV" value="#{cUserView.entity.observations}"
+                                     title="Observations"
+                                     readonly="true"
+                                     styleClass="textarea_min"
+                                     ondblclick="this.focus();this.select();"
+                                     rendered="#{not cUserView.creating and
+                                                 not cUserView.editing}"/>
                     
                 </h:panelGrid>
+                <p:outputPanel>
+                    <f:event type="preRenderComponent"
+                             listener="#{fileUploadController.setFilePath(
+                                         cUserView.entity.idFilePath)}"/>
+                    <table style="width:100%;">
+                        <tr>
+                            <td style="vertical-align:top !important;">
+                                <p:fileUpload fileUploadListener="#{fileUploadController.handleFileUpload}"
+                                              mode="advanced"
+                                              dragDropSupport="true"
+                                              multiple="true"
+                                              process="@this"
+                                              update=":growl :createUserForm:cUserFiles"
+                                              sizeLimit="800000000"
+                                              label="Parcourir..."
+                                              uploadLabel="Envoyer"
+                                              cancelLabel="Annuler"
+                                              onstart="startAjax();"
+                                              invalidFileMessage="Type de fichier invalide"
+                                              invalidSizeMessage="Taille du fichier invalide"
+                                              widgetVar="fileUploadVar"
+                                              allowTypes="#{utils.getTextFilesExtensions()}" >
+                                </p:fileUpload>
+                            </td>
+                            <td style="vertical-align:top !important;float:right;">
+                                <p:dataTable id="cUserFiles"
+                                             value="#{cUserView.entity.idFilePath.filesInPath}"
+                                             var="file"
+                                             rows="#{utils.maxDataRows}"
+                                             emptyMessage="Aucun fichier n'est présent"
+                                             paginatorPosition="top"
+                                             sortBy="#{file.name}"
+                                             paginator="true">
+
+                                    <p:column headerText="Nom">
+                                        <h:outputText value="#{file.name}"/>
+                                    </p:column>
+
+                                    <p:column headerText="Taille">
+                                        <h:outputText value="#{files.getStringSize(file.length())}"/>
+                                    </p:column>
+
+                                    <p:column>
+                                        <p:commandButton icon="ui-icon-trash"
+                                                         styleClass="red_icon"
+                                                         style="font-size:60%;"
+                                                         onclick="if(!confirm('#{fileUploadController.getDeleteMessage(file)}'))
+                                                         {return false;}"
+                                                         actionListener="#{fileUploadController.deleteFile(file)}"
+                                                         title="Supprimer ce fichier"
+                                                         update=":growl :createUserForm:cUserFiles"/>
+                                    </p:column>
+
+                                    <f:facet name="footer">
+                                        <p:outputPanel style="float:left;">
+                                            <p:commandButton action="#{fileUploadController.deleteAllFiles()}"
+                                                             icon="ui-icon-trash"
+                                                             styleClass="red_icon"
+                                                             onclick="if(!confirm('#{fileUploadController.deleteAllMessage}'))
+                                                                        {return false;}"
+                                                             title="Supprimer tous les fichier du serveur"
+                                                             value="Tout supprimer"
+                                                             update=":growl :createUserForm:cUserFiles"
+                                                             disabled="#{fileUploadController.emptyFolder}"/>
+                                        </p:outputPanel>
+                                    </f:facet>
+
+                                </p:dataTable>
+                            </td>
+                        </tr>
+                    </table>
+                </p:outputPanel>
                 <p:outputPanel rendered="#{cUserView.creating or
                                             cUserView.editing}">
                     (<span class="red-star">*</span>: champs requis)<br />

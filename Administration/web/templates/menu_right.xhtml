@@ -20,19 +20,23 @@
                   modal="true"
                   showEffect="clip"
                   hideEffect="clip">
-            <h:form id="taskMenuDataPopupForm"> 
+            <h:form id="taskMenuDataPopupForm">
+                <p:hotkey bind="esc"
+                          oncomplete="taskMenuDataDialog.hide();"
+                          process="@this"
+                          update="@form"/>
                 <p:dataTable id="taskMenuDataTablePopup"
                              value="#{taskMultiView.getData(taskView.entries)}"
                              var="item"
                              widgetVar="taskMenuTablePopup"
-                             rowIndexVar="index"
-                             paginatorPosition="bottom"
-                             emptyMessage="Aucune tâche n'a été trouvée"
-                             rowStyleClass="#{item.sleeping?'sleeping_elmt':null}"
                              paginator="true"
+                             paginatorPosition="bottom"
+                             rowStyleClass="#{item.sleeping?'sleeping_elmt':null}"
                              rows="#{utils.maxDataRows}"
                              sortBy="#{utils.smallDateFormat(item.startDate)}"
-                             filteredValue="#{taskMultiView.filteredEntities}">
+                             filteredValue="#{taskMultiView.filteredEntities}"
+                             filterDelay="100"
+                             emptyMessage="Aucune tâche n'a été trouvée">
                     
                     <p:column headerText="Date"
                               style="width:1%;"
@@ -105,9 +109,22 @@
                               style="width:2%;">
                         <h:outputText value="#{item.sleeping?'Faite':'À faire'}"/>
                     </p:column>
-                    
+                    <f:facet name="footer">
+                        <p:outputPanel style="float:left;">
+                            <h:outputText value="Rechercher:"/>
+                            <p:inputText id="globalFilter" onkeyup="doAfterInterval('taskMenuTablePopup.filter();',1);"
+                                         style="width:150px;margin-left:20px"
+                                         title="Rechercher dans tous les champs de recherche">
+                            </p:inputText>
+                        </p:outputPanel>
+                    </f:facet>
                 </p:dataTable>
             </h:form>
+            <p:ajax event="close"
+                    process="@this"
+                    update=":taskMenuDataPopupForm"
+                    oncomplete="forceFilter(taskMenuTablePopup);">
+            </p:ajax>
         </p:dialog>
         <p:dialog id="taskMenuViewPopup"
                   dynamic="true"

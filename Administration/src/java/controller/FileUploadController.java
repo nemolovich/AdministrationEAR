@@ -114,7 +114,7 @@ public class FileUploadController
                         "Fichier envoyé", "Le fichier \""+file.getFileName()+
                         " a été envoyé sur le serveur");
                 FacesContext.getCurrentInstance().addMessage(null, msg);
-                ApplicationLogger.writeInfo("Fichier \""+
+                ApplicationLogger.writeWarning("Fichier \""+
                         file.getFileName()+"\" envoyé sur le serveur");
             }
             else
@@ -141,6 +141,10 @@ public class FileUploadController
     
     public boolean isEmptyFolder()
     {
+        if(this.defaultPath==null)
+        {
+            return true;
+        }
         File parent=new File(this.defaultPath);
         return Files.isEmptyFolder(parent);
     }

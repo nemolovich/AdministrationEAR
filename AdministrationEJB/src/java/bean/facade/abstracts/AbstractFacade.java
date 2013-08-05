@@ -31,10 +31,12 @@ public abstract class AbstractFacade<T>
         getEntityManager().persist(entity);
         String details=Utils.getFullString(entity);
         details=details!=null?details:entity.toString();
+        ApplicationLogger.addSmallSep();
         ApplicationLogger.writeWarning("Création de l'entité de la classe \""+
                 this.entityClass.getName()+"\" réussie");
         ApplicationLogger.write("\tObjet: \""+this.entityClass.getName()+"\": \""+
                 details+"\"");
+        ApplicationLogger.addSmallSep();
         FacesMessage message=new FacesMessage(FacesMessage.SEVERITY_INFO,
                 "Ajout de la donnée réussie",
                 "L'enregistrement s'est correctement déroulé");
@@ -64,10 +66,12 @@ public abstract class AbstractFacade<T>
         String details=Utils.getFullString(temp);
         details=details!=null?details:temp.toString();
         getEntityManager().remove(getEntityManager().merge(entity));
+        ApplicationLogger.addSmallSep();
         ApplicationLogger.writeWarning("Suppression de l'entité de la classe \""+
                 this.entityClass.getName()+"\" réussie");
         ApplicationLogger.write("\tObjet: \""+this.entityClass.getName()+"\": \""+
                 details+"\"\r");
+        ApplicationLogger.addSmallSep();
         FacesMessage message=new FacesMessage(FacesMessage.SEVERITY_INFO,
                 "Supression de la donnée réussie",
                 "La suppression s'est correctement déroulée");

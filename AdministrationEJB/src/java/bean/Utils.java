@@ -5,6 +5,7 @@
 package bean;
 
 import static bean.ApplicationLogger.displayError;
+import entity.FilePath;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -35,11 +36,11 @@ public class Utils
     /**
      * Répertoire des fichier uploadés sur le serveur
      */
-    private static String UPLOADS_PATH="D:\\temp\\uploads\\";
+    private static final String UPLOADS_PATH="C:\\temp\\uploads\\";
     /**
      * Le nombre maximum de ligne dans une liste de données
      */
-    private int maxDataRows = 10;
+    private final int maxDataRows = 10;
     /**
      * Droits de l'application
      */
@@ -88,6 +89,17 @@ public class Utils
     public static String getUploadsPath()
     {
         return Utils.UPLOADS_PATH;
+    }
+    
+    /**
+     * Renvoi la liste des extensions autorisées pour les fichiers texte joints
+     * @return {@link String} - Liste des extensions
+     */
+    public static String getTextFilesExtensions()
+    {
+        return "/(\\.|\\/)("+FilePath.TEXT_FILES_EXTENSIONS
+                +"|"+FilePath.TEXT_FILES_EXTENSIONS.toUpperCase()
+                +")$/";
     }
     
     /**

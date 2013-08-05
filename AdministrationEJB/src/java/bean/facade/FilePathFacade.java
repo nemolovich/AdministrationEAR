@@ -36,10 +36,12 @@ public class FilePathFacade extends AbstractFacade<FilePath> {
         getEntityManager().persist(entity);
         String details=Utils.getFullString(entity);
         details=details!=null?details:entity.toString();
+        ApplicationLogger.addSmallSep();
         ApplicationLogger.writeWarning("Création de l'entité de la classe \""+
                 FilePath.class.getName()+"\" réussie");
         ApplicationLogger.write("\tObjet: \""+FilePath.class.getName()+"\": \""+
                 details+"\"");
+        ApplicationLogger.addSmallSep();
     }
     
     @Override
@@ -63,10 +65,12 @@ public class FilePathFacade extends AbstractFacade<FilePath> {
         String details=Utils.getFullString(temp);
         details=details!=null?details:temp.toString();
         getEntityManager().remove(getEntityManager().merge(entity));
+        ApplicationLogger.addSmallSep();
         ApplicationLogger.writeWarning("Suppression de l'entité de la classe \""+
                 FilePath.class.getName()+"\" réussie");
         ApplicationLogger.write("\tObjet: \""+FilePath.class.getName()+"\": \""+
                 details+"\"\r");
+        ApplicationLogger.addSmallSep();
     }
     
 }

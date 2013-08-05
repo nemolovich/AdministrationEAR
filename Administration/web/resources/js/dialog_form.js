@@ -100,15 +100,24 @@ function handleEvent(item, event)
 }
 
 /**
+ * Exécute un script JavaScript après un intervale donné
+ * @param {String} action - Script JavaScript à exécuter
+ * @param {type} secondes - Intervale en secondes
+ * @returns {void}
+ */
+function doAfterInterval(action,secondes)
+{
+    setTimeout(action,1000*secondes);
+}
+
+/**
  * Recharge la page après le nombre de secondes indiquées
  * @param {Number} secondes - Le temps d'attente avant rafraichissement
  * @returns {void}
  */
 function reloadInterval(secondes)
 {
-//    setTimeout('location.reload(true);',1000*secondes);
-    setTimeout('this.document.location.href=window.location.href',1000*secondes);
-    
+    doAfterInterval('this.document.location.href=window.location.href',secondes);
 }
 
 /**

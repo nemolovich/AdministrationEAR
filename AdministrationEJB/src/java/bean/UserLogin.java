@@ -62,7 +62,7 @@ public class UserLogin implements Serializable
     /**
      * Identifiant du menu de droite
      */
-    private int menuRightSize=350;
+    private int menuRightSize=370;
     private boolean menuLeftClosed=false;
     private boolean menuRightClosed=false;
     /**

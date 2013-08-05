@@ -22,6 +22,20 @@ import javax.inject.Named;
 public class Files
 {
     /**
+     * Renvoi le caractère de séparation
+     * @return #{@link String} - Caractère de séparation
+     */
+    public static String separator()
+    {
+        return File.separator;
+    }
+    
+    public static String getFileLink(File file)
+    {
+        return "file:///"+file.getAbsolutePath().replaceAll("\\\\", "/");
+    }
+    
+    /**
      * Copie un fichier suivant son flux vers un fichier de destination
      * @param is {@link InputStream} - Le flux du fichier source
      * @param to {@link File} - Le fichier de destination

@@ -12,10 +12,13 @@ import bean.facade.abstracts.AbstractFacade;
 import bean.view.filteredSelection.EntitySleepingSelection;
 import entity.FilePath;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -95,6 +98,7 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> extends EntitySl
         this.editing=false;
         this.setFacade();
         this.entityFacade.remove(this.entity);
+        this.removeFilePath();
         this.entity=null;
         return this.webFolder+"list";
     }
@@ -114,6 +118,27 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> extends EntitySl
         this.editing = false;
         this.entity = null;
         return this.webFolder+"view";
+    }
+    
+    protected void removeFilePath()
+    {
+        FilePath filePath=this.getEntityFilePath();
+        if(filePath!=null)
+        {
+            File path=new File(Utils.getUploadsPath()+filePath.getFilePath()+
+                    File.separator);
+            try
+            {
+                Files.deleteContent(path);
+                Files.deleteFolder(path);
+                this.filePathFacade.remove(filePath);
+            }
+            catch (FileNotFoundException ex)
+            {
+                ApplicationLogger.writeError("Le dossier \""+path.getPath()+
+                        "\" n'a pas pu être supprimé", ex);
+            }
+        }
     }
     
     public C checkSingle(C[] entities)
@@ -152,7 +177,7 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> extends EntitySl
     {
         try
         {
-            Method m=entity.getClass().getMethod("getIdFilePath");
+            Method m=this.entity.getClass().getMethod("getIdFilePath");
             FilePath filePath=(FilePath)Utils.callMethod(m,
                     "récupération du répertoire de stockage", entity);
             if(filePath!=null)
@@ -234,8 +259,11 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> extends EntitySl
     {
         this.creating = false;
         this.editing = false;
+        this.entity = entity;
         this.setFacade();
         this.entityFacade.remove(entity);
+        this.removeFilePath();
+        this.entity = null;
         return this.webFolder+"list";
     }
     

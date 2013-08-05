@@ -45,7 +45,8 @@ public class FilePath implements Serializable {
     @Size(min = 1, max = 250)
     @Column(name = "FILE_PATH")
     private String filePath="./";
-    public static String TEMP_FOLDER="temp";
+    public static final String TEMP_FOLDER="temp";
+    public static final String TEXT_FILES_EXTENSIONS="pdf|doc?x|txt|odt";
 
     public FilePath() {
     }
