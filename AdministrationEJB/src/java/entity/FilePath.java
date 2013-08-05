@@ -44,7 +44,7 @@ public class FilePath implements Serializable {
     @NotNull
     @Size(min = 1, max = 250)
     @Column(name = "FILE_PATH")
-    private String filePath;
+    private String filePath="./";
     public static String TEMP_FOLDER="temp";
 
     public FilePath() {
@@ -72,6 +72,14 @@ public class FilePath implements Serializable {
 
     public void setFilePath(String filePath) {
         this.filePath = filePath;
+    }
+    
+    public boolean isEmptyFilePath()
+    {
+        File path=new File(Utils.getUploadsPath()+
+                this.filePath+File.separator);
+        return !(path.isDirectory()&&path.listFiles()!=null&&
+                path.listFiles().length>0);
     }
     
     public List<File> getFilesInPath()

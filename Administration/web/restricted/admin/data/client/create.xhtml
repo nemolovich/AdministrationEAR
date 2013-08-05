@@ -112,6 +112,7 @@
                             </p:tab>
                             
                             <p:tab id="details" title="Détails">
+<!--                                Ligne indispensable pour définir le FilePath pour l'entité -->
                                 <f:event type="postAddToView"
                                          listener="#{fileUploadController.setFilePath(
                                                      clientView.entity.idFilePath)}"/>

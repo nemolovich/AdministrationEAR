@@ -226,18 +226,43 @@ public class Files
         return false;
     }
     
+    /**
+     * Supprime un fichier
+     * @see #deletePath(java.io.File, boolean) 
+     * @param file {@link File} - Fichier à supprimer
+     * @return {@link Boolean boolean} - Vrai si le fichier a bien été
+     * supprimé
+     * @throws FileNotFoundException 
+     */
     public static boolean deleteFile(File file)
             throws FileNotFoundException
     {
         return Files.deletePath(file, false);
     }
     
+    /**
+     * Supprime un dossier
+     * @see #deletePath(java.io.File, boolean) 
+     * @param folder {@link File} - Dossier à supprimer
+     * @return {@link Boolean boolean} - Vrai si le dossier a bien été
+     * supprimé
+     * @throws FileNotFoundException 
+     */
     public static boolean deleteFolder(File folder)
             throws FileNotFoundException
     {
         return Files.deletePath(folder, true);
     }
     
+    /**
+     * Supprime un fichier ou un dossier donné
+     * @param path {@link File} - Fichier ou dossier à supprimer
+     * @param isFolder {@link Boolean boolean} - Définit s'il s'agit d'un
+     * dossier
+     * @return {@link Boolean boolean} - Vrai si le fichier ou le dossier a
+     * bien été supprimé
+     * @throws FileNotFoundException 
+     */
     public static boolean deletePath(File path, boolean isFolder)
             throws FileNotFoundException
     {

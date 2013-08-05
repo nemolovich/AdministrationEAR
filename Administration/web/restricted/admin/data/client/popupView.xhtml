@@ -42,6 +42,16 @@
                             </h:panelGrid>
                         </p:fieldset>
                         
+                        <p:fieldset legend="Fichiers"
+                                    rendered="#{not clientView.entity.idFilePath.emptyFilePath}">
+                            <p:dataList value="#{clientView.entity.idFilePath.filesInPath}"
+                                        var="file">
+                                <p:column headerText="Nom">
+                                    <h:outputText value="#{file.name}"/>
+                                </p:column>
+                            </p:dataList>
+                        </p:fieldset>
+                        
                     </p:column>
                     <p:column>
                     
