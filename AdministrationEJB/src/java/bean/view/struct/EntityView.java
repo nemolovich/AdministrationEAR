@@ -17,8 +17,6 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -49,6 +47,11 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> extends EntitySl
         super(entityClass);
         this.webFolder="/restricted/admin/data/"+webFolder+"/";
         this.entityClass=entityClass;
+    }
+    
+    public Class<C> getEntityClass()
+    {
+        return this.entityClass;
     }
     
     @Override
@@ -335,7 +338,7 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> extends EntitySl
         {
             message="Impossible d'associer des fichiers pour "
                     + "la classe \""+this.entityClass.getName()+"\"";
-            ApplicationLogger.writeWarning(message);
+            ApplicationLogger.writeError(message, null);
         }
         return this.webFolder+"create";
     }

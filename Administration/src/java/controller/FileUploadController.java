@@ -7,10 +7,12 @@ package controller;
 import bean.ApplicationLogger;
 import bean.Files;
 import bean.Utils;
+import bean.facade.FilePathFacade;
 import entity.FilePath;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -29,6 +31,9 @@ public class FileUploadController
     private FilePath filePath;
     private String defaultPath=null;
     private boolean sent=false;
+    
+    @EJB
+    private FilePathFacade filePathFacade;
     
     public FileUploadController()
     {
@@ -70,6 +75,12 @@ public class FileUploadController
             /**
              * ]
              */
+        }
+        else
+        {
+//            filePath=new FilePath(entityClass.getSimpleName()+
+//                        File.separator+FilePath.TEMP_FOLDER);
+//            this.filePathFacade.create(filePath);
         }
     }
     

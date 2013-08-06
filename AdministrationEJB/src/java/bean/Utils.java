@@ -36,7 +36,7 @@ public class Utils
     /**
      * Répertoire des fichier uploadés sur le serveur
      */
-    private static final String UPLOADS_PATH="C:\\temp\\uploads\\";
+    private static final String UPLOADS_PATH="uploads"+File.separator;
     /**
      * Le nombre maximum de ligne dans une liste de données
      */
@@ -83,12 +83,12 @@ public class Utils
     }
     
     /**
-     * Renvopi le répertoire où sont stoqués les fichier uploadés sur le serveur
+     * Renvoi le répertoire où sont stockés les fichiers uploadés sur le serveur
      * @return {@link String} - Répertoire des téléchargements
      */
     public static String getUploadsPath()
     {
-        return Utils.UPLOADS_PATH;
+        return Utils.getRealPath()+Utils.UPLOADS_PATH;
     }
     
     /**

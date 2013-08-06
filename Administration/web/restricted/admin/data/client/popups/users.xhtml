@@ -69,7 +69,9 @@
                 <p:outputPanel>
                     <f:event type="preRenderComponent"
                              listener="#{fileUploadController.setFilePath(
-                                         cUserView.entity.idFilePath)}"/>
+                                         cUserView.entity.idFilePath,
+                                         cUserView.entityClass,
+                                         cUserView.entity.id)}"/>
                     <table style="width:100%;">
                         <tr>
                             <td style="vertical-align:top !important;">

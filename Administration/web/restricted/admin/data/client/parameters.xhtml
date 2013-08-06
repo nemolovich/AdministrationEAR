@@ -469,7 +469,9 @@
                             <p:tab id="files" title="Fichiers">
                                 <f:event type="preRenderComponent"
                                          listener="#{fileUploadController.setFilePath(
-                                                     clientView.entity.idFilePath)}"/>
+                                                     clientView.entity.idFilePath,
+                                                     clientView.entityClass,
+                                                     clientView.entity.id)}"/>
                                 <p:fieldset legend="Fichiers">
                                     <table style="width:100%;">
                                         <tr>

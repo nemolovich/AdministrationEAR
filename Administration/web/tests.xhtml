@@ -18,7 +18,9 @@
                 <f:view>
                     <f:event type="postAddToView"
                              listener="#{fileUploadController.setFilePath(
-                                         cUserView.entity.idFilePath)}"/>
+                                         cUserView.entity.idFilePath,
+                                         cUserView.entityClass,
+                                         cUserView.entity.id)}"/>
                     <h:form id="fileUploadForm"
                             enctype="multipart/form-data">  
 
