@@ -324,11 +324,11 @@
                                 <p:ajax update=":taskMenuDataPopupForm @form"
                                         oncomplete="forceUpdate('taskMenuDataForm:checkDisplaySleepingTaskTop','taskMenuDataForm');"
                                         immediate="false"/>
+                                <script type="text/javascript">
+                                    addTitle("taskMenuDataForm\\:taskMenuDataTable\\:checkDisplaySleepingTaskTop",
+                                             "Affiche les tâches accomplies en plus de celles à faire");
+                                </script>
                             </p:selectBooleanCheckbox>
-                            <p:tooltip for="checkDisplaySleepingTaskTop"
-                                       value="Affiche les tâche accomplies en plus de celles à faire"
-                                       showEffect="fade" hideEffect="fade"
-                                       styleClass="tooltip"/>
                         </p:outputPanel>
                     </f:facet>
                     <f:facet name="footer">
@@ -343,11 +343,11 @@
                                 <p:ajax update=":taskMenuDataPopupForm @form"
                                         oncomplete="forceUpdate('taskMenuDataForm:checkDisplaySleepingTaskBottom','taskMenuDataForm');"
                                         immediate="false"/>
+                                <script type="text/javascript">
+                                    addTitle("taskMenuDataForm\\:taskMenuDataTable\\:checkDisplaySleepingTaskBottom",
+                                             "Affiche les tâches accomplies en plus de celles à faire");
+                                </script>
                             </p:selectBooleanCheckbox>
-                            <p:tooltip for="checkDisplaySleepingTaskBottom"
-                                       value="Affiche les tâche accomplies en plus de celles à faire"
-                                       showEffect="fade" hideEffect="fade"
-                                       styleClass="tooltip"/>
                         </p:outputPanel>
                     </f:facet>
                 </p:dataTable>

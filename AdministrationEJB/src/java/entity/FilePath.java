@@ -77,7 +77,7 @@ public class FilePath implements Serializable {
     
     public boolean isEmptyFilePath()
     {
-        File path=new File(Utils.getUploadsPath()+
+        File path=new File(Utils.getResourcesPath()+Utils.getUploadsPath()+
                 this.filePath+File.separator);
         return !(path.isDirectory()&&path.listFiles()!=null&&
                 path.listFiles().length>0);
@@ -86,7 +86,7 @@ public class FilePath implements Serializable {
     public List<File> getFilesInPath()
     {
         List<File> files = new ArrayList<File>();
-        String path = Utils.getUploadsPath()+
+        String path = Utils.getResourcesPath()+Utils.getUploadsPath()+
                 this.filePath+File.separator;
         File[] list = new File(path).listFiles();
         if(list!=null)

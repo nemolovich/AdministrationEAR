@@ -407,7 +407,7 @@ public class ApplicationLogger
      */
     public static void start(String fileName)
     {
-        logFile=new File(fileName);
+        logFile=new File(Utils.getResourcesPath()+fileName);
         displayInfo("Début d'enregistrement du journal");
         if(!startWrite())
         {

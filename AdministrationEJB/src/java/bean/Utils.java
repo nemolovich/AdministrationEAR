@@ -17,8 +17,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import javax.enterprise.context.ApplicationScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.application.FacesMessage.Severity;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import javax.jms.Message;
 import javax.servlet.ServletContext;
 
 /**
@@ -34,9 +37,13 @@ public class Utils
      */
     public static final String APPLICATION_NAME="Administration";
     /**
-     * Répertoire des fichier uploadés sur le serveur
+     * Répertoire des ressources sur le serveur
      */
-    private static final String UPLOADS_PATH="uploads"+File.separator;
+    private static final String RESOURCES_PATH="resources"+File.separator;
+    /**
+     * Répertoire des fichiers uploadés sur le serveur
+     */
+    private static final String UPLOADS_PATH="uploads"+File.separator+"admin"+File.separator+File.separator;
     /**
      * Le nombre maximum de ligne dans une liste de données
      */
@@ -59,9 +66,37 @@ public class Utils
             Locale.FRANCE);
     private static final SimpleDateFormat formatMedium = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
     private static final SimpleDateFormat formatSmall = new SimpleDateFormat("dd/MM/yyyy");
+    private static final SimpleDateFormat formatDay = new SimpleDateFormat("EEEEE dd MMMMM yyyy");
 
     public Utils()
     {
+    }
+    
+    /**
+     * Affiche une popup d'informations
+     * @param severity - {@link Severity} - Gravité de l'information
+     * @param title - {@link title} - Titre du message
+     * @param message {@link Message} - Message à afficher
+     */
+    public static void displayMessage(Severity severity, String title,
+            String message)
+    {
+        FacesMessage msg=new FacesMessage(severity, title, message);
+        Utils.displayMessage(msg);
+    }
+    
+    /**
+     * Affiche une popup d'information
+     * @param msg {@link FacesMessage} - Les message à afficher
+     */
+    public static void displayMessage(FacesMessage msg)
+    {
+        try
+        {
+            FacesContext.getCurrentInstance().addMessage(null,msg);
+        }
+        catch(NullPointerException ex)
+        {}
     }
     
     /**
@@ -71,6 +106,20 @@ public class Utils
     public static ServletContext getServletContext()
     {
         return (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+    }
+    
+    /**
+     * Renvoi le répertoire des ressources de l'application
+     * @return {@link String} - Répertoire des ressources
+     */
+    public static String getResourcesPath()
+    {
+        File resources=new File(Utils.RESOURCES_PATH);
+        if(!resources.exists())
+        {
+            resources.mkdirs();
+        }
+        return Utils.RESOURCES_PATH;
     }
     
     /**
@@ -88,7 +137,7 @@ public class Utils
      */
     public static String getUploadsPath()
     {
-        return Utils.getRealPath()+Utils.UPLOADS_PATH;
+        return Utils.UPLOADS_PATH;
     }
     
     /**
@@ -139,6 +188,16 @@ public class Utils
     public static String smallDateFormat(Date date)
     {
         return formatSmall.format(date);
+    }
+    
+    /**
+     * Renvoi la date en chaîne de caractères en français
+     * @param date {@link java.util.Date} - La date à afficher
+     * @return {@link String} - La date en texte [EEEEE dd MMMMM yyyy]
+     */
+    public static String dayDateFormat(Date date)
+    {
+        return formatDay.format(date);
     }
     
     /**

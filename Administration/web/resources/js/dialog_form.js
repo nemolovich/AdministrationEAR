@@ -27,6 +27,20 @@ function startAjax()
 }
 
 /**
+ * Ajoute un titre à un élément HTML
+ * @param {String} id - Identifiant de l'élément
+ * @param {String} title - Titre à ajouter
+ * @returns {void}
+ */
+function addTitle(id, title)
+{
+    $(document).ready(function()
+    {
+        $("#"+id).attr('title',title);
+    });
+}
+
+/**
  * Inspecte le formulaire contenu dans un <p:dialog> pour
  * vérifier s'il est correct.
  * @param {c} form - La boite de dialogue contenant le formulaire

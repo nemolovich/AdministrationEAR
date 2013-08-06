@@ -37,7 +37,8 @@ public class FileUploadController
     
     public FileUploadController()
     {
-        Files.createIfNotExists(new File(Utils.getUploadsPath()), true);
+        Files.createIfNotExists(new File(Utils.getResourcesPath()+
+                Utils.getUploadsPath()), true);
     }
     
     public FilePath getFilePath()
@@ -49,18 +50,20 @@ public class FileUploadController
     {
         if(filePath!=null)
         {
-            this.defaultPath=Utils.getUploadsPath()+
+            this.defaultPath=Utils.getResourcesPath()+Utils.getUploadsPath()+
                     filePath.getFilePath()+File.separator;
             /**
              * [
              * Va vider le répertoire temporaire si il n'est pas vide
              */
             if(!this.sent&&new File(this.defaultPath).exists()&&
-                    new File(this.defaultPath).isDirectory())
+                    new File(this.defaultPath).isDirectory()&&
+                    this.defaultPath.endsWith(FilePath.TEMP_FOLDER))
             {
                 if(new File(this.defaultPath).listFiles()!=null&&
                         new File(this.defaultPath).listFiles().length>0)
                 {
+                    ApplicationLogger.writeError("Deleting temp folder", null);
                     for(File f:new File(this.defaultPath).listFiles())
                     {
                         if(!f.delete())
@@ -75,12 +78,6 @@ public class FileUploadController
             /**
              * ]
              */
-        }
-        else
-        {
-//            filePath=new FilePath(entityClass.getSimpleName()+
-//                        File.separator+FilePath.TEMP_FOLDER);
-//            this.filePathFacade.create(filePath);
         }
     }
     

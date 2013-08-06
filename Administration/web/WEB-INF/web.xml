@@ -41,17 +41,19 @@
             <param-value>800000001</param-value>
         </init-param>
         <init-param>
-          <param-name>uploadMaxFileSize</param-name>
-          <param-value>800m</param-value>
+            <param-name>uploadMaxFileSize</param-name>
+            <param-value>800m</param-value>
         </init-param>
     </filter>
     <filter-mapping>
         <filter-name>AdminAccessFilter</filter-name>
         <url-pattern>/restricted/admin/*</url-pattern>
+        <url-pattern>/uploads/admin/*</url-pattern>
     </filter-mapping>
     <filter-mapping>
         <filter-name>UserAccessFilter</filter-name>
         <url-pattern>/restricted/user/*</url-pattern>
+        <url-pattern>/uploads/user/*</url-pattern>
     </filter-mapping>
     <filter-mapping>
         <filter-name>PrimeFaces FileUpload Filter</filter-name>

@@ -13,6 +13,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -21,6 +22,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -37,7 +39,7 @@ public class AccessFilter implements Filter
     // configured. 
     private FilterConfig filterConfig = null;
     private List<String> allowedRights;
-    
+    private String accessName="Utilisateur";
     
     public AccessFilter()
     {
@@ -46,6 +48,12 @@ public class AccessFilter implements Filter
     public AccessFilter(List<String> allowedRights)
     {
         this.allowedRights = allowedRights;
+    }
+    
+    public AccessFilter(List<String> allowedRights, String accessName)
+    {
+        this.allowedRights = allowedRights;
+        this.accessName = accessName;
     }
     
     // <editor-fold defaultstate="collapsed" desc="Les methodes d'un 'Filter' qui nous sont inutiles ici">
@@ -244,6 +252,12 @@ public class AccessFilter implements Filter
                         (this.userLogin!=null&&this.userLogin.getUser()!=null?
                             (this.userLogin.getUser().toString()):"Anonyme")+
                         " [Page=\""+uri+"\"]");
+                FacesMessage message=new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                        "Accès sécurisé", "Vous n'avez pas les droits nécessaires "
+                        + "pour accéder à cette page, veuillez vous connecter avec "
+                        + "un compte "+this.accessName.toLowerCase()+" pour continuer");
+                HttpSession session = ((HttpServletRequest)request).getSession();
+                session.setAttribute("error_message", message);
                 ((HttpServletResponse)response).sendRedirect(((HttpServletRequest)request).getContextPath() + "/restricted/login.xhtml");
             }
             chain.doFilter(request, response);

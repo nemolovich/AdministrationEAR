@@ -18,7 +18,9 @@
                 <f:attribute name="header" value="Connexion" />
                 <f:view>
                     <h:form id="loginForm">
-                         
+                        <f:event type="preRenderView"
+                                 listener="#{utils.displayMessage(
+                                             session.getAttribute('error_message'))}"/>
                         <h:panelGrid columns="2" columnClasses="label,field">
                             <p:outputLabel value="Mail:" for="mail" />
                             <p:inputText id="mail" value="#{userLogin.loginMail}" title="Mail">

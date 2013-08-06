@@ -4,12 +4,15 @@
  */
 package bean;
 
+import entity.FilePath;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 
@@ -30,9 +33,28 @@ public class Files
         return File.separator;
     }
     
-    public static String getFileLink(File file)
+    public static String getFileLink(File file, FilePath filePath)
     {
-        return "file:///"+file.getAbsolutePath().replaceAll("\\\\", "/");
+            File from=new File(Utils.getResourcesPath()+Utils.getUploadsPath()+
+                    filePath.getFilePath()+File.separator+file.getName());
+            File to=new File(Utils.getRealPath()+Utils.getUploadsPath()+
+                    filePath.getFilePath()+File.separator+file.getName());
+            try
+            {
+                if(!Files.copy(from, to))
+                {
+                    ApplicationLogger.writeError("Erreur lors de la diffusion du fichier \""+
+                            to.getAbsolutePath()+" \"sur le serveur", null);
+                }
+            }
+            catch (IOException ex)
+            {
+                ApplicationLogger.writeError("Impossible de diffuser le fichier \""+
+                        to.getAbsolutePath()+" \"sur le serveur", ex);
+            }
+            return ("/"+Utils.APPLICATION_NAME+"/"+Utils.getUploadsPath()+
+                    filePath.getFilePath()+"/"+file.getName())
+                        .replaceAll("\\\\", "/");
     }
     
     /**
@@ -105,6 +127,10 @@ public class Files
             throws IOException
     {
         InputStream is = new FileInputStream(from);
+        if(!to.getParentFile().exists())
+        {
+            to.getParentFile().mkdirs();
+        }
         return Files.copy(is, to, from.getName());
     }
     

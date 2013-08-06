@@ -43,19 +43,19 @@
                         </p:fieldset>
                         
                         <p:fieldset legend="Fichiers"
-                                    rendered="#{not clientView.entity.idFilePath.emptyFilePath}">
-                            <p:dataList value="#{clientView.entity.idFilePath.filesInPath}"
-                                        var="file">
-                                <p:column headerText="Nom">
-                                    <h:outputText value="#{file.name}"/>
-                                </p:column>
+                                    rendered="#{not clientView.entityFilePath.emptyFilePath}">
+                            <p:dataList value="#{clientView.entityFilePath.filesInPath}"
+                                        var="file"
+                                        paginator="true"
+                                        paginatorPosition="top"
+                                        rows="#{utils.maxDataRows}">
                                 <p:column headerText="Lien">
-                                    <h:outputLink onclick="window.open('#{files.getFileLink(file)}',
+                                    <h:outputLink value="javascript:void(0);"
+                                                  onclick="window.open('#{files.getFileLink(file, clientView.entityFilePath)}',
                                                         'File details','dependent=yes, menubar=no,\
                                                         toolbar=no, status=no, scrollbars=yes,\
                                                         resizable=no, width=800, height=600');return false;"
-                                                  value="javascript:void(0);"
-                                                  title="PrimeFaces HomePage">
+                                                  title="Ouvrir le fichier">
                                         <h:outputText value="#{file.name}"/>
                                     </h:outputLink>
                                 </p:column>

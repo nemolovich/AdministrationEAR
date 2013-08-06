@@ -2,7 +2,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>Détails de l'utilisateur</title>
     </h:head>
@@ -36,6 +37,24 @@
                                      ondblclick="this.focus();this.select();"/>
                     
                 </h:panelGrid>
+                
+                <p:dataList value="#{taskView.entityPopup.idUser.idFilePath.filesInPath}"
+                            var="file"
+                            paginator="true"
+                            paginatorPosition="top"
+                            rows="#{utils.maxDataRows}"
+                            rendered="#{not taskView.entityPopup.idUser.idFilePath.emptyFilePath}">
+                    <p:column headerText="Lien">
+                        <h:outputLink value="javascript:void(0);"
+                                      onclick="window.open('#{files.getFileLink(file, taskView.entityPopup.idUser.idFilePath)}',
+                                            'File details','dependent=yes, menubar=no,\
+                                            toolbar=no, status=no, scrollbars=yes,\
+                                            resizable=no, width=800, height=600');return false;"
+                                      title="Ouvrir le fichier">
+                            <h:outputText value="#{file.name}"/>
+                        </h:outputLink>
+                    </p:column>
+                </p:dataList>
             </h:form>
         </f:view>
 

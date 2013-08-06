@@ -173,12 +173,12 @@
                                                                      style="vertical-align: middle !important;margin-bottom: 5px !important;">  
                                                 <p:ajax update=":clientUpdate"
                                                         oncomplete="clientWorkstationTable.filter();"
-                                                        immediate="false"/>  
+                                                        immediate="false"/>
+                                                <script type="text/javascript">
+                                                    addTitle("clientUpdate\\:clientTabView\\:clientWorkstationList\\:checkDisplayWorkstationSleeping",
+                                                             "Affiche les postes en sommeil en plus de ceux actifs");
+                                                </script>
                                             </p:selectBooleanCheckbox>
-                                            <p:tooltip for="checkDisplayWorkstationSleeping"
-                                                       value="Affiche les postes en sommeil en plus de ceux actifs"
-                                                       showEffect="fade" hideEffect="fade"
-                                                       styleClass="tooltip"/>
                                         </p:outputPanel>
                                     </f:facet>
                                     <script type="text/javascript">
@@ -308,12 +308,12 @@
                                                                      style="vertical-align: middle !important;margin-bottom: 5px !important;">  
                                                 <p:ajax update=":clientUpdate:clientTabView:clientMailList"
                                                         oncomplete="forceFilter(clientMailTable);"
-                                                        immediate="false"/>  
+                                                        immediate="false"/>
+                                                <script type="text/javascript">
+                                                    addTitle("clientUpdate\\:clientTabView\\:clientMailList\\:checkDisplayMailSleeping",
+                                                             "Affiche les adresses mail en sommeil en plus de celles actives");
+                                                </script>
                                             </p:selectBooleanCheckbox>
-                                            <p:tooltip for="checkDisplayMailSleeping"
-                                                       value="Affiche les adresses mail en sommeil en plus de celles actives"
-                                                       showEffect="fade" hideEffect="fade"
-                                                       styleClass="tooltip"/>
                                         </p:outputPanel>
                                     </f:facet>
                                 </p:dataTable>
@@ -443,12 +443,12 @@
                                                                      style="vertical-align: middle !important;margin-bottom: 5px !important;">  
                                                 <p:ajax update=":clientUpdate:clientTabView:clientUserList"
                                                         oncomplete="forceFilter(clientUserTable);"
-                                                        immediate="false"/>  
+                                                        immediate="false"/>
+                                                <script type="text/javascript">
+                                                    addTitle("clientUpdate\\:clientTabView\\:clientUserList\\:checkDisplayUserSleeping",
+                                                             "Affiche les utilisateurs en sommeil en plus de ceux actifs");
+                                                </script>
                                             </p:selectBooleanCheckbox>
-                                            <p:tooltip for="checkDisplayUserSleeping"
-                                                       value="Affiche les utilisateurs en sommeil en plus de ceux actifs"
-                                                       showEffect="fade" hideEffect="fade"
-                                                       styleClass="tooltip"/>
                                         </p:outputPanel>
                                     </f:facet>
                                 </p:dataTable>
@@ -469,9 +469,7 @@
                             <p:tab id="files" title="Fichiers">
                                 <f:event type="preRenderComponent"
                                          listener="#{fileUploadController.setFilePath(
-                                                     clientView.entity.idFilePath,
-                                                     clientView.entityClass,
-                                                     clientView.entity.id)}"/>
+                                                     clientView.entityFilePath)}"/>
                                 <p:fieldset legend="Fichiers">
                                     <table style="width:100%;">
                                         <tr>
@@ -495,7 +493,7 @@
                                             </td>
                                             <td style="vertical-align:top !important;float:right;">
                                                 <p:dataTable id="clientFiles"
-                                                             value="#{clientView.entity.idFilePath.filesInPath}"
+                                                             value="#{clientView.entityFilePath.filesInPath}"
                                                              var="file"
                                                              rows="#{utils.maxDataRows}"
                                                              emptyMessage="Aucun fichier n'est présent"

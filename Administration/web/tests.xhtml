@@ -18,9 +18,7 @@
                 <f:view>
                     <f:event type="postAddToView"
                              listener="#{fileUploadController.setFilePath(
-                                         cUserView.entity.idFilePath,
-                                         cUserView.entityClass,
-                                         cUserView.entity.id)}"/>
+                                         cUserView.entityFilePath)}"/>
                     <h:form id="fileUploadForm"
                             enctype="multipart/form-data">  
 
@@ -57,7 +55,7 @@
                             
                             <h:outputText value="Fichiers présents:"/>
                             <p:dataTable id="cuserFile"
-                                         value="#{cUserView.entity.idFilePath.filesInPath}"
+                                         value="#{cUserView.entityFilePath.filesInPath}"
                                          var="file"
                                          rows="#{utils.maxDataRows}"
                                          emptyMessage="Aucun fichier n'est présent"

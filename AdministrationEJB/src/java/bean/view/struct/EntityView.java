@@ -128,8 +128,8 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> extends EntitySl
         FilePath filePath=this.getEntityFilePath();
         if(filePath!=null)
         {
-            File path=new File(Utils.getUploadsPath()+filePath.getFilePath()+
-                    File.separator);
+            File path=new File(Utils.getResourcesPath()+Utils.getUploadsPath()+
+                    filePath.getFilePath()+File.separator);
             try
             {
                 Files.deleteContent(path);
@@ -178,6 +178,10 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> extends EntitySl
     
     public FilePath getEntityFilePath()
     {
+        if(this.entity==null)
+        {
+            return null;
+        }
         try
         {
             Method m=this.entity.getClass().getMethod("getIdFilePath");
@@ -185,6 +189,15 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> extends EntitySl
                     "récupération du répertoire de stockage", entity);
             if(filePath!=null)
             {
+                return filePath;
+            }
+            else
+            {
+                filePath=new FilePath(this.entity.getClass().getSimpleName()+
+                        File.separator+String.format("%04d", this.getId()));
+                this.filePathFacade.create(filePath);
+                this.setEntityFilePath(filePath);
+                this.update();
                 return filePath;
             }
         }
@@ -211,15 +224,16 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> extends EntitySl
             path+=File.separator+String.format("%04d", id);
             try
             {
-                Files.move(new File(Utils.getUploadsPath()+filePath.getFilePath()),
-                        new File(Utils.getUploadsPath()+path));
+                Files.move(new File(Utils.getResourcesPath()+Utils.getUploadsPath()+
+                        filePath.getFilePath()),
+                        new File(Utils.getResourcesPath()+Utils.getUploadsPath()+path));
                 filePath.setFilePath(path);
                 this.filePathFacade.edit(filePath);
             }
             catch (IOException ex)
             {
                 ApplicationLogger.writeError("Erreur lors du déplacement du "
-                        + "dossier \""+Utils.getUploadsPath()+
+                        + "dossier \""+Utils.getResourcesPath()+Utils.getUploadsPath()+
                         filePath.getFilePath()+"\"", ex);
             }
         }

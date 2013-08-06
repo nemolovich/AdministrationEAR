@@ -24,7 +24,8 @@
                                   title="Type de la machine"/>
                     
                     <h:outputText value="Date de mise en service:"/>
-                    <h:outputText id="tstartDateV" value="#{taskView.entityPopup.idWorkstation.startDate}"
+                    <h:outputText id="tstartDateV" value="#{utils.dayDateFormat(
+                                                            taskView.entityPopup.idWorkstation.startDate)}"
                                   title="Date de mise en service de la machine" >
                         <f:convertDateTime pattern="dd/MM/yyyy"/>
                     </h:outputText>

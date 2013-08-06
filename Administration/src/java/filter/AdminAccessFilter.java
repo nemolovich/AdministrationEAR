@@ -16,6 +16,6 @@ public class AdminAccessFilter extends AccessFilter
 {
     public AdminAccessFilter()
     {
-        super(Arrays.asList(Utils.ADMIN_RIGHTS));
+        super(Arrays.asList(Utils.ADMIN_RIGHTS), "Administrateur");
     }   
 }

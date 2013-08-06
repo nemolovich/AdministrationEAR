@@ -66,12 +66,10 @@
                                                  not cUserView.editing}"/>
                     
                 </h:panelGrid>
-                <p:outputPanel>
+                <p:outputPanel rendered="#{cUserView.creating or cUserView.editing}">
                     <f:event type="preRenderComponent"
                              listener="#{fileUploadController.setFilePath(
-                                         cUserView.entity.idFilePath,
-                                         cUserView.entityClass,
-                                         cUserView.entity.id)}"/>
+                                         cUserView.entityFilePath)}"/>
                     <table style="width:100%;">
                         <tr>
                             <td style="vertical-align:top !important;">
@@ -94,7 +92,7 @@
                             </td>
                             <td style="vertical-align:top !important;float:right;">
                                 <p:dataTable id="cUserFiles"
-                                             value="#{cUserView.entity.idFilePath.filesInPath}"
+                                             value="#{cUserView.entityFilePath.filesInPath}"
                                              var="file"
                                              rows="#{utils.maxDataRows}"
                                              emptyMessage="Aucun fichier n'est présent"
@@ -139,6 +137,25 @@
                             </td>
                         </tr>
                     </table>
+                </p:outputPanel>
+                <p:outputPanel rendered="#{not cUserView.entityFilePath.emptyFilePath and
+                                           not cUserView.creating and not cUserView.editing}">
+                    <p:dataList value="#{cUserView.entityFilePath.filesInPath}"
+                                var="file"
+                                paginator="true"
+                                paginatorPosition="top"
+                                rows="#{utils.maxDataRows}">
+                        <p:column headerText="Lien">
+                            <h:outputLink value="javascript:void(0);"
+                                          onclick="window.open('#{files.getFileLink(file, cUserView.entityFilePath)}',
+                                                'File details','dependent=yes, menubar=no,\
+                                                toolbar=no, status=no, scrollbars=yes,\
+                                                resizable=no, width=800, height=600');return false;"
+                                          title="Ouvrir le fichier">
+                                <h:outputText value="#{file.name}"/>
+                            </h:outputLink>
+                        </p:column>
+                    </p:dataList>
                 </p:outputPanel>
                 <p:outputPanel rendered="#{cUserView.creating or
                                             cUserView.editing}">

@@ -213,12 +213,12 @@
                                                              styleClass="small_check"
                                                              style="vertical-align: middle !important;margin-bottom: 5px !important;">  
                                         <p:ajax update=":clientDataForm"
-                                                immediate="false"/>  
+                                                immediate="false"/>
+                                        <script type="text/javascript">
+                                            addTitle("clientDataForm\\:clientDataTable\\:checkDisplaySleeping",
+                                                     "Affiche les sociétés en sommeil en plus de celles actives");
+                                        </script>
                                     </p:selectBooleanCheckbox>
-                                    <p:tooltip for="checkDisplaySleeping"
-                                               value="Affiche les sociétés en sommeil en plus de celles actives"
-                                               showEffect="fade" hideEffect="fade"
-                                               styleClass="tooltip"/>
                                 </p:outputPanel>
                             </f:facet>
                         </p:dataTable>

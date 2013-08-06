@@ -166,12 +166,12 @@
                                                              styleClass="small_check"
                                                              style="vertical-align: middle !important;margin-bottom: 5px !important;">  
                                         <p:ajax update=":cUserDataForm"
-                                                immediate="false"/>  
+                                                immediate="false"/>
+                                        <script type="text/javascript">
+                                            addTitle("cUserDataForm\\:cUserDataTable\\:checkDisplaySleeping",
+                                                     "Affiche les utilisateurs en sommeil en plus de ceux actifs");
+                                        </script>
                                     </p:selectBooleanCheckbox>
-                                    <p:tooltip for="checkDisplaySleeping"
-                                               value="Affiche les utilisateurs en sommeil en plus de ceux actifs"
-                                               showEffect="fade" hideEffect="fade"
-                                               styleClass="tooltip"/>
                                 </p:outputPanel>
                             </f:facet>
                         </p:dataTable>

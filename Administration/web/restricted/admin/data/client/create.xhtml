@@ -114,11 +114,9 @@
                             
                             <p:tab id="details" title="Détails">
 <!--                                Ligne indispensable pour définir le FilePath pour l'entité -->
-                                <f:event type="postAddToView"
+                                <f:event type="preRenderComponent"
                                          listener="#{fileUploadController.setFilePath(
-                                                     clientView.entity.idFilePath,
-                                                     clientView.entityClass,
-                                                     clientView.entity.id)}"/>
+                                                     clientView.entityFilePath)}"/>
                                 <table width="100%">
                                     <tr>
                                         <td style="vertical-align: top !important;">
@@ -201,7 +199,7 @@
                                                         </td>
                                                         <td style="vertical-align:top !important;float:right;">
                                                             <p:dataTable id="clientFiles"
-                                                                         value="#{clientView.entity.idFilePath.filesInPath}"
+                                                                         value="#{clientView.entityFilePath.filesInPath}"
                                                                          var="file"
                                                                          rows="#{utils.maxDataRows}"
                                                                          emptyMessage="Aucun fichier n'est présent"

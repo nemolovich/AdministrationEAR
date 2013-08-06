@@ -52,7 +52,8 @@
                                                 workstationView.editing}">
                         <f:convertDateTime pattern="dd/MM/yyyy" />
                     </p:inputMask>
-                    <h:outputText id="wstartDateV" value="#{workstationView.entity.startDate}"
+                    <h:outputText id="wstartDateV" value="#{utils.dayDateFormat(
+                                                            workstationView.entity.startDate)}"
                                   title="Date de mise en service de la machine"
                                   rendered="#{not workstationView.creating and
                                               not workstationView.editing}"/>

@@ -408,9 +408,9 @@ fieldset
     -webkit-border-radius:      3px !important;
     -moz-border-radius:         3px !important;
     min-width:                  165px !important;
-    max-width:                  500px !important;
+    max-width:                  250px !important;
     min-height:                 30px !important;
-    max-height:                 500px !important;
+    max-height:                 200px !important;
     /*width:                      80% !important;*/
 }
 

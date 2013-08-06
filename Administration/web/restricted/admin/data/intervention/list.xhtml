@@ -117,12 +117,12 @@
                                                              styleClass="small_check"
                                                              style="vertical-align: middle !important;margin-bottom: 5px !important;">  
                                         <p:ajax update=":interventionDataForm"
-                                                immediate="false"/>  
+                                                immediate="false"/>
+                                        <script type="text/javascript">
+                                            addTitle("interventionDataForm\\:interventionDataTable\\:checkDisplaySleeping",
+                                                     "Affiche les interventions déjà facturées en plus de celles qui ne le sont pas");
+                                        </script>
                                     </p:selectBooleanCheckbox>
-                                    <p:tooltip for="checkDisplaySleeping"
-                                               value="Affiche les interventions déjà facturées en plus de celles qui ne le sont pas"
-                                               showEffect="fade" hideEffect="fade"
-                                               styleClass="tooltip"/>
                                 </p:outputPanel>
                             </f:facet>
                             
