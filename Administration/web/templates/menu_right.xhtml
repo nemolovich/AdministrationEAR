@@ -292,6 +292,7 @@
                               style="width:1%;"
                               filterBy="#{utils.smallDateFormat(item.startDate)}"
                               sortBy="#{utils.smallDateFormat(item.startDate)}"
+                              sortFunction="#{utils.sortByDate}"
                               filterMatchMode="contains"
                               filterStyle="width:60px;">
                         <h:outputText value="#{utils.smallDateFormat(item.startDate)}"/>

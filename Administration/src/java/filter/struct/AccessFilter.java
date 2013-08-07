@@ -252,7 +252,7 @@ public class AccessFilter implements Filter
                         (this.userLogin!=null&&this.userLogin.getUser()!=null?
                             (this.userLogin.getUser().toString()):"Anonyme")+
                         " [Page=\""+uri+"\"]");
-                FacesMessage message=new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                FacesMessage message=new FacesMessage(FacesMessage.SEVERITY_WARN,
                         "Accès sécurisé", "Vous n'avez pas les droits nécessaires "
                         + "pour accéder à cette page, veuillez vous connecter avec "
                         + "un compte "+this.accessName.toLowerCase()+" pour continuer");

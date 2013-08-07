@@ -249,6 +249,12 @@ public class Utils
         return dateParseFormat(dateString, formatSmall);
     }
     
+    public static int sortByDate(Object date1, Object date2)
+    {
+        ApplicationLogger.writeError("Using sortByDate:"+date1+", "+date2, null);
+        return(((Date)date1).compareTo((Date)date2));
+    }
+    
     /**
      * Renvoi le nombre max de lignes dans une liste de données
      * @return {@link Integer int} Nombre de lignes

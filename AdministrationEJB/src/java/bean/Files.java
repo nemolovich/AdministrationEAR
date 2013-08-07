@@ -33,6 +33,14 @@ public class Files
         return File.separator;
     }
     
+    /**
+     * Copie un fichier depuis les ressources du serveur sur le site web
+     * diffusé et retourne le lien vers ce fichier
+     * @param file {@link File} - Fichier à récupérer depuis les ressources
+     * @param filePath {@link FilePath} - Chemin vers le fichier depuis le
+     * dossier de ressources et de téléchargements
+     * @return {@link String} - Le lien de téléchargement du fichier
+     */
     public static String getFileLink(File file, FilePath filePath)
     {
             File from=new File(Utils.getResourcesPath()+Utils.getUploadsPath()+
@@ -176,6 +184,15 @@ public class Files
         {
             try
             {
+                if(!path.getParentFile().exists())
+                {
+                    if(!path.getParentFile().mkdirs())
+                    {
+                        ApplicationLogger.displayError("Impossible de créer les "
+                                + "dossiers parents \""+
+                                path.getParentFile().getName()+"\"", null);
+                    }
+                }
                 if(!isFolder&&path.createNewFile()||
                     isFolder&&path.mkdir())
                 {
