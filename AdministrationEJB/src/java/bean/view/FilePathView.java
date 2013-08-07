@@ -5,9 +5,11 @@
 
 package bean.view;
 
+import bean.ApplicationLogger;
 import bean.facade.FilePathFacade;
 import bean.view.struct.EntityView;
 import entity.FilePath;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;

@@ -17,10 +17,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -34,6 +36,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "FilePath.findById", query = "SELECT f FROM FilePath f WHERE f.id = :id"),
     @NamedQuery(name = "FilePath.findByFilePath", query = "SELECT f FROM FilePath f WHERE f.filePath = :filePath")})
 public class FilePath implements Serializable {
+    @OneToMany(mappedBy = "idFilePath")
+    private List<Client> clientList;
+    @OneToMany(mappedBy = "idFilePath")
+    private List<CUser> cUserList;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,7 +48,7 @@ public class FilePath implements Serializable {
     private Integer id;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 250)
+    @Size(max = 250)
     @Column(name = "FILE_PATH")
     private String filePath="./";
     public static final String TEMP_FOLDER="temp";
@@ -102,6 +108,24 @@ public class FilePath implements Serializable {
         return files;
     }
 
+    @XmlTransient
+    public List<Client> getClientList() {
+        return clientList;
+    }
+
+    public void setClientList(List<Client> clientList) {
+        this.clientList = clientList;
+    }
+
+    @XmlTransient
+    public List<CUser> getCUserList() {
+        return cUserList;
+    }
+
+    public void setCUserList(List<CUser> cUserList) {
+        this.cUserList = cUserList;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -124,12 +148,14 @@ public class FilePath implements Serializable {
 
     public String getFullString()
     {
-        return "entity.FilePath{" + "id=" + id + ", filePath=" + filePath + '}';
+        return "entity.FilePath{" + "clientList=" + clientList + ", cUserList=" + cUserList + ", id=" + id + ", filePath=" + filePath + '}';
     }
+
+        @Override
+        public String toString() {
+            return "['"+this.filePath+"']";
+        }
     
-    @Override
-    public String toString() {
-        return "['"+this.filePath+"']";
-    }
+    
     
 }

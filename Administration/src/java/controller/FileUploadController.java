@@ -30,7 +30,6 @@ public class FileUploadController
 {
     private FilePath filePath;
     private String defaultPath=null;
-    private boolean sent=false;
     
     @EJB
     private FilePathFacade filePathFacade;
@@ -56,14 +55,17 @@ public class FileUploadController
              * [
              * Va vider le répertoire temporaire si il n'est pas vide
              */
-            if(!this.sent&&new File(this.defaultPath).exists()&&
+            if(new File(this.defaultPath).exists()&&
                     new File(this.defaultPath).isDirectory()&&
-                    this.defaultPath.endsWith(FilePath.TEMP_FOLDER))
+                    this.defaultPath.endsWith(FilePath.TEMP_FOLDER+File.separator))
             {
                 if(new File(this.defaultPath).listFiles()!=null&&
                         new File(this.defaultPath).listFiles().length>0)
                 {
-                    ApplicationLogger.writeError("Deleting temp folder", null);
+                    String entityName=filePath.getFilePath().substring(0,
+                            filePath.getFilePath().indexOf(File.separator));
+                    ApplicationLogger.writeError("Deleting temp folder"+
+                            (entityName==null?"":(" for entity \""+entityName+"\"")), null);
                     for(File f:new File(this.defaultPath).listFiles())
                     {
                         if(!f.delete())
@@ -74,7 +76,6 @@ public class FileUploadController
                     }
                 }
             }
-            this.sent=true;
             /**
              * ]
              */

@@ -43,7 +43,7 @@ public class Utils
     /**
      * Répertoire des fichiers uploadés sur le serveur
      */
-    private static final String UPLOADS_PATH="uploads"+File.separator+"admin"+File.separator+File.separator;
+    private static final String UPLOADS_PATH="uploads"+File.separator+"admin"+File.separator;
     /**
      * Le nombre maximum de ligne dans une liste de données
      */
@@ -163,41 +163,41 @@ public class Utils
     /**
      * Renvoi la date en chaîne de caractères en français
      * @param date {@link java.util.Date} - La date à afficher
-     * @return {@link String} - La date en texte [EEEEE dd MMMMM yyyy à HH:mm:ss]
+     * @return {@link String} - La date en texte <code>[EEEEE dd MMMMM yyyy à HH:mm:ss]</code>
      */
     public static String fullDateFormat(Date date)
     {
-        return formatFull.format(date);
+        return date==null?"":formatFull.format(date);
     }
     
     /**
      * Renvoi la date en chaîne de caractères en français
      * @param date {@link java.util.Date} - La date à afficher
-     * @return {@link String} - La date en texte [dd/MM/yyyy HH:mm:ss]
+     * @return {@link String} - La date en texte <code>[dd/MM/yyyy HH:mm:ss]</code>
      */
     public static String dateFormat(Date date)
     {
-        return formatMedium.format(date);
+        return date==null?"":formatMedium.format(date);
     }
     
     /**
      * Renvoi la date en chaîne de caractères en français
      * @param date {@link java.util.Date} - La date à afficher
-     * @return {@link String} - La date en texte [dd/MM/yyyy]
+     * @return {@link String} - La date en texte <code>[dd/MM/yyyy]</code>
      */
     public static String smallDateFormat(Date date)
     {
-        return formatSmall.format(date);
+        return date==null?"":formatSmall.format(date);
     }
     
     /**
      * Renvoi la date en chaîne de caractères en français
      * @param date {@link java.util.Date} - La date à afficher
-     * @return {@link String} - La date en texte [EEEEE dd MMMMM yyyy]
+     * @return {@link String} - La date en texte <code>[EEEEE dd MMMMM yyyy]</code>
      */
     public static String dayDateFormat(Date date)
     {
-        return formatDay.format(date);
+        return date==null?"":formatDay.format(date);
     }
     
     /**
@@ -214,13 +214,13 @@ public class Utils
         }
         catch (ParseException ex)
         {
-            displayError("Impossible de parser la date '"+dateString+"'", null);
+//            displayError("Impossible de parser la date '"+dateString+"'", null);
             return null;
         }
     }
     
     /**
-     * Renvoi une date depuis un format texte complet
+     * Renvoi une date depuis un format texte complet <code>[EEEEE dd MMMMM yyyy]</code>
      * @param dateString {@link String} - La date à parser
      * @return {@link Date} - La date trouvée
      */
@@ -230,7 +230,7 @@ public class Utils
     }
     
     /**
-     * Renvoi une date depuis un format texte
+     * Renvoi une date depuis un format texte <code>[dd/MM/yyyy HH:mm:ss]</code>
      * @param dateString {@link String} - La date à parser
      * @return {@link Date} - La date trouvée
      */
@@ -240,7 +240,7 @@ public class Utils
     }
     
     /**
-     * Renvoi une date depuis un format texte réduit
+     * Renvoi une date depuis un format texte réduit <code>[dd/MM/yyyy]</code>
      * @param dateString {@link String} - La date à parser
      * @return {@link Date} - La date trouvée
      */
@@ -249,15 +249,24 @@ public class Utils
         return dateParseFormat(dateString, formatSmall);
     }
     
+    /**
+     * Permet de trier des dates par ordre croissant depuis des dates
+     * en format texte <code>[dd/MM/yyyy]</code>
+     * @param date1 {@link String} - Première date en format texte
+     * @param date2 {@link String} - Deuxième date en format texte
+     * @return {@link Integer int} - Retourne:<ul><li> La valeur <code>0</code> si les deux dates sont égales;</li>
+     *          <li>En dessous de <code>0</code> Si la première date est antérieure à la seconde;</li>
+     *          <li>Au dessus de <code>0</code> Si la première date est postérieure à la seconde.</li></ul>
+     */
     public static int sortByDate(Object date1, Object date2)
     {
-        ApplicationLogger.writeError("Using sortByDate:"+date1+", "+date2, null);
-        return(((Date)date1).compareTo((Date)date2));
+        return ((Utils.parseSmallDate((String)date1)).compareTo(
+                Utils.parseSmallDate((String)date2)));
     }
     
     /**
      * Renvoi le nombre max de lignes dans une liste de données
-     * @return {@link Integer int} Nombre de lignes
+     * @return {@link Integer int} - Nombre de lignes
      */
     public int getMaxDataRows()
     {
@@ -267,7 +276,7 @@ public class Utils
     /**
      * Remplace chaque caractère d'un texte par une étoile
      * @param text {@link String} - Le texte à convertir
-     * @return {@link String} Le texte contenant les étoiles
+     * @return {@link String} - Le texte contenant les étoiles
      */
     public static String getHiddenString(String text)
     {
@@ -278,7 +287,7 @@ public class Utils
      * Raccourci un texte vers la taille donnée
      * @param text {@link String} - Le texte à raccourcir
      * @param maxSize {@link Integer int} - La taille max
-     * @return {@link String} Le texte plus court
+     * @return {@link String} - Le texte plus court
      */
     public static String getShortString(String text,int maxSize)
     {
@@ -289,7 +298,7 @@ public class Utils
      * Remplace les retours à la ligne d'un texte java par des retours à la
      * ligne en HTML
      * @param text {@link String} - Le texte à convertir
-     * @return {@link String} Le texte HTML
+     * @return {@link String} - Le texte HTML
      */
     public static String getBreakLinesString(String text)
     {
@@ -303,14 +312,15 @@ public class Utils
      * @param desc {@link String} - La description de la méthode
      * @param target {@link Object} - L'ojet sur lequel invoquer la méthode
      * @param args {@link Object}[] - La liste des arguments
-     * @return {@link Object} Ce que retourne la méthode
+     * @return {@link Object} - Ce que retourne la méthode
      */
     public static Object callMethod(Method m, String desc, Object target,
             Object... args)
     {
+        String description=(desc==null?"":("("+desc+") "));
         try
         {
-            String call="Appel de la méthode \""+m.getName()+"\" ("+desc+") sur "
+            String call="Appel de la méthode \""+m.getName()+"\" "+description+" sur "
                     + "l'objet de la classe \""+target.getClass().getName()+"\" "
                     + "avec les paramètres: "+Arrays.toString(args);
             ApplicationLogger.writeInfo(call);
@@ -338,9 +348,10 @@ public class Utils
     }
     
     /**
-     * Permet de récupérer les information complètes pour une classe qui possède
-     * une méthode "getFullString"
-     * @param entity {@link Object} - L'objet sur lequel appeler la méthode "getFullString"
+     * Permet de récupérer les informations complètes pour une classe qui possède
+     * une méthode <code>"getFullString"</code>
+     * @param entity {@link Object} - L'objet sur lequel appeler la méthode 
+     * <code>"getFullString"</code>
      * @return {@link String} - La description complète de l'objet
      */
     public static String getFullString(Object entity)
@@ -393,9 +404,10 @@ public class Utils
     }
     
     /**
-     * Renvoi la durée sous forme "HH:mm" pour une durée sous la forme "HH h mm mins"
-     * @param value {@link String} - Durée sous la forme "HH h mm mins"
-     * @return {@link String} - Durée sous la forme "HH:mm"
+     * Renvoi la durée sous forme <code>"HH:mm"</code> pour une durée sous 
+     * la forme <code>"HH h mm mins"</code>
+     * @param value {@link String} - Durée sous la forme <code>"HH h mm mins"</code>
+     * @return {@link String} - Durée sous la forme <code>"HH:mm"</code>
      */
     public static String getDurationString(Object value)
     {
@@ -404,9 +416,10 @@ public class Utils
     }
     
     /**
-     * Renvoi la durée sous forme "HH h mm mins" pour une durée sous la forme "HH:mm"
-     * @param value {@link String} - Durée sous la forme "HH:mm"
-     * @return {@link String} - Durée sous la forme "HH h mm mins"
+     * Renvoi la durée sous forme <code>"HH h mm mins"</code> pour une durée 
+     * sous la forme <code>"HH:mm"</code>
+     * @param value {@link String} - Durée sous la forme <code>"HH:mm"</code>
+     * @return {@link String} - Durée sous la forme <code>"HH h mm mins"</code>
      */
     public static Object getDurationObject(String value)
     {

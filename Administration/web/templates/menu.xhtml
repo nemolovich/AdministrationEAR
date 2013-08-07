@@ -32,10 +32,17 @@
                 </p:submenu>
                 <p:submenu label="Données"
                            rendered="#{userLogin.rights.equalsIgnoreCase(tUserView.admin_Rights)}">
-                    <p:menuitem outcome="/restricted/admin/data/client/list" 
-                                value="Liste des sociétés"
-                                icon="ui-icon-copy"
-                                title="Afficher la liste des sociétés"/>
+                    <p:submenu label="Sociétés">
+                        <p:menuitem outcome="/restricted/admin/data/client/list" 
+                                    value="Liste des sociétés"
+                                    icon="ui-icon-copy"
+                                    title="Afficher la liste des sociétés"/>
+                        <p:menuitem action="#{clientView.entityCreate()}"
+                                    value="Ajouter une société"
+                                    icon="ui-icon-circle-plus"
+                                    styleClass="green_icon"
+                                    title="Ajouter une société"/>
+                    </p:submenu>
                     <p:menuitem outcome="/restricted/admin/data/c_user/list"
                                 value="Liste des utilisateurs"
                                 icon="ui-icon-copy"

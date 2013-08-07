@@ -180,12 +180,13 @@ public class CUser implements Serializable
     
     public String getFullString()
     {
-        return "entity.CUser{" + "id=" + id + ", name=" + name + ", phone=" + phone + ", observations=" + observations + ", sleeping=" + sleeping + ", idClient=" + idClient + '}';
+        return "entity.CUser{" + "id=" + id + ", name=" + name + ", phone=" + phone + ", observations=" + observations + ", sleeping=" + sleeping + ", clientList=" + clientList + ", taskList=" + taskList + ", idClient=" + idClient + ", idFilePath=" + idFilePath + '}';
     }
 
     @Override
     public String toString() {
         return this.name;
     }
+    
     
 }

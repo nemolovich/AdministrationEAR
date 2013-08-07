@@ -43,7 +43,9 @@
                             paginator="true"
                             paginatorPosition="top"
                             rows="#{utils.maxDataRows}"
-                            rendered="#{not taskView.entityPopup.idUser.idFilePath.emptyFilePath}">
+                            rendered="#{not empty taskView.entityPopup.idUser and
+                                        not empty taskView.entityPopup.idUser.idFilePath and
+                                        not taskView.entityPopup.idUser.idFilePath.emptyFilePath}">
                     <p:column headerText="Lien">
                         <h:outputLink value="javascript:void(0);"
                                       onclick="window.open('#{files.getFileLink(file, taskView.entityPopup.idUser.idFilePath)}',

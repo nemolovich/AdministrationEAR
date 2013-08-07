@@ -122,14 +122,15 @@ INSERT INTO ROOT.FILE_PATH (FILE_PATH)
 ---------------------- INITIALISATION -----------------------
 INSERT INTO ROOT.CLIENT
 		(ID_USER, ID_FILE_PATH, "NAME", ADDRESS, POSTALCODE,
-				PHONE, FAX, MAIL, INTERVENTION_TYPE,
+				CITY, PHONE, FAX, MAIL, INTERVENTION_TYPE,
 				OBSERVATIONS) 
 	VALUES (
 		NULL,
 		1,
 		'Admin Services',
+		'8 Rue Louise WEISS',
+		37700,
 		'La Ville aux Dames',
-                37700,
 		'02.47.44.77.11',
 		NULL,
 		'contact@admin-services.fr',
@@ -170,14 +171,15 @@ INSERT INTO ROOT.TASK (ID_CLIENT, ID_USER, ID_WORKSTATION,
 ------------------------- CLIENT 2 --------------------------
 INSERT INTO ROOT.CLIENT
 		(ID_USER, ID_FILE_PATH, "NAME", ADDRESS, POSTALCODE,
-				PHONE, FAX, MAIL, INTERVENTION_TYPE,
+				CITY, PHONE, FAX, MAIL, INTERVENTION_TYPE,
 				OBSERVATIONS) 
 	VALUES (
 		NULL,
 		2,
 		'SOCIETY2',
+		'SOCIETY 2',
+		22222,
 		'SOCIETY CITY 2',
-                22222,
 		'02.00.00.00.02',
 		NULL,
 		'society_2@society.fr',
@@ -265,14 +267,15 @@ INSERT INTO ROOT.SOFTWARE
 ------------------------- CLIENT 3 --------------------------
 INSERT INTO ROOT.CLIENT
 		(ID_USER, ID_FILE_PATH, "NAME", ADDRESS, POSTALCODE,
-				PHONE, FAX, MAIL, INTERVENTION_TYPE,
+				CITY, PHONE, FAX, MAIL, INTERVENTION_TYPE,
 				OBSERVATIONS) 
 	VALUES (
 		NULL,
 		3,
 		'SOCIETY3',
+		'SOCIETY 3',
+		33333,
 		'SOCIETY CITY 3',
-                33333,
 		'02.00.00.00.03',
 		NULL,
 		'society_3@society.fr',
@@ -360,14 +363,15 @@ INSERT INTO ROOT.SOFTWARE
 ------------------------- CLIENT 4 --------------------------
 INSERT INTO ROOT.CLIENT
 		(ID_USER, ID_FILE_PATH, "NAME", ADDRESS, POSTALCODE,
-				PHONE, FAX, MAIL, INTERVENTION_TYPE,
+				CITY, PHONE, FAX, MAIL, INTERVENTION_TYPE,
 				OBSERVATIONS) 
 	VALUES (
 		NULL,
 		4,
 		'SOCIETY4',
+		'SOCIETY 4',
+		44444,
 		'SOCIETY CITY 4',
-                44444,
 		'02.00.00.00.04',
 		NULL,
 		'society_4@society.fr',
@@ -455,14 +459,15 @@ INSERT INTO ROOT.SOFTWARE
 ------------------------- CLIENT 5 --------------------------
 INSERT INTO ROOT.CLIENT
 		(ID_USER, ID_FILE_PATH, "NAME", ADDRESS, POSTALCODE,
-				PHONE, FAX, MAIL, INTERVENTION_TYPE,
+				CITY, PHONE, FAX, MAIL, INTERVENTION_TYPE,
 				OBSERVATIONS) 
 	VALUES (
 		NULL,
 		5,
 		'SOCIETY5',
+		'SOCIETY 5',
+		55555,
 		'SOCIETY CITY 5',
-                55555,
 		'02.00.00.00.05',
 		NULL,
 		'society_5@society.fr',
@@ -550,14 +555,15 @@ INSERT INTO ROOT.SOFTWARE
 ------------------------- CLIENT 6 --------------------------
 INSERT INTO ROOT.CLIENT
 		(ID_USER, ID_FILE_PATH, "NAME", ADDRESS, POSTALCODE,
-				PHONE, FAX, MAIL, INTERVENTION_TYPE,
+				CITY, PHONE, FAX, MAIL, INTERVENTION_TYPE,
 				OBSERVATIONS) 
 	VALUES (
 		NULL,
 		6,
 		'SOCIETY6',
+		'SOCIETY 6',
+		666666,
 		'SOCIETY CITY 6',
-                666666,
 		'02.00.00.00.06',
 		NULL,
 		'society_6@society.fr',

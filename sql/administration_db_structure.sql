@@ -74,6 +74,7 @@ CREATE TABLE ROOT.CLIENT (
         name VARCHAR(45) NOT NULL DEFAULT 'unknown' UNIQUE,
         address VARCHAR(100) NOT NULL,
 		postalCode INTEGER NOT NULL,
+		city VARCHAR(45) NOT NULL,
         phone VARCHAR(14) NOT NULL,
         fax VARCHAR(14),
 		tarif DOUBLE,

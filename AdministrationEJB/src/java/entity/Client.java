@@ -72,6 +72,11 @@ public class Client implements Serializable
     private int postalcode;
     @Basic(optional = false)
     @NotNull
+    @Size(max = 45)
+    @Column(name = "CITY")
+    private String city;
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "PHONE")
     private String phone;
     @Column(name = "FAX")
@@ -165,6 +170,14 @@ public class Client implements Serializable
 
     public void setPostalcode(int postalcode) {
         this.postalcode = postalcode;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public String getPhone() {
@@ -338,12 +351,13 @@ public class Client implements Serializable
 
     public String getFullString()
     {
-        return "entity.Client{" + "id=" + id + ", name=" + name + ", address=" + address + ", postalcode=" + postalcode + ", phone=" + phone + ", fax=" + fax + ", tarif=" + tarif + ", deplacement=" + deplacement + ", mail=" + mail + ", interventionType=" + interventionType + ", operator=" + operator + ", internetLogin=" + internetLogin + ", internetPassword=" + internetPassword + ", observations=" + observations + ", sleeping=" + sleeping + ", idUser=" + idUser + '}';
+        return "entity.Client{" + "id=" + id + ", name=" + name + ", address=" + address + ", postalcode=" + postalcode + ", city=" + city + ", phone=" + phone + ", fax=" + fax + ", tarif=" + tarif + ", deplacement=" + deplacement + ", mail=" + mail + ", interventionType=" + interventionType + ", operator=" + operator + ", internetLogin=" + internetLogin + ", internetPassword=" + internetPassword + ", observations=" + observations + ", sleeping=" + sleeping + ", idUser=" + idUser + ", idFilePath=" + idFilePath + ", cUserList=" + cUserList + ", workstationList=" + workstationList + ", mailList=" + mailList + ", softwareList=" + softwareList + ", taskList=" + taskList + '}';
     }
 
     @Override
     public String toString() {
         return this.name;
     }
+    
 
 }

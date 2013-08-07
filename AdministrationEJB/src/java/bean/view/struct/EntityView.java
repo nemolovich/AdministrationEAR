@@ -5,6 +5,7 @@
 package bean.view.struct;
 
 import bean.ApplicationLogger;
+import bean.City;
 import bean.Files;
 import bean.Utils;
 import bean.facade.FilePathFacade;
@@ -16,6 +17,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -34,6 +36,8 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> extends EntitySl
     private F entityFacade;
     private boolean creating=false;
     private boolean editing=false;
+    private List<String> cityList;
+    private List<String> postalCodeList;
     
     @EJB
     private FilePathFacade filePathFacade;
@@ -45,8 +49,57 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> extends EntitySl
     public EntityView(Class<C> entityClass,String webFolder)
     {
         super(entityClass);
+        City.load();
+        this.cityList=City.getCityNames();
+        this.postalCodeList=City.getPostalCodes();
         this.webFolder="/restricted/admin/data/"+webFolder+"/";
         this.entityClass=entityClass;
+    }
+    
+    public List<String> cityComplete(String query)
+    {
+        List<String> result = new ArrayList<String>();
+        String ask=query.toLowerCase();
+        for(String c: this.cityList)
+        {
+            String city=c.toLowerCase();
+            if(city.startsWith(ask))
+            {
+                result.add(c);
+            }
+            else if(city.startsWith("le ")||
+                    city.startsWith("la "))
+            {
+                if(city.substring(3,c.length()).startsWith(ask))
+                {
+                    result.add(c);
+                }
+            }
+            else if(ask.startsWith("le ")||
+                    ask.startsWith("la "))
+            {
+                if(city.startsWith(ask.substring(3,query.length())))
+                {
+                    result.add(c);
+                }
+            }
+        }
+        Collections.sort(result);
+        return result;
+    }
+    
+    public List<String> postalCodeComplete(String query)
+    {
+        List<String> result = new ArrayList<String>();   
+        for(String postalCode: this.postalCodeList)
+        {
+            if(postalCode.toLowerCase().startsWith(query.toLowerCase()))
+            {
+                result.add(postalCode);
+            }
+        }
+        Collections.sort(result);
+        return result;
     }
     
     public Class<C> getEntityClass()
@@ -339,14 +392,26 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> extends EntitySl
         message="Vérification de l'existance d'une association de fichiers pour "
                 + "la classe \""+this.entityClass.getName()+"\"";
         ApplicationLogger.writeInfo(message);
-        FilePath filePath=new FilePath(this.entityClass.getSimpleName()+
-                File.separator+FilePath.TEMP_FOLDER);
+        String tempFolder=this.entityClass.getSimpleName()+
+                File.separator+FilePath.TEMP_FOLDER;
+        FilePath filePath=this.filePathFacade.getFilePath(tempFolder);
+        boolean create=false;
+        ApplicationLogger.writeError("filePath: "+filePath, null);
+        if(filePath==null)
+        {
+            filePath=new FilePath(tempFolder);
+            create=true;
+        }
         if(this.setEntityFilePath(filePath))
         {
             message="Association d'une entity \""+FilePath.class.getName()+
                     "\" pour l'instance de la classe \""+this.entityClass.getName()+"\"";
             ApplicationLogger.writeInfo(message);
-            this.filePathFacade.create(filePath);
+            if(create)
+            {
+                this.filePathFacade.create(filePath);
+            }
+            this.setEntityFilePath(filePath);
         }
         else
         {

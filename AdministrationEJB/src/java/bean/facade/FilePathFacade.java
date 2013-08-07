@@ -30,6 +30,24 @@ public class FilePathFacade extends AbstractFacade<FilePath> {
         super(FilePath.class);
     }
     
+    /**
+     * Renvoi l'entité qui contient le chemin passé en paramère
+     * @param path {@link String} - Chemin à chercher
+     * @return {@FilePath} - L'entité qui contient le chemin, <code>null</code>
+     * si le chemin n'a pas été trouvé
+     */
+    public FilePath getFilePath(String path)
+    {
+        for(FilePath filePath:this.findAll())
+        {
+            if(filePath.getFilePath().equals(path))
+            {
+                return filePath;
+            }
+        }
+        return null;
+    }
+    
     @Override
     public void create(FilePath entity)
     {

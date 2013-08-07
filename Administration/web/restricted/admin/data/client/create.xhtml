@@ -81,6 +81,17 @@
                                             <f:attribute name="requiredTitle"
                                                          value="Champs 'Code postal' vide"/>
                                         </p:inputMask>
+                                        
+                                        <p:outputLabel value="Ville:" for="city"
+                                                       styleClass="required"/>
+                                        <p:inputText id="city" value="#{clientView.entity.city}" maxlength="45"
+                                                     title="Ville de la société">
+                                            <f:validator binding="#{notNullFieldValidator}"/>
+                                            <f:attribute name="requiredMessage"
+                                                         value="Le champs 'Ville' ne peut être vide"/>
+                                            <f:attribute name="requiredTitle"
+                                                         value="Champs 'Ville' vide"/>
+                                        </p:inputText>
 
                                         <p:outputLabel value="Téléphone:" for="phone"
                                                        styleClass="required"/>
@@ -270,6 +281,9 @@
 
                                                     <h:outputText value="Code postal:" />
                                                     <h:outputText value="#{clientView.entity.postalcode}"/>
+
+                                                    <h:outputText value="Ville"/>
+                                                    <h:outputText value="#{clientView.entity.city}"/>
 
                                                     <h:outputText value="Téléphone:" />
                                                     <h:outputText value="#{clientView.entity.phone}"/>

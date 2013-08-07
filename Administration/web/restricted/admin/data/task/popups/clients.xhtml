@@ -44,7 +44,9 @@
                         </p:fieldset>
                         
                         <p:fieldset legend="Fichiers"
-                                    rendered="#{not taskView.entityPopup.idClient.idFilePath.emptyFilePath}">
+                                    rendered="#{not empty taskView.entityPopup.idClient and
+                                                not empty taskView.entityPopup.idClient.idFilePath and
+                                                not taskView.entityPopup.idClient.idFilePath.emptyFilePath}">
                             <p:dataList value="#{taskView.entityPopup.idClient.idFilePath.filesInPath}"
                                         var="file"
                                         paginator="true"

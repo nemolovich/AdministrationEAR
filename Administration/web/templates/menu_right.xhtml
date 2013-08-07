@@ -34,6 +34,7 @@
                              rowStyleClass="#{item.sleeping?'sleeping_elmt':null}"
                              rows="#{utils.maxDataRows}"
                              sortBy="#{utils.smallDateFormat(item.startDate)}"
+                             sortFunction="#{utils.sortByDate}"
                              filteredValue="#{taskMultiView.filteredEntities}"
                              filterDelay="100"
                              emptyMessage="Aucune tâche n'a été trouvée">
@@ -42,6 +43,7 @@
                               style="width:1%;"
                               filterBy="#{utils.smallDateFormat(item.startDate)}"
                               sortBy="#{utils.smallDateFormat(item.startDate)}"
+                              sortFunction="#{utils.sortByDate}"
                               filterMatchMode="contains"
                               filterStyle="width:60px;">
                         <h:outputText value="#{utils.smallDateFormat(item.startDate)}"/>
@@ -274,6 +276,7 @@
                              paginator="true"
                              rows="#{utils.maxDataRows*10}"
                              sortBy="#{utils.smallDateFormat(item.startDate)}"
+                             sortFunction="#{utils.sortByDate}"
                              filteredValue="#{taskMultiView.filteredEntities}"
                              selection="#{taskView.entity}"
                              selectionMode="single">

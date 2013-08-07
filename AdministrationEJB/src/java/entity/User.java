@@ -4,6 +4,7 @@
  */
 package entity;
 
+import entity.TUser;
 import java.io.Serializable;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
@@ -36,5 +37,11 @@ public class User extends TUser implements Serializable
             String password, String rights)
     {
         super(id, mail, name, firstname, password, rights);
-    } 
+    }
+    
+    @Override
+    public String getFullString()
+    {
+        return "entity.User{"+super.getFullString()+"}";
+    }
 }
