@@ -58,31 +58,17 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> extends EntitySl
     
     public List<String> cityComplete(String query)
     {
+        String value = City.getNormilizedCity(query.toLowerCase());
         List<String> result = new ArrayList<String>();
-        String ask=query.toLowerCase();
-        for(String c: this.cityList)
+        List<String> like = City.likeCity(value);
+        List<String> begin = City.beginWith(value);
+        if(like!=null)
         {
-            String city=c.toLowerCase();
-            if(city.startsWith(ask))
-            {
-                result.add(c);
-            }
-            else if(city.startsWith("le ")||
-                    city.startsWith("la "))
-            {
-                if(city.substring(3,c.length()).startsWith(ask))
-                {
-                    result.add(c);
-                }
-            }
-            else if(ask.startsWith("le ")||
-                    ask.startsWith("la "))
-            {
-                if(city.startsWith(ask.substring(3,query.length())))
-                {
-                    result.add(c);
-                }
-            }
+            result.addAll(like);
+        }
+        if(begin!=null)
+        {
+            result.addAll(begin);
         }
         Collections.sort(result);
         return result;
@@ -91,9 +77,9 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> extends EntitySl
     public List<String> postalCodeComplete(String query)
     {
         List<String> result = new ArrayList<String>();   
-        for(String postalCode: this.postalCodeList)
+        for(String postalCode:this.postalCodeList)
         {
-            if(postalCode.toLowerCase().startsWith(query.toLowerCase()))
+            if(postalCode.startsWith(query))
             {
                 result.add(postalCode);
             }

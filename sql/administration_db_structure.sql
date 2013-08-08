@@ -224,12 +224,15 @@ CREATE TABLE ROOT.INTERVENTION (
         id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY
 		(START WITH 1, INCREMENT BY 1),
 		id_task INTEGER NOT NULL,
+		id_facture INTEGER,
 		duration VARCHAR(30),
-		facture_number INTEGER,
 		sleeping BOOLEAN NOT NULL DEFAULT FALSE,
 		CONSTRAINT intervention_task_id_fk
 			FOREIGN KEY (id_task)
-			REFERENCES ROOT.TASK(id));
+			REFERENCES ROOT.TASK(id),
+		CONSTRAINT intervention_facture_id_fk
+			FOREIGN KEY (id_facture)
+			REFERENCES ROOT.FACTURE(id)););
 
 ---------------- Création de la table FACTURE ---------------
 -- TABLE:			FACTURE
@@ -238,12 +241,8 @@ CREATE TABLE ROOT.INTERVENTION (
 CREATE TABLE ROOT.FACTURE (
         id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY
 		(START WITH 1, INCREMENT BY 1),
-		id_intervention INTEGER NOT NULL,
 		facture_number VARCHAR(7),
-		sleeping BOOLEAN NOT NULL DEFAULT FALSE,
-		CONSTRAINT facture_intervention_id_fk
-			FOREIGN KEY (id_intervention)
-			REFERENCES ROOT.INTERVENTION(id));
+		sleeping BOOLEAN NOT NULL DEFAULT FALSE);
 
 -- File successfully loaded!
 ;
