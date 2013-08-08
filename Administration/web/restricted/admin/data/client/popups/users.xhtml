@@ -94,7 +94,7 @@
                                 <p:dataTable id="cUserFiles"
                                              value="#{cUserView.entityFilePath.filesInPath}"
                                              var="file"
-                                             rows="#{utils.maxDataRows}"
+                                             rows="5"
                                              emptyMessage="Aucun fichier n'est présent"
                                              paginatorPosition="top"
                                              sortBy="#{file.name}"
@@ -144,7 +144,7 @@
                                 var="file"
                                 paginator="true"
                                 paginatorPosition="top"
-                                rows="#{utils.maxDataRows}">
+                                rows="5">
                         <p:column headerText="Lien">
                             <h:outputLink value="javascript:void(0);"
                                           onclick="window.open('#{files.getFileLink(file, cUserView.entityFilePath)}',

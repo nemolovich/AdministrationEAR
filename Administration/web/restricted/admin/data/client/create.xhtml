@@ -73,25 +73,58 @@
 
                                         <p:outputLabel value="Code postal:" for="postalcode"
                                                        styleClass="required"/>
-                                        <p:inputMask id="postalcode" value="#{clientView.entity.postalcode}" mask="99999"
-                                                     title="Code postal de la société">
+                                        <p:autoComplete id="postalcode" value="#{clientView.entity.postalcode}"
+                                                        maxlength="5"
+                                                        title="Code postal de la société"
+                                                        completeMethod="#{clientView.postalCodeComplete}"
+                                                        valueChangeListener="#{city.setCity}"
+                                                        maxResults="10"
+                                                        var="p"
+                                                        binding="#{postalCodeInput}"
+                                                        itemValue="#{p}"
+                                                        itemLabel="#{p}">
+                                            <f:attribute name="cityInput"
+                                                         value="#{cityInput}"/>
+                                            <p:ajax event="change"
+                                                    update=":clientCreate:city"/>
+                                            <p:ajax event="itemSelect"
+                                                    update=":clientCreate:city"/>
                                             <f:validator binding="#{notNullFieldValidator}"/>
                                             <f:attribute name="requiredMessage"
                                                          value="Le champs 'Code postal' ne peut être vide"/>
                                             <f:attribute name="requiredTitle"
                                                          value="Champs 'Code postal' vide"/>
-                                        </p:inputMask>
+                                            <p:column>
+                                                <h:outputText value="#{p} - #{city.getCity(p)}"/>
+                                            </p:column>
+                                        </p:autoComplete>
                                         
                                         <p:outputLabel value="Ville:" for="city"
                                                        styleClass="required"/>
-                                        <p:inputText id="city" value="#{clientView.entity.city}" maxlength="45"
-                                                     title="Ville de la société">
+                                        <p:autoComplete id="city" value="#{clientView.entity.city}" maxlength="45"
+                                                        title="Ville de la société"
+                                                        completeMethod="#{clientView.cityComplete}"
+                                                        valueChangeListener="#{city.setPostalCode}"
+                                                        maxResults="10"
+                                                        var="c"
+                                                        binding="#{cityInput}"
+                                                        itemValue="#{c}"
+                                                        itemLabel="#{c}">
+                                            <f:attribute name="postalCodeInput"
+                                                         value="#{postalCodeInput}"/>
+                                            <p:ajax event="change"
+                                                    update=":clientCreate:postalcode"/>
+                                            <p:ajax event="itemSelect"
+                                                    update=":clientCreate:postalcode"/>
                                             <f:validator binding="#{notNullFieldValidator}"/>
                                             <f:attribute name="requiredMessage"
                                                          value="Le champs 'Ville' ne peut être vide"/>
                                             <f:attribute name="requiredTitle"
                                                          value="Champs 'Ville' vide"/>
-                                        </p:inputText>
+                                            <p:column>
+                                                <h:outputText value="#{city.getPostalCode(c)} - #{c}"/>
+                                            </p:column>
+                                        </p:autoComplete>
 
                                         <p:outputLabel value="Téléphone:" for="phone"
                                                        styleClass="required"/>
@@ -212,7 +245,7 @@
                                                             <p:dataTable id="clientFiles"
                                                                          value="#{clientView.entityFilePath.filesInPath}"
                                                                          var="file"
-                                                                         rows="#{utils.maxDataRows}"
+                                                                         rows="5"
                                                                          emptyMessage="Aucun fichier n'est présent"
                                                                          paginatorPosition="top"
                                                                          sortBy="#{file.name}"

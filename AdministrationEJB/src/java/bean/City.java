@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import javax.faces.bean.ViewScoped;
+import javax.faces.component.UIInput;
+import javax.faces.event.ValueChangeEvent;
 import javax.inject.Named;
 
 /**
@@ -33,7 +35,7 @@ public class City
     
     public static void load()
     {
-        if(!LOADED)
+        if(!City.LOADED)
         {
             Properties prop=new Properties();
             try
@@ -41,7 +43,7 @@ public class City
                 prop.load(new InputStreamReader(new FileInputStream("resources/cities.txt"),"UTF-8"));
                 for(Object key:prop.keySet())
                 {
-                    LIST.put((String)key, prop.getProperty((String)key));
+                    City.LIST.put((String)key, prop.getProperty((String)key));
                 }
             }
             catch (IOException ex)
@@ -49,15 +51,15 @@ public class City
                 ApplicationLogger.writeError("Impossible de charger le fichier des "
                         + "code postaux", ex);
             }
-            LOADED=true;
+            City.LOADED=true;
         }
     }
     
     public static String getPostalCode(String city)
     {
-        for(String postalCode:LIST.keySet())
+        for(String postalCode:City.LIST.keySet())
         {
-            if(LIST.get(postalCode).equalsIgnoreCase(city))
+            if(City.LIST.get(postalCode).equalsIgnoreCase(city))
             {
                 return postalCode;
             }
@@ -67,11 +69,11 @@ public class City
     
     public static String getCity(String postalCode)
     {
-        for(String code:LIST.keySet())
+        for(String code:City.LIST.keySet())
         {
             if(code.equalsIgnoreCase(postalCode))
             {
-                return LIST.get(code);
+                return City.LIST.get(code);
             }
         }
         return "";
@@ -80,7 +82,7 @@ public class City
     public static List<String> getPostalCodes()
     {
         List<String> postalCodes=new ArrayList<String>();
-        for(String key:LIST.keySet())
+        for(String key:City.LIST.keySet())
         {
             postalCodes.add(key);
         }
@@ -90,10 +92,30 @@ public class City
     public static List<String> getCityNames()
     {
         List<String> cityNames=new ArrayList<String>();
-        for(String key:LIST.keySet())
+        for(String key:City.LIST.keySet())
         {
-            cityNames.add(LIST.get(key));
+            cityNames.add(City.LIST.get(key));
         }
         return cityNames;
+    }
+    
+    public static void setCity(ValueChangeEvent event)
+    {
+        UIInput cityInput=(UIInput)event.getComponent().getAttributes().get("cityInput");
+        String value=String.format("%d",(Integer) event.getNewValue());
+        if(City.LIST.containsKey(value))
+        {
+            cityInput.setValue(City.LIST.get(value));
+        }
+    }
+    
+    public static void setPostalCode(ValueChangeEvent event)
+    {
+        UIInput postalCodeInput=(UIInput)event.getComponent().getAttributes().get("postalCodeInput");
+        String value=(String) event.getNewValue();
+        if(City.LIST.containsValue(value))
+        {
+            postalCodeInput.setValue(City.getPostalCode(value));
+        }
     }
 }

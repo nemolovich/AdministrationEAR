@@ -68,6 +68,7 @@ public class Client implements Serializable
     @Column(name = "ADDRESS")
     private String address;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "POSTALCODE")
     private int postalcode;
     @Basic(optional = false)

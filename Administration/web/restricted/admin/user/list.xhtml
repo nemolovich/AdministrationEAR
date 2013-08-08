@@ -22,18 +22,11 @@
                                      emptyMessage="Aucun utilisateur n'a été trouvé"   
                                      widgetVar="userTable"
                                      rows="#{utils.maxDataRows}"
-                                     rowKey="#{item.id}"
+                                     rowKey="#{item.name}"
                                      rowIndexVar="idex"
-                                     sortBy="#{item.id}"
+                                     sortBy="#{item.name}"
                                      paginator="true"
                                      paginatorPosition="bottom">
-                            <p:column headerText="Identifiant"
-                                      style="width:1%;text-align: right;"
-                                      sortBy="#{item.id}"
-                                      filterBy="#{item.id}"
-                                      filterMatchMode="exact">
-                                <h:outputText value="#{item.id}"/>
-                            </p:column>
                             <p:column headerText="Adresse mail"
                                       sortBy="#{item.mail}"
                                       filterBy="#{item.mail}"
