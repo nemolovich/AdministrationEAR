@@ -82,7 +82,7 @@
                                                         var="p"
                                                         binding="#{postalCodeInput}"
                                                         itemValue="#{p}"
-                                                        itemLabel="#{p}">
+                                                        itemLabel="#{city.getZipCode(p)}">
                                             <f:attribute name="cityInput"
                                                          value="#{cityInput}"/>
                                             <p:ajax event="change"

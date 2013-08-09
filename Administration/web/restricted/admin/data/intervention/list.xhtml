@@ -16,6 +16,34 @@
             <ui:define name="content">
                 <f:attribute name="header" value="Liste des interventions"/>
                 <f:view>
+                    <h:form id="interventionPeriodeForm">
+                        <p:panelGrid columns="2" columnClasses="label,fields">
+                            <p:outputLabel for="interventionPeriodestartDate"
+                                           value="Date de début:"/>
+                            <p:calendar id="interventionPeriodestartDate" value="#{interventionView.startDate}"
+                                         title="Date de prévue pour l'intervention"
+                                         disabledWeekends="false"
+                                         effect="slideDown"
+                                         locale="fr"
+                                         navigator="true"
+                                         pattern="dd/MM/yyyy"
+                                         showButtonPanel="true"
+                                         widgetVar="startDateIntervention">
+                                <p:ajax event="dateSelect"
+                                        update=":interventionDataForm :growl"
+                                        oncomplete="console.log('ok!');"/>
+                                <script type="text/javascript">
+                                    $(document).ready(function(){loadLocales();});
+                                </script>
+                                <f:validator binding="#{notNullFieldValidator}"/>
+                                <f:attribute name="requiredMessage"
+                                             value="Veuillez entrer le début de la période"/>
+                                <f:attribute name="requiredTitle"
+                                             value="Champs 'Date de début' vide"/>
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </p:calendar>
+                        </p:panelGrid>
+                    </h:form>
                     <h:form id="interventionDataForm">
                         <script type="text/javascript">
                             $(document).ready(function()

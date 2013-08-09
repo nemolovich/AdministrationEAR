@@ -4,6 +4,7 @@
  */
 package bean;
 
+import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -11,9 +12,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.UnsupportedEncodingException;
 import java.text.Normalizer;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,7 +37,6 @@ public class City
     public City()
     {
         City.load();
-        City.saveCitiesAsList();
     }
     
     private static synchronized boolean saveCitiesAsList()
@@ -51,11 +51,13 @@ public class City
         }
         catch (FileNotFoundException ex)
         {
-            Logger.getLogger(City.class.getName()).log(Level.SEVERE, null, ex);
+            ApplicationLogger.writeError("Fichier des code postaux "
+                    + "introuvable", ex);
         }
         catch (IOException ex)
         {
-            Logger.getLogger(City.class.getName()).log(Level.SEVERE, null, ex);
+            ApplicationLogger.writeError("Erreur lors du chargement du  "
+                    + "fichier des code postaux", ex);
         }
         return false;
     }
@@ -74,89 +76,95 @@ public class City
         }
         catch (FileNotFoundException ex)
         {
-            Logger.getLogger(City.class.getName()).log(Level.SEVERE, null, ex);
+            ApplicationLogger.writeError("Fichier des code postaux "
+                    + "introuvable", ex);
         }
         catch (IOException ex)
         {
-            Logger.getLogger(City.class.getName()).log(Level.SEVERE, null, ex);
+            ApplicationLogger.writeError("Erreur lors du chargement du  "
+                    + "fichier des code postaux", ex);
         }
         catch (ClassNotFoundException ex)
         {
-            Logger.getLogger(City.class.getName()).log(Level.SEVERE, null, ex);
+            ApplicationLogger.writeError("Erreur de conversion lors du "
+                    + "chargement du fichier des code postaux", ex);
         }
         return false;
     }
     
+    /**
+     * Charge la liste des villes et codes postaux à partir du fichier texte
+     * <code><u>/!\</u> Processus très long <u>/!\</u></code>
+     */
     private static synchronized void loadAsFile()
     {
-        if(!City.LOADED)
+        InputStreamReader isr = null;
+        try
         {
-            InputStreamReader isr;
+            isr=new InputStreamReader(new FileInputStream("resources/cities.txt"),"UTF-8");
+            BufferedReader br=new BufferedReader(isr);
+            String line;
+            while((line=br.readLine())!=null)
+            {
+                if(!line.isEmpty())
+                {
+                    String[] item=line.split("=");
+                    if(item.length==2)
+                    {
+                        if(City.containsKey(item[0]))
+                        {
+                            int i=0;
+                            String newKey=item[0];
+                            while(City.containsKey(newKey))
+                            {
+                                newKey=item[0]+String.valueOf(i++);
+                            }
+                            item[0]=newKey;
+                        }
+                        City.LIST.add(item);
+                    }
+                }
+            }
+        }
+        catch (UnsupportedEncodingException ex)
+        {
+            ApplicationLogger.writeError("Type d'encodage incorrect pour le "
+                    + "fichier des code postaux", ex);
+        }
+        catch (FileNotFoundException ex)
+        {
+            ApplicationLogger.writeError("Fichier des code postaux "
+                    + "introuvable", ex);
+        }
+        catch (IOException ex)
+        {
+            ApplicationLogger.writeError("Erreur lors du chargement du  "
+                    + "fichier des code postaux", ex);
+        }
+        if(isr!=null)
+        {
             try
             {
-                isr=new InputStreamReader(new FileInputStream("resources/cities.txt"),"UTF-8");
-                String line="";
-                int value=0;
-                while((value=isr.read())>-1)
-                {
-                    if(value==10||value==13) // '\r' ou '\n'
-                    {
-                        if(!line.isEmpty())
-                        {
-                            String[] item=line.split("=");
-                            if(item.length==2)
-                            {
-                                if(City.containsKey(item[0]))
-                                {
-                                    int i=0;
-                                    String newKey=item[0];
-                                    while(City.containsKey(newKey))
-                                    {
-                                        newKey=item[0]+String.valueOf(i++);
-                                    }
-                                    item[0]=newKey;
-                                }
-//                                System.err.println("Add: "+Arrays.toString(item));
-                                City.LIST.add(item);
-                                if(City.LIST.size()>=30)
-                                {
-                                    break;
-                                }
-                            }
-                        }
-                        line="";
-                    }
-                    else
-                    {
-                        if(value==61) // '='
-                        {
-                        }
-                        line+=(char)value;
-                    }
-                }
-                try
-                {
-                    isr.close();
-                }
-                catch (IOException ex)
-                {
-                    ApplicationLogger.writeError("Erreur lors de la fermeture du "
-                            + "fichier des code postaux", ex);
-                }
+                isr.close();
             }
             catch (IOException ex)
             {
-                ApplicationLogger.writeError("Impossible de charger le fichier des "
-                        + "code postaux", ex);
+                ApplicationLogger.writeError("Erreur lors de la fermeture du "
+                        + "fichier des code postaux", ex);
             }
-            City.LOADED=true;
         }
     }
     
     public static synchronized void load()
     {
-        City.loadCitiesAsList();
-        ApplicationLogger.writeInfo("Fichier des codes postaux chargé");
+        if(!City.LOADED)
+        {
+            City.loadCitiesAsList(); // Par fichier binaire
+//            City.loadAsFile();// Par fichier texte
+//            City.saveCitiesAsList();
+            ApplicationLogger.writeInfo("Fichier des codes postaux chargé");
+            City.LOADED=true;
+        }
     }
     
     public static List<String> beginWith(String query)
@@ -205,7 +213,11 @@ public class City
     
     public static String getZipCode(String postalCode)
     {
-        return postalCode.substring(0, 5);
+        if(postalCode!=null&&postalCode.length()>=5)
+        {
+            return postalCode.substring(0, 5);
+        }
+        return "";
     }
     
     public static String getPostalCode(String city)
@@ -214,7 +226,14 @@ public class City
         {
             if(item[1].equalsIgnoreCase(city))
             {
-                return item[0].substring(0, 5);
+                if(item[0].length()>=5)
+                {
+                    return item[0].substring(0, 5);
+                }
+                else
+                {
+                    return city;
+                }
             }
         }
         List<String> like=City.likeCity(city);
@@ -310,6 +329,7 @@ public class City
         {
             cityInput.setValue(City.getValue(value));
         }
+//        ((UIInput)event.getComponent()).setValue(City.getZipCode(value));
     }
     
     public static void setPostalCode(ValueChangeEvent event)

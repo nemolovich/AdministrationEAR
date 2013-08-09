@@ -6,12 +6,15 @@ package bean.view;
 
 import bean.facade.InterventionFacade;
 import bean.view.struct.EmbdedDataListView;
-import bean.view.struct.EntityView;
 import entity.Intervention;
 import entity.Task;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
 /**
@@ -25,6 +28,8 @@ public class InterventionView extends EmbdedDataListView<Task, Intervention, Int
     private static final long serialVersionUID = 1L;
     @EJB
     private InterventionFacade inteventionFacade;
+    private Date startDate=Calendar.getInstance().getTime();;
+    private Date endDate=this.addDate(this.startDate, Calendar.DAY_OF_YEAR, 30);
     
     public InterventionView() throws NoSuchMethodException
     {
@@ -67,6 +72,30 @@ public class InterventionView extends EmbdedDataListView<Task, Intervention, Int
         }
         return super.create(view.getEntityPopup());
     }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+    
+    public Date addDate(Date startDate, int field, int amount)
+    {
+        Calendar cal=Calendar.getInstance();
+        cal.setTime(startDate);
+        cal.add(field, amount);
+        return cal.getTime();
+    }
     
     @Override
     public void setEntity(Intervention entity)
@@ -83,7 +112,30 @@ public class InterventionView extends EmbdedDataListView<Task, Intervention, Int
     @Override
     public List<Intervention> getEntries()
     {
-        return super.findAll();
+        List<Intervention> list=super.findAll();
+        if(list!=null&&this.startDate!=null
+                &&this.endDate!=null)
+        {
+            if(this.startDate.after(this.endDate))
+            {
+                FacesMessage msg=new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                        "Dates incorrectes", "La date de début doit être antérieure"
+                        + " à celle de fin");
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+                System.err.println("-- Erreur dates");
+                return list;
+            }
+            System.err.println("From: "+this.startDate+" to: "+this.endDate);
+            for(Intervention intervention:super.findAll())
+            {
+                if(intervention.getIdTask().getStartDate().after(this.endDate)||
+                        intervention.getIdTask().getStartDate().before(this.startDate))
+                {
+                    list.remove(intervention);
+                }
+            }
+        }
+        return list;
     }
 
     @Override
