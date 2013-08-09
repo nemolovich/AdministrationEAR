@@ -5,16 +5,14 @@
 package bean.view;
 
 import bean.facade.InterventionFacade;
-import bean.view.struct.EmbdedDataListView;
+import bean.view.periodSelection.EmbdedEntityPeriodView;
 import entity.Intervention;
 import entity.Task;
-import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
 /**
@@ -23,13 +21,11 @@ import javax.inject.Named;
  */
 @Named(value = "interventionView")
 @SessionScoped
-public class InterventionView extends EmbdedDataListView<Task, Intervention, InterventionFacade>
+public class InterventionView extends EmbdedEntityPeriodView<Task, Intervention, InterventionFacade>
 {
     private static final long serialVersionUID = 1L;
     @EJB
     private InterventionFacade inteventionFacade;
-    private Date startDate=Calendar.getInstance().getTime();;
-    private Date endDate=this.addDate(this.startDate, Calendar.DAY_OF_YEAR, 30);
     
     public InterventionView() throws NoSuchMethodException
     {
@@ -68,33 +64,11 @@ public class InterventionView extends EmbdedDataListView<Task, Intervention, Int
     {
         if(view.isCreating())
         {
+            view.getEntityPopup().setIntendedDuration(this.getInstance().getDuration());
+            view.getEntityPopup().setStartDate(this.getInstance().getInterventionDate());
             view.create();
         }
         return super.create(view.getEntityPopup());
-    }
-
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
-    }
-    
-    public Date addDate(Date startDate, int field, int amount)
-    {
-        Calendar cal=Calendar.getInstance();
-        cal.setTime(startDate);
-        cal.add(field, amount);
-        return cal.getTime();
     }
     
     @Override
@@ -113,25 +87,27 @@ public class InterventionView extends EmbdedDataListView<Task, Intervention, Int
     public List<Intervention> getEntries()
     {
         List<Intervention> list=super.findAll();
-        if(list!=null&&this.startDate!=null
-                &&this.endDate!=null)
+        if(list!=null&&this.getStartDate()!=null
+                &&this.getEndDate()!=null)
         {
-            if(this.startDate.after(this.endDate))
+            if(!super.verifDate(this.getStartDate(), this.getEndDate()))
             {
-                FacesMessage msg=new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                        "Dates incorrectes", "La date de début doit être antérieure"
-                        + " à celle de fin");
-                FacesContext.getCurrentInstance().addMessage(null, msg);
-                System.err.println("-- Erreur dates");
-                return list;
+                return new ArrayList<Intervention>();
             }
-            System.err.println("From: "+this.startDate+" to: "+this.endDate);
-            for(Intervention intervention:super.findAll())
+            for(Intervention entity:super.findAll())
             {
-                if(intervention.getIdTask().getStartDate().after(this.endDate)||
-                        intervention.getIdTask().getStartDate().before(this.startDate))
+                Date date=entity.getIdTask().getStartDate();
+                if(date==null)
                 {
-                    list.remove(intervention);
+                    continue;
+                }
+                boolean before=date.before(this.getStartDate());
+                boolean after=date.after(this.getEndDate());
+                boolean equals=this.getStartDate().toString().equals(
+                                date.toString());
+                if((before&&!equals)||after)
+                {
+                    list.remove(entity);
                 }
             }
         }

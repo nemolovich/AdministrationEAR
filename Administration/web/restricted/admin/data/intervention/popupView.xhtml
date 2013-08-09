@@ -158,25 +158,28 @@
                                              action="javascript:void(0);"
                                              title="Afficher les détails de l'utilisateur"/>
                         </p:outputPanel>
-
-                        <h:outputLabel value="Date de début:" for="pistartDate"
-                                       styleClass="#{(taskView.creating)?'required':''}"/>
-                        <h:outputText id="pistartDateV" value="#{taskView.entityPopup.startDate}"
+                        
+                        <h:outputLabel value="Date de début prévue:" for="pitstartDateV"
+                                       styleClass="#{(taskView.creating)?'required':''}"
+                                       rendered="#{not taskView.creating}"/>
+                        <h:outputText id="pitstartDateV" value="#{taskView.entityPopup.startDate}"
                                       title="Date de début prévue de l'intervention"
                                       rendered="#{not taskView.creating}">
                             <f:convertDateTime pattern="dd/MM/yyyy" />
                         </h:outputText>
-                        <p:calendar id="pistartDate" value="#{taskView.entityPopup.startDate}"
-                                     title="Date de prévue pour l'intervention"
+
+                        <h:outputLabel value="Date de début:" for="pistartDate"
+                                       styleClass="required"/>
+                        <p:calendar id="pistartDate" value="#{interventionView.entity.interventionDate}"
+                                    title="Date de l'intervention"
                                      disabledWeekends="false"
                                      effect="slideDown"
                                      locale="fr"
-                                     mindate="#{taskView.entityPopup.startDate}"
+                                     mindate="today"
                                      navigator="true"
                                      pattern="dd/MM/yyyy"
                                      showButtonPanel="true"
-                                     widgetVar="startDateCalendar"
-                                     rendered="#{taskView.creating}">
+                                     widgetVar="startDateCalendar">
                             <f:validator binding="#{notNullFieldValidator}"/>
                             <f:attribute name="requiredMessage"
                                          value="Veuillez entrer la date prévue pour l'intervention"/>
@@ -185,30 +188,6 @@
                             <f:convertDateTime pattern="dd/MM/yyyy"/>
                         </p:calendar>
                         
-                        <h:outputLabel value="Durée prévue:" for="piintendedDuration"
-                                       styleClass="#{(taskView.creating)?'required':''}"/>
-                        <h:outputText id="piintendedDurationV" value="#{taskView.entityPopup.intendedDuration}"
-                                      title="Durée prévue pour l'intervention"
-                                      rendered="#{not taskView.creating}"/>
-                        <p:calendar id="piintendedDuration" value="#{taskView.entityPopup.intendedDuration}"
-                                     title="Durée de prévue pour l'intervention"
-                                     disabledWeekends="true"
-                                     effect="slideDown"
-                                     locale="fr"
-                                     mindate="today"
-                                     pattern="HH:mm"
-                                     showButtonPanel="true"
-                                     timeOnly="true"
-                                     widgetVar="intendedDurationCalendar"
-                                     rendered="#{taskView.creating}">
-                            <f:validator binding="#{notNullFieldValidator}"/>
-                            <f:attribute name="requiredMessage"
-                                         value="Veuillez indiquez la durée prévue pour l'intervention"/>
-                            <f:attribute name="requiredTitle"
-                                         value="Champs 'Durée prévue' invalide"/>
-                            <f:converter binding="#{durationConverter}"/>
-                        </p:calendar>
-
                         <h:outputLabel value="Temps effectué:" for="piduration"
                                        styleClass="#{(interventionView.creating or
                                                      interventionView.editing)?'required':''}"/>

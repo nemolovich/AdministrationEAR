@@ -7,10 +7,12 @@ package bean.view;
 
 import bean.ApplicationLogger;
 import bean.facade.TaskFacade;
-import bean.view.struct.EntityView;
+import bean.view.periodSelection.EntityPeriodView;
 import entity.Intervention;
 import entity.Task;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -24,7 +26,7 @@ import javax.inject.Named;
  */
 @Named(value = "taskView")
 @SessionScoped
-public class TaskView extends EntityView<Task, TaskFacade>
+public class TaskView extends EntityPeriodView<Task, TaskFacade>
 {
     public static final String[] INTERVENTION_TYPES={"LOGICIELLE","MATERIELLE"};
     
@@ -151,7 +153,32 @@ public class TaskView extends EntityView<Task, TaskFacade>
     @Override
     public List<Task> getEntries()
     {
-        return super.findAll();
+        List<Task> list=super.findAll();
+        if(list!=null&&this.getStartDate()!=null
+                &&this.getEndDate()!=null)
+        {
+            if(!super.verifDate(this.getStartDate(), this.getEndDate()))
+            {
+                return new ArrayList<Task>();
+            }
+            for(Task entity:super.findAll())
+            {
+                Date date=entity.getStartDate();
+                if(date==null)
+                {
+                    continue;
+                }
+                boolean before=date.before(this.getStartDate());
+                boolean after=date.after(this.getEndDate());
+                boolean equals=this.getStartDate().toString().equals(
+                                date.toString());
+                if((before&&!equals)||after)
+                {
+                    list.remove(entity);
+                }
+            }
+        }
+        return list;
     }
 
     @Override

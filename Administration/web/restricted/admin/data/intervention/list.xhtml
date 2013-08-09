@@ -17,21 +17,23 @@
                 <f:attribute name="header" value="Liste des interventions"/>
                 <f:view>
                     <h:form id="interventionPeriodeForm">
-                        <p:panelGrid columns="2" columnClasses="label,fields">
-                            <p:outputLabel for="interventionPeriodestartDate"
-                                           value="Date de début:"/>
-                            <p:calendar id="interventionPeriodestartDate" value="#{interventionView.startDate}"
-                                         title="Date de prévue pour l'intervention"
-                                         disabledWeekends="false"
-                                         effect="slideDown"
-                                         locale="fr"
-                                         navigator="true"
-                                         pattern="dd/MM/yyyy"
-                                         showButtonPanel="true"
-                                         widgetVar="startDateIntervention">
+                        <h:panelGrid columns="5" columnClasses="fields,null,fields,null,fields">
+                            <h:outputText value="Période de recherche: "/>
+                            <p:outputLabel for="interventionPeriodeStartDate"
+                                           style="vertical-align: bottom !important;"
+                                           value="De: "/>
+                            <p:calendar id="interventionPeriodeStartDate" value="#{interventionView.startDate}"
+                                        title="Date de début de la période"
+                                        disabledWeekends="false"
+                                        effect="slideDown"
+                                        locale="fr"
+                                        navigator="true"
+                                        pattern="dd/MM/yyyy"
+                                        showButtonPanel="true"
+                                        style="vertical-align: top !important;"
+                                        widgetVar="startDateIntervention">
                                 <p:ajax event="dateSelect"
-                                        update=":interventionDataForm :growl"
-                                        oncomplete="console.log('ok!');"/>
+                                        update=":interventionDataForm :growl"/>
                                 <script type="text/javascript">
                                     $(document).ready(function(){loadLocales();});
                                 </script>
@@ -42,7 +44,30 @@
                                              value="Champs 'Date de début' vide"/>
                                 <f:convertDateTime pattern="dd/MM/yyyy"/>
                             </p:calendar>
-                        </p:panelGrid>
+                            <p:outputLabel for="interventionPeriodeEndDate"
+                                           value="à: "/>
+                            <p:calendar id="interventionPeriodeEndDate" value="#{interventionView.endDate}"
+                                        title="Date de début de la période"
+                                        disabledWeekends="false"
+                                        effect="slideDown"
+                                        locale="fr"
+                                        navigator="true"
+                                        pattern="dd/MM/yyyy"
+                                        showButtonPanel="true"
+                                        widgetVar="endDateIntervention">
+                                <p:ajax event="dateSelect"
+                                        update=":interventionDataForm :growl"/>
+                                <script type="text/javascript">
+                                    $(document).ready(function(){loadLocales();});
+                                </script>
+                                <f:validator binding="#{notNullFieldValidator}"/>
+                                <f:attribute name="requiredMessage"
+                                             value="Veuillez entrer le fin de la période"/>
+                                <f:attribute name="requiredTitle"
+                                             value="Champs 'Date de fin' vide"/>
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </p:calendar>
+                        </h:panelGrid>
                     </h:form>
                     <h:form id="interventionDataForm">
                         <script type="text/javascript">
@@ -61,17 +86,9 @@
                                      rowStyleClass="#{item.sleeping?'sleeping_elmt':null}"
                                      paginator="true"
                                      rows="#{utils.maxDataRows}"
-                                     sortBy="#{item.id}"
+                                     sortBy="#{item.interventionDate}"
+                                     sortFunction="#{utils.sortByDate}"
                                      filteredValue="#{interventionView.filteredEntities}">
-                            
-                            <p:column headerText="Identifiant"
-                                      style="width:1%;text-align: right;"
-                                      filterBy="#{item.id}"
-                                      sortBy="#{item.id}"
-                                      filterMatchMode="exact"
-                                      filterStyle="width:60px;">
-                                <h:outputText value="#{item.id}"/>
-                            </p:column>
                             
                             <p:column headerText="Durée"
                                       filterBy="#{item.duration}"
@@ -81,11 +98,12 @@
                                               title="Durée de l'intervention"/>
                             </p:column>
                             
-                            <p:column headerText="#Facture"
+                            <p:column headerText="Date"
                                       style="width:1%;"
-                                      filterBy="#{item.factureNumber}"
+                                      filterBy="#{utils.smallDateFormat(item.interventionDate)}"
                                       filterMatchMode="contains">
-                                <h:outputText value="#{item.factureNumber}"/>
+                                <h:outputText value="#{utils.smallDateFormat(item.interventionDate)}"
+                                              rendered="#{not empty item.interventionDate}"/>
                             </p:column>
                             
                             <p:column headerText="Tâche à accomplir"
@@ -100,6 +118,14 @@
                                                  style="font-size: 40%;vertical-align: top !important;"
                                                  update=":taskMenuViewPopup :taskMenuDialogHeader :taskViewForm"
                                                  oncomplete="taskMenuViewDialog.show();"/>
+                            </p:column>
+                            
+                            <p:column headerText="#Facture"
+                                      style="width:1%;"
+                                      filterBy="#{item.idFacture.factureNumber}"
+                                      filterMatchMode="contains">
+                                <h:outputText value="#{item.idFacture.factureNumber}"
+                                              rendered="#{not empty item.idFacture}"/>
                             </p:column>
                             
                             <p:column headerText="Actions"

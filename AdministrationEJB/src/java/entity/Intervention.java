@@ -5,6 +5,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,7 +17,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -30,26 +32,31 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Intervention.findAll", query = "SELECT i FROM Intervention i"),
     @NamedQuery(name = "Intervention.findById", query = "SELECT i FROM Intervention i WHERE i.id = :id"),
+    @NamedQuery(name = "Intervention.findByInterventionDate", query = "SELECT i FROM Intervention i WHERE i.interventionDate = :interventionDate"),
     @NamedQuery(name = "Intervention.findByDuration", query = "SELECT i FROM Intervention i WHERE i.duration = :duration"),
-    @NamedQuery(name = "Intervention.findByFactureNumber", query = "SELECT i FROM Intervention i WHERE i.factureNumber = :factureNumber"),
     @NamedQuery(name = "Intervention.findBySleeping", query = "SELECT i FROM Intervention i WHERE i.sleeping = :sleeping")})
-public class Intervention implements Serializable {
+public class Intervention implements Serializable
+{
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "ID")
     private Integer id;
-    @Size(max = 30)
+    @Column(name = "INTERVENTION_DATE")
+    @Temporal(TemporalType.DATE)
+    private Date interventionDate;
+    @Size(max = 12)
     @Column(name = "DURATION")
     private String duration;
-    @Column(name = "FACTURE_NUMBER")
-    private Integer factureNumber;
     @Column(name = "SLEEPING")
     private Boolean sleeping=false;
     @JoinColumn(name = "ID_TASK", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Task idTask;
+    @JoinColumn(name = "ID_FACTURE", referencedColumnName = "ID")
+    @ManyToOne
+    private Facture idFacture;
 
     public Intervention() {
     }
@@ -66,20 +73,20 @@ public class Intervention implements Serializable {
         this.id = id;
     }
 
+    public Date getInterventionDate() {
+        return interventionDate;
+    }
+
+    public void setInterventionDate(Date interventionDate) {
+        this.interventionDate = interventionDate;
+    }
+
     public String getDuration() {
         return duration;
     }
 
     public void setDuration(String duration) {
         this.duration = duration;
-    }
-
-    public Integer getFactureNumber() {
-        return factureNumber;
-    }
-
-    public void setFactureNumber(Integer factureNumber) {
-        this.factureNumber = factureNumber;
     }
 
     public Boolean getSleeping() {
@@ -96,6 +103,14 @@ public class Intervention implements Serializable {
 
     public void setIdTask(Task idTask) {
         this.idTask = idTask;
+    }
+
+    public Facture getIdFacture() {
+        return idFacture;
+    }
+
+    public void setIdFacture(Facture idFacture) {
+        this.idFacture = idFacture;
     }
 
     @Override
@@ -117,15 +132,15 @@ public class Intervention implements Serializable {
         }
         return true;
     }
-    
+
     public String getFullString()
     {
-        return "Intervention sur la tâche {"+this.idTask+"}";
+        return "entity.Intervention{" + "id=" + id + ", interventionDate=" + interventionDate + ", duration=" + duration + ", sleeping=" + sleeping + ", idTask=" + idTask + ", idFacture=" + idFacture + '}';
     }
 
     @Override
     public String toString() {
-        return "entity.Intervention{" + "id=" + id + ", duration=" + duration + ", factureNumber=" + factureNumber + ", sleeping=" + sleeping + ", idTask=" + idTask + '}';
+        return "Intervention sur la tâche {"+this.idTask+"}";
     }
     
 }

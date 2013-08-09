@@ -16,8 +16,6 @@ import java.io.UnsupportedEncodingException;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIInput;
 import javax.faces.event.ValueChangeEvent;
@@ -104,6 +102,7 @@ public class City
             isr=new InputStreamReader(new FileInputStream("resources/cities.txt"),"UTF-8");
             BufferedReader br=new BufferedReader(isr);
             String line;
+            int counter=1;
             while((line=br.readLine())!=null)
             {
                 if(!line.isEmpty())
@@ -121,6 +120,11 @@ public class City
                             }
                             item[0]=newKey;
                         }
+                        if(counter%1000==0)
+                        {
+                            System.err.println("Line: "+counter);
+                        }
+                        counter++;
                         City.LIST.add(item);
                     }
                 }
@@ -160,7 +164,7 @@ public class City
         if(!City.LOADED)
         {
             City.loadCitiesAsList(); // Par fichier binaire
-//            City.loadAsFile();// Par fichier texte
+//            City.loadAsFile(); // Par fichier texte
 //            City.saveCitiesAsList();
             ApplicationLogger.writeInfo("Fichier des codes postaux chargé");
             City.LOADED=true;

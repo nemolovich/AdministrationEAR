@@ -22,6 +22,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -90,6 +91,9 @@ public class Workstation implements Serializable
     @JoinColumn(name = "ID_CLIENT", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Client idClient;
+    @JoinColumn(name = "ID_FILE_PATH", referencedColumnName = "ID")
+    @ManyToOne
+    private FilePath idFilePath;
     @OneToMany(mappedBy = "idWorkstation")
     private List<Task> taskList;
 
@@ -204,6 +208,14 @@ public class Workstation implements Serializable
         this.idClient = idClient;
     }
 
+    public FilePath getIdFilePath() {
+        return idFilePath;
+    }
+
+    public void setIdFilePath(FilePath idFilePath) {
+        this.idFilePath = idFilePath;
+    }
+
     @XmlTransient
     public List<Task> getTaskList() {
         return taskList;
@@ -250,5 +262,4 @@ public class Workstation implements Serializable
         out+=this.idClient+"]";
         return out;
     }
-    
 }

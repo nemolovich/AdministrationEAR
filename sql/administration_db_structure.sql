@@ -12,7 +12,7 @@
 
 --- Supprime les tables si elles existent, sinon commenter --
 -- DROP TABLE ROOT.T_USER;
-ALTER TABLE ROOT.FACTURE DROP CONSTRAINT facture_intervention_id_fk;
+ALTER TABLE ROOT.INTERVENTION DROP CONSTRAINT intervention_facture_id_fk;
 DROP TABLE ROOT.FACTURE;
 ALTER TABLE ROOT.INTERVENTION DROP CONSTRAINT intervention_task_id_fk;
 DROP TABLE ROOT.INTERVENTION;
@@ -198,7 +198,7 @@ CREATE TABLE ROOT.TASK (
 		id_workstation INTEGER,
 		description VARCHAR(250),
         start_date DATE,
-        intended_duration VARCHAR(30),
+        intended_duration VARCHAR(12),
 		deplacement BOOLEAN DEFAULT FALSE,
 		intervention_type VARCHAR(10),
 		CONSTRAINT intervention_type_ck
@@ -216,6 +216,16 @@ CREATE TABLE ROOT.TASK (
                 FOREIGN KEY (id_workstation)
                 REFERENCES ROOT.WORKSTATION(id));
 
+---------------- Création de la table FACTURE ---------------
+-- TABLE:			FACTURE
+-- DESCRIPTION: 	Table concernant les factures des
+--  interventions.
+CREATE TABLE ROOT.FACTURE (
+        id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY
+		(START WITH 1, INCREMENT BY 1),
+		facture_number VARCHAR(20),
+		sleeping BOOLEAN NOT NULL DEFAULT FALSE);
+
 ------------- Création de la table INTERVENTION -------------
 -- TABLE:			INTERVENTION
 -- DESCRIPTION: 	Table concernant les interventions
@@ -225,24 +235,15 @@ CREATE TABLE ROOT.INTERVENTION (
 		(START WITH 1, INCREMENT BY 1),
 		id_task INTEGER NOT NULL,
 		id_facture INTEGER,
-		duration VARCHAR(30),
+        intervention_date DATE,
+		duration VARCHAR(12),
 		sleeping BOOLEAN NOT NULL DEFAULT FALSE,
 		CONSTRAINT intervention_task_id_fk
 			FOREIGN KEY (id_task)
 			REFERENCES ROOT.TASK(id),
 		CONSTRAINT intervention_facture_id_fk
 			FOREIGN KEY (id_facture)
-			REFERENCES ROOT.FACTURE(id)););
-
----------------- Création de la table FACTURE ---------------
--- TABLE:			FACTURE
--- DESCRIPTION: 	Table concernant les factures des
---  interventions.
-CREATE TABLE ROOT.FACTURE (
-        id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY
-		(START WITH 1, INCREMENT BY 1),
-		facture_number VARCHAR(7),
-		sleeping BOOLEAN NOT NULL DEFAULT FALSE);
+			REFERENCES ROOT.FACTURE(id));
 
 -- File successfully loaded!
 ;

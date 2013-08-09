@@ -37,6 +37,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "FilePath.findByFilePath", query = "SELECT f FROM FilePath f WHERE f.filePath = :filePath")})
 public class FilePath implements Serializable {
     @OneToMany(mappedBy = "idFilePath")
+    private List<Workstation> workstationList;
+    @OneToMany(mappedBy = "idFilePath")
     private List<Client> clientList;
     @OneToMany(mappedBy = "idFilePath")
     private List<CUser> cUserList;
@@ -126,6 +128,15 @@ public class FilePath implements Serializable {
         this.cUserList = cUserList;
     }
 
+    @XmlTransient
+    public List<Workstation> getWorkstationList() {
+        return workstationList;
+    }
+
+    public void setWorkstationList(List<Workstation> workstationList) {
+        this.workstationList = workstationList;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -148,14 +159,11 @@ public class FilePath implements Serializable {
 
     public String getFullString()
     {
-        return "entity.FilePath{" + "clientList=" + clientList + ", cUserList=" + cUserList + ", id=" + id + ", filePath=" + filePath + '}';
+        return "entity.FilePath{" + "workstationList=" + workstationList + ", clientList=" + clientList + ", cUserList=" + cUserList + ", id=" + id + ", filePath=" + filePath + '}';
     }
-
-        @Override
-        public String toString() {
-            return "['"+this.filePath+"']";
-        }
     
-    
-    
+    @Override
+    public String toString() {
+        return "['"+this.filePath+"']";
+    }
 }

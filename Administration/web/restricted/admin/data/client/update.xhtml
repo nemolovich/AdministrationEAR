@@ -69,6 +69,17 @@
                                             <f:attribute name="requiredTitle"
                                                          value="Champs 'Adresse' vide"/>
                                         </p:inputText>
+                                        
+                                        <p:outputLabel value="Adresse:" for="address"
+                                                       styleClass="required"/>
+                                        <p:inputText id="address" value="#{clientView.entity.address}" maxlength="100"
+                                                     title="Adresse de la société">
+                                            <f:validator binding="#{notNullFieldValidator}"/>
+                                            <f:attribute name="requiredMessage"
+                                                         value="Le champs 'Adresse' ne peut être vide"/>
+                                            <f:attribute name="requiredTitle"
+                                                         value="Champs 'Adresse' vide"/>
+                                        </p:inputText>
 
                                         <p:outputLabel value="Code postal:" for="postalcode"
                                                        styleClass="required"/>
@@ -81,20 +92,20 @@
                                                         var="p"
                                                         binding="#{postalCodeInput}"
                                                         itemValue="#{p}"
-                                                        itemLabel="#{p}">
+                                                        itemLabel="#{city.getZipCode(p)}">
                                             <f:attribute name="cityInput"
                                                          value="#{cityInput}"/>
                                             <p:ajax event="change"
-                                                    update=":clientUpdate:city"/>
+                                                    update=":clientCreate:city"/>
                                             <p:ajax event="itemSelect"
-                                                    update=":clientUpdate:city"/>
+                                                    update=":clientCreate:city"/>
                                             <f:validator binding="#{notNullFieldValidator}"/>
                                             <f:attribute name="requiredMessage"
                                                          value="Le champs 'Code postal' ne peut être vide"/>
                                             <f:attribute name="requiredTitle"
                                                          value="Champs 'Code postal' vide"/>
                                             <p:column>
-                                                <h:outputText value="#{p} - #{city.getCity(p)}"/>
+                                                <h:outputText value="#{city.getZipCode(p)} - #{city.getCity(p)}"/>
                                             </p:column>
                                         </p:autoComplete>
                                         
@@ -112,9 +123,9 @@
                                             <f:attribute name="postalCodeInput"
                                                          value="#{postalCodeInput}"/>
                                             <p:ajax event="change"
-                                                    update=":clientUpdate:postalcode"/>
+                                                    update=":clientCreate:postalcode"/>
                                             <p:ajax event="itemSelect"
-                                                    update=":clientUpdate:postalcode"/>
+                                                    update=":clientCreate:postalcode"/>
                                             <f:validator binding="#{notNullFieldValidator}"/>
                                             <f:attribute name="requiredMessage"
                                                          value="Le champs 'Ville' ne peut être vide"/>

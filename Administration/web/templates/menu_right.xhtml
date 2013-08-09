@@ -274,7 +274,7 @@
                              emptyMessage="Aucune tâche n'a été trouvée"
                              rowStyleClass="#{item.sleeping?'sleeping_elmt':null}"
                              paginator="true"
-                             rows="#{utils.maxDataRows*10}"
+                             rows="#{utils.maxDataRows*2}"
                              sortBy="#{utils.smallDateFormat(item.startDate)}"
                              sortFunction="#{utils.sortByDate}"
                              filteredValue="#{taskMultiView.filteredEntities}"
@@ -355,6 +355,63 @@
                         </p:outputPanel>
                     </f:facet>
                 </p:dataTable>
+            </h:form>
+            <h:form id="taskPeriodeForm">
+                <h:panelGrid columns="2" columnClasses="null,fields">
+                    <!-- Période -->
+                    <h:outputText value="Période de recherche: "/>
+                    
+                    <p:outputLabel for="taskPeriodeStartDate"
+                                   style="vertical-align: bottom !important;"
+                                   value="De: "/>
+                    <p:calendar id="taskPeriodeStartDate" value="#{taskView.startDate}"
+                                title="Date de début de la période"
+                                disabledWeekends="false"
+                                effect="slideDown"
+                                locale="fr"
+                                navigator="true"
+                                pattern="dd/MM/yyyy"
+                                showButtonPanel="true"
+                                style="vertical-align: top !important;"
+                                widgetVar="startDateTask">
+                        <p:ajax event="dateSelect"
+                                update=":taskMenuDataForm :growl"
+                                oncomplete="taskMenuTable.filter();"/>
+                        <script type="text/javascript">
+                            $(document).ready(function(){loadLocales();});
+                        </script>
+                        <f:validator binding="#{notNullFieldValidator}"/>
+                        <f:attribute name="requiredMessage"
+                                     value="Veuillez entrer le début de la période"/>
+                        <f:attribute name="requiredTitle"
+                                     value="Champs 'Date de début' vide"/>
+                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                    </p:calendar>
+                    <p:outputLabel for="taskPeriodeEndDate"
+                                   value="à: "/>
+                    <p:calendar id="taskPeriodeEndDate" value="#{taskView.endDate}"
+                                title="Date de début de la période"
+                                disabledWeekends="false"
+                                effect="slideDown"
+                                locale="fr"
+                                navigator="true"
+                                pattern="dd/MM/yyyy"
+                                showButtonPanel="true"
+                                widgetVar="endDateTask">
+                        <p:ajax event="dateSelect"
+                                update=":taskMenuDataForm :growl"
+                                oncomplete="taskMenuTable.filter();"/>
+                        <script type="text/javascript">
+                            $(document).ready(function(){loadLocales();});
+                        </script>
+                        <f:validator binding="#{notNullFieldValidator}"/>
+                        <f:attribute name="requiredMessage"
+                                     value="Veuillez entrer le fin de la période"/>
+                        <f:attribute name="requiredTitle"
+                                     value="Champs 'Date de fin' vide"/>
+                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                    </p:calendar>
+                </h:panelGrid>
             </h:form>
         </f:view>
     </h:body>

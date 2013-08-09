@@ -44,7 +44,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Task.findByInterventionType", query = "SELECT t FROM Task t WHERE t.interventionType = :interventionType"),
     @NamedQuery(name = "Task.findByObservations", query = "SELECT t FROM Task t WHERE t.observations = :observations"),
     @NamedQuery(name = "Task.findBySleeping", query = "SELECT t FROM Task t WHERE t.sleeping = :sleeping")})
-public class Task implements Serializable
+    public class Task implements Serializable
 {
     private static final long serialVersionUID = 1L;
     @Id
@@ -58,7 +58,7 @@ public class Task implements Serializable
     @Column(name = "START_DATE")
     @Temporal(TemporalType.DATE)
     private Date startDate=Calendar.getInstance(Locale.FRANCE).getTime();
-    @Size(max = 30)
+    @Size(max = 12)
     @Column(name = "INTENDED_DURATION")
     private String intendedDuration;
     @Column(name = "DEPLACEMENT")
