@@ -123,18 +123,6 @@
                                                  title="Afficher les détails de l'interlocuteur"
                                                  rendered="#{not empty item.idUser}"/>
                             </p:column>
-                            <p:column headerText="Type d'intervention"
-                                      filterMatchMode="contains">
-                                <h:outputText value="#{utils.getBreakLinesString(
-                                                       utils.getShortString(item.interventionType,40))}"
-                                              escape="false"/>
-                            </p:column>
-                            <p:column headerText="Observations"
-                                      filterMatchMode="contains">
-                                <h:outputText value="#{utils.getBreakLinesString(
-                                                       utils.getShortString(item.observations,40))}"
-                                              escape="false"/>
-                            </p:column>
                             <p:column headerText="Actions" style="white-space: nowrap;">
                                 <p:commandButton actionListener="#{clientView.entityView(item)}"
                                                  icon="ui-icon-search"
@@ -149,6 +137,8 @@
                                                  title="Modifier cette société"/>
                                 <p:commandButton action="#{clientView.entityParameter(item)}"
                                                  icon="ui-icon-wrench"
+                                                 immediate="true"
+                                                 ajax="false"
                                                  style="font-size: 60%;"
                                                  title="Paramétrer cette société"/>
                                 <p:commandButton actionListener="#{clientView.entityDelete(item)}"

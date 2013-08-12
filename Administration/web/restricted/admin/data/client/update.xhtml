@@ -69,17 +69,6 @@
                                             <f:attribute name="requiredTitle"
                                                          value="Champs 'Adresse' vide"/>
                                         </p:inputText>
-                                        
-                                        <p:outputLabel value="Adresse:" for="address"
-                                                       styleClass="required"/>
-                                        <p:inputText id="address" value="#{clientView.entity.address}" maxlength="100"
-                                                     title="Adresse de la société">
-                                            <f:validator binding="#{notNullFieldValidator}"/>
-                                            <f:attribute name="requiredMessage"
-                                                         value="Le champs 'Adresse' ne peut être vide"/>
-                                            <f:attribute name="requiredTitle"
-                                                         value="Champs 'Adresse' vide"/>
-                                        </p:inputText>
 
                                         <p:outputLabel value="Code postal:" for="postalcode"
                                                        styleClass="required"/>
@@ -96,9 +85,9 @@
                                             <f:attribute name="cityInput"
                                                          value="#{cityInput}"/>
                                             <p:ajax event="change"
-                                                    update=":clientCreate:city"/>
+                                                    update=":clientUpdate:city"/>
                                             <p:ajax event="itemSelect"
-                                                    update=":clientCreate:city"/>
+                                                    update=":clientUpdate:city"/>
                                             <f:validator binding="#{notNullFieldValidator}"/>
                                             <f:attribute name="requiredMessage"
                                                          value="Le champs 'Code postal' ne peut être vide"/>
@@ -123,9 +112,9 @@
                                             <f:attribute name="postalCodeInput"
                                                          value="#{postalCodeInput}"/>
                                             <p:ajax event="change"
-                                                    update=":clientCreate:postalcode"/>
+                                                    update=":clientUpdate:postalcode"/>
                                             <p:ajax event="itemSelect"
-                                                    update=":clientCreate:postalcode"/>
+                                                    update=":clientUpdate:postalcode"/>
                                             <f:validator binding="#{notNullFieldValidator}"/>
                                             <f:attribute name="requiredMessage"
                                                          value="Le champs 'Ville' ne peut être vide"/>
@@ -186,35 +175,42 @@
                                                 </h:panelGrid>
                                             </p:fieldset>
                                             <p:fieldset legend="Connexion internet">
-                                                <h:panelGrid columns="2" columnClasses="label,fields">
+                                                
+                                                <h:panelGrid columns="2" style="width:100%;">
+                                                    
+                                                    <h:panelGrid columns="2" columnClasses="label,fields">
+                                                        
+                                                        <p:outputLabel value="Opérateur:" for="internet_operator"/>
+                                                        <p:inputText id="internet_operator" value="#{clientView.entity.internetOperator}"
+                                                                     title="Opérateur Internet" maxlength="30"/>
 
-                                                    <p:outputLabel value="Opérateur:" for="operator"/>
-                                                    <p:inputText id="operator" value="#{clientView.entity.operator}"
-                                                                 title="Opérateur Internet" maxlength="50"/>
+                                                        <p:outputLabel value="Identifiant:" for="internet_login"/>
+                                                        <p:inputText id="internet_login" value="#{clientView.entity.internetLogin}"
+                                                                     title="Identifiant Internet" maxlength="30"/>
 
-                                                    <p:outputLabel value="Identifiant:" for="internet_login"/>
-                                                    <p:inputText id="internet_login" value="#{clientView.entity.internetLogin}"
-                                                                 title="Identifiant Internet" maxlength="50"/>
+                                                        <h:outputLabel value="Mot de passe:" for="internet_password"/>
+                                                        <p:inputText id="internet_password" value="#{clientView.entity.internetPassword}"
+                                                                    title="Mot de passe Internet" maxlength="64"/>
+                                                        
+                                                    </h:panelGrid>
+                                                    
+                                                    <h:panelGrid columns="2" columnClasses="label,fields"
+                                                                 style="margin-left: 30px;">
+                                                        
+                                                            <p:outputLabel value="Adresse DNS:" for="internet_dns"/>
+                                                            <p:inputText id="internet_dns" value="#{clientView.entity.internetDns}"
+                                                                         title="Opérateur Internet" maxlength="64"/>
 
-                                                    <h:outputLabel for="internet_password" value="Mot de passe:" />
-                                                    <p:password id="internet_password"
-                                                                value="#{clientView.entity.internetPassword}"
-                                                                redisplay="true"
-                                                                title="Mot de passe Internet"
-                                                                maxlength="64">
-                                                        <f:validator binding="#{passwordValidator}"/>
-                                                        <f:attribute name="update_id" value='#{clientView.entity.id}' />
-                                                        <f:attribute name="confirm" value="#{internet_confirm}" />
-                                                    </p:password>
+                                                            <p:outputLabel value="Identifiant DNS:" for="internet_dns_login"/>
+                                                            <p:inputText id="internet_dns_login" value="#{clientView.entity.internetDnsLogin}"
+                                                                         title="Identifiant Internet" maxlength="64"/>
 
-                                                    <h:outputLabel for="internet_confirm" value="Confirmation:" />
-                                                    <p:password id="internet_confirm"
-                                                                value="#{clientView.entity.internetPassword}"                                                                
-                                                                binding="#{internet_confirm}"
-                                                                redisplay="true"
-                                                                title="Confirmation du mot de passe Internet"
-                                                                maxlength="64"/>
-
+                                                            <h:outputLabel value="Mot de passe DNS:" for="internet_dns_password"/>
+                                                            <p:inputText id="internet_dns_password" value="#{clientView.entity.internetDnsPassword}"
+                                                                        title="Mot de passe Internet" maxlength="64"/>
+                                                            
+                                                    </h:panelGrid>
+                                                    
                                                 </h:panelGrid>
                                             </p:fieldset>
                                         </td>
@@ -267,33 +263,38 @@
                                                 </h:panelGrid>
                                             </p:fieldset>
                                             <p:fieldset legend="Connexion internet">
-                                                <h:panelGrid columns="2" columnClasses="label,fields">
+                                    
+                                                <h:panelGrid columns="2" style="width:100%;">
 
-                                                    <h:outputText value="Opérateur:"/>
-                                                    <h:outputText value="#{clientView.entity.operator}"/>
+                                                    <h:panelGrid columns="2" columnClasses="label,fields">
 
-                                                    <h:outputText value="Identifiant:"/>
-                                                    <h:outputText value="#{clientView.entity.internetLogin}"/>
+                                                        <h:outputText value="Opérateur:"/>
+                                                        <h:outputText value="#{clientView.entity.internetOperator}"/>
 
-                                                    <h:outputText value="Mot de passe:" />
-                                                    <p:outputPanel rendered="#{not empty clientView.entity.internetPassword}">
-                                                        <p:commandButton
-                                                            onmousedown="setFormFieldValue('clientUpdate','internetPasswordView',
-                                                                        '#{clientView.entity.internetPassword}');"
-                                                            onmouseup="setFormFieldValue('clientUpdate','internetPasswordView',
-                                                                     '#{utils.getHiddenString(clientView.entity.internetPassword)}');"
-                                                            onmouseout="setFormFieldValue('clientUpdate','internetPasswordView',
-                                                                     '#{utils.getHiddenString(clientView.entity.internetPassword)}');"
-                                                            id="password_unlocker"
-                                                            icon="ui-icon-unlocked"
-                                                            title="Afficher le mot de passe"
-                                                            style="font-size:50%;vertical-align: bottom;"/>
-                                                        <h:outputText id="internetPasswordView"
-                                                                      value="#{utils.getHiddenString(clientView.entity.internetPassword)}"/>
-                                                    </p:outputPanel>
-                                                    <h:outputText value="" rendered="#{empty clientView.entity.internetPassword}"/>
+                                                        <h:outputText value="Identifiant:"/>
+                                                        <h:outputText value="#{clientView.entity.internetLogin}"/>
+
+                                                        <h:outputText value="Mot de passe:" />
+                                                        <h:outputText value="#{clientView.entity.internetPassword}"/>
+
+                                                    </h:panelGrid>
+
+                                                    <h:panelGrid columns="2" columnClasses="label,fields"
+                                                                 style="margin-left: 30px;">
+
+                                                        <h:outputText value="Adresse DNS:"/>
+                                                        <h:outputText value="#{clientView.entity.internetDns}"/>
+
+                                                        <h:outputText value="Identifiant DNS:"/>
+                                                        <h:outputText value="#{clientView.entity.internetDnsLogin}"/>
+
+                                                        <h:outputText value="Mot de passe DNS:" />
+                                                        <h:outputText value="#{clientView.entity.internetDnsPassword}"/>
+
+                                                    </h:panelGrid>
 
                                                 </h:panelGrid>
+                                                
                                             </p:fieldset>
                                         </td>
                                         <td style="vertical-align: top !important;">

@@ -69,18 +69,19 @@
                     <p:column>
 
                         <p:fieldset legend="Détails">
-                            <h:panelGrid columns="2" cellspacing="5">
+                            <h:panelGrid columns="1" cellspacing="5" style="width:100%;">
                                 <p:column>
 
                                     <h4 class="tabheader">Tarifs:</h4>
-                                    <h:panelGrid columns="2" columnClasses="label,fields">
+                                    <h:panelGrid columns="4" columnClasses="label,fields,label,fields">
                                         <h:outputText value="Tarif d'intervention:" />
                                         <h:outputText value="#{taskView.entityPopup.idClient.tarif} €"
                                                       rendered="#{not empty taskView.entityPopup.idClient.tarif}"/>
                                         <h:outputText value="aucun"
                                                       rendered="#{empty taskView.entityPopup.idClient.tarif}"/>
 
-                                        <h:outputText value="Frais de déplacement:"/>
+                                        <h:outputText value="Frais de déplacement:"
+                                                      style="margin-left: 30px;"/>
                                         <h:outputText value="#{taskView.entityPopup.idClient.deplacement} €"
                                                       rendered="#{not empty taskView.entityPopup.idClient.deplacement}"/>
                                         <h:outputText value="aucun"
@@ -91,31 +92,36 @@
                                 <p:column>
 
                                     <h4 class="tabheader">Connexion Internet:</h4>
-                                    <h:panelGrid columns="2" columnClasses="label,fields">
+                                    
+                                    <h:panelGrid columns="2" style="width:100%;">
 
-                                        <h:outputText value="Operateur:"/>
-                                        <h:outputText value="#{taskView.entityPopup.idClient.operator}" title="Operateur Internet"/>
+                                        <h:panelGrid columns="2" columnClasses="label,fields">
 
-                                        <h:outputText value="Identifiant Internet:"/>
-                                        <h:outputText value="#{taskView.entityPopup.idClient.internetLogin}" title="Identifiant Internet"/>
+                                            <h:outputText value="Opérateur:"/>
+                                            <h:outputText value="#{taskView.entityPopup.idClient.internetOperator}"/>
 
-                                        <h:outputText value="Mot&nbsp;de&nbsp;passe&nbsp;Internet:"/>
-                                        <p:outputPanel rendered="#{not empty taskView.entityPopup.idClient.internetPassword}">
-                                            <p:commandButton
-                                                onmousedown="setFormFieldValue('tClientDetails','internetPasswordView',
-                                                            '#{taskView.entityPopup.idClient.internetPassword}');"
-                                                onmouseup="setFormFieldValue('tClientDetails','internetPasswordView',
-                                                         '#{utils.getHiddenString(taskView.entityPopup.idClient.internetPassword)}');"
-                                                onmouseout="setFormFieldValue('tClientDetails','internetPasswordView',
-                                                         '#{utils.getHiddenString(taskView.entityPopup.idClient.internetPassword)}');"
-                                                id="password_unlocker"
-                                                icon="ui-icon-unlocked"
-                                                title="Afficher le mot de passe"
-                                                style="font-size:50%;vertical-align: bottom;"/>
-                                            <h:outputText id="internetPasswordView"
-                                                          value="#{utils.getHiddenString(taskView.entityPopup.idClient.internetPassword)}"/>
-                                        </p:outputPanel>
-                                        <h:outputText value="" rendered="#{empty taskView.entityPopup.idClient.internetPassword}"/>
+                                            <h:outputText value="Identifiant:"/>
+                                            <h:outputText value="#{taskView.entityPopup.idClient.internetLogin}"/>
+
+                                            <h:outputText value="Mot de passe:" />
+                                            <h:outputText value="#{taskView.entityPopup.idClient.internetPassword}"/>
+
+                                        </h:panelGrid>
+
+                                        <h:panelGrid columns="2" columnClasses="label,fields"
+                                                     style="margin-left: 30px;">
+
+                                            <h:outputText value="Adresse DNS:"/>
+                                            <h:outputText value="#{taskView.entityPopup.idClient.internetDns}"/>
+
+                                            <h:outputText value="Identifiant DNS:"/>
+                                            <h:outputText value="#{taskView.entityPopup.idClient.internetDnsLogin}"/>
+
+                                            <h:outputText value="Mot de passe DNS:" />
+                                            <h:outputText value="#{taskView.entityPopup.idClient.internetDnsPassword}"/>
+
+                                        </h:panelGrid>
+
                                     </h:panelGrid>
 
                                 </p:column>

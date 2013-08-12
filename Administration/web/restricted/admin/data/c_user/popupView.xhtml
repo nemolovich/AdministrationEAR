@@ -2,7 +2,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>Détails de l'utilisateur</title>
     </h:head>
@@ -19,13 +20,37 @@
                     <h:outputText id="punameV" value="#{cUserView.entity.name}"
                                   title="Nom de l'utilisateur"/>
                     
-                    <h:outputText value="Téléphone:"/>
-                    <h:outputText id="puphoneV" value="#{cUserView.entity.phone}"
+                    <h:outputText value="Téléphone direct:"/>
+                    <h:outputText id="pudirectphoneV" value="#{cUserView.entity.directPhone}"
                                   title="Numéro de téléphone de l'utilisateur"/>
                     
                     <h:outputText value="Référence de la société"/>
                     <h:outputText id="puidclientV" value="#{cUserView.entity.idClient}"
                                   title="Société pour laquelle travaille l'utilisateur"/>
+                    
+                    <h:outputText value="Poste occupé:"/>
+                    <h:outputText value="#{cUserView.entity.position}"
+                                  title="Poste occupé par l'utilisateur dans la société"/>
+                    
+                    <h:outputText id="puphoneV" value="Portable:"/>
+                    <h:outputText value="#{cUserView.entity.phone}"
+                                  title="Numéro de téléphone portable"/>
+                    
+                    <h:outputText value="Login:"/>
+                    <h:outputText value="#{cUserView.entity.login}"
+                                  title="Identifiant de connexion de l'utilisateur"/>
+                    
+                    <h:outputText value="Mot de passe:"/>
+                    <h:outputText value="#{cUserView.entity.password}"
+                                  title="Mot de passe de connexion de l'utilisateur"/>
+                    
+                    <h:outputText value="Mails:"/>
+                    <h:inputTextarea id="pumailsV"
+                                     value="#{cUserView.entity.mails}"
+                                     styleClass="textarea_min"
+                                     title="Adresses mail"
+                                     readonly="true"
+                                     ondblclick="this.focus();this.select();"/>
                     
                     <h:outputText value="Observations:"/>
                     <h:inputTextarea id="puobservationsV"
@@ -34,11 +59,30 @@
                                      title="Observations"
                                      readonly="true"
                                      ondblclick="this.focus();this.select();"/>
-                    
                 </h:panelGrid>
+                
+                <p:dataList value="#{cUserView.entity.idFilePath.filesInPath}"
+                            var="file"
+                            paginator="true"
+                            paginatorPosition="top"
+                            rows="5"
+                            rendered="#{not empty cUserView.entity and
+                                        not empty cUserView.entity.idFilePath and
+                                        not cUserView.entity.idFilePath.emptyFilePath}">
+                    <p:column headerText="Lien">
+                        <h:outputLink value="javascript:void(0);"
+                                      onclick="window.open('#{files.getFileLink(file, cUserView.entity.idFilePath)}',
+                                            'File details','dependent=yes, menubar=no,\
+                                            toolbar=no, status=no, scrollbars=yes,\
+                                            resizable=no, width=800, height=600');return false;"
+                                      title="Ouvrir le fichier">
+                            <h:outputText value="#{file.name}"/>
+                        </h:outputLink>
+                    </p:column>
+                </p:dataList>
+                
             </h:form>
         </f:view>
-
     </h:body>
 </html>
 

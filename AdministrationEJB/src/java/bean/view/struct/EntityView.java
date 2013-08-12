@@ -58,7 +58,7 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> extends EntitySl
     
     public List<String> cityComplete(String query)
     {
-        String value = City.getNormilizedCity(query.toLowerCase());
+        String value = City.getNormalizedCity(query.toLowerCase());
         List<String> result = new ArrayList<String>();
         List<String> like = City.likeCity(value);
         List<String> begin = City.beginWith(value);
@@ -171,8 +171,11 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> extends EntitySl
                     filePath.getFilePath()+File.separator);
             try
             {
-                Files.deleteContent(path);
-                Files.deleteFolder(path);
+                if(path.exists())
+                {
+                    Files.deleteContent(path);
+                    Files.deleteFolder(path);
+                }
                 this.filePathFacade.remove(filePath);
             }
             catch (FileNotFoundException ex)

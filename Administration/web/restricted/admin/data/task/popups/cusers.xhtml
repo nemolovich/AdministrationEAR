@@ -13,29 +13,52 @@
                 <h:panelGrid columns="2" columnClasses="label,fields">
                     
                     <h:outputText value="Identifiant:"/>
-                    <h:outputText id="tuidV" value="#{taskView.entityPopup.idUser.id}"
+                    <h:outputText id="puidV" value="#{cUserView.entity.id}"
                                   title="Identifiant de l'utilisateurs"/>
                     
                     <h:outputText value="Nom:"/>
-                    <h:outputText id="tunameV" value="#{taskView.entityPopup.idUser.name}"
+                    <h:outputText id="punameV" value="#{cUserView.entity.name}"
                                   title="Nom de l'utilisateur"/>
                     
-                    <h:outputText value="Téléphone:"/>
-                    <h:outputText id="tuphoneV" value="#{taskView.entityPopup.idUser.phone}"
+                    <h:outputText value="Téléphone direct:"/>
+                    <h:outputText id="pudirectphoneV" value="#{cUserView.entity.directPhone}"
                                   title="Numéro de téléphone de l'utilisateur"/>
                     
                     <h:outputText value="Référence de la société"/>
-                    <h:outputText id="tuidclientV" value="#{taskView.entityPopup.idUser.idClient}"
+                    <h:outputText id="puidclientV" value="#{cUserView.entity.idClient}"
                                   title="Société pour laquelle travaille l'utilisateur"/>
                     
+                    <h:outputText value="Position:"/>
+                    <h:outputText value="#{cUserView.entity.position}"
+                                  title="Poste occupé par l'utilisateur dans la société"/>
+                    
+                    <h:outputText id="puphoneV" value="Portable:"/>
+                    <h:outputText value="#{cUserView.entity.phone}"
+                                  title="Numéro de téléphone portable"/>
+                    
+                    <h:outputText value="Login:"/>
+                    <h:outputText value="#{cUserView.entity.login}"
+                                  title="Identifiant de connexion"/>
+                    
+                    <h:outputText value="Mot de passe:"/>
+                    <h:outputText value="#{cUserView.entity.password}"
+                                  title="Mot de passe de connexion"/>
+                    
+                    <h:outputText value="Mails:"/>
+                    <h:inputTextarea id="pumailsV"
+                                     value="#{cUserView.entity.mails}"
+                                     styleClass="textarea_min"
+                                     title="Adresses mail"
+                                     readonly="true"
+                                     ondblclick="this.focus();this.select();"/>
+                    
                     <h:outputText value="Observations:"/>
-                    <h:inputTextarea id="tuobservationsV"
-                                     value="#{taskView.entityPopup.idUser.observations}"
+                    <h:inputTextarea id="puobservationsV"
+                                     value="#{cUserView.entity.observations}"
                                      styleClass="textarea_min"
                                      title="Observations"
                                      readonly="true"
                                      ondblclick="this.focus();this.select();"/>
-                    
                 </h:panelGrid>
                 
                 <p:dataList value="#{taskView.entityPopup.idUser.idFilePath.filesInPath}"

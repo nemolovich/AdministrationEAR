@@ -35,6 +35,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Mail.findByPopPassword", query = "SELECT m FROM Mail m WHERE m.popPassword = :popPassword"),
     @NamedQuery(name = "Mail.findBySmtp", query = "SELECT m FROM Mail m WHERE m.smtp = :smtp"),
     @NamedQuery(name = "Mail.findBySmtpPassword", query = "SELECT m FROM Mail m WHERE m.smtpPassword = :smtpPassword"),
+    @NamedQuery(name = "Mail.findByObservations", query = "SELECT m FROM Mail m WHERE m.observations = :observations"),
     @NamedQuery(name = "Mail.findBySleeping", query = "SELECT m FROM Mail m WHERE m.sleeping = :sleeping")})
 public class Mail implements Serializable
 {
@@ -61,6 +62,9 @@ public class Mail implements Serializable
     @Size(max = 64)
     @Column(name = "SMTP_PASSWORD")
     private String smtpPassword;
+    @Size(max = 250)
+    @Column(name = "OBSERVATIONS")
+    private String observations;
     @Column(name = "SLEEPING")
     private Boolean sleeping=false;
     @JoinColumn(name = "ID_CLIENT", referencedColumnName = "ID")
@@ -127,6 +131,14 @@ public class Mail implements Serializable
         this.smtpPassword = smtpPassword;
     }
 
+    public String getObservations() {
+        return observations;
+    }
+
+    public void setObservations(String observations) {
+        this.observations = observations;
+    }
+
     public Boolean getSleeping() {
         return sleeping;
     }
@@ -165,9 +177,9 @@ public class Mail implements Serializable
 
     public String getFullString()
     {
-        return "entity.Mail{" + "id=" + id + ", mail=" + mail + ", pop=" + pop + ", popPassword=" + popPassword + ", smtp=" + smtp + ", smtpPassword=" + smtpPassword + ", sleeping=" + sleeping + ", idClient=" + idClient + '}';
+        return "entity.Mail{" + "id=" + id + ", mail=" + mail + ", pop=" + pop + ", popPassword=" + popPassword + ", smtp=" + smtp + ", smtpPassword=" + smtpPassword + ", observations=" + observations + ", sleeping=" + sleeping + ", idClient=" + idClient + '}';
     }
-
+    
     @Override
     public String toString() {
         return this.mail;

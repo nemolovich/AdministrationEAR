@@ -35,6 +35,11 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "CUser.findAll", query = "SELECT c FROM CUser c"),
     @NamedQuery(name = "CUser.findById", query = "SELECT c FROM CUser c WHERE c.id = :id"),
     @NamedQuery(name = "CUser.findByName", query = "SELECT c FROM CUser c WHERE c.name = :name"),
+    @NamedQuery(name = "CUser.findByDirectPhone", query = "SELECT c FROM CUser c WHERE c.directPhone = :directPhone"),
+    @NamedQuery(name = "CUser.findByPosition", query = "SELECT c FROM CUser c WHERE c.position = :position"),
+    @NamedQuery(name = "CUser.findByLogin", query = "SELECT c FROM CUser c WHERE c.login = :login"),
+    @NamedQuery(name = "CUser.findByPassword", query = "SELECT c FROM CUser c WHERE c.password = :password"),
+    @NamedQuery(name = "CUser.findByMails", query = "SELECT c FROM CUser c WHERE c.mails = :mails"),
     @NamedQuery(name = "CUser.findByPhone", query = "SELECT c FROM CUser c WHERE c.phone = :phone"),
     @NamedQuery(name = "CUser.findByObservations", query = "SELECT c FROM CUser c WHERE c.observations = :observations"),
     @NamedQuery(name = "CUser.findBySleeping", query = "SELECT c FROM CUser c WHERE c.sleeping = :sleeping")})
@@ -51,8 +56,22 @@ public class CUser implements Serializable
     @Size(min = 2, max = 45)
     @Column(name = "NAME")
     private String name;
-    @Basic(optional = false)
-    @NotNull
+    @Size(max = 14)
+    @Column(name = "DIRECT_PHONE")
+    private String directPhone;
+    @Size(max = 30)
+    @Column(name = "POSITION")
+    private String position;
+    @Size(max = 30)
+    @Column(name = "LOGIN")
+    private String login;
+    @Size(max = 64)
+    @Column(name = "PASSWORD")
+    private String password;
+    @Size(max = 250)
+    @Column(name = "MAILS")
+    private String mails;
+    @Size(max = 14)
     @Column(name = "PHONE")
     private String phone;
     @Size(max = 250)
@@ -78,10 +97,9 @@ public class CUser implements Serializable
         this.id = id;
     }
 
-    public CUser(Integer id, String name, String phone) {
+    public CUser(Integer id, String name) {
         this.id = id;
         this.name = name;
-        this.phone = phone;
     }
 
     public Integer getId() {
@@ -98,6 +116,46 @@ public class CUser implements Serializable
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDirectPhone() {
+        return directPhone;
+    }
+
+    public void setDirectPhone(String directPhone) {
+        this.directPhone = directPhone;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getMails() {
+        return mails;
+    }
+
+    public void setMails(String mails) {
+        this.mails = mails;
     }
 
     public String getPhone() {
@@ -145,8 +203,8 @@ public class CUser implements Serializable
         return idFilePath;
     }
 
-    public void setIdFilePath(FilePath idFilepath) {
-        this.idFilePath = idFilepath;
+    public void setIdFilePath(FilePath idFilePath) {
+        this.idFilePath = idFilePath;
     }
 
     @XmlTransient
@@ -177,16 +235,15 @@ public class CUser implements Serializable
         }
         return true;
     }
-    
+
     public String getFullString()
     {
-        return "entity.CUser{" + "id=" + id + ", name=" + name + ", phone=" + phone + ", observations=" + observations + ", sleeping=" + sleeping + ", clientList=" + clientList + ", taskList=" + taskList + ", idClient=" + idClient + ", idFilePath=" + idFilePath + '}';
+        return "entity.CUser{" + "id=" + id + ", name=" + name + ", directPhone=" + directPhone + ", position=" + position + ", login=" + login + ", password=" + password + ", mails=" + mails + ", phone=" + phone + ", observations=" + observations + ", sleeping=" + sleeping + ", clientList=" + clientList + ", taskList=" + taskList + ", idClient=" + idClient + ", idFilePath=" + idFilePath + '}';
     }
 
     @Override
     public String toString() {
         return this.name;
     }
-    
     
 }

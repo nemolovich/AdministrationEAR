@@ -18,17 +18,15 @@
                 <f:attribute name="header" value="Modification des paramètres d'une société"/>
                 <ui:include src="/restricted/admin/data/client/popups/workstations.xhtml"/>
                 <ui:include src="/restricted/admin/data/client/popups/mails.xhtml"/>
-                <ui:include src="/restricted/admin/data/client/popups/users.xhtml"/>
+                <ui:include src="/restricted/admin/data/client/popups/cusers.xhtml"/>
                 <f:view>
                     <h:form id="clientUpdate" enctype="multipart/form-data">
                         
                         <p:commandButton action="list"
                                          value="Retour à la liste des sociétés"
                                          title="Retourner à la liste des sociétés"
-                                         immediate="true"
                                          icon="ui-icon-arrowthick-1-w"
-                                         styleClass="red_icon"
-                                         ajax="true"/>
+                                         styleClass="red_icon"/>
                         
                         <div class="ui-messages ui-widget">
                             <div class="ui-messages-warn ui-corner-all">
@@ -42,12 +40,6 @@
                                 </ul>
                             </div>
                         </div>
-                        <!--<p:growl id="growlWizard" showDetail="true" life="30000" autoUpdate="false" escape="false"/>-->
-<!--                        <p:wizard id="clientUpdateWizard"
-                                  backLabel="Retour"
-                                  nextLabel="Suivant"
-                                  widgetVar="clientWizard"
-                                  showNavBar="true">-->
                         <p:tabView id="clientTabView" cache="true" dynamic="true" effect="slide">
                             <p:tab id="postes" title="Postes">
                                 <script type="text/javascript">
@@ -181,13 +173,13 @@
                                             </p:selectBooleanCheckbox>
                                         </p:outputPanel>
                                     </f:facet>
-                                    <script type="text/javascript">
-                                        $(document).ready(function()
-                                        {
-                                            clientWorkstationTable.filter();
-                                        });
-                                    </script>
                                 </p:dataTable>
+                                <script type="text/javascript">
+                                    $(document).ready(function()
+                                    {
+                                        clientWorkstationTable.filter();
+                                    });
+                                </script>
                             </p:tab>
                             
                             <p:tab id="emails" title="E-Mails">
@@ -541,7 +533,6 @@
                                 </p:fieldset>
                             </p:tab>
                         </p:tabView>
-                        <!--</p:wizard>-->
                     </h:form>
                 </f:view>
             </ui:define>

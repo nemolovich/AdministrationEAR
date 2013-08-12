@@ -190,7 +190,7 @@ public class City
     public static List<String> likeCity(String query)
     {
         List<String> list=new ArrayList<String>();
-        String value=City.getNormilizedCity(query.toLowerCase());
+        String value=City.getNormalizedCity(query.toLowerCase());
         for(String[] item:City.LIST)
         {
             String c=item[1];
@@ -232,7 +232,7 @@ public class City
             {
                 if(item[0].length()>=5)
                 {
-                    return item[0].substring(0, 5);
+                    return item[0];
                 }
                 else
                 {
@@ -340,22 +340,26 @@ public class City
     {
         UIInput postalCodeInput=(UIInput)event.getComponent().getAttributes().get("postalCodeInput");
         String value=(String) event.getNewValue();
-        if(City.containsValue(City.getNormilizedCity(value).toUpperCase()))
+        if(City.containsValue(City.getNormalizedCity(value).toUpperCase()))
         {
-            postalCodeInput.setValue(City.getPostalCode(
-                    City.getNormilizedCity(value).toUpperCase()));
+            String newValue=City.getPostalCode(
+                    City.getNormalizedCity(value).toUpperCase());
+            System.err.println("yes newValue: "+newValue);
+            postalCodeInput.setValue(newValue);
         }
         else
         {
             List<String> list=City.likeCity(value);
             if(list!=null&&!list.isEmpty())
             {
-                postalCodeInput.setValue(City.getPostalCode(list.get(0)));
+                String newValue=City.getPostalCode(list.get(0));
+                System.err.println("no newValue: "+newValue);
+                postalCodeInput.setValue(newValue);
             }
         }
     }
     
-    public static String getNormilizedCity(String city)
+    public static String getNormalizedCity(String city)
     {
         String value=Normalizer.normalize(city, Normalizer.Form.NFD)
                 .replaceAll("\\p{InCombiningDiacriticalMarks}+", "")

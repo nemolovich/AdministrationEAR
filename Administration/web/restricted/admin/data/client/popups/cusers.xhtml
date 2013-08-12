@@ -20,7 +20,7 @@
             <h:form id="createUserForm">
                 <h:panelGrid columns="2" columnClasses="label,fields"
                          rendered="#{not empty cUserView.entity}">
-                    <p:outputLabel value="Nom:" for="uname" />
+                    <p:outputLabel value="Nom:" for="uname"/>
                     <p:inputText id="uname" value="#{cUserView.entity.name}"
                                  maxlength="45"
                                  title="Nom de l'utilisateur"
@@ -30,28 +30,88 @@
                                                 cUserView.editing}">
                         <f:validator binding="#{cUserUniqueFieldValidator}"/>
                         <f:attribute name="fieldName" value="Name" />
-                        <f:attribute name="update_id" value="#{cUserView.entity.id}" />
+                        <f:attribute name="update_id" value="#{cUserView.entity.id}"/>
                     </p:inputText>
                     <h:outputText id="unameV" value="#{cUserView.entity.name}"
                                   title="Nom de l'utilisateur"
                                   rendered="#{not cUserView.creating and
                                               not cUserView.editing}"/>
                     
-                    <p:outputLabel value="Numéro de téléphone:" for="uphone" />
-                    <p:inputMask id="uphone" value="#{cUserView.entity.phone}" mask="99.99.99.99.99"
+                    <p:outputLabel value="Numéro de téléphone:" for="udirectphone"/>
+                    <p:inputMask id="udirectphone" value="#{cUserView.entity.directPhone}" mask="99.99.99.99.99"
                                  title="Numéro de téléphone de l'utilisateur"
-                                 required="true"
-                                 requiredMessage="Veuillez indiquer le numéro de téléphone de l'utilisateur"
+                                 rendered="#{cUserView.creating or 
+                                                cUserView.editing}">
+                        <f:validator binding="#{phonePatternValidator}"/>
+                    </p:inputMask>
+                    <h:outputText id="udirectphoneV" value="#{cUserView.entity.directPhone}"
+                                  title="Numéro de téléphone de l'utilisateur"
+                                  rendered="#{not cUserView.creating and
+                                              not cUserView.editing}"/>
+                    
+                    <p:outputLabel value="Poste occupé:" for="uposition"/>
+                    <p:inputText id="uposition" value="#{cUserView.entity.position}"
+                                 maxlength="30"
+                                 title="Poste occupé par l'utilisateur dans la société"
+                                 rendered="#{cUserView.creating or 
+                                                cUserView.editing}">
+                    </p:inputText>
+                    <h:outputText id="upositionV" value="#{cUserView.entity.position}"
+                                  title="Poste occupé par l'utilisateur dans la société"
+                                  rendered="#{not cUserView.creating and
+                                              not cUserView.editing}"/>
+                    
+                    <p:outputLabel value="Téléphone portable:" for="uphone"/>
+                    <p:inputMask id="uphone" value="#{cUserView.entity.phone}" mask="99.99.99.99.99"
+                                 title="Numéro de téléphone portable de l'utilisateur"
                                  rendered="#{cUserView.creating or 
                                                 cUserView.editing}">
                         <f:validator binding="#{phonePatternValidator}"/>
                     </p:inputMask>
                     <h:outputText id="uphoneV" value="#{cUserView.entity.phone}"
-                                  title="Numéro de téléphone de l'utilisateur"
+                                  title="Numéro de téléphone portable de l'utilisateur"
                                   rendered="#{not cUserView.creating and
                                               not cUserView.editing}"/>
                     
-                    <p:outputLabel value="Observations:" for="uobservations" />
+                    <p:outputLabel value="Login:" for="ulogin"/>
+                    <p:inputText id="ulogin" value="#{cUserView.entity.login}"
+                                 maxlength="30"
+                                 title="Identifiant de connexion de l'utilisateur"
+                                 rendered="#{cUserView.creating or 
+                                                cUserView.editing}">
+                    </p:inputText>
+                    <h:outputText id="uloginV" value="#{cUserView.entity.login}"
+                                  title="Identifiant de connexion de l'utilisateur"
+                                  rendered="#{not cUserView.creating and
+                                              not cUserView.editing}"/>
+                    
+                    <p:outputLabel value="Mot de passe:" for="upassword"/>
+                    <p:inputText id="upassword" value="#{cUserView.entity.password}"
+                                 maxlength="64"
+                                 title="Mot de passe de connexion de l'utilisateur"
+                                 rendered="#{cUserView.creating or 
+                                                cUserView.editing}">
+                    </p:inputText>
+                    <h:outputText id="upasswordV" value="#{cUserView.entity.password}"
+                                  title="Mot de passe de connexion de l'utilisateur"
+                                  rendered="#{not cUserView.creating and
+                                              not cUserView.editing}"/>
+                    
+                    <p:outputLabel value="Mails:" for="umails"/>
+                    <h:inputTextarea id="umails" value="#{cUserView.entity.mails}"
+                                     title="Adresses mails (séparées par le caractère ';')"
+                                     styleClass="textarea_min"
+                                     rendered="#{cUserView.creating or 
+                                                 cUserView.editing}"/>
+                    <h:inputTextarea id="umailsV" value="#{cUserView.entity.mails}"
+                                     title="Adresses mail"
+                                     readonly="true"
+                                     styleClass="textarea_min"
+                                     ondblclick="this.focus();this.select();"
+                                     rendered="#{not cUserView.creating and
+                                                 not cUserView.editing}"/>
+                    
+                    <p:outputLabel value="Observations:" for="uobservations"/>
                     <h:inputTextarea id="uobservations" value="#{cUserView.entity.observations}"
                                      title="Observations"
                                      styleClass="textarea_min"

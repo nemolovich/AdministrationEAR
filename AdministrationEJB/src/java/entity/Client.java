@@ -38,15 +38,19 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Client.findByName", query = "SELECT c FROM Client c WHERE c.name = :name"),
     @NamedQuery(name = "Client.findByAddress", query = "SELECT c FROM Client c WHERE c.address = :address"),
     @NamedQuery(name = "Client.findByPostalcode", query = "SELECT c FROM Client c WHERE c.postalcode = :postalcode"),
+    @NamedQuery(name = "Client.findByCity", query = "SELECT c FROM Client c WHERE c.city = :city"),
     @NamedQuery(name = "Client.findByPhone", query = "SELECT c FROM Client c WHERE c.phone = :phone"),
     @NamedQuery(name = "Client.findByFax", query = "SELECT c FROM Client c WHERE c.fax = :fax"),
     @NamedQuery(name = "Client.findByTarif", query = "SELECT c FROM Client c WHERE c.tarif = :tarif"),
     @NamedQuery(name = "Client.findByDeplacement", query = "SELECT c FROM Client c WHERE c.deplacement = :deplacement"),
     @NamedQuery(name = "Client.findByMail", query = "SELECT c FROM Client c WHERE c.mail = :mail"),
     @NamedQuery(name = "Client.findByInterventionType", query = "SELECT c FROM Client c WHERE c.interventionType = :interventionType"),
-    @NamedQuery(name = "Client.findByOperator", query = "SELECT c FROM Client c WHERE c.operator = :operator"),
+    @NamedQuery(name = "Client.findByInternetOperator", query = "SELECT c FROM Client c WHERE c.internetOperator = :internetOperator"),
     @NamedQuery(name = "Client.findByInternetLogin", query = "SELECT c FROM Client c WHERE c.internetLogin = :internetLogin"),
     @NamedQuery(name = "Client.findByInternetPassword", query = "SELECT c FROM Client c WHERE c.internetPassword = :internetPassword"),
+    @NamedQuery(name = "Client.findByInternetDns", query = "SELECT c FROM Client c WHERE c.internetDns = :internetDns"),
+    @NamedQuery(name = "Client.findByInternetDnsLogin", query = "SELECT c FROM Client c WHERE c.internetDnsLogin = :internetDnsLogin"),
+    @NamedQuery(name = "Client.findByInternetDnsPassword", query = "SELECT c FROM Client c WHERE c.internetDnsPassword = :internetDnsPassword"),
     @NamedQuery(name = "Client.findByObservations", query = "SELECT c FROM Client c WHERE c.observations = :observations"),
     @NamedQuery(name = "Client.findBySleeping", query = "SELECT c FROM Client c WHERE c.sleeping = :sleeping")})
 public class Client implements Serializable
@@ -95,14 +99,23 @@ public class Client implements Serializable
     @Column(name = "INTERVENTION_TYPE")
     private String interventionType;
     @Size(max = 30)
-    @Column(name = "OPERATOR")
-    private String operator;
+    @Column(name = "INTERNET_OPERATOR")
+    private String internetOperator;
     @Size(max = 30)
     @Column(name = "INTERNET_LOGIN")
     private String internetLogin;
     @Size(max = 64)
     @Column(name = "INTERNET_PASSWORD")
     private String internetPassword;
+    @Size(max = 64)
+    @Column(name = "INTERNET_DNS")
+    private String internetDns;
+    @Size(max = 30)
+    @Column(name = "INTERNET_DNS_LOGIN")
+    private String internetDnsLogin;
+    @Size(max = 64)
+    @Column(name = "INTERNET_DNS_PASSWORD")
+    private String internetDnsPassword;
     @Size(max = 250)
     @Column(name = "OBSERVATIONS")
     private String observations;
@@ -170,7 +183,15 @@ public class Client implements Serializable
     }
 
     public void setPostalcode(int postalcode) {
-        this.postalcode = postalcode;
+        String code=String.valueOf(postalcode);
+        if(code.length()>5)
+        {
+            this.postalcode = Integer.parseInt(code.substring(0,5));
+        }
+        else
+        {
+            this.postalcode = postalcode;
+        }
     }
 
     public String getCity() {
@@ -229,12 +250,12 @@ public class Client implements Serializable
         this.interventionType = interventionType;
     }
 
-    public String getOperator() {
-        return operator;
+    public String getInternetOperator() {
+        return internetOperator;
     }
 
-    public void setOperator(String operator) {
-        this.operator = operator;
+    public void setInternetOperator(String internetOperator) {
+        this.internetOperator = internetOperator;
     }
 
     public String getInternetLogin() {
@@ -251,6 +272,30 @@ public class Client implements Serializable
 
     public void setInternetPassword(String internetPassword) {
         this.internetPassword = internetPassword;
+    }
+
+    public String getInternetDns() {
+        return internetDns;
+    }
+
+    public void setInternetDns(String internetDns) {
+        this.internetDns = internetDns;
+    }
+
+    public String getInternetDnsLogin() {
+        return internetDnsLogin;
+    }
+
+    public void setInternetDnsLogin(String internetDnsLogin) {
+        this.internetDnsLogin = internetDnsLogin;
+    }
+
+    public String getInternetDnsPassword() {
+        return internetDnsPassword;
+    }
+
+    public void setInternetDnsPassword(String internetDnsPassword) {
+        this.internetDnsPassword = internetDnsPassword;
     }
 
     public String getObservations() {
@@ -352,7 +397,7 @@ public class Client implements Serializable
 
     public String getFullString()
     {
-        return "entity.Client{" + "id=" + id + ", name=" + name + ", address=" + address + ", postalcode=" + postalcode + ", city=" + city + ", phone=" + phone + ", fax=" + fax + ", tarif=" + tarif + ", deplacement=" + deplacement + ", mail=" + mail + ", interventionType=" + interventionType + ", operator=" + operator + ", internetLogin=" + internetLogin + ", internetPassword=" + internetPassword + ", observations=" + observations + ", sleeping=" + sleeping + ", idUser=" + idUser + ", idFilePath=" + idFilePath + ", cUserList=" + cUserList + ", workstationList=" + workstationList + ", mailList=" + mailList + ", softwareList=" + softwareList + ", taskList=" + taskList + '}';
+        return "entity.Client{" + "id=" + id + ", name=" + name + ", address=" + address + ", postalcode=" + postalcode + ", city=" + city + ", phone=" + phone + ", fax=" + fax + ", tarif=" + tarif + ", deplacement=" + deplacement + ", mail=" + mail + ", interventionType=" + interventionType + ", internetOperator=" + internetOperator + ", internetLogin=" + internetLogin + ", internetPassword=" + internetPassword + ", internetDns=" + internetDns + ", internetDnsLogin=" + internetDnsLogin + ", internetDnsPassword=" + internetDnsPassword + ", observations=" + observations + ", sleeping=" + sleeping + ", idUser=" + idUser + ", idFilePath=" + idFilePath + ", cUserList=" + cUserList + ", workstationList=" + workstationList + ", mailList=" + mailList + ", softwareList=" + softwareList + ", taskList=" + taskList + '}';
     }
 
     @Override
@@ -360,5 +405,4 @@ public class Client implements Serializable
         return this.name;
     }
     
-
 }

@@ -112,10 +112,11 @@
                                                  rendered="#{not empty item.idClient}"/>
                             </p:column>
                             <p:column headerText="Téléphone"
-                                      sortBy="#{item.phone}"
-                                      filterBy="#{item.phone}"
+                                      sortBy="#{empty item.directPhone?item.phone:item.directPhone}"
+                                      filterBy="#{empty item.directPhone?item.phone:item.directPhone}"
                                       filterMatchMode="contains">
-                                <h:outputText value="#{item.phone}"/>
+                                <h:outputText value="#{item.phone}" rendered="#{empty item.directPhone}"/>
+                                <h:outputText value="#{item.directPhone}" rendered="#{not empty item.directPhone}"/>
                             </p:column>
                             <p:column headerText="Actions" style="white-space: nowrap;">
                                 <p:commandButton actionListener="#{cUserView.entityView(item)}"

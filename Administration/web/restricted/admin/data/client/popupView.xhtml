@@ -69,18 +69,19 @@
                     <p:column>
                     
                         <p:fieldset legend="Détails">
-                            <h:panelGrid columns="2" cellspacing="5">
+                            <h:panelGrid columns="1" cellspacing="5" style="width:100%;">
                                 <p:column>
                                         
                                     <h4 class="tabheader">Tarifs:</h4>
-                                    <h:panelGrid columns="2" columnClasses="label,fields">
+                                    <h:panelGrid columns="4" columnClasses="label,fields,label,fields">
                                         <h:outputText value="Tarif d'intervention:" />
                                         <h:outputText value="#{clientView.entity.tarif} €"
                                                       rendered="#{not empty clientView.entity.tarif}"/>
                                         <h:outputText value="aucun"
                                                       rendered="#{empty clientView.entity.tarif}"/>
 
-                                        <h:outputText value="Frais de déplacement:"/>
+                                        <h:outputText value="Frais de déplacement:"
+                                                      style="margin-left: 30px;"/>
                                         <h:outputText value="#{clientView.entity.deplacement} €"
                                                       rendered="#{not empty clientView.entity.deplacement}"/>
                                         <h:outputText value="aucun"
@@ -91,31 +92,36 @@
                                 <p:column>
 
                                     <h4 class="tabheader">Connexion Internet:</h4>
-                                    <h:panelGrid columns="2" columnClasses="label,fields">
+                                    
+                                    <h:panelGrid columns="2" style="width:100%;">
 
-                                        <h:outputText value="Operateur:"/>
-                                        <h:outputText value="#{clientView.entity.operator}" title="Operateur Internet"/>
+                                        <h:panelGrid columns="2" columnClasses="label,fields">
 
-                                        <h:outputText value="Identifiant Internet:"/>
-                                        <h:outputText value="#{clientView.entity.internetLogin}" title="Identifiant Internet"/>
+                                            <h:outputText value="Opérateur:"/>
+                                            <h:outputText value="#{clientView.entity.internetOperator}"/>
 
-                                        <h:outputText value="Mot&nbsp;de&nbsp;passe&nbsp;Internet:"/>
-                                        <p:outputPanel rendered="#{not empty clientView.entity.internetPassword}">
-                                            <p:commandButton
-                                                onmousedown="setFormFieldValue('clientViewForm','internetPasswordView',
-                                                            '#{clientView.entity.internetPassword}');"
-                                                onmouseup="setFormFieldValue('clientViewForm','internetPasswordView',
-                                                         '#{utils.getHiddenString(clientView.entity.internetPassword)}');"
-                                                onmouseout="setFormFieldValue('clientViewForm','internetPasswordView',
-                                                         '#{utils.getHiddenString(clientView.entity.internetPassword)}');"
-                                                id="password_unlocker"
-                                                icon="ui-icon-unlocked"
-                                                title="Afficher le mot de passe"
-                                                style="font-size:50%;vertical-align: bottom;"/>
-                                            <h:outputText id="internetPasswordView"
-                                                          value="#{utils.getHiddenString(clientView.entity.internetPassword)}"/>
-                                        </p:outputPanel>
-                                        <h:outputText value="" rendered="#{empty clientView.entity.internetPassword}"/>
+                                            <h:outputText value="Identifiant:"/>
+                                            <h:outputText value="#{clientView.entity.internetLogin}"/>
+
+                                            <h:outputText value="Mot de passe:" />
+                                            <h:outputText value="#{clientView.entity.internetPassword}"/>
+
+                                        </h:panelGrid>
+
+                                        <h:panelGrid columns="2" columnClasses="label,fields"
+                                                     style="margin-left: 30px;">
+
+                                            <h:outputText value="Adresse DNS:"/>
+                                            <h:outputText value="#{clientView.entity.internetDns}"/>
+
+                                            <h:outputText value="Identifiant DNS:"/>
+                                            <h:outputText value="#{clientView.entity.internetDnsLogin}"/>
+
+                                            <h:outputText value="Mot de passe DNS:" />
+                                            <h:outputText value="#{clientView.entity.internetDnsPassword}"/>
+
+                                        </h:panelGrid>
+
                                     </h:panelGrid>
                                         
                                 </p:column>
