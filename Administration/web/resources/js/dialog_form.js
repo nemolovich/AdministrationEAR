@@ -110,6 +110,7 @@ function handleEvent(item, event)
     if(event.keyCode===27)
     {
         item.hide();
+        displayAjaxStatus=true;
     }
 }
 

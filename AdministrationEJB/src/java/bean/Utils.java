@@ -4,7 +4,6 @@
  */
 package bean;
 
-import static bean.ApplicationLogger.displayError;
 import entity.FilePath;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
@@ -260,8 +259,16 @@ public class Utils
      */
     public static int sortByDate(Object date1, Object date2)
     {
-        return ((Utils.parseSmallDate((String)date1)).compareTo(
-                Utils.parseSmallDate((String)date2)));
+        if(date1 instanceof String&&date2 instanceof String)
+        {
+            return ((Utils.parseSmallDate((String)date1)).compareTo(
+                    Utils.parseSmallDate((String)date2)));
+        }
+        else if(date1 instanceof Date&&date2 instanceof Date)
+        {
+            return ((Date)date1).compareTo((Date)date2);
+        }
+        return 0;
     }
     
     /**

@@ -188,6 +188,13 @@
                             <f:convertDateTime pattern="dd/MM/yyyy"/>
                         </p:calendar>
                         
+                        <h:outputLabel value="Temps prévu:" for="piintendedduration"
+                                       rendered="#{not taskView.creating}"/>
+                        <h:outputText id="piintendedduration"
+                                      value="#{taskView.entityPopup.intendedDuration}"
+                                      title="Temps prévu pour l'intervention"
+                                      rendered="#{not taskView.creating}"/>
+                        
                         <h:outputLabel value="Temps effectué:" for="piduration"
                                        styleClass="#{(interventionView.creating or
                                                      interventionView.editing)?'required':''}"/>
@@ -203,6 +210,8 @@
                                          locale="fr"
                                          mindate="today"
                                          pattern="HH:mm"
+                                         maxHour="99"
+                                         stepMinute="15"
                                          showButtonPanel="true"
                                          timeOnly="true"
                                          widgetVar="durationCalendar"

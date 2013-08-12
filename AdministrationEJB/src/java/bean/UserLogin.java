@@ -10,10 +10,8 @@ import entity.User;
 import java.io.Serializable;
 import java.util.Calendar;
 import javax.ejb.EJB;
-import javax.ejb.Stateless;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
-import javax.faces.application.FacesMessage.Severity;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -25,8 +23,9 @@ import org.primefaces.model.Visibility;
  *
  * @author Brian GOHIER
  */
-@Named("userLogin")
-@Stateless
+@Named(value="userLogin")
+@SessionScoped
+//@Stateless
 public class UserLogin implements Serializable
 {
     private static final long serialVersionUID = 1L;

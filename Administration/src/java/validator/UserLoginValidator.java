@@ -21,6 +21,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.FacesValidator;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
+import javax.inject.Inject;
 
 /**
  *
@@ -33,7 +34,7 @@ public class UserLoginValidator implements Validator
 {
     @EJB
     private TUserFacade tUserFacade;
-    @EJB
+    @Inject
     private UserLogin userLogin;
 
     public UserLoginValidator()

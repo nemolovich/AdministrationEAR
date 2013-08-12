@@ -12,8 +12,8 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
-import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
+import javax.inject.Inject;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -30,7 +30,7 @@ import javax.servlet.http.HttpSession;
  */
 public class AccessFilter implements Filter
 {
-    @EJB
+    @Inject
     private UserLogin userLogin;
     
     private static final boolean debug = false;
