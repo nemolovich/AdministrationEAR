@@ -18,54 +18,17 @@
                   showEffect="clip"
                   hideEffect="clip">
             <h:form id="createWorkstationForm">
-                <h:panelGrid columns="2" columnClasses="label,fields"
+                <h:panelGrid columns="4" columnClasses="label,fields,label_30,fields"
                              rendered="#{not empty workstationView.entity}">
-                    <p:outputLabel value="Marque:" for="wbrand" />
-                    <p:inputText id="wbrand" value="#{workstationView.entity.brand}"
-                                 title="Marque de la machine"
-                                 maxlength="64"
-                                 required="true"
-                                 requiredMessage="Le champs 'Marque' ne peut être vide"
-                                 rendered="#{workstationView.creating or 
-                                                workstationView.editing}"/>
-                    <h:outputText id="wbrandV" value="#{workstationView.entity.brand}"
-                                  title="Marque de la machine"
-                                  rendered="#{not workstationView.creating and
-                                              not workstationView.editing}"/>
 
                     <p:outputLabel value="Type de station:" for="wwsType" />
                     <p:inputText id="wwsType" value="#{workstationView.entity.wsType}"
                                  title="Type de station"
                                  maxlength="64"
                                  rendered="#{workstationView.creating or 
-                                                workstationView.editing}"/>
+                                             workstationView.editing}"/>
                     <h:outputText id="wwsTypeV" value="#{workstationView.entity.wsType}"
                                   title="Type de station"
-                                  rendered="#{not workstationView.creating and
-                                              not workstationView.editing}"/>
-
-                    <p:outputLabel value="Date de mise en service:" for="wstartDate" />
-                    <p:inputMask id="wstartDate" value="#{workstationView.entity.startDate}"
-                                 title="Date de mise en service de la machine"
-                                 mask="99/99/9999"
-                                 rendered="#{workstationView.creating or 
-                                                workstationView.editing}">
-                        <f:convertDateTime pattern="dd/MM/yyyy" />
-                    </p:inputMask>
-                    <h:outputText id="wstartDateV" value="#{utils.dayDateFormat(
-                                                            workstationView.entity.startDate)}"
-                                  title="Date de mise en service de la machine"
-                                  rendered="#{not workstationView.creating and
-                                              not workstationView.editing}"/>
-
-                    <p:outputLabel value="Processeur:" for="wprocessor" />
-                    <p:inputText id="wprocessor" value="#{workstationView.entity.processor}"
-                                 title="Processeur"
-                                 maxlength="64"
-                                 rendered="#{workstationView.creating or 
-                                                workstationView.editing}"/>
-                    <h:outputText id="wprocessorV" value="#{workstationView.entity.processor}"
-                                  title="Processeur"
                                   rendered="#{not workstationView.creating and
                                               not workstationView.editing}"/>
 
@@ -74,9 +37,28 @@
                                  title="Moniteur"
                                  maxlength="64"
                                  rendered="#{workstationView.creating or 
-                                                workstationView.editing}"/>
+                                             workstationView.editing}"/>
                     <h:outputText id="wmonitorV" value="#{workstationView.entity.monitor}"
                                   title="Moniteur"
+                                  rendered="#{not workstationView.creating and
+                                              not workstationView.editing}"/>
+                    
+                    <p:outputLabel value="Nom machine:" for="wname"
+                                   styleClass="#{(workstationView.creating or
+                                                 workstationView.editing)?'required':''}"/>
+                    <p:inputText id="wname" value="#{workstationView.entity.name}"
+                                 title="Nom de la machine"
+                                 maxlength="64"
+                                 rendered="#{workstationView.creating or 
+                                             workstationView.editing}">
+                        <f:validator binding="#{notNullFieldValidator}"/>
+                        <f:attribute name="requiredMessage"
+                                     value="Le champs 'Nom machine' ne peut être vide"/>
+                        <f:attribute name="requiredTitle"
+                                     value="Champs 'Nom machine' vide"/>
+                    </p:inputText>
+                    <h:outputText id="wnameV" value="#{workstationView.entity.name}"
+                                  title="Nom de la machine"
                                   rendered="#{not workstationView.creating and
                                               not workstationView.editing}"/>
 
@@ -85,9 +67,20 @@
                                  title="Carte graphique"
                                  maxlength="64"
                                  rendered="#{workstationView.creating or 
-                                                workstationView.editing}"/>
+                                             workstationView.editing}"/>
                     <h:outputText id="wvideoCardV" value="#{workstationView.entity.videoCard}"
                                   title="Carte graphique"
+                                  rendered="#{not workstationView.creating and
+                                              not workstationView.editing}"/>
+                    
+                    <p:outputLabel value="Marque:" for="wbrand" />
+                    <p:inputText id="wbrand" value="#{workstationView.entity.brand}"
+                                 title="Marque de la machine"
+                                 maxlength="64"
+                                 rendered="#{workstationView.creating or 
+                                             workstationView.editing}"/>
+                    <h:outputText id="wbrandV" value="#{workstationView.entity.brand}"
+                                  title="Marque de la machine"
                                   rendered="#{not workstationView.creating and
                                               not workstationView.editing}"/>
 
@@ -96,9 +89,68 @@
                                  title="Système d'exploitation"
                                  maxlength="64"
                                  rendered="#{workstationView.creating or 
-                                                workstationView.editing}"/>
+                                             workstationView.editing}"/>
                     <h:outputText id="woperatingSystemV" value="#{workstationView.entity.operatingSystem}"
                                   title="Système d'exploitation"
+                                  rendered="#{not workstationView.creating and
+                                              not workstationView.editing}"/>
+                    
+                    <p:outputLabel value="Utilisateur par défaut:" for="wuser_name_default" />
+                    <p:inputText id="wuser_name_default" value="#{workstationView.entity.userNameDefault}"
+                                 title="Nom de l'utilisateur par défaut"
+                                 maxlength="30"
+                                 rendered="#{workstationView.creating or 
+                                             workstationView.editing}"/>
+                    <h:outputText id="wuser_name_defaultV" value="#{workstationView.entity.userNameDefault}"
+                                  title="Nom de l'utilisateur par défaut"
+                                  rendered="#{not workstationView.creating and
+                                              not workstationView.editing}"/>
+
+                    <p:outputLabel value="Version système:" for="wsystemVersion" />
+                    <p:inputText id="wsystemVersion" value="#{workstationView.entity.systemVersion}"
+                                 title="Version du système"
+                                 maxlength="64"
+                                 rendered="#{workstationView.creating or 
+                                             workstationView.editing}"/>
+                    <h:outputText id="wsystemVersionV" value="#{workstationView.entity.systemVersion}"
+                                  title="Version du système"
+                                  rendered="#{not workstationView.creating and
+                                              not workstationView.editing}"/>
+                    
+                    <p:outputLabel value="Adresse IP:" for="wip_address" />
+                    <p:inputText id="wip_address" value="#{workstationView.entity.ipAddress}"
+                                 title="Adresse IP de la machine"
+                                 maxlength="39"
+                                 rendered="#{workstationView.creating or 
+                                             workstationView.editing}">
+                    </p:inputText>
+                    <h:outputText id="wip_addressV" value="#{workstationView.entity.ipAddress}"
+                                  title="Adresse IP de la machine"
+                                  rendered="#{not workstationView.creating and
+                                              not workstationView.editing}"/>
+
+                    <p:outputLabel value="Licence système:" for="wsystemLicence" />
+                    <p:inputText id="wsystemLicence" value="#{workstationView.entity.systemLicense}"
+                                 title="Version du système"
+                                 maxlength="64"
+                                 rendered="#{workstationView.creating or 
+                                             workstationView.editing}"/>
+                    <h:outputText id="wsystemLicenceV" value="#{workstationView.entity.systemLicense}"
+                                  title="Version du système"
+                                  rendered="#{not workstationView.creating and
+                                              not workstationView.editing}"/>
+
+                    <p:outputLabel value="Date de mise en service:" for="wstartDate" />
+                    <p:inputMask id="wstartDate" value="#{workstationView.entity.startDate}"
+                                 title="Date de mise en service de la machine"
+                                 mask="99/99/9999"
+                                 rendered="#{workstationView.creating or 
+                                             workstationView.editing}">
+                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                    </p:inputMask>
+                    <h:outputText id="wstartDateV" value="#{utils.dayDateFormat(
+                                                            workstationView.entity.startDate)}"
+                                  title="Date de mise en service de la machine"
                                   rendered="#{not workstationView.creating and
                                               not workstationView.editing}"/>
 
@@ -107,9 +159,20 @@
                                  title="Mémoire vive"
                                  maxlength="64"
                                  rendered="#{workstationView.creating or 
-                                                workstationView.editing}"/>
+                                             workstationView.editing}"/>
                     <h:outputText id="wramV" value="#{workstationView.entity.ram}"
                                   title="Mémoire vive"
+                                  rendered="#{not workstationView.creating and
+                                              not workstationView.editing}"/>
+
+                    <p:outputLabel value="Processeur:" for="wprocessor" />
+                    <p:inputText id="wprocessor" value="#{workstationView.entity.processor}"
+                                 title="Processeur"
+                                 maxlength="64"
+                                 rendered="#{workstationView.creating or 
+                                             workstationView.editing}"/>
+                    <h:outputText id="wprocessorV" value="#{workstationView.entity.processor}"
+                                  title="Processeur"
                                   rendered="#{not workstationView.creating and
                                               not workstationView.editing}"/>
 
@@ -118,29 +181,36 @@
                                  title="Dique dur"
                                  maxlength="64"
                                  rendered="#{workstationView.creating or 
-                                                workstationView.editing}"/>
+                                             workstationView.editing}"/>
                     <h:outputText id="whardDriveV" value="#{workstationView.entity.hardDrive}"
                                   title="Disque dur"
                                   rendered="#{not workstationView.creating and
                                               not workstationView.editing}"/>
 
-                    <p:outputLabel value="Observations:" for="wobservations" />
-                    <p:inputText id="wobservations" value="#{workstationView.entity.observations}"
-                                 title="Observations"
-                                 maxlength="250"
-                                 rendered="#{workstationView.creating or 
-                                                workstationView.editing}"/>
-                    <h:outputText id="wobservationsV" value="#{workstationView.entity.observations}"
-                                  title="Observations"
-                                  rendered="#{not workstationView.creating and
-                                              not workstationView.editing}"/>
-
                 </h:panelGrid>
+                <p:outputPanel>
+                    <p:outputLabel value="Observations:" for="wobservations"
+                                   styleClass="label" style="margin-right: 30px;"/>
+                    <h:inputTextarea id="wobservations" value="#{workstationView.entity.observations}"
+                                     title="Observations"
+                                     styleClass="textarea_min"
+                                     rendered="#{workstationView.creating or 
+                                                 workstationView.editing}"/>
+                    <h:inputTextarea id="wobservationsV" value="#{workstationView.entity.observations}"
+                                     title="Observations"
+                                     readonly="true"
+                                     styleClass="textarea_min"
+                                     ondblclick="this.focus();this.select();"
+                                     rendered="#{not workstationView.creating and
+                                                 not workstationView.editing}"/>
+                    <br/>
+                </p:outputPanel>
                 <p:outputPanel rendered="#{workstationView.creating or
                                             workstationView.editing}">
                     (<span class="red-star">*</span>: champs requis)<br />
                 </p:outputPanel>
-                <p:outputPanel rendered="#{workstationView.creating}">
+                <p:outputPanel rendered="#{workstationView.creating}"
+                               styleClass="buttons_panel">
                     <p:commandButton id="createWorkstation" value="Ajouter"
                                      title="Ajouter ce poste à la société"
                                      type="submit"
@@ -161,7 +231,8 @@
                                      onclick="createWorstation.hide();"
                                      />
                 </p:outputPanel>
-                <p:outputPanel rendered="#{workstationView.editing}">
+                <p:outputPanel rendered="#{workstationView.editing}"
+                               styleClass="buttons_panel">
                     <p:commandButton  id="updateWorkstation" value="Mettre à jour"
                                      title="Enregistrer les changements"
                                      type="submit"
@@ -183,7 +254,8 @@
                                      />
                 </p:outputPanel>
                 <p:outputPanel rendered="#{not workstationView.creating and 
-                                            not workstationView.editing}">
+                                            not workstationView.editing}"
+                               styleClass="buttons_panel">
                     <center>
                         <p:commandButton id="backWorkstation" value="Fermer"
                                          title="Fermer la fenêtre"
@@ -213,6 +285,12 @@
                         </div>
                     </div>
                 </p:outputPanel>
+                <script type="text/javascript">
+                    $(document).ready(function()
+                    {
+                        addRedStarsTorequiredFields();
+                    });
+                </script>
             </h:form>
         </p:dialog>
     </h:body>

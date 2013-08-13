@@ -2,63 +2,116 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>Poste de travail</title>
     </h:head>
     <h:body>
         <f:view>
             <h:form id="tWorkstationViewForm">
-                <h:panelGrid columns="2" columnClasses="label,fields">
-                    
-                    <h:outputText value="Société:"/>
-                    <h:outputText id="tidClientV" value="#{taskView.entityPopup.idWorkstation.idClient}"
-                                  title="Société à laquelle appartient ce poste de travail"/>
-                    
-                    <h:outputText value="Modèle:"/>
-                    <h:outputText id="tbrandV" value="#{taskView.entityPopup.idWorkstation.brand}"
-                                  title="Marque de la machine"/>
-                    
-                    <h:outputText value="Type de machine:"/>
-                    <h:outputText id="twsTypeV" value="#{taskView.entityPopup.idWorkstation.wsType}"
-                                  title="Type de la machine"/>
-                    
-                    <h:outputText value="Date de mise en service:"/>
-                    <h:outputText id="tstartDateV" value="#{utils.dayDateFormat(
-                                                            taskView.entityPopup.idWorkstation.startDate)}"
-                                  title="Date de mise en service de la machine" >
-                        <f:convertDateTime pattern="dd/MM/yyyy"/>
-                    </h:outputText>
-                    
-                    <h:outputText value="Processeur:"/>
-                    <h:outputText id="tprocessorV" value="#{taskView.entityPopup.idWorkstation.processor}"
-                                  title="Processeur de la machine"/>
-                    
+                <h:panelGrid columns="4" columnClasses="label,fields,label_30,fields">
+
+                    <h:outputText value="Type de station:"/>
+                    <h:outputText value="#{workstationView.entity.wsType}"
+                                  title="Type de station"
+                                  rendered="#{not workstationView.creating and
+                                              not workstationView.editing}"/>
+
                     <h:outputText value="Moniteur:"/>
-                    <h:outputText id="tmonitorV" value="#{taskView.entityPopup.idWorkstation.monitor}"
-                                  title="Moniteur de la machine"/>
+                    <h:outputText value="#{workstationView.entity.monitor}"
+                                  title="Moniteur"
+                                  rendered="#{not workstationView.creating and
+                                              not workstationView.editing}"/>
                     
+                    <h:outputText value="Nom machine:"
+                                   styleClass="#{(workstationView.creating or
+                                                 workstationView.editing)?'required':''}"/>
+                    <h:outputText value="#{workstationView.entity.name}"
+                                  title="Nom de la machine"
+                                  rendered="#{not workstationView.creating and
+                                              not workstationView.editing}"/>
+
                     <h:outputText value="Carte graphique:"/>
-                    <h:outputText id="tvideoCardV" value="#{taskView.entityPopup.idWorkstation.videoCard}"
-                                  title="Carte graphique de la machine"/>
+                    <h:outputText value="#{workstationView.entity.videoCard}"
+                                  title="Carte graphique"
+                                  rendered="#{not workstationView.creating and
+                                              not workstationView.editing}"/>
                     
+                    <h:outputText value="Marque:"/>
+                    <h:outputText value="#{workstationView.entity.brand}"
+                                  title="Marque de la machine"
+                                  rendered="#{not workstationView.creating and
+                                              not workstationView.editing}"/>
+
                     <h:outputText value="Système d'exploitation:"/>
-                    <h:outputText id="toperatingSystemV" value="#{taskView.entityPopup.idWorkstation.operatingSystem}"
-                                  title="Système d'exploitation de la machine"/>
+                    <h:outputText value="#{workstationView.entity.operatingSystem}"
+                                  title="Système d'exploitation"
+                                  rendered="#{not workstationView.creating and
+                                              not workstationView.editing}"/>
                     
+                    <h:outputText value="Utilisateur par défaut:"/>
+                    <h:outputText value="#{workstationView.entity.userNameDefault}"
+                                  title="Nom de l'utilisateur par défaut"
+                                  rendered="#{not workstationView.creating and
+                                              not workstationView.editing}"/>
+
+                    <h:outputText value="Version système:"/>
+                    <h:outputText value="#{workstationView.entity.systemVersion}"
+                                  title="Version du système"
+                                  rendered="#{not workstationView.creating and
+                                              not workstationView.editing}"/>
+                    
+                    <h:outputText value="Adresse IP:"/>
+                    <h:outputText value="#{workstationView.entity.ipAddress}"
+                                  title="Adresse IP de la machine"
+                                  rendered="#{not workstationView.creating and
+                                              not workstationView.editing}"/>
+
+                    <h:outputText value="Licence système:"/>
+                    <h:outputText value="#{workstationView.entity.systemLicense}"
+                                  title="Version du système"
+                                  rendered="#{not workstationView.creating and
+                                              not workstationView.editing}"/>
+
+                    <h:outputText value="Date de mise en service:"/>
+                    <h:outputText value="#{utils.dayDateFormat(
+                                                            workstationView.entity.startDate)}"
+                                  title="Date de mise en service de la machine"
+                                  rendered="#{not workstationView.creating and
+                                              not workstationView.editing}"/>
+
                     <h:outputText value="Mémoire vive:"/>
-                    <h:outputText id="tramV" value="#{taskView.entityPopup.idWorkstation.ram}"
-                                  title="Mémoire vive de la machine"/>
-                    
+                    <h:outputText value="#{workstationView.entity.ram}"
+                                  title="Mémoire vive"
+                                  rendered="#{not workstationView.creating and
+                                              not workstationView.editing}"/>
+
+                    <h:outputText value="Processeur:"/>
+                    <h:outputText value="#{workstationView.entity.processor}"
+                                  title="Processeur"
+                                  rendered="#{not workstationView.creating and
+                                              not workstationView.editing}"/>
+
                     <h:outputText value="Disque dur:"/>
-                    <h:outputText id="thardDriveV" value="#{taskView.entityPopup.idWorkstation.hardDrive}"
-                                  title="Disque dur de la machine"/>
-                    
-                    <h:outputText value="Observations:"/>
-                    <h:outputText id="tobservationsV" value="#{taskView.entityPopup.idWorkstation.observations}"
-                                  title="Observations"/>
-                    
+                    <h:outputText value="#{workstationView.entity.hardDrive}"
+                                  title="Disque dur"
+                                  rendered="#{not workstationView.creating and
+                                              not workstationView.editing}"/>
+
                 </h:panelGrid>
+                <p:outputPanel>
+                    <h:outputText value="Observations:"
+                                   styleClass="label" style="margin-right: 30px;"/>
+                    <h:inputTextarea value="#{workstationView.entity.observations}"
+                                     title="Observations"
+                                     readonly="true"
+                                     styleClass="textarea_min"
+                                     ondblclick="this.focus();this.select();"
+                                     rendered="#{not workstationView.creating and
+                                                 not workstationView.editing}"/>
+                    <br/>
+                </p:outputPanel>
             </h:form>
         </f:view>
 

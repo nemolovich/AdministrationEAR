@@ -53,7 +53,7 @@ public class CUser implements Serializable
     private Integer id;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 2, max = 45)
+    @Size(max = 45)
     @Column(name = "NAME")
     private String name;
     @Size(max = 14)

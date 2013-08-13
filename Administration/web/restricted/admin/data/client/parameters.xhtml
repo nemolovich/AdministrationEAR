@@ -462,6 +462,9 @@
                                 <f:event type="preRenderComponent"
                                          listener="#{fileUploadController.setFilePath(
                                                      clientView.entityFilePath)}"/>
+                                <f:event type="preValidate"
+                                         listener="#{fileUploadController.setFilePath(
+                                                     clientView.entityFilePath)}"/>
                                 <p:fieldset legend="Fichiers">
                                     <table style="width:100%;">
                                         <tr>
@@ -503,6 +506,7 @@
 
                                                     <p:column>
                                                         <p:commandButton icon="ui-icon-trash"
+                                                                         immediate="true"
                                                                          styleClass="red_icon"
                                                                          style="font-size:60%;"
                                                                          onclick="if(!confirm('#{fileUploadController.getDeleteMessage(file)}'))

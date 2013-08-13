@@ -38,12 +38,17 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Workstation.findAll", query = "SELECT w FROM Workstation w"),
     @NamedQuery(name = "Workstation.findById", query = "SELECT w FROM Workstation w WHERE w.id = :id"),
     @NamedQuery(name = "Workstation.findByWsType", query = "SELECT w FROM Workstation w WHERE w.wsType = :wsType"),
+    @NamedQuery(name = "Workstation.findByName", query = "SELECT w FROM Workstation w WHERE w.name = :name"),
+    @NamedQuery(name = "Workstation.findByUserNameDefault", query = "SELECT w FROM Workstation w WHERE w.userNameDefault = :userNameDefault"),
+    @NamedQuery(name = "Workstation.findByIpAddress", query = "SELECT w FROM Workstation w WHERE w.ipAddress = :ipAddress"),
     @NamedQuery(name = "Workstation.findByBrand", query = "SELECT w FROM Workstation w WHERE w.brand = :brand"),
     @NamedQuery(name = "Workstation.findByStartDate", query = "SELECT w FROM Workstation w WHERE w.startDate = :startDate"),
     @NamedQuery(name = "Workstation.findByProcessor", query = "SELECT w FROM Workstation w WHERE w.processor = :processor"),
     @NamedQuery(name = "Workstation.findByMonitor", query = "SELECT w FROM Workstation w WHERE w.monitor = :monitor"),
     @NamedQuery(name = "Workstation.findByVideoCard", query = "SELECT w FROM Workstation w WHERE w.videoCard = :videoCard"),
     @NamedQuery(name = "Workstation.findByOperatingSystem", query = "SELECT w FROM Workstation w WHERE w.operatingSystem = :operatingSystem"),
+    @NamedQuery(name = "Workstation.findBySystemVersion", query = "SELECT w FROM Workstation w WHERE w.systemVersion = :systemVersion"),
+    @NamedQuery(name = "Workstation.findBySystemLicense", query = "SELECT w FROM Workstation w WHERE w.systemLicense = :systemLicense"),
     @NamedQuery(name = "Workstation.findByRam", query = "SELECT w FROM Workstation w WHERE w.ram = :ram"),
     @NamedQuery(name = "Workstation.findByHardDrive", query = "SELECT w FROM Workstation w WHERE w.hardDrive = :hardDrive"),
     @NamedQuery(name = "Workstation.findByObservations", query = "SELECT w FROM Workstation w WHERE w.observations = :observations"),
@@ -59,6 +64,17 @@ public class Workstation implements Serializable
     @Size(max = 64)
     @Column(name = "WS_TYPE")
     private String wsType;
+    @Basic(optional = false)
+    @NotNull
+    @Size(max = 64)
+    @Column(name = "NAME")
+    private String name;
+    @Size(max = 30)
+    @Column(name = "USER_NAME_DEFAULT")
+    private String userNameDefault;
+    @Size(max = 39)
+    @Column(name = "IP_ADDRESS")
+    private String ipAddress;
     @Size(max = 64)
     @Column(name = "BRAND")
     private String brand;
@@ -78,6 +94,12 @@ public class Workstation implements Serializable
     @Column(name = "OPERATING_SYSTEM")
     private String operatingSystem;
     @Size(max = 64)
+    @Column(name = "SYSTEM_VERSION")
+    private String systemVersion;
+    @Size(max = 64)
+    @Column(name = "SYSTEM_LICENSE")
+    private String systemLicense;
+    @Size(max = 64)
     @Column(name = "RAM")
     private String ram;
     @Size(max = 64)
@@ -86,6 +108,8 @@ public class Workstation implements Serializable
     @Size(max = 250)
     @Column(name = "OBSERVATIONS")
     private String observations;
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "SLEEPING")
     private Boolean sleeping=false;
     @JoinColumn(name = "ID_CLIENT", referencedColumnName = "ID")
@@ -118,6 +142,30 @@ public class Workstation implements Serializable
 
     public void setWsType(String wsType) {
         this.wsType = wsType;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getUserNameDefault() {
+        return userNameDefault;
+    }
+
+    public void setUserNameDefault(String userNameDefault) {
+        this.userNameDefault = userNameDefault;
+    }
+
+    public String getIpAddress() {
+        return ipAddress;
+    }
+
+    public void setIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
     }
 
     public String getBrand() {
@@ -166,6 +214,22 @@ public class Workstation implements Serializable
 
     public void setOperatingSystem(String operatingSystem) {
         this.operatingSystem = operatingSystem;
+    }
+
+    public String getSystemVersion() {
+        return systemVersion;
+    }
+
+    public void setSystemVersion(String systemVersion) {
+        this.systemVersion = systemVersion;
+    }
+
+    public String getSystemLicense() {
+        return systemLicense;
+    }
+
+    public void setSystemLicense(String systemLicense) {
+        this.systemLicense = systemLicense;
     }
 
     public String getRam() {
@@ -244,15 +308,15 @@ public class Workstation implements Serializable
         }
         return true;
     }
-    
+
     public String getFullString()
     {
-        return "entity.Workstation{" + "id=" + id + ", wsType=" + wsType + ", brand=" + brand + ", startDate=" + startDate + ", processor=" + processor + ", monitor=" + monitor + ", videoCard=" + videoCard + ", operatingSystem=" + operatingSystem + ", ram=" + ram + ", hardDrive=" + hardDrive + ", observations=" + observations + ", sleeping=" + sleeping + ", idClient=" + idClient + '}';
+        return "entity.Workstation{" + "id=" + id + ", wsType=" + wsType + ", name=" + name + ", userNameDefault=" + userNameDefault + ", ipAddress=" + ipAddress + ", brand=" + brand + ", startDate=" + startDate + ", processor=" + processor + ", monitor=" + monitor + ", videoCard=" + videoCard + ", operatingSystem=" + operatingSystem + ", systemVersion=" + systemVersion + ", systemLicense=" + systemLicense + ", ram=" + ram + ", hardDrive=" + hardDrive + ", observations=" + observations + ", sleeping=" + sleeping + ", idClient=" + idClient + ", idFilePath=" + idFilePath + ", taskList=" + taskList + '}';
     }
-
+    
     @Override
     public String toString() {
-        String out=this.brand+" on "+this.operatingSystem+" [P:"+
+        String out=this.name+" ["+this.brand+"] on "+this.operatingSystem+" [P:"+
                 (this.processor!=null&&!this.processor.isEmpty()?this.processor:"null")+
                 "|RAM:"+(this.ram!=null&&!this.ram.isEmpty()?this.ram:"null")+"][";
         if(this.startDate!=null)

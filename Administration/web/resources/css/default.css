@@ -346,6 +346,13 @@ fieldset
     white-space:                nowrap !important;
 }
 
+.ui-widget-content .label_30
+{
+    vertical-align:             top !important;
+    white-space:                nowrap !important;
+    padding-left:               30px !important;
+}
+
 .full_table
 {
     width:                      100%;   
