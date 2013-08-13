@@ -159,6 +159,13 @@ public class Utils
         return Utils.RIGHTS;
     }
     
+    public static String getTimeFormat(double time)
+    {
+        int hours=(int)(time/1);
+        int mins=(int)((time-hours)*60);
+        return String.format("%02d h %02d mins", hours, mins);
+    }
+    
     /**
      * Renvoi la date en chaîne de caractères en français
      * @param date {@link java.util.Date} - La date à afficher

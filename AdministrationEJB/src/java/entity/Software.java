@@ -5,6 +5,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +17,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -32,8 +35,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Software.findByName", query = "SELECT s FROM Software s WHERE s.name = :name"),
     @NamedQuery(name = "Software.findByVersion", query = "SELECT s FROM Software s WHERE s.version = :version"),
     @NamedQuery(name = "Software.findByLicense", query = "SELECT s FROM Software s WHERE s.license = :license"),
+    @NamedQuery(name = "Software.findBySerialNumber", query = "SELECT s FROM Software s WHERE s.serialNumber = :serialNumber"),
+    @NamedQuery(name = "Software.findByStartDate", query = "SELECT s FROM Software s WHERE s.startDate = :startDate"),
     @NamedQuery(name = "Software.findByEditor", query = "SELECT s FROM Software s WHERE s.editor = :editor"),
-    @NamedQuery(name = "Software.findByStationNumber", query = "SELECT s FROM Software s WHERE s.stationNumber = :stationNumber"),
     @NamedQuery(name = "Software.findByObservations", query = "SELECT s FROM Software s WHERE s.observations = :observations"),
     @NamedQuery(name = "Software.findBySleeping", query = "SELECT s FROM Software s WHERE s.sleeping = :sleeping")})
 public class Software implements Serializable
@@ -54,10 +58,14 @@ public class Software implements Serializable
     @Column(name = "LICENSE")
     private String license;
     @Size(max = 64)
+    @Column(name = "SERIAL_NUMBER")
+    private String serialNumber;
+    @Column(name = "START_DATE")
+    @Temporal(TemporalType.DATE)
+    private Date startDate;
+    @Size(max = 64)
     @Column(name = "EDITOR")
     private String editor;
-    @Column(name = "STATION_NUMBER")
-    private Integer stationNumber;
     @Size(max = 250)
     @Column(name = "OBSERVATIONS")
     private String observations;
@@ -66,6 +74,9 @@ public class Software implements Serializable
     @JoinColumn(name = "ID_CLIENT", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Client idClient;
+    @JoinColumn(name = "ID_FILE_PATH", referencedColumnName = "ID")
+    @ManyToOne
+    private FilePath idFilePath;
 
     public Software() {
     }
@@ -114,12 +125,20 @@ public class Software implements Serializable
         this.editor = editor;
     }
 
-    public Integer getStationNumber() {
-        return stationNumber;
+    public String getSerialNumber() {
+        return serialNumber;
     }
 
-    public void setStationNumber(Integer stationNumber) {
-        this.stationNumber = stationNumber;
+    public void setSerialNumber(String serialNumber) {
+        this.serialNumber = serialNumber;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
     }
 
     public String getObservations() {
@@ -136,6 +155,14 @@ public class Software implements Serializable
 
     public void setSleeping(Boolean sleeping) {
         this.sleeping = sleeping;
+    }
+
+    public FilePath getIdFilePath() {
+        return idFilePath;
+    }
+
+    public void setIdFilePath(FilePath idFilePath) {
+        this.idFilePath = idFilePath;
     }
 
     public Client getIdClient() {
@@ -168,9 +195,9 @@ public class Software implements Serializable
 
     public String getFullString()
     {
-        return "entity.Software{" + "id=" + id + ", name=" + name + ", version=" + version + ", license=" + license + ", editor=" + editor + ", stationNumber=" + stationNumber + ", observations=" + observations + ", sleeping=" + sleeping + ", idClient=" + idClient + '}';
+        return "entity.Software{" + "id=" + id + ", name=" + name + ", version=" + version + ", license=" + license + ", serialNumber=" + serialNumber + ", startDate=" + startDate + ", editor=" + editor + ", observations=" + observations + ", sleeping=" + sleeping + ", idClient=" + idClient + ", idFilePath=" + idFilePath + '}';
     }
-
+    
     @Override
     public String toString() {
         return this.name+" [v"+this.version+" by "+this.editor+"]";

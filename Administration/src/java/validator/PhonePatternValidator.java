@@ -35,13 +35,14 @@ public class PhonePatternValidator implements Validator
     public void validate(FacesContext context, UIComponent component,
         Object value) throws ValidatorException
     {
-//        if (value == null || "".equals((String)value))
-//        {
+        if (value == null || "".equals((String)value))
+        {
+            return;
 //            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,
 //                    "Numéro de téléphone vide",
 //                    "Le champs 'téléphone' ne peut être vide (format 01.23.45.67.89)");
 //            throw new ValidatorException(msg);
-//        }
+        }
         
         Matcher matcher = PHONE_COMPILED_PATTERN.matcher((String)value);
          

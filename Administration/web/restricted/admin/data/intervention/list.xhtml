@@ -91,10 +91,10 @@
                                      filteredValue="#{interventionView.filteredEntities}">
                             
                             <p:column headerText="Durée"
-                                      filterBy="#{item.duration}"
+                                      filterBy="#{utils.getTimeFormat(item.duration)}"
                                       filterMatchMode="contains"
                                       filterStyle="width:70px;">
-                                <h:outputText value="#{item.duration}"
+                                <h:outputText value="#{utils.getTimeFormat(item.duration)}"
                                               title="Durée de l'intervention"/>
                             </p:column>
                             

@@ -26,6 +26,7 @@
                                          value="Retour à la liste des sociétés"
                                          title="Retourner à la liste des sociétés"
                                          icon="ui-icon-arrowthick-1-w"
+                                         immediate="true"
                                          styleClass="red_icon"/>
                         
                         <div class="ui-messages ui-widget">
@@ -40,7 +41,8 @@
                                 </ul>
                             </div>
                         </div>
-                        <p:tabView id="clientTabView" cache="true" dynamic="true" effect="slide">
+                        <p:tabView id="clientTabView" cache="false" dynamic="true" effect="slide"
+                                   widgetVar="clientTabSelect">
                             <p:tab id="postes" title="Postes">
                                 <script type="text/javascript">
                                     $(document).ready(function()
@@ -462,9 +464,6 @@
                                 <f:event type="preRenderComponent"
                                          listener="#{fileUploadController.setFilePath(
                                                      clientView.entityFilePath)}"/>
-                                <f:event type="preValidate"
-                                         listener="#{fileUploadController.setFilePath(
-                                                     clientView.entityFilePath)}"/>
                                 <p:fieldset legend="Fichiers">
                                     <table style="width:100%;">
                                         <tr>
@@ -506,7 +505,6 @@
 
                                                     <p:column>
                                                         <p:commandButton icon="ui-icon-trash"
-                                                                         immediate="true"
                                                                          styleClass="red_icon"
                                                                          style="font-size:60%;"
                                                                          onclick="if(!confirm('#{fileUploadController.getDeleteMessage(file)}'))

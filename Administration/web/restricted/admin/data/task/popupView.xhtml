@@ -126,7 +126,8 @@
                                              style="font-size: 40%;vertical-align: top !important;margin-left: 10px;"
                                              oncomplete="displayBlock('taskViewForm\\:tworkstationDetails');"
                                              action="javascript:void(0);"
-                                             title="Afficher les détails du poste de travail"/>
+                                             title="Afficher les détails du poste de travail"
+                                             rendered="#{not empty taskView.entityPopup.idWorkstation}"/>
                             
                         </p:outputPanel>
 
@@ -163,7 +164,8 @@
                                              style="font-size: 40%;vertical-align: top !important;margin-left: 10px;"
                                              oncomplete="displayBlock('taskViewForm\\:tcuserDetails');"
                                              action="javascript:void(0);"
-                                             title="Afficher les détails de l'utilisateur"/>
+                                             title="Afficher les détails de l'utilisateur"
+                                             rendered="#{not empty taskView.entityPopup.idUser}"/>
                         </p:outputPanel>
 
                         <h:outputLabel value="Date de début:" for="ptstartDate"
@@ -201,53 +203,40 @@
                         <h:outputLabel value="Durée prévue:" for="ptintendedDuration"
                                        styleClass="#{(taskView.creating or
                                                      taskView.editing)?'required':''}"/>
-                        <h:outputText id="ptintendedDurationV" value="#{taskView.entityPopup.intendedDuration}"
-                                      title="Durée prévue pour l'intervention"
-                                      rendered="#{not taskView.creating and
-                                                  not taskView.editing}"/>
-                        <p:calendar id="ptintendedDuration" value="#{taskView.entityPopup.intendedDuration}"
-                                     title="Durée de prévue pour l'intervention"
-                                     disabledWeekends="true"
-                                     effect="slideDown"
-                                     locale="fr"
-                                     mindate="today"
-                                     pattern="HH:mm"
-                                     showButtonPanel="true"
-                                     timeOnly="true"
-                                     widgetVar="intendedDurationCalendar"
-                                     rendered="#{taskView.creating or
+                        <p:outputPanel rendered="#{not taskView.creating and
+                                                   not taskView.editing}">
+                            <h:outputText id="ptintendedDurationV" value="#{utils.getTimeFormat(
+                                                                            taskView.entityPopup.intendedDuration)}"
+                                          title="Durée prévue pour l'intervention"/><br/>
+                            <p:outputPanel>
+                                <h:outputText value="Total effectué: "
+                                              style="font-size: 80%;font-style: italic;font-weight: normal;color: #808080;"
+                                              rendered="#{not taskView.getAccomplishedTime(taskView.entityPopup)
+                                                          .equalsIgnoreCase('00 h 00 mins')}"/>
+                                <h:outputText value="#{taskView.getAccomplishedTime(taskView.entityPopup)}"
+                                              style="font-size: 80%;font-style: italic;color: #404040;"
+                                              rendered="#{not taskView.getAccomplishedTime(taskView.entityPopup)
+                                                          .equalsIgnoreCase('00 h 00 mins')}"/>
+                            </p:outputPanel>
+                        </p:outputPanel>
+                        <p:outputPanel rendered="#{taskView.creating or
                                                  taskView.editing}">
-                            <f:validator binding="#{notNullFieldValidator}"/>
-                            <f:attribute name="requiredMessage"
-                                         value="Veuillez indiquez la durée prévue pour l'intervention"/>
-                            <f:attribute name="requiredTitle"
-                                         value="Champs 'Durée prévue' invalide"/>
-                            <f:converter binding="#{durationConverter}"/>
-                        </p:calendar>
-
-                        <h:outputLabel value="Déplacement:" for="ptdeplacement"
-                                       styleClass="#{(taskView.creating or
-                                                     taskView.editing)?'required':''}"/>
-                        <h:outputText id="ptdeplacementV" value="#{taskView.entityPopup.deplacement?'Oui':'Non'}"
-                                      title="#{taskView.entityPopup.deplacement?'Déplacement requis':'Déplacement non requis'}"
-                                      rendered="#{not taskView.creating and
-                                                  not taskView.editing}"/>
-                        <p:selectBooleanButton id="ptdeplacement"
-                                               offLabel="NON"
-                                               onLabel="OUI"
-                                               onIcon="ui-icon-check"
-                                               offIcon="ui-icon-closethick"
-                                               styleClass="yes_no_button"
-                                               value="#{taskView.entityPopup.deplacement==null?false:
-                                                        taskView.entityPopup.deplacement}"
-                                               rendered="#{taskView.creating or
-                                                           taskView.editing}">
-                            <f:validator binding="#{notNullFieldValidator}"/>
-                            <f:attribute name="requiredMessage"
-                                         value="Veuillez indiquez si l'intervention requiert un déplacement"/>
-                            <f:attribute name="requiredTitle"
-                                         value="Champs 'Déplacement' invalide"/>
-                        </p:selectBooleanButton>
+                            <p:inputText id="ptintendedDuration" value="#{taskView.entityPopup.intendedDuration}"
+                                         title="Durée de prévue pour l'intervention"
+                                         onblur="setHTMLSpan('ptintendedDurationTime','taskViewForm\\:ptintendedDuration');"
+                                         onkeyup="setHTMLSpan('ptintendedDurationTime','taskViewForm\\:ptintendedDuration');"
+                                         style="width:70px;">
+                                <f:validator binding="#{notNullFieldValidator}"/>
+                                <f:attribute name="requiredMessage"
+                                             value="Veuillez indiquez la durée prévue pour l'intervention"/>
+                                <f:attribute name="requiredTitle"
+                                             value="Champs 'Durée prévue' invalide"/>
+                            </p:inputText>
+                            <span id="ptintendedDurationTime" style="margin-left: 15px;"></span>
+                            <script type="text/javascript">
+                                setHTMLSpan('ptintendedDurationTime','taskViewForm\\:ptintendedDuration');
+                            </script>
+                        </p:outputPanel>
 
                         <h:outputLabel value="Type d'intervention:" for="ptinterventionType"
                                        styleClass="#{(taskView.creating or
@@ -287,13 +276,26 @@
                                                      taskView.editing}">
                         </h:inputTextarea>
 
-                        <h:outputLabel value="État:" for="ptstateV"
-                                       rendered="#{not taskView.creating and
-                                                   not taskView.editing}"/>
+                        <h:outputLabel value="État:" for="ptstate"/>
                         <h:outputText id="ptstateV" value="#{taskView.entityPopup.sleeping?'Faite':'À faire'}"
                                       title="#{taskView.entityPopup.sleeping?'La tâche est accomplie':'La tâche est à faire'}"
                                       rendered="#{not taskView.creating and
                                                   not taskView.editing}"/>
+                        <p:selectBooleanButton id="ptstate"
+                                               onLabel="ACCOMPLIE"
+                                               offLabel="EN COURS"
+                                               onIcon="ui-icon-check"
+                                               offIcon="ui-icon-refresh"
+                                               styleClass="yes_no_button"
+                                               value="#{taskView.entityPopup.sleeping}"
+                                               rendered="#{taskView.creating or
+                                                           taskView.editing}">
+                            <f:validator binding="#{notNullFieldValidator}"/>
+                            <f:attribute name="requiredMessage"
+                                         value="Veuillez indiquez si la tâche est terminée ou non"/>
+                            <f:attribute name="requiredTitle"
+                                         value="Champs 'État' invalide"/>
+                        </p:selectBooleanButton>
 
                         <f:facet name="footer">
                             <hr/>

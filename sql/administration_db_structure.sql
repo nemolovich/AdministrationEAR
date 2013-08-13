@@ -189,8 +189,9 @@ CREATE TABLE ROOT.SOFTWARE (
 		name VARCHAR(64),
         version VARCHAR(64),
         license VARCHAR(64),
+        serial_number VARCHAR(64),
+		start_date DATE,
 		editor VARCHAR(64),
-		station_number INTEGER,
         observations VARCHAR(250),
 		sleeping BOOLEAN NOT NULL DEFAULT FALSE,
         CONSTRAINT software_client_id_fk
@@ -212,8 +213,7 @@ CREATE TABLE ROOT.TASK (
 		id_workstation INTEGER,
 		description VARCHAR(250),
         start_date DATE,
-        intended_duration VARCHAR(12),
-		deplacement BOOLEAN DEFAULT FALSE,
+        intended_duration DOUBLE,
 		intervention_type VARCHAR(10),
 		CONSTRAINT intervention_type_ck
 			CHECK(intervention_type IN
@@ -250,7 +250,8 @@ CREATE TABLE ROOT.INTERVENTION (
 		id_task INTEGER NOT NULL,
 		id_facture INTEGER,
         intervention_date DATE,
-		duration VARCHAR(12),
+		duration DOUBLE,
+		deplacement BOOLEAN DEFAULT FALSE,
 		sleeping BOOLEAN NOT NULL DEFAULT FALSE,
 		CONSTRAINT intervention_task_id_fk
 			FOREIGN KEY (id_task)

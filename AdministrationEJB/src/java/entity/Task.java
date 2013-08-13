@@ -24,6 +24,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -39,8 +40,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Task.findAll", query = "SELECT t FROM Task t"),
     @NamedQuery(name = "Task.findById", query = "SELECT t FROM Task t WHERE t.id = :id"),
     @NamedQuery(name = "Task.findByDescription", query = "SELECT t FROM Task t WHERE t.description = :description"),
+    @NamedQuery(name = "Task.findByStartDate", query = "SELECT t FROM Task t WHERE t.startDate = :startDate"),
     @NamedQuery(name = "Task.findByIntendedDuration", query = "SELECT t FROM Task t WHERE t.intendedDuration = :intendedDuration"),
-    @NamedQuery(name = "Task.findByDeplacement", query = "SELECT t FROM Task t WHERE t.deplacement = :deplacement"),
     @NamedQuery(name = "Task.findByInterventionType", query = "SELECT t FROM Task t WHERE t.interventionType = :interventionType"),
     @NamedQuery(name = "Task.findByObservations", query = "SELECT t FROM Task t WHERE t.observations = :observations"),
     @NamedQuery(name = "Task.findBySleeping", query = "SELECT t FROM Task t WHERE t.sleeping = :sleeping")})
@@ -58,11 +59,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @Column(name = "START_DATE")
     @Temporal(TemporalType.DATE)
     private Date startDate=Calendar.getInstance(Locale.FRANCE).getTime();
-    @Size(max = 12)
     @Column(name = "INTENDED_DURATION")
-    private String intendedDuration;
-    @Column(name = "DEPLACEMENT")
-    private Boolean deplacement=false;
+    private Double intendedDuration;
     @Size(max = 10)
     @Column(name = "INTERVENTION_TYPE")
     private String interventionType;
@@ -114,20 +112,12 @@ import javax.xml.bind.annotation.XmlTransient;
         this.startDate = startDate;
     }
 
-    public String getIntendedDuration() {
+    public Double getIntendedDuration() {
         return intendedDuration;
     }
 
-    public void setIntendedDuration(String intendedDuration) {
+    public void setIntendedDuration(Double intendedDuration) {
         this.intendedDuration = intendedDuration;
-    }
-
-    public Boolean getDeplacement() {
-        return deplacement==null?false:deplacement;
-    }
-
-    public void setDeplacement(Boolean deplacement) {
-        this.deplacement = deplacement;
     }
 
     public String getInterventionType() {
@@ -183,13 +173,11 @@ import javax.xml.bind.annotation.XmlTransient;
     }
 
     @XmlTransient
-    public List<Intervention> getInterventionList()
-    {
+    public List<Intervention> getInterventionList() {
         return interventionList;
     }
 
-    public void setInterventionList(List<Intervention> interventionList)
-    {
+    public void setInterventionList(List<Intervention> interventionList) {
         this.interventionList = interventionList;
     }
 
@@ -215,13 +203,13 @@ import javax.xml.bind.annotation.XmlTransient;
 
     public String getFullString()
     {
-        return "entity.Task{" + "id=" + id + ", description=" + description + ", intendedDuration=" + intendedDuration + ", deplacement=" + deplacement + ", interventionType=" + interventionType + ", observations=" + observations + ", sleeping=" + sleeping + ", idWorkstation=" + idWorkstation + ", idUser=" + idUser + ", idClient=" + idClient + '}';
+        return "entity.Task{" + "id=" + id + ", description=" + description + ", startDate=" + startDate + ", intendedDuration=" + intendedDuration + ", interventionType=" + interventionType + ", observations=" + observations + ", sleeping=" + sleeping + ", idWorkstation=" + idWorkstation + ", idUser=" + idUser + ", idClient=" + idClient + ", interventionList=" + interventionList + '}';
     }
 
-    @Override
+        @Override
     public String toString()
     {
         return this.description+" pour la société "+this.idClient;
     }
-
+    
 }

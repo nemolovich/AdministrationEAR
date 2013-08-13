@@ -135,7 +135,8 @@
                                                  icon="ui-icon-pencil"
                                                  style="font-size: 60%;"
                                                  title="Modifier cette société"/>
-                                <p:commandButton action="#{clientView.entityParameter(item)}"
+                                <p:commandButton actionListener="#{clientView.entityParameter(item)}"
+                                                 action="parameters"
                                                  icon="ui-icon-wrench"
                                                  immediate="true"
                                                  ajax="false"

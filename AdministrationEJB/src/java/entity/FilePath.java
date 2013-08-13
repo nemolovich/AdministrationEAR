@@ -35,13 +35,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "FilePath.findAll", query = "SELECT f FROM FilePath f"),
     @NamedQuery(name = "FilePath.findById", query = "SELECT f FROM FilePath f WHERE f.id = :id"),
     @NamedQuery(name = "FilePath.findByFilePath", query = "SELECT f FROM FilePath f WHERE f.filePath = :filePath")})
-public class FilePath implements Serializable {
-    @OneToMany(mappedBy = "idFilePath")
-    private List<Workstation> workstationList;
-    @OneToMany(mappedBy = "idFilePath")
-    private List<Client> clientList;
-    @OneToMany(mappedBy = "idFilePath")
-    private List<CUser> cUserList;
+public class FilePath implements Serializable
+{
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,6 +48,12 @@ public class FilePath implements Serializable {
     @Size(max = 250)
     @Column(name = "FILE_PATH")
     private String filePath="./";
+    @OneToMany(mappedBy = "idFilePath")
+    private List<Workstation> workstationList;
+    @OneToMany(mappedBy = "idFilePath")
+    private List<Client> clientList;
+    @OneToMany(mappedBy = "idFilePath")
+    private List<CUser> cUserList;
     public static final String TEMP_FOLDER="temp";
     public static final String TEXT_FILES_EXTENSIONS="pdf|doc?x|txt|odt";
 

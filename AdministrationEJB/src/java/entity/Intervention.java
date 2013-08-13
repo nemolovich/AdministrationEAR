@@ -19,7 +19,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -34,6 +34,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Intervention.findById", query = "SELECT i FROM Intervention i WHERE i.id = :id"),
     @NamedQuery(name = "Intervention.findByInterventionDate", query = "SELECT i FROM Intervention i WHERE i.interventionDate = :interventionDate"),
     @NamedQuery(name = "Intervention.findByDuration", query = "SELECT i FROM Intervention i WHERE i.duration = :duration"),
+    @NamedQuery(name = "Intervention.findByDeplacement", query = "SELECT i FROM Intervention i WHERE i.deplacement = :deplacement"),
     @NamedQuery(name = "Intervention.findBySleeping", query = "SELECT i FROM Intervention i WHERE i.sleeping = :sleeping")})
 public class Intervention implements Serializable
 {
@@ -46,9 +47,10 @@ public class Intervention implements Serializable
     @Column(name = "INTERVENTION_DATE")
     @Temporal(TemporalType.DATE)
     private Date interventionDate;
-    @Size(max = 12)
     @Column(name = "DURATION")
-    private String duration;
+    private Double duration;
+    @Column(name = "DEPLACEMENT")
+    private Boolean deplacement=false;
     @Column(name = "SLEEPING")
     private Boolean sleeping=false;
     @JoinColumn(name = "ID_TASK", referencedColumnName = "ID")
@@ -81,12 +83,20 @@ public class Intervention implements Serializable
         this.interventionDate = interventionDate;
     }
 
-    public String getDuration() {
+    public Double getDuration() {
         return duration;
     }
 
-    public void setDuration(String duration) {
+    public void setDuration(Double duration) {
         this.duration = duration;
+    }
+
+    public Boolean getDeplacement() {
+        return deplacement;
+    }
+
+    public void setDeplacement(Boolean deplacement) {
+        this.deplacement = deplacement;
     }
 
     public Boolean getSleeping() {
@@ -135,7 +145,7 @@ public class Intervention implements Serializable
 
     public String getFullString()
     {
-        return "entity.Intervention{" + "id=" + id + ", interventionDate=" + interventionDate + ", duration=" + duration + ", sleeping=" + sleeping + ", idTask=" + idTask + ", idFacture=" + idFacture + '}';
+        return "entity.Intervention{" + "id=" + id + ", interventionDate=" + interventionDate + ", duration=" + duration + ", deplacement=" + deplacement + ", sleeping=" + sleeping + ", idTask=" + idTask + ", idFacture=" + idFacture + '}';
     }
 
     @Override

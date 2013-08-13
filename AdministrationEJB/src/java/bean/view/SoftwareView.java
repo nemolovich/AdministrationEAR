@@ -52,9 +52,9 @@ public class SoftwareView extends EntityView<Software, SoftwareFacade>
     public String getDeleteMessage(Software entity)
     {
         return "Vous êtes sur le point de supprimer définitivement"
-                + " ce logiciel ("+entity.toString()
-                + " id="+entity.getId()+"). Cette action est irreversible,"
-                + " êtes-vous certain(e) de vouloir continuer?";
+                + " ce logiciel ("+entity.toString();
+//                + " id="+entity.getId()+"). Cette action est irreversible,"
+//                + " êtes-vous certain(e) de vouloir continuer?";
     }
 
     @Override

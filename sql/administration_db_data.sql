@@ -158,16 +158,15 @@ INSERT INTO ROOT.WORKSTATION
 		'4Go - 2x2Go @ 800MHz', '320Go SEAGATE @ 7200t/m');
 
 INSERT INTO ROOT.SOFTWARE
-		(ID_CLIENT, "NAME", VERSION, LICENSE,
-				EDITOR, STATION_NUMBER) 
+		(ID_CLIENT, "NAME", VERSION, LICENSE, EDITOR) 
 	VALUES (1, 'Microsoft Office 2010', '2010',
-		'With ToolKit', 'Microsoft Corporation ©', 1);
+		'With ToolKit', 'Microsoft Corporation ©');
 
 INSERT INTO ROOT.TASK (ID_CLIENT, ID_USER, ID_WORKSTATION,
 		DESCRIPTION, START_DATE, INTENDED_DURATION,
-		DEPLACEMENT, INTERVENTION_TYPE) 
+		INTERVENTION_TYPE) 
 	VALUES (1, 1, 1, 'Test base de données DERBY pour Admin Services',
-		'2013-08-01', '2 h 00 mins', false, 'LOGICIELLE');
+		'2013-08-01', 2, 'LOGICIELLE');
 
 ------------------------- CLIENT 2 --------------------------
 INSERT INTO ROOT.CLIENT
@@ -250,22 +249,19 @@ INSERT INTO ROOT.WORKSTATION
 
 -------------------------- SOFTWARE -------------------------
 INSERT INTO ROOT.SOFTWARE
-		(ID_CLIENT, "NAME", VERSION, LICENSE,
-				EDITOR, STATION_NUMBER) 
+		(ID_CLIENT, "NAME", VERSION, LICENSE, EDITOR) 
 	VALUES (2, 'Software2', 'version.1.02',
-		'SOFTWARE_LICENCE2', 'Software Corp. ©', 1);
+		'SOFTWARE_LICENCE2', 'Software Corp. ©');
 		
 INSERT INTO ROOT.SOFTWARE
-		(ID_CLIENT, "NAME", VERSION, LICENSE,
-				EDITOR, STATION_NUMBER) 
+		(ID_CLIENT, "NAME", VERSION, LICENSE, EDITOR) 
 	VALUES (2, 'Software3', 'version.1.03',
-		'SOFTWARE_LICENCE3', 'Software Corp. ©', 1);
+		'SOFTWARE_LICENCE3', 'Software Corp. ©');
 		
 INSERT INTO ROOT.SOFTWARE
-		(ID_CLIENT, "NAME", VERSION, LICENSE,
-				EDITOR, STATION_NUMBER) 
+		(ID_CLIENT, "NAME", VERSION, LICENSE, EDITOR) 
 	VALUES (2, 'Software4', 'version.1.04',
-		'SOFTWARE_LICENCE4', 'Software Corp. ©', 1);
+		'SOFTWARE_LICENCE4', 'Software Corp. ©');
 
 
 ------------------------- CLIENT 3 --------------------------
@@ -349,22 +345,19 @@ INSERT INTO ROOT.WORKSTATION
 
 -------------------------- SOFTWARE -------------------------
 INSERT INTO ROOT.SOFTWARE
-		(ID_CLIENT, "NAME", VERSION, LICENSE,
-				EDITOR, STATION_NUMBER) 
+		(ID_CLIENT, "NAME", VERSION, LICENSE, EDITOR) 
 	VALUES (3, 'Software5', 'version.1.05',
-		'SOFTWARE_LICENCE5', 'Software Corp. ©', 1);
+		'SOFTWARE_LICENCE5', 'Software Corp. ©');
 		
 INSERT INTO ROOT.SOFTWARE
-		(ID_CLIENT, "NAME", VERSION, LICENSE,
-				EDITOR, STATION_NUMBER) 
+		(ID_CLIENT, "NAME", VERSION, LICENSE, EDITOR) 
 	VALUES (3, 'Software6', 'version.1.06',
-		'SOFTWARE_LICENCE6', 'Software Corp. ©', 1);
+		'SOFTWARE_LICENCE6', 'Software Corp. ©');
 		
 INSERT INTO ROOT.SOFTWARE
-		(ID_CLIENT, "NAME", VERSION, LICENSE,
-				EDITOR, STATION_NUMBER) 
+		(ID_CLIENT, "NAME", VERSION, LICENSE, EDITOR) 
 	VALUES (3, 'Software7', 'version.1.07',
-		'SOFTWARE_LICENCE7', 'Software Corp. ©', 1);
+		'SOFTWARE_LICENCE7', 'Software Corp. ©');
 
 
 ------------------------- CLIENT 4 --------------------------
@@ -448,22 +441,19 @@ INSERT INTO ROOT.WORKSTATION
 
 -------------------------- SOFTWARE -------------------------
 INSERT INTO ROOT.SOFTWARE
-		(ID_CLIENT, "NAME", VERSION, LICENSE,
-				EDITOR, STATION_NUMBER) 
+		(ID_CLIENT, "NAME", VERSION, LICENSE, EDITOR) 
 	VALUES (4, 'Software8', 'version.1.08',
-		'SOFTWARE_LICENCE8', 'Software Corp. ©', 1);
+		'SOFTWARE_LICENCE8', 'Software Corp. ©');
 		
 INSERT INTO ROOT.SOFTWARE
-		(ID_CLIENT, "NAME", VERSION, LICENSE,
-				EDITOR, STATION_NUMBER) 
+		(ID_CLIENT, "NAME", VERSION, LICENSE, EDITOR) 
 	VALUES (4, 'Software9', 'version.1.09',
-		'SOFTWARE_LICENCE9', 'Software Corp. ©', 1);
+		'SOFTWARE_LICENCE9', 'Software Corp. ©');
 		
 INSERT INTO ROOT.SOFTWARE
-		(ID_CLIENT, "NAME", VERSION, LICENSE,
-				EDITOR, STATION_NUMBER) 
+		(ID_CLIENT, "NAME", VERSION, LICENSE, EDITOR) 
 	VALUES (4, 'Software10', 'version.1.10',
-		'SOFTWARE_LICENCE10', 'Software Corp. ©', 1);
+		'SOFTWARE_LICENCE10', 'Software Corp. ©');
 
 
 ------------------------- CLIENT 5 --------------------------
@@ -547,22 +537,19 @@ INSERT INTO ROOT.WORKSTATION
 
 -------------------------- SOFTWARE -------------------------
 INSERT INTO ROOT.SOFTWARE
-		(ID_CLIENT, "NAME", VERSION, LICENSE,
-				EDITOR, STATION_NUMBER) 
+		(ID_CLIENT, "NAME", VERSION, LICENSE, EDITOR) 
 	VALUES (5, 'Software11', 'version.1.11',
-		'SOFTWARE_LICENCE11', 'Software Corp. ©', 1);
+		'SOFTWARE_LICENCE11', 'Software Corp. ©');
 		
 INSERT INTO ROOT.SOFTWARE
-		(ID_CLIENT, "NAME", VERSION, LICENSE,
-				EDITOR, STATION_NUMBER) 
+		(ID_CLIENT, "NAME", VERSION, LICENSE, EDITOR) 
 	VALUES (5, 'Software12', 'version.1.12',
-		'SOFTWARE_LICENCE12', 'Software Corp. ©', 1);
+		'SOFTWARE_LICENCE12', 'Software Corp. ©');
 		
 INSERT INTO ROOT.SOFTWARE
-		(ID_CLIENT, "NAME", VERSION, LICENSE,
-				EDITOR, STATION_NUMBER) 
+		(ID_CLIENT, "NAME", VERSION, LICENSE, EDITOR) 
 	VALUES (5, 'Software13', 'version.1.13',
-		'SOFTWARE_LICENCE13', 'Software Corp. ©', 1);
+		'SOFTWARE_LICENCE13', 'Software Corp. ©');
 
 
 ------------------------- CLIENT 6 --------------------------
@@ -646,22 +633,19 @@ INSERT INTO ROOT.WORKSTATION
 
 -------------------------- SOFTWARE -------------------------
 INSERT INTO ROOT.SOFTWARE
-		(ID_CLIENT, "NAME", VERSION, LICENSE,
-				EDITOR, STATION_NUMBER) 
+		(ID_CLIENT, "NAME", VERSION, LICENSE, EDITOR) 
 	VALUES (6, 'Software14', 'version.1.14',
-		'SOFTWARE_LICENCE14', 'Software Corp. ©', 1);
+		'SOFTWARE_LICENCE14', 'Software Corp. ©');
 		
 INSERT INTO ROOT.SOFTWARE
-		(ID_CLIENT, "NAME", VERSION, LICENSE,
-				EDITOR, STATION_NUMBER) 
+		(ID_CLIENT, "NAME", VERSION, LICENSE, EDITOR) 
 	VALUES (6, 'Software15', 'version.1.15',
-		'SOFTWARE_LICENCE15', 'Software Corp. ©', 1);
+		'SOFTWARE_LICENCE15', 'Software Corp. ©');
 		
 INSERT INTO ROOT.SOFTWARE
-		(ID_CLIENT, "NAME", VERSION, LICENSE,
-				EDITOR, STATION_NUMBER) 
+		(ID_CLIENT, "NAME", VERSION, LICENSE, EDITOR) 
 	VALUES (6, 'Software16', 'version.1.16',
-		'SOFTWARE_LICENCE16', 'Software Corp. ©', 1);
+		'SOFTWARE_LICENCE16', 'Software Corp. ©');
 
 ------------------- INTERVENTIONS - TASKS -------------------
 -- Insertion des tâches et des interventions
@@ -669,33 +653,33 @@ INSERT INTO ROOT.SOFTWARE
 ----------------------- INTERVENTIONS -----------------------
 INSERT INTO ROOT.TASK (ID_CLIENT, ID_USER, ID_WORKSTATION,
 		DESCRIPTION, START_DATE, INTENDED_DURATION,
-		DEPLACEMENT, INTERVENTION_TYPE) 
+		INTERVENTION_TYPE) 
 	VALUES (2, 2, 2, 'Task description 2',
-		'2013-08-02', '1 h 00 mins', true, 'MATERIELLE');
+		'2013-08-02', 1, 'MATERIELLE');
 
 INSERT INTO ROOT.TASK (ID_CLIENT, ID_USER, ID_WORKSTATION,
 		DESCRIPTION, START_DATE, INTENDED_DURATION,
-		DEPLACEMENT, INTERVENTION_TYPE) 
+		INTERVENTION_TYPE) 
 	VALUES (3, 5, 5, 'Task description 3',
-		'2013-08-03', '1 h 00 mins', true, 'MATERIELLE');
+		'2013-08-03', 1, 'MATERIELLE');
 
 INSERT INTO ROOT.TASK (ID_CLIENT, ID_USER, ID_WORKSTATION,
 		DESCRIPTION, START_DATE, INTENDED_DURATION,
-		DEPLACEMENT, INTERVENTION_TYPE) 
+		INTERVENTION_TYPE) 
 	VALUES (4, 8, 8, 'Task description 4',
-		'2013-08-04', '1 h 00 mins', true, 'MATERIELLE');
+		'2013-08-04', 1, 'MATERIELLE');
 
 INSERT INTO ROOT.TASK (ID_CLIENT, ID_USER, ID_WORKSTATION,
 		DESCRIPTION, START_DATE, INTENDED_DURATION,
-		DEPLACEMENT, INTERVENTION_TYPE) 
+		INTERVENTION_TYPE) 
 	VALUES (5, 11, 11, 'Task description 5',
-		'2013-08-05', '1 h 00 mins', true, 'MATERIELLE');
+		'2013-08-05', 1, 'MATERIELLE');
 
 INSERT INTO ROOT.TASK (ID_CLIENT, ID_USER, ID_WORKSTATION,
 		DESCRIPTION, START_DATE, INTENDED_DURATION,
-		DEPLACEMENT, INTERVENTION_TYPE) 
+		INTERVENTION_TYPE) 
 	VALUES (6, 14, 14, 'Task description 6',
-		'2013-08-06', '1 h 00 mins', true, 'MATERIELLE');
+		'2013-08-06', 1, 'MATERIELLE');
 
 -- File successfully loaded!
 ;

@@ -6,6 +6,7 @@
 package bean.view;
 
 import bean.ApplicationLogger;
+import bean.Utils;
 import bean.facade.TaskFacade;
 import bean.view.periodSelection.EntityPeriodView;
 import entity.Intervention;
@@ -80,27 +81,19 @@ public class TaskView extends EntityPeriodView<Task, TaskFacade>
     
     public String getAccomplishedTime(Task entity)
     {
-        String accomplishedTime="00 h 00 mins";
+        String accomplishedTime=Utils.getTimeFormat(0);
         if(entity.getInterventionList()!=null&&!entity.getInterventionList().isEmpty())
         {
-            int hours=0;
-            int mins=0;
+            double total=.0f;
             for(Intervention intervention:entity.getInterventionList())
             {
-                String duration=intervention.getDuration();
-                if(duration.length()==12&&duration.contains(" h ")&&
-                        duration.contains(" mins"))
+                Double duration=intervention.getDuration();
+                if(duration>=0)
                 {
-                    hours+=Integer.valueOf(duration.substring(0, 2));
-                    mins+=Integer.valueOf(duration.substring(5, 7));
-                    if(mins>=60)
-                    {
-                        mins-=60;
-                        hours+=1;
-                    }
+                    total+=duration;
                 }
             }
-            accomplishedTime=String.format("%02d h %02d mins", hours, mins);
+            accomplishedTime=Utils.getTimeFormat(total);
         }
         return accomplishedTime;
     }

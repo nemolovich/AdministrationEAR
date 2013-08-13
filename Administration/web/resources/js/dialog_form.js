@@ -587,6 +587,31 @@ function switchState(id1,id2,stateS)
     }
 }
 
+function getTimeFormat(value)
+{
+    var h=Math.floor(value);
+    var m=(60*(value-h)).toFixed(0);
+    if(m>=60)
+    {
+        m=59;
+    }
+    var mins=''+m;
+    if(m<10)
+    {
+        mins='0'+m;
+    }
+    if(m>=0&&h>=0)
+    {
+        return h+" h "+mins+" mins";
+    }
+    return "";
+}
+
+function setHTMLSpan(spanId, inputId)
+{
+    $('#'+spanId).html(getTimeFormat($("#"+inputId).val()));
+}
+
 /**
  * Permet de charger les préférences de langue pour les calendriers
  * primefaces <p:calendar>
