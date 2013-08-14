@@ -344,7 +344,6 @@ public class City
         {
             String newValue=City.getPostalCode(
                     City.getNormalizedCity(value).toUpperCase());
-            System.err.println("yes newValue: "+newValue);
             postalCodeInput.setValue(newValue);
         }
         else
@@ -353,7 +352,6 @@ public class City
             if(list!=null&&!list.isEmpty())
             {
                 String newValue=City.getPostalCode(list.get(0));
-                System.err.println("no newValue: "+newValue);
                 postalCodeInput.setValue(newValue);
             }
         }

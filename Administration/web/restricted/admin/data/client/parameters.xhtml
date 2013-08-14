@@ -68,15 +68,15 @@
                                     <p:ajax event="rowSelectCheckbox"
                                             process="@this"
                                             update=":createWorkstationForm
-                                             clientWorkstationList:posteDelete" />
+                                             clientWorkstationList:workstationDelete" />
                                     <p:ajax event="rowUnselectCheckbox"
                                             process="@this"
                                             update=":createWorkstationForm
-                                             clientWorkstationList:posteDelete" />
+                                             clientWorkstationList:workstationDelete" />
                                     <p:ajax event="toggleSelect"
                                             process="@this"
                                             update=":createWorkstationForm
-                                             clientWorkstationList:posteDelete" />
+                                             clientWorkstationList:workstationDelete" />
 
                                     <p:column selectionMode="multiple" style="width:2%">
                                     </p:column>
@@ -145,9 +145,10 @@
                                                              update=":createWorkstationForm"
                                                              actionListener="#{workstationView.entityCreate(clientView.entity)}"
                                                              onclick="createWorstation.show();"/>
-                                            <p:commandButton id="posteDelete"
+                                            <p:commandButton id="workstationDelete"
                                                              value="Supprimer"
                                                              icon="ui-icon-trash"
+                                                             widgetVar="workstationDeleteButton"
                                                              styleClass="red_icon"
                                                              title="Supprimer les postes sélectionnés"
                                                              update=":clientUpdate :growl :clientUpdate:clientTabView:clientWorkstationList @this"
@@ -166,8 +167,10 @@
                                                                      value="#{workstationMultiView.displaySleepingEntities}"
                                                                      styleClass="small_check"
                                                                      style="vertical-align: middle !important;margin-bottom: 5px !important;">  
-                                                <p:ajax update=":clientUpdate"
-                                                        oncomplete="clientWorkstationTable.filter();"
+                                                <p:ajax update="clientWorkstationList:workstationDelete 
+                                                        :clientUpdate:clientTabView:clientWorkstationList"
+                                                        oncomplete="clientWorkstationTable.clearSelection();
+                                                        workstationDeleteButton.disable();forceFilter(clientWorkstationTable);"
                                                         immediate="false"/>
                                                 <script type="text/javascript">
                                                     addTitle("clientUpdate\\:clientTabView\\:clientWorkstationList\\:checkDisplayWorkstationSleeping",
@@ -283,6 +286,7 @@
                                             <p:commandButton id="mailDelete"
                                                              value="Supprimer"
                                                              icon="ui-icon-trash"
+                                                             widgetVar="mailDeleteButton"
                                                              styleClass="red_icon"
                                                              title="Supprimer les adresses mail sélectionnées"
                                                              update=":clientUpdate :growl :clientUpdate:clientTabView:clientMailList @this"
@@ -301,8 +305,10 @@
                                                                      value="#{mailMultiView.displaySleepingEntities}"
                                                                      styleClass="small_check"
                                                                      style="vertical-align: middle !important;margin-bottom: 5px !important;">  
-                                                <p:ajax update=":clientUpdate:clientTabView:clientMailList"
-                                                        oncomplete="forceFilter(clientMailTable);"
+                                                <p:ajax update="clientMailList:mailDelete 
+                                                        :clientUpdate:clientTabView:clientMailList"
+                                                        oncomplete="clientMailTable.clearSelection();
+                                                        mailDeleteButton.disable();forceFilter(clientMailTable);"
                                                         immediate="false"/>
                                                 <script type="text/javascript">
                                                     addTitle("clientUpdate\\:clientTabView\\:clientMailList\\:checkDisplayMailSleeping",
@@ -418,6 +424,7 @@
                                             <p:commandButton id="userDelete"
                                                              value="Supprimer"
                                                              icon="ui-icon-trash"
+                                                             widgetVar="userDeleteButton"
                                                              styleClass="red_icon"
                                                              title="Supprimer les utilisateurs sélectionnés"
                                                              update=":clientUpdate :growl :clientUpdate:clientTabView:clientUserList @this"
@@ -436,8 +443,10 @@
                                                                      value="#{cUserMultiView.displaySleepingEntities}"
                                                                      styleClass="small_check"
                                                                      style="vertical-align: middle !important;margin-bottom: 5px !important;">  
-                                                <p:ajax update=":clientUpdate:clientTabView:clientUserList"
-                                                        oncomplete="forceFilter(clientUserTable);"
+                                                <p:ajax update="clientUserList:userDelete 
+                                                        :clientUpdate:clientTabView:clientUserList"
+                                                        oncomplete="clientUserTable.clearSelection();
+                                                        userDeleteButton.disable();forceFilter(clientUserTable);"
                                                         immediate="false"/>
                                                 <script type="text/javascript">
                                                     addTitle("clientUpdate\\:clientTabView\\:clientUserList\\:checkDisplayUserSleeping",
@@ -463,7 +472,7 @@
                                              paginatorPosition="bottom"
                                              emptyMessage="Aucun logiciel n'a été trouvé"
                                              rowStyleClass="#{software.sleeping?'sleeping_elmt':null}"
-                                             value="#{softwareMultiView.getData(clientView.entity.CUserList)}"
+                                             value="#{softwareMultiView.getData(clientView.entity.softwareList)}"
                                              paginator="true"
                                              rows="#{utils.maxDataRows}"
                                              sortBy="#{software.id}"
@@ -494,89 +503,92 @@
                                         <p:commandButton actionListener="#{softwareView.entityView(software)}"
                                                          icon="ui-icon-search"
                                                          style="font-size: 60%;"
-                                                         title="Détails de cet utilisateur"
-                                                         update=":createUserForm"
-                                                         oncomplete="createUser.show();"/>
-                                        <p:commandButton actionListener="#{cUserView.entityUpdate(cuser)}"
+                                                         title="Détails de ce logiciel"
+                                                         update=":createSoftwareForm"
+                                                         oncomplete="createSoftware.show();"/>
+                                        <p:commandButton actionListener="#{softwareView.entityUpdate(software)}"
                                                          icon="ui-icon-pencil"
                                                          style="font-size: 60%;"
-                                                         title="Modifier cet utilisateur"
-                                                         update=":createUserForm"
-                                                         oncomplete="createUser.show();"/>
-                                        <p:commandButton actionListener="#{cUserView.entityDelete(clientView.entity, cuser)}"
+                                                         title="Modifier ce logiciel"
+                                                         update=":createSoftwareForm"
+                                                         oncomplete="createSoftware.show();"/>
+                                        <p:commandButton actionListener="#{softwareView.entityDelete(clientView.entity, software)}"
                                                          action="javascipt:void(0);"
                                                          icon="ui-icon-trash"
-                                                         oncomplete="forceFilter(clientUserTable);"
-                                                         update=":clientUpdate :growl :clientUpdate:clientTabView:clientUserList"
+                                                         oncomplete="forceFilter(clientSoftwareTable);"
+                                                         update=":clientUpdate :growl :clientUpdate:clientTabView:clientSoftwareList"
                                                          style="font-size: 60%;"
                                                          styleClass="red_icon"
-                                                         onclick="if(!confirm('#{cUserView.getDeleteMessage(cuser)}')){return false;}"
-                                                         title="Supprimer cet utilisateur"/>
+                                                         onclick="if(!confirm('#{softwareView.getDeleteMessage(software)}')){return false;}"
+                                                         title="Supprimer ce logiciel"/>
                                     </p:column>
                                     
-                                    <p:column id="sleepingUserTab"
+                                    <p:column id="sleepingSoftwareTab"
                                               headerText="État"
-                                              sortBy="#{cuser.sleeping}"
+                                              sortBy="#{software.sleeping}"
                                               style="width:2%;">
-                                        <p:commandButton actionListener="#{cUserView.entityWake(clientView.entity,cuser)}"
+                                        <p:commandButton actionListener="#{softwareView.entityWake(clientView.entity,software)}"
                                                          action="javascript:void(0);"
                                                          icon="ui-icon-play"
-                                                         update=":growl :clientUpdate:clientTabView:clientUserList"
+                                                         update=":growl :clientUpdate:clientTabView:clientSoftwareList"
                                                          style="font-size: 60%;float:right;"
                                                          styleClass="blue_icon"
                                                          title="Réactiver cet utilisateur"
-                                                         rendered="#{cuser.sleeping}"/>
-                                        <p:commandButton id="setUserSleepingButton"
-                                                         actionListener="#{cUserView.entitySleep(clientView.entity,cuser)}"
+                                                         rendered="#{software.sleeping}"/>
+                                        <p:commandButton id="setSoftwareSleepingButton"
+                                                         actionListener="#{softwareView.entitySleep(clientView.entity,software)}"
                                                          action="javascript:void(0);"
                                                          icon="ui-icon-pause"
-                                                         oncomplete="clientUserTable.filter();"
-                                                         update=":growl :clientUpdate:clientTabView:clientUserList"
+                                                         oncomplete="clientSoftwareTable.filter();"
+                                                         update=":growl :clientUpdate:clientTabView:clientSoftwareList"
                                                          style="font-size: 60%;float:right;"
-                                                         onclick="if(!confirm('Voulez vous vraiment mettre cet utilisateur en standby?\n'+
+                                                         onclick="if(!confirm('Voulez vous vraiment mettre ce logiciel en standby?\n'+
                                                                         '(Vous pourrez le réactiver quand vous le souhaitez)'))
                                                                            {return false;}"
                                                          styleClass="red_icon"
-                                                         title="Mettre en standby cet utilisateur"
-                                                         rendered="#{not cuser.sleeping}"/>
+                                                         title="Mettre en standby ce logiciel"
+                                                         rendered="#{not software.sleeping}"/>
                                     </p:column>
                                     
                                     <f:facet name="footer">
                                         <p:outputPanel style="float:left">
-                                            <p:commandButton value="Ajouter un utilisateur"
+                                            <p:commandButton value="Ajouter un logiciel"
                                                              icon="ui-icon-circle-plus"
                                                              styleClass="green_icon"
-                                                             title="Ajouter un utilisateur à cette société"
-                                                             update=":createUserForm"
-                                                             actionListener="#{cUserView.entityCreate(clientView.entity)}"
-                                                             onclick="createUser.show();"/>
-                                            <p:commandButton id="userDelete"
+                                                             title="Ajouter un logiciel à cette société"
+                                                             update=":createSoftwareForm"
+                                                             actionListener="#{softwareView.entityCreate(clientView.entity)}"
+                                                             onclick="createSoftware.show();"/>
+                                            <p:commandButton id="softwareDelete"
                                                              value="Supprimer"
                                                              icon="ui-icon-trash"
+                                                             widgetVar="softwareDeleteButton"
                                                              styleClass="red_icon"
-                                                             title="Supprimer les utilisateurs sélectionnés"
-                                                             update=":clientUpdate :growl :clientUpdate:clientTabView:clientUserList @this"
-                                                             disabled="#{cUserMultiView.emptySelection}"
-                                                             actionListener="#{cUserView.remove(clientView.entity,
-                                                                               cUserMultiView.multiSelection)}"
-                                                             oncomplete="if(#{cUserMultiView.checkEmptySelection()}!='true'){
-                                                                    forceFilter(clientUserTable);}"
-                                                             onclick="if(#{cUserMultiView.emptySelection})
+                                                             title="Supprimer les logiciels sélectionnés"
+                                                             update=":clientUpdate :growl :clientUpdate:clientTabView:clientSoftwareList @this"
+                                                             disabled="#{softwareMultiView.emptySelection}"
+                                                             actionListener="#{softwareView.remove(clientView.entity,
+                                                                               softwareMultiView.multiSelection)}"
+                                                             oncomplete="if(#{softwareMultiView.checkEmptySelection()}!='true'){
+                                                                    forceFilter(clientSoftwareTable);}"
+                                                             onclick="if(#{softwareMultiView.emptySelection})
                                                                 {return false;}
-                                                                else{if(!confirm('#{cUserView.deleteMessages(cUserMultiView.multiSelectionCast)}')){return false;}}"/>
-                                            <p:outputLabel for="checkDisplayUserSleeping"
+                                                                else{if(!confirm('#{softwareView.deleteMessages(softwareMultiView.multiSelectionCast)}')){return false;}}"/>
+                                            <p:outputLabel for="checkDisplaySoftwareSleeping"
                                                            value="Afficher tout"
                                                            style="font-size:75%;margin-bottom: 10px !important;margin-left: 10px;"/>
-                                            <p:selectBooleanCheckbox id="checkDisplayUserSleeping"
-                                                                     value="#{cUserMultiView.displaySleepingEntities}"
+                                            <p:selectBooleanCheckbox id="checkDisplaySoftwareSleeping"
+                                                                     value="#{softwareMultiView.displaySleepingEntities}"
                                                                      styleClass="small_check"
                                                                      style="vertical-align: middle !important;margin-bottom: 5px !important;">  
-                                                <p:ajax update=":clientUpdate:clientTabView:clientUserList"
-                                                        oncomplete="forceFilter(clientUserTable);"
+                                                <p:ajax update="clientSoftwareList:softwareDelete 
+                                                        :clientUpdate:clientTabView:clientSoftwareList"
+                                                        oncomplete="clientSoftwareTable.clearSelection();
+                                                        softwareDeleteButton.disable();forceFilter(clientSoftwareTable);"
                                                         immediate="false"/>
                                                 <script type="text/javascript">
-                                                    addTitle("clientUpdate\\:clientTabView\\:clientUserList\\:checkDisplayUserSleeping",
-                                                             "Affiche les utilisateurs en sommeil en plus de ceux actifs");
+                                                    addTitle("clientUpdate\\:clientTabView\\:clientSoftwareList\\:checkDisplaySoftwareSleeping",
+                                                             "Affiche les logiciels en sommeil en plus de ceux actifs");
                                                 </script>
                                             </p:selectBooleanCheckbox>
                                         </p:outputPanel>
@@ -585,7 +597,7 @@
                                 <script type="text/javascript">
                                     $(document).ready(function()
                                     {
-                                        forceFilter(clientUserTable);
+                                        forceFilter(clientSoftwareTable);
                                     });
                                 </script>
                             </p:tab>

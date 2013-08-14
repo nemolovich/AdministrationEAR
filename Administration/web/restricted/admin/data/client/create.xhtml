@@ -44,7 +44,8 @@
                                         <br />
                                         (<span class="red-star">*</span>: champs requis)
                                     </p>
-                                    <h:panelGrid columns="2" columnClasses="label,fields">
+                                    <h:panelGrid columns="2" columnClasses="label,fields"
+                                                 onkeypress="if(getEnterKey(event)){clientWizard.next();return false;}">
                                         
                                         <p:outputLabel value="Nom de la société" for="name"
                                                        styleClass="required"/>
@@ -151,6 +152,13 @@
                                                          title="Type d'interventions"
                                                          styleClass="textarea_min"
                                                          rows="4"/>
+                                        
+                                        <script type="text/javascript">
+                                            $(document).ready(function()
+                                            {
+                                                addRedStarsTorequiredFields();
+                                            });
+                                        </script>
                                     
                                     </h:panelGrid>
                                 </p:fieldset>
@@ -165,7 +173,8 @@
                                     <tr>
                                         <td style="vertical-align: top !important;">
                                             <p:fieldset legend="Tarifs">
-                                                <h:panelGrid columns="3" columnClasses="label,fields,label">
+                                                <h:panelGrid columns="3" columnClasses="label,fields,label"
+                                                             onkeypress="if(getEnterKey(event)){clientWizard.next();return false;}">
 
                                                     <p:outputLabel value="Tarif d'intervention:" for="tarif" />
                                                     <p:inputText id="tarif" value="#{clientView.entity.tarif}" maxlength="20"
@@ -181,7 +190,8 @@
                                             </p:fieldset>
                                             <p:fieldset legend="Connexion internet">
                                                 
-                                                <h:panelGrid columns="2" style="width:100%;">
+                                                <h:panelGrid columns="2" style="width:100%;"
+                                                             onkeypress="if(getEnterKey(event)){clientWizard.next();return false;}">
                                                     
                                                     <h:panelGrid columns="2" columnClasses="label,fields">
                                                         
@@ -200,7 +210,8 @@
                                                     </h:panelGrid>
                                                     
                                                     <h:panelGrid columns="2" columnClasses="label,fields"
-                                                                 style="margin-left: 30px;">
+                                                                 style="margin-left: 30px;"
+                                                                 onkeypress="if(getEnterKey(event)){clientWizard.next();return false;}">
                                                         
                                                             <p:outputLabel value="Adresse DNS:" for="internet_dns"/>
                                                             <p:inputText id="internet_dns" value="#{clientView.entity.internetDns}"

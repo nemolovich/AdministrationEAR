@@ -385,7 +385,6 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> extends EntitySl
                 File.separator+FilePath.TEMP_FOLDER;
         FilePath filePath=this.filePathFacade.getFilePath(tempFolder);
         boolean create=false;
-        ApplicationLogger.writeError("filePath: "+filePath, null);
         if(filePath==null)
         {
             filePath=new FilePath(tempFolder);

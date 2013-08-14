@@ -200,7 +200,7 @@ public class Software implements Serializable
     
     @Override
     public String toString() {
-        return this.name+" [v"+this.version+" by "+this.editor+"]";
+        return this.name+" ["+this.version+" by "+this.editor+"]";
     }
     
 }

@@ -84,7 +84,6 @@ public class FileUploadController
     
     public void handleFileUpload(FileUploadEvent event)
     {
-        System.err.println("path: "+this.defaultPath);
         UploadedFile file = event.getFile();
         if(this.defaultPath==null)
         {

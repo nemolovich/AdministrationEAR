@@ -20,7 +20,12 @@
     </h:head>
 
     <h:body>
-        <p:ajaxStatus widgetVar="ajaxStatusVar" onstart="startAjax();" onsuccess="statusDialog.hide();"/>
+        <p:commandButton id="closeAjax"
+                         icon="ui-icon-closethick"
+                         title="Cacher la page de chargement"
+                         onclick="stopAjax();"/>
+        
+        <p:ajaxStatus widgetVar="ajaxStatusVar" onstart="startAjax();" onsuccess="stopAjax();"/>
 
         <p:dialog id="ajaxStatus"
                   modal="true"
@@ -48,7 +53,7 @@
             <p:ajax event="toggle"
                     listener="#{userLogin.handleToggle}"/>
             <p:layoutUnit id="header"
-                          size="90"
+                          size="92"
                           position="north"
                           resizable="false"
                           collapsible="false">
@@ -90,7 +95,6 @@
                 $(document).ready(function()
                 {
                     addExpandableButton("menu_right", "taskMenuDataDialog");
-                    addRedStarsTorequiredFields();
                 });
             </script>
             <p:layoutUnit id="content_panel"

@@ -23,6 +23,7 @@ function startAjax()
     if(displayAjaxStatus)
     {
         statusDialog.show();
+        $('#closeAjax').css('display','block');
     }
 }
 
@@ -32,9 +33,11 @@ function startAjax()
  */
 function stopAjax()
 {
-    if(typeof statusDialog != 'undefined')
+    if(typeof(statusDialog) !== "undefined")
     {
         statusDialog.hide();
+        $('#ajaxStatus_modal').css('display','none');
+        $('#closeAjax').css('display','none');
     }
 }
 
@@ -124,6 +127,20 @@ function handleEvent(item, event)
         item.hide();
         displayAjaxStatus=true;
     }
+}
+
+/**
+ * Renvoi vrai si la touche pressée est la touche ENTER
+ * @param {keyboardEvents} event - L'évènement à récupérer
+ * @returns {Boolean} - Vrai si la touche pressée est ENTER
+ */
+function getEnterKey(event)
+{
+    if(event.keyCode===13)
+    {
+        return true;
+    }
+    return false;
 }
 
 /**
@@ -285,13 +302,13 @@ function getNavigatorHeight()
  */
 function forceFilter(table)
 {
-    if(typeof( window[table] ) === "undefined")
+    if(typeof( table ) === "undefined")
     {
         return;
     }
     if(table.filter()===undefined)
     {
-        if(debug===true)
+        if(debug)
         {
             console.log('Force filter for table with id="'+table.jqId.replace(/\\/,'')+'"');
         }
@@ -599,6 +616,11 @@ function switchState(id1,id2,stateS)
     }
 }
 
+/**
+ * Renvoi l'apperçu en heures et minutes d'un temps exprimé en réels
+ * @param {Number} value - Valeur réelle
+ * @returns {String} - Apperçu en heures et minutes
+ */
 function getTimeFormat(value)
 {
     var h=Math.floor(value);
@@ -619,6 +641,13 @@ function getTimeFormat(value)
     return "";
 }
 
+/**
+ * Modifie le contenu d'un élément (<span> ou autre) depuis son identifiant
+ * en prenant le contenu d'un champs input (<([ph]*:)input((Text)*)>)
+ * @param {String} spanId - Identifiant de l'élément à changer
+ * @param {type} inputId - Identifiant du champs <input>
+ * @returns {void}
+ */
 function setHTMLSpan(spanId, inputId)
 {
     $('#'+spanId).html(getTimeFormat($("#"+inputId).val()));

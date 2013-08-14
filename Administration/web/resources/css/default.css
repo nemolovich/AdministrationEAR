@@ -748,3 +748,39 @@ TABLE.infos_header
     -webkit-box-shadow:         none;
     -moz-box-shadow:            none;
 }
+
+#closeAjax
+{
+    background:                 0 !important;
+    display:                    none;
+    width:                      18px !important;
+    height:                     18px !important;
+    position:                   fixed !important;
+    top:                        2px !important;
+    right:                      2px !important;
+    font-weight:                bold !important;
+    color:                      #FFFFFF !important;
+    padding:                    0 !important;
+    vertical-align:             top !important;
+    border:                     none !important;
+    border-radius:              10px !important;
+    -webkit-border-radius:      10px !important;
+    -moz-border-radius:         10px !important;
+    box-shadow:                 none;
+    -webkit-box-shadow:         none;
+    -moz-box-shadow:            none;
+    z-index:                    1111 !important;
+    cursor:                     pointer !important;
+}
+
+#closeAjax:hover
+{
+    background-color:           rgba(255,0,0,0.4) !important;
+}
+
+#closeAjax:active,
+#closeAjax:hover:active,
+#closeAjax:focus:active
+{
+    background-color:           rgba(255,0,0,0.8) !important;
+}

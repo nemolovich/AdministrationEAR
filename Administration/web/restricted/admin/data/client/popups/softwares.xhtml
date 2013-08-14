@@ -23,6 +23,11 @@
                     
                     <p:outputLabel value="Nom:" 
                                    for="sname"/>
+                    <h:outputText id="snameV" 
+                                  value="#{softwareView.entity.name}" 
+                                  title="Nom du logiciel"
+                                  rendered="#{not softwareView.creating and
+                                              not softwareView.editing}"/>
                     <p:inputText id="sname" 
                                  value="#{softwareView.entity.name}" 
                                  title="Nom du logiciel"
@@ -31,6 +36,11 @@
                     
                     <p:outputLabel value="Version:" 
                                    for="sversion"/>
+                    <h:outputText id="sversionV" 
+                                  value="#{softwareView.entity.version}" 
+                                  title="Version du logiciel"
+                                  rendered="#{not softwareView.creating and
+                                              not softwareView.editing}"/>
                     <p:inputText id="sversion" 
                                  value="#{softwareView.entity.version}" 
                                  title="Version du logiciel"
@@ -39,6 +49,11 @@
                     
                     <p:outputLabel value="Licence:" 
                                    for="slicense"/>
+                    <h:outputText id="slicenseV" 
+                                  value="#{softwareView.entity.license}" 
+                                  title="Numéro de licence"
+                                  rendered="#{not softwareView.creating and
+                                              not softwareView.editing}"/>
                     <p:inputText id="slicense" 
                                  value="#{softwareView.entity.license}" 
                                  title="Numéro de licence"
@@ -47,6 +62,11 @@
                     
                     <p:outputLabel value="Editeur:" 
                                    for="seditor"/>
+                    <h:outputText id="seditorV" 
+                                  value="#{softwareView.entity.editor}" 
+                                  title="Editeur du logiciel"
+                                  rendered="#{not softwareView.creating and
+                                              not softwareView.editing}"/>
                     <p:inputText id="seditor" 
                                  value="#{softwareView.entity.editor}" 
                                  title="Editeur du logiciel"
@@ -55,6 +75,11 @@
                     
                     <p:outputLabel value="Numéro de série:" 
                                    for="sserialNumber"/>
+                    <h:outputText id="sserialNumberV" 
+                                  value="#{softwareView.entity.serialNumber}" 
+                                  title="Numéro de série du logiciel"
+                                  rendered="#{not softwareView.creating and
+                                              not softwareView.editing}"/>
                     <p:inputText id="sserialNumber" 
                                  value="#{softwareView.entity.serialNumber}" 
                                  title="Numéro de série du logiciel"
@@ -63,16 +88,28 @@
                     
                     <p:outputLabel value="Date de mise en service:" 
                                    for="sstartDate"/>
-                    <p:inputText id="sstartDate" 
+                    <h:outputText id="sstartDateV" 
+                                  value="#{softwareView.entity.startDate}" 
+                                  title="Date de mise en service du logiciel"
+                                  rendered="#{not softwareView.creating and
+                                              not softwareView.editing}"/>
+                    <p:inputMask id="sstartDate" mask="99/99/9999"
                                  value="#{softwareView.entity.startDate}" 
                                  title="Date de mise en service du logiciel"
                                  rendered="#{softwareView.creating or
                                              softwareView.editing}">
-                        <f:convertDateTime pattern="MM/dd/yyyy" />
-                    </p:inputText>
+                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                    </p:inputMask>
                     
                     <p:outputLabel value="Observations:" 
                                    for="sobservations"/>
+                    <h:inputTextarea id="sobservationsV" 
+                                     value="#{softwareView.entity.observations}" 
+                                     title="Observations"
+                                     readonly="true"
+                                     styleClass="textarea_min"
+                                     rendered="#{not softwareView.creating and
+                                                 not softwareView.editing}"/>
                     <h:inputTextarea id="sobservations" 
                                      value="#{softwareView.entity.observations}" 
                                      title="Observations"
@@ -93,7 +130,7 @@
                                      icon="ui-icon-check"
                                      update=":clientUpdate :growl :createSoftwareForm"
                                      styleClass="green_icon"
-                                     oncomplete="createRequest(createSoftware, xhr, status, args);forceFilter(createSoftwareTable);"
+                                     oncomplete="createRequest(createSoftware, xhr, status, args);forceFilter(clientSoftwareTable);"
                                      />
                     <p:commandButton id="backCreateSoftware" value="Annuler"
                                      title="Annuler la création"
