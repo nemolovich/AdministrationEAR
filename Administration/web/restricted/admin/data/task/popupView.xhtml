@@ -95,8 +95,8 @@
                                              readonly="true"
                                              styleClass="textarea_min"
                                              ondblclick="this.focus();this.select();"
-                                            rendered="#{not taskView.creating and
-                                                        not taskView.editing}">
+                                             rendered="#{not taskView.creating and
+                                                         not taskView.editing}">
                             </h:inputTextarea>
                             <p:selectOneMenu id="ptidWorkstationFull"
                                              value="#{taskView.entityPopup.idWorkstation}"
@@ -127,7 +127,8 @@
                                              oncomplete="displayBlock('taskViewForm\\:tworkstationDetails');"
                                              action="javascript:void(0);"
                                              title="Afficher les détails du poste de travail"
-                                             rendered="#{not empty taskView.entityPopup.idWorkstation}"/>
+                                             rendered="#{taskView.creating or taskView.editing or
+                                                         not empty taskView.entityPopup.idWorkstation}"/>
                             
                         </p:outputPanel>
 
@@ -165,20 +166,21 @@
                                              oncomplete="displayBlock('taskViewForm\\:tcuserDetails');"
                                              action="javascript:void(0);"
                                              title="Afficher les détails de l'utilisateur"
-                                             rendered="#{not empty taskView.entityPopup.idUser}"/>
+                                             rendered="#{taskView.creating or taskView.editing or
+                                                         not empty taskView.entityPopup.idUser}"/>
                         </p:outputPanel>
 
                         <h:outputLabel value="Date de début:" for="ptstartDate"
                                        styleClass="#{(taskView.creating or
                                                      taskView.editing)?'required':''}"/>
                         <h:outputText id="ptstartDateV" value="#{taskView.entityPopup.startDate}"
-                                      title="Date de début prévue de l'intervention"
+                                      title="Date de début prévue pour l'intervention"
                                       rendered="#{not taskView.creating and
                                                   not taskView.editing}">
                             <f:convertDateTime pattern="dd/MM/yyyy" />
                         </h:outputText>
                         <p:calendar id="ptstartDate" value="#{taskView.entityPopup.startDate}"
-                                     title="Date de prévue pour l'intervention"
+                                     title="Date de début prévue pour l'intervention"
                                      disabledWeekends="false"
                                      effect="slideDown"
                                      locale="fr"

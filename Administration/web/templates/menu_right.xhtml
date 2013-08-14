@@ -199,11 +199,12 @@
                         switchState('',
                                     'taskMenuDataForm\\:Sep1ContextMenu',
                                     '#{taskView.entity.sleeping}');
+                        stopAjax();
                     </script>
                 </p:outputPanel>
                 <p:contextMenu id="taskContextMenu"
                                style="width:200px;margin:auto;padding:auto;"
-                               for="taskMenuDataTable">  
+                               for="taskMenuDataTable">
                     <p:menuitem value="Afficher"
                                 title="Affiche les détails de cette tâche"
                                 update=":taskMenuViewPopup :taskMenuDialogHeader :taskViewForm"
@@ -283,6 +284,7 @@
                     
                     <p:ajax event="contextMenu"
                             process="@this"
+                            onstart="startAjax();"
                             update=":taskMenuDataForm:deleteMessageScript"/>
                     <p:ajax event="rowDblselect"
                             update=":taskMenuViewPopup :taskMenuDialogHeader :taskViewForm"

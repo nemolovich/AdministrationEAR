@@ -16,13 +16,25 @@ var displayAjaxStatus=true;
 
 /**
  * Affiche une fenêtre modale pour le chargement des requêtes ajax
- * @returns {undefined}
+ * @returns {void}
  */
 function startAjax()
 {
     if(displayAjaxStatus)
     {
         statusDialog.show();
+    }
+}
+
+/**
+ * Ferme la fenêtre modale pour le chargement des requêtes ajax
+ * @returns {void}
+ */
+function stopAjax()
+{
+    if(typeof statusDialog != 'undefined')
+    {
+        statusDialog.hide();
     }
 }
 

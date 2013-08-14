@@ -19,6 +19,7 @@
                 <ui:include src="/restricted/admin/data/client/popups/workstations.xhtml"/>
                 <ui:include src="/restricted/admin/data/client/popups/mails.xhtml"/>
                 <ui:include src="/restricted/admin/data/client/popups/cusers.xhtml"/>
+                <ui:include src="/restricted/admin/data/client/popups/softwares.xhtml"/>
                 <f:view>
                     <h:form id="clientUpdate" enctype="multipart/form-data">
                         
@@ -455,9 +456,138 @@
                             </p:tab>
                             
                             <p:tab id="softwares" title="Logiciels">
-                                <p:fieldset legend="Logiciels">
-                                    Logiciels
-                                </p:fieldset>
+                                <p:dataTable id="clientSoftwareList"
+                                             var="software"
+                                             widgetVar="clientSoftwareTable"
+                                             rowIndexVar="index"
+                                             paginatorPosition="bottom"
+                                             emptyMessage="Aucun logiciel n'a été trouvé"
+                                             rowStyleClass="#{software.sleeping?'sleeping_elmt':null}"
+                                             value="#{softwareMultiView.getData(clientView.entity.CUserList)}"
+                                             paginator="true"
+                                             rows="#{utils.maxDataRows}"
+                                             sortBy="#{software.id}"
+                                             filteredValue="#{softwareMultiView.filteredEntities}"
+                                             selection="#{softwareMultiView.multiSelection}">
+                                    
+                                    <p:ajax event="rowSelectCheckbox"
+                                            process="@this"
+                                            update=":createSoftwareForm
+                                             clientSoftwareList:softwareDelete" />
+                                    <p:ajax event="rowUnselectCheckbox"
+                                            process="@this"
+                                            update=":createSoftwareForm
+                                             clientSoftwareList:softwareDelete" />
+                                    <p:ajax event="toggleSelect"
+                                            process="@this"
+                                            update=":createSoftwareForm
+                                             clientSoftwareList:softwareDelete" />
+
+                                    <p:column selectionMode="multiple" style="width:2%">
+                                    </p:column>
+
+                                    <p:column headerText="Détails" style="width:100%;">
+                                        <h:outputText value="#{software.toString()}"/>
+                                    </p:column>
+                                    
+                                    <p:column headerText="Actions" style="white-space: nowrap;">
+                                        <p:commandButton actionListener="#{softwareView.entityView(software)}"
+                                                         icon="ui-icon-search"
+                                                         style="font-size: 60%;"
+                                                         title="Détails de cet utilisateur"
+                                                         update=":createUserForm"
+                                                         oncomplete="createUser.show();"/>
+                                        <p:commandButton actionListener="#{cUserView.entityUpdate(cuser)}"
+                                                         icon="ui-icon-pencil"
+                                                         style="font-size: 60%;"
+                                                         title="Modifier cet utilisateur"
+                                                         update=":createUserForm"
+                                                         oncomplete="createUser.show();"/>
+                                        <p:commandButton actionListener="#{cUserView.entityDelete(clientView.entity, cuser)}"
+                                                         action="javascipt:void(0);"
+                                                         icon="ui-icon-trash"
+                                                         oncomplete="forceFilter(clientUserTable);"
+                                                         update=":clientUpdate :growl :clientUpdate:clientTabView:clientUserList"
+                                                         style="font-size: 60%;"
+                                                         styleClass="red_icon"
+                                                         onclick="if(!confirm('#{cUserView.getDeleteMessage(cuser)}')){return false;}"
+                                                         title="Supprimer cet utilisateur"/>
+                                    </p:column>
+                                    
+                                    <p:column id="sleepingUserTab"
+                                              headerText="État"
+                                              sortBy="#{cuser.sleeping}"
+                                              style="width:2%;">
+                                        <p:commandButton actionListener="#{cUserView.entityWake(clientView.entity,cuser)}"
+                                                         action="javascript:void(0);"
+                                                         icon="ui-icon-play"
+                                                         update=":growl :clientUpdate:clientTabView:clientUserList"
+                                                         style="font-size: 60%;float:right;"
+                                                         styleClass="blue_icon"
+                                                         title="Réactiver cet utilisateur"
+                                                         rendered="#{cuser.sleeping}"/>
+                                        <p:commandButton id="setUserSleepingButton"
+                                                         actionListener="#{cUserView.entitySleep(clientView.entity,cuser)}"
+                                                         action="javascript:void(0);"
+                                                         icon="ui-icon-pause"
+                                                         oncomplete="clientUserTable.filter();"
+                                                         update=":growl :clientUpdate:clientTabView:clientUserList"
+                                                         style="font-size: 60%;float:right;"
+                                                         onclick="if(!confirm('Voulez vous vraiment mettre cet utilisateur en standby?\n'+
+                                                                        '(Vous pourrez le réactiver quand vous le souhaitez)'))
+                                                                           {return false;}"
+                                                         styleClass="red_icon"
+                                                         title="Mettre en standby cet utilisateur"
+                                                         rendered="#{not cuser.sleeping}"/>
+                                    </p:column>
+                                    
+                                    <f:facet name="footer">
+                                        <p:outputPanel style="float:left">
+                                            <p:commandButton value="Ajouter un utilisateur"
+                                                             icon="ui-icon-circle-plus"
+                                                             styleClass="green_icon"
+                                                             title="Ajouter un utilisateur à cette société"
+                                                             update=":createUserForm"
+                                                             actionListener="#{cUserView.entityCreate(clientView.entity)}"
+                                                             onclick="createUser.show();"/>
+                                            <p:commandButton id="userDelete"
+                                                             value="Supprimer"
+                                                             icon="ui-icon-trash"
+                                                             styleClass="red_icon"
+                                                             title="Supprimer les utilisateurs sélectionnés"
+                                                             update=":clientUpdate :growl :clientUpdate:clientTabView:clientUserList @this"
+                                                             disabled="#{cUserMultiView.emptySelection}"
+                                                             actionListener="#{cUserView.remove(clientView.entity,
+                                                                               cUserMultiView.multiSelection)}"
+                                                             oncomplete="if(#{cUserMultiView.checkEmptySelection()}!='true'){
+                                                                    forceFilter(clientUserTable);}"
+                                                             onclick="if(#{cUserMultiView.emptySelection})
+                                                                {return false;}
+                                                                else{if(!confirm('#{cUserView.deleteMessages(cUserMultiView.multiSelectionCast)}')){return false;}}"/>
+                                            <p:outputLabel for="checkDisplayUserSleeping"
+                                                           value="Afficher tout"
+                                                           style="font-size:75%;margin-bottom: 10px !important;margin-left: 10px;"/>
+                                            <p:selectBooleanCheckbox id="checkDisplayUserSleeping"
+                                                                     value="#{cUserMultiView.displaySleepingEntities}"
+                                                                     styleClass="small_check"
+                                                                     style="vertical-align: middle !important;margin-bottom: 5px !important;">  
+                                                <p:ajax update=":clientUpdate:clientTabView:clientUserList"
+                                                        oncomplete="forceFilter(clientUserTable);"
+                                                        immediate="false"/>
+                                                <script type="text/javascript">
+                                                    addTitle("clientUpdate\\:clientTabView\\:clientUserList\\:checkDisplayUserSleeping",
+                                                             "Affiche les utilisateurs en sommeil en plus de ceux actifs");
+                                                </script>
+                                            </p:selectBooleanCheckbox>
+                                        </p:outputPanel>
+                                    </f:facet>
+                                </p:dataTable>
+                                <script type="text/javascript">
+                                    $(document).ready(function()
+                                    {
+                                        forceFilter(clientUserTable);
+                                    });
+                                </script>
                             </p:tab>
                             
                             <p:tab id="files" title="Fichiers">

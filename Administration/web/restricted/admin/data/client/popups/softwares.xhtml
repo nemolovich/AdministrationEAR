@@ -1,0 +1,167 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <p:dialog id="dialogSoftware"
+                  appendToBody="true"
+                  header="Fenêtre de software"
+                  widgetVar="createSoftware"
+                  resizable="false"
+                  draggable="true"
+                  modal="true"
+                  showEffect="clip"
+                  hideEffect="clip">
+            <h:form id="createSoftwareForm">
+                <h:panelGrid columns="2" columnClasses="label,fields"
+                             rendered="#{not empty softwareView.entity}">
+                    
+                    <p:outputLabel value="Nom:" 
+                                   for="sname"/>
+                    <p:inputText id="sname" 
+                                 value="#{softwareView.entity.name}" 
+                                 title="Nom du logiciel"
+                                 rendered="#{softwareView.creating or
+                                             softwareView.editing}"/>
+                    
+                    <p:outputLabel value="Version:" 
+                                   for="sversion"/>
+                    <p:inputText id="sversion" 
+                                 value="#{softwareView.entity.version}" 
+                                 title="Version du logiciel"
+                                 rendered="#{softwareView.creating or
+                                             softwareView.editing}"/>
+                    
+                    <p:outputLabel value="Licence:" 
+                                   for="slicense"/>
+                    <p:inputText id="slicense" 
+                                 value="#{softwareView.entity.license}" 
+                                 title="Numéro de licence"
+                                 rendered="#{softwareView.creating or
+                                             softwareView.editing}"/>
+                    
+                    <p:outputLabel value="Editeur:" 
+                                   for="seditor"/>
+                    <p:inputText id="seditor" 
+                                 value="#{softwareView.entity.editor}" 
+                                 title="Editeur du logiciel"
+                                 rendered="#{softwareView.creating or
+                                             softwareView.editing}"/>
+                    
+                    <p:outputLabel value="Numéro de série:" 
+                                   for="sserialNumber"/>
+                    <p:inputText id="sserialNumber" 
+                                 value="#{softwareView.entity.serialNumber}" 
+                                 title="Numéro de série du logiciel"
+                                 rendered="#{softwareView.creating or
+                                             softwareView.editing}"/>
+                    
+                    <p:outputLabel value="Date de mise en service:" 
+                                   for="sstartDate"/>
+                    <p:inputText id="sstartDate" 
+                                 value="#{softwareView.entity.startDate}" 
+                                 title="Date de mise en service du logiciel"
+                                 rendered="#{softwareView.creating or
+                                             softwareView.editing}">
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </p:inputText>
+                    
+                    <p:outputLabel value="Observations:" 
+                                   for="sobservations"/>
+                    <h:inputTextarea id="sobservations" 
+                                     value="#{softwareView.entity.observations}" 
+                                     title="Observations"
+                                     styleClass="textarea_min"
+                                     rendered="#{softwareView.creating or
+                                                 softwareView.editing}"/>
+                </h:panelGrid>
+                <p:outputPanel rendered="#{softwareView.creating or
+                                           softwareView.editing}">
+                    (<span class="red-star">*</span>: champs requis)<br />
+                </p:outputPanel>
+                <p:outputPanel styleClass="buttons_panel"
+                               rendered="#{softwareView.creating}">
+                    <p:commandButton id="createSoftware" value="Ajouter"
+                                     title="Ajouter ce logiciel à la société"
+                                     type="submit"
+                                     actionListener="#{softwareView.create(clientView.entity)}"
+                                     icon="ui-icon-check"
+                                     update=":clientUpdate :growl :createSoftwareForm"
+                                     styleClass="green_icon"
+                                     oncomplete="createRequest(createSoftware, xhr, status, args);forceFilter(createSoftwareTable);"
+                                     />
+                    <p:commandButton id="backCreateSoftware" value="Annuler"
+                                     title="Annuler la création"
+                                     action="javascript:void(0);"
+                                     styleClass="red_icon"
+                                     type="reset"
+                                     immediate="true"
+                                     ajax="true"
+                                     icon="ui-icon-closethick"
+                                     onclick="createSoftware.hide();"
+                                     />
+                </p:outputPanel>
+                <p:outputPanel styleClass="buttons_panel"
+                               rendered="#{softwareView.editing}">
+                    <p:commandButton  id="updateSoftware" value="Mettre à jour"
+                                     title="Enregistrer les changements"
+                                     type="submit"
+                                     actionListener="#{softwareView.update(clientView.entity)}"
+                                     icon="ui-icon-disk"
+                                     update=":clientUpdate :growl :createSoftwareForm"
+                                     styleClass="green_icon"
+                                     oncomplete="createRequest(createSoftware, xhr, status, args);forceFilter(clientSoftwareTable);"
+                                     />
+                    <p:commandButton id="backEditSoftware" value="Annuler"
+                                     title="Annuler les changements"
+                                     action="javascript:void(0);"
+                                     styleClass="red_icon"
+                                     type="reset"
+                                     immediate="true"
+                                     ajax="true"
+                                     icon="ui-icon-closethick"
+                                     onclick="createSoftware.hide();"
+                                     />
+                </p:outputPanel>
+                <p:outputPanel styleClass="buttons_panel"
+                               rendered="#{not softwareView.creating and 
+                                           not softwareView.editing}">
+                    <center>
+                        <p:commandButton id="backSoftware" value="Fermer"
+                                         title="Fermer la fenêtre"
+                                         action="javascript:void(0);"
+                                         type="reset"
+                                         immediate="true"
+                                         ajax="true"
+                                         onclick="createSoftware.hide();"
+                                         />
+                    </center>
+                </p:outputPanel>
+                <p:outputPanel id="selectionSoftwareError" 
+                               rendered="#{empty softwareView.entity}">
+                    <div class="ui-messages ui-widget">
+                        <div class="ui-messages-error ui-corner-all">
+                            <span class="ui-messages-error-icon"/>
+                            <ul>
+                                <li>
+                                    <span class="ui-messages-error-summary">
+                                        Sélection incorrecte!
+                                        <script type="text/javascript">
+//                                                    createSoftware.hide();
+                                        </script>
+                                    </span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </p:outputPanel>
+            </h:form>
+        </p:dialog>
+    </h:body>
+</html>
+

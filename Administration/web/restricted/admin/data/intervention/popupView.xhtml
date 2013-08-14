@@ -121,8 +121,9 @@
                                              style="font-size: 40%;vertical-align: top !important;margin-left: 10px;"
                                              oncomplete="displayBlock('interventionViewForm\\:iworkstationDetails');"
                                              action="javascript:void(0);"
-                                             title="Afficher les détails du poste de travail"/>
-                            
+                                             title="Afficher les détails du poste de travail"
+                                             rendered="#{taskView.creating or
+                                                         not empty taskView.entityPopup.idWorkstation}"/>
                         </p:outputPanel>
 
                         <h:outputLabel value="Utilisateur:" for="piidUser"/>
@@ -156,20 +157,28 @@
                                              style="font-size: 40%;vertical-align: top !important;margin-left: 10px;"
                                              oncomplete="displayBlock('interventionViewForm\\:icuserDetails');"
                                              action="javascript:void(0);"
-                                             title="Afficher les détails de l'utilisateur"/>
+                                             title="Afficher les détails de l'utilisateur"
+                                             rendered="#{taskView.creating or
+                                                         not empty taskView.entityPopup.idUser}"/>
                         </p:outputPanel>
                         
                         <h:outputLabel value="Date de début prévue:" for="pitstartDateV"
-                                       styleClass="#{(taskView.creating)?'required':''}"
                                        rendered="#{not taskView.creating}"/>
                         <h:outputText id="pitstartDateV" value="#{taskView.entityPopup.startDate}"
-                                      title="Date de début prévue de l'intervention"
+                                      title="Date de début prévue pour l'intervention"
                                       rendered="#{not taskView.creating}">
                             <f:convertDateTime pattern="dd/MM/yyyy" />
                         </h:outputText>
 
                         <h:outputLabel value="Date de début:" for="pistartDate"
-                                       styleClass="required"/>
+                                       styleClass="#{(interventionView.creating or
+                                                     interventionView.editing)?'required':''}"/>
+                        <h:outputText id="pistartDateV" value="#{interventionView.entity.interventionDate}"
+                                      title="Date de début de l'intervention"
+                                      rendered="#{not interventionView.creating and
+                                                  not interventionView.editing}">
+                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                        </h:outputText>
                         <p:calendar id="pistartDate" value="#{interventionView.entity.interventionDate}"
                                     title="Date de l'intervention"
                                      disabledWeekends="false"
@@ -179,7 +188,9 @@
                                      navigator="true"
                                      pattern="dd/MM/yyyy"
                                      showButtonPanel="true"
-                                     widgetVar="startDateCalendar">
+                                     widgetVar="startDateCalendar"
+                                     rendered="#{interventionView.creating or
+                                                 interventionView.editing}">
                             <f:validator binding="#{notNullFieldValidator}"/>
                             <f:attribute name="requiredMessage"
                                          value="Veuillez entrer la date prévue pour l'intervention"/>
@@ -424,7 +435,7 @@
                     <script type="text/javascript">
                         $(document).ready(function()
                         {
-                            if(#{interventionView.creating})
+                            if(#{taskView.creating})
                             {
                                 hideBlock('interventionViewForm\\:displayIclientDetails');
                                 hideBlock('interventionViewForm\\:displayIworkstationDetails');
