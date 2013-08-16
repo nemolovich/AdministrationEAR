@@ -15,16 +15,14 @@
                            rendered="#{userLogin.rights.equalsIgnoreCase(tUserView.admin_Rights)}">
                     <p:menuitem actionListener="#{taskView.entityCreate()}"
                                 immediate="false"
-                                icon="ui-icon-circle-plus"
-                                styleClass="green_icon"
+                                icon="ui-icon-new-task"
                                 update=":taskMenuViewPopup :taskMenuDialogHeader :taskViewForm"
                                 oncomplete="taskMenuViewDialog.show();"
                                 value="Nouvelle tâche"
                                 title="Créer une nouvelle tâche"/>
                     <p:menuitem actionListener="#{interventionView.entityCreate(taskView, true)}"
                                 immediate="false"
-                                icon="ui-icon-circle-plus"
-                                styleClass="green_icon"
+                                icon="ui-icon-new-intervention"
                                 update=":interventionMenuViewPopup :interventionMenuDialogHeader :interventionViewForm"
                                 oncomplete="interventionMenuViewDialog.show();"
                                 value="Nouvelle intervention"
@@ -45,18 +43,18 @@
                     </p:submenu>
                     <p:menuitem outcome="/restricted/admin/data/c_user/list"
                                 value="Liste des utilisateurs"
-                                icon="ui-icon-copy"
+                                icon="ui-icon-cuser"
                                 title="Afficher la liste des utilisateurs"/>
                     <p:menuitem outcome="/restricted/admin/data/intervention/list"
                                 value="Liste des interventions"
-                                icon="ui-icon-copy"
+                                icon="ui-icon-intervention"
                                 title="Afficher la liste des interventions"/>
                 </p:submenu>
                 <p:submenu label="Configurations"
                            rendered="#{userLogin.rights.equalsIgnoreCase(tUserView.admin_Rights) or
                                        userLogin.rights.equalsIgnoreCase(tUserView.user_Rights)}">
                     <p:submenu label="Panneau utilisateur"
-                               icon="ui-icon-arrowreturn-1-e">
+                               icon="ui-icon-tuser-config">
                         <p:menuitem outcome="/restricted/user/user/view"
                                     value="Afficher mon profil"
                                     icon="ui-icon-flag"
@@ -70,7 +68,7 @@
                                     title="Modifier les détails de votre comtpte"/>
                     </p:submenu>
                     <p:submenu label="Panneau administrateur"
-                               icon="ui-icon-arrowreturnthick-1-e"
+                               icon="ui-icon-admin-config"
                                rendered="#{userLogin.rights.equalsIgnoreCase(tUserView.admin_Rights)}">
                         <p:menuitem outcome="/restricted/admin/user/list"
                                     value="Liste des utilisateurs"
@@ -79,8 +77,7 @@
                                     title="Afficher la liste des utilisateurs"/>
                         <p:menuitem action="#{tUserView.entityCreate()}"
                                     value="Ajouter un utilisateur"
-                                    icon="ui-icon-circle-plus"
-                                    styleClass="green_icon"
+                                    icon="ui-icon-new-tuser"
                                     title="Ajouter un utilisateur à la liste"/>
                     </p:submenu>
                 </p:submenu>

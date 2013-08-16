@@ -37,19 +37,19 @@
                                   rendered="#{not cUserView.creating and
                                               not cUserView.editing}"/>
                     
-                    <p:outputLabel value="Numéro de téléphone:" for="udirectphone"/>
+                    <p:outputLabel value="Ligne directe:" for="udirectphone"/>
                     <p:inputMask id="udirectphone" value="#{cUserView.entity.directPhone}" mask="99.99.99.99.99"
-                                 title="Numéro de téléphone de l'utilisateur"
+                                 title="Ligne directe de l'utilisateur"
                                  rendered="#{cUserView.creating or 
                                                 cUserView.editing}">
                         <f:validator binding="#{phonePatternValidator}"/>
                     </p:inputMask>
                     <h:outputText id="udirectphoneV" value="#{cUserView.entity.directPhone}"
-                                  title="Numéro de téléphone de l'utilisateur"
+                                  title="Ligne directe de l'utilisateur"
                                   rendered="#{not cUserView.creating and
                                               not cUserView.editing}"/>
                     
-                    <p:outputLabel value="Poste occupé:" for="uposition"/>
+                    <p:outputLabel value="Fonction:" for="uposition"/>
                     <p:inputText id="uposition" value="#{cUserView.entity.position}"
                                  maxlength="30"
                                  title="Poste occupé par l'utilisateur dans la société"

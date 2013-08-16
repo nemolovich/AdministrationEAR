@@ -126,6 +126,20 @@
                                                  oncomplete="cUserViewDialog.show();"
                                                  action="javascript:void(0);"
                                                  title="Afficher les détails de cet utilisateur"/>
+                                <p:commandButton actionListener="#{taskView.entityCreateFromUser(item)}"
+                                                 icon="ui-icon-new-task"
+                                                 style="font-size: 60%;"
+                                                 update=":taskMenuViewPopup :taskMenuDialogHeader :taskViewForm"
+                                                 oncomplete="taskMenuViewDialog.show();"
+                                                 action="javascript:void(0);"
+                                                 title="Ajouter une tâche pour cet utilisateur"/>
+                                <p:commandButton actionListener="#{interventionView.entityCreateFromUser(taskView,item)}"
+                                                 icon="ui-icon-new-intervention"
+                                                 style="font-size: 60%;"
+                                                 update=":interventionMenuViewPopup :interventionMenuDialogHeader :interventionViewForm"
+                                                 oncomplete="interventionMenuViewDialog.show();"
+                                                 action="javascript:void(0);"
+                                                 title="Ajouter une intervention pour cet utilisateur"/>
                             </p:column>
                             <p:column id="sleepingTab"
                                       headerText="État"

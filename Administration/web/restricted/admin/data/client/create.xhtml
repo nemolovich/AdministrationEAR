@@ -132,6 +132,11 @@
                                         <p:inputMask id="phone" value="#{clientView.entity.phone}" mask="99.99.99.99.99"
                                                      title="Numéro de téléphone de la société">
                                             <f:validator binding="#{phonePatternValidator}"/>
+                                            <f:validator binding="#{notNullFieldValidator}"/>
+                                            <f:attribute name="requiredMessage"
+                                                         value="Le champs 'Téléphone' ne peut être vide"/>
+                                            <f:attribute name="requiredTitle"
+                                                         value="Champs 'Téléphone' vide"/>
                                         </p:inputMask>
 
                                         <p:outputLabel value="Fax:" for="fax"/>

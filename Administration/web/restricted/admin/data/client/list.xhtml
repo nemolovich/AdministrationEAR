@@ -86,7 +86,7 @@
                                      paginator="true"
                                      paginatorPosition="bottom"
                                      rows="#{utils.maxDataRows}"
-                                     rowStyleClass="#{item.sleeping?'sleeping_elmt':null}"
+                                     rowStyleClass="#{item.sleeping?'sleeping_elmt':null} v_top"
                                      sortBy="#{item.name}"
                                      filteredValue="#{clientView.filteredEntities}"
                                      emptyMessage="Aucune société n'a été trouvée">
@@ -142,6 +142,22 @@
                                                  ajax="false"
                                                  style="font-size: 60%;"
                                                  title="Paramétrer cette société"/>
+                                <br/>
+                                <p:spacer height="20" width="0"/>
+                                <p:commandButton actionListener="#{taskView.entityCreateFromClient(item)}"
+                                                 icon="ui-icon-new-task"
+                                                 style="font-size: 60%;"
+                                                 update=":taskMenuViewPopup :taskMenuDialogHeader :taskViewForm"
+                                                 oncomplete="taskMenuViewDialog.show();"
+                                                 action="javascript:void(0);"
+                                                 title="Créer une tâche pour cette société"/>
+                                <p:commandButton actionListener="#{interventionView.entityCreateFromClient(taskView,item)}"
+                                                 icon="ui-icon-new-intervention"
+                                                 style="font-size: 60%;"
+                                                 update=":interventionMenuViewPopup :interventionMenuDialogHeader :interventionViewForm"
+                                                 oncomplete="interventionMenuViewDialog.show();"
+                                                 action="javascript:void(0);"
+                                                 title="Créer une intervention pour cette société"/>
                                 <p:commandButton actionListener="#{clientView.entityDelete(item)}"
                                                  action="javascript:void(0);"
                                                  immediate="true"

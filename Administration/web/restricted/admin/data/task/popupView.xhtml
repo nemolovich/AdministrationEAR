@@ -27,7 +27,7 @@
                                        styleClass="#{(taskView.creating or
                                                      taskView.editing)?'required':''}"/>
                         <h:outputText id="ptdescriptionV" value="#{taskView.entityPopup.description}"
-                                      title="Description"
+                                      title="Description de l'intervention"
                                       rendered="#{not taskView.creating and
                                                   not taskView.editing}"/>
                         <h:inputTextarea id="ptdescription"
@@ -54,6 +54,7 @@
                             <p:selectOneMenu id="ptidClient"
                                              value="#{taskView.entityPopup.idClient}"
                                              effect="fade"
+                                             immediate="true"
                                              var="client"
                                              rendered="#{taskView.creating or
                                                          taskView.editing}">
@@ -81,6 +82,7 @@
                             <p:commandButton id="displayTclientDetails"
                                              actionListener="#{clientView.entityView(taskView.entityPopup.idClient)}"
                                              icon="ui-icon-search"
+                                             immediate="true"
                                              update="taskViewForm:tclientDetails"
                                              style="font-size: 40%;vertical-align: top !important;margin-left: 10px;"
                                              oncomplete="displayBlock('taskViewForm\\:tclientDetails');"
@@ -101,6 +103,7 @@
                             <p:selectOneMenu id="ptidWorkstationFull"
                                              value="#{taskView.entityPopup.idWorkstation}"
                                              effect="fade"
+                                             immediate="true"
                                              style="width:90%;"
                                              var="poste"
                                              rendered="#{taskView.creating or
@@ -122,6 +125,7 @@
                             <p:commandButton id="displayTworkstationDetails"
                                              actionListener="#{workstationView.entityView(taskView.entityPopup.idWorkstation)}"
                                              icon="ui-icon-search"
+                                             immediate="true"
                                              update="taskViewForm:tworkstationDetails"
                                              style="font-size: 40%;vertical-align: top !important;margin-left: 10px;"
                                              oncomplete="displayBlock('taskViewForm\\:tworkstationDetails');"
@@ -141,6 +145,7 @@
                             <p:selectOneMenu id="ptidUser"
                                              value="#{taskView.entityPopup.idUser}"
                                              effect="fade"
+                                             immediate="true"
                                              var="cuser"
                                              rendered="#{taskView.creating or
                                                          taskView.editing}">
@@ -161,6 +166,7 @@
                             <p:commandButton id="displayTcuserDetails"
                                              actionListener="#{cUserView.entityView(taskView.entityPopup.idUser)}"
                                              icon="ui-icon-search"
+                                             immediate="true"
                                              update="taskViewForm:tcuserDetails"
                                              style="font-size: 40%;vertical-align: top !important;margin-left: 10px;"
                                              oncomplete="displayBlock('taskViewForm\\:tcuserDetails');"
@@ -378,7 +384,7 @@
                                    styleClass="inside_dialog">
                         <p:commandButton icon="ui-icon-closethick"
                                          styleClass="red_icon"
-                                         title="Chacher les information sur la société"
+                                         title="Cacher les informations sur la société"
                                          onclick="hideBlock('taskViewForm\\:tclientDetails');"/>
                         <ui:include src="/restricted/admin/data/task/popups/clients.xhtml"/>
                     </p:outputPanel>
@@ -387,7 +393,7 @@
                                    style="display:none;">
                         <p:commandButton icon="ui-icon-closethick"
                                          styleClass="red_icon"
-                                         title="Chacher les information sur le poste de travail"
+                                         title="Cacher les informations sur le poste de travail"
                                          onclick="hideBlock('taskViewForm\\:tworkstationDetails');"/>
                         <ui:include src="/restricted/admin/data/task/popups/workstations.xhtml"/>
                     </p:outputPanel>
@@ -396,7 +402,7 @@
                                    style="display:none;">
                         <p:commandButton icon="ui-icon-closethick"
                                          styleClass="red_icon"
-                                         title="Chacher les information sur l'utilisateur"
+                                         title="Cacher les informations sur l'utilisateur"
                                          onclick="hideBlock('taskViewForm\\:tcuserDetails');"/>
                         <ui:include src="/restricted/admin/data/task/popups/cusers.xhtml"/>
                     </p:outputPanel>
@@ -405,9 +411,24 @@
                         {
                             if(#{taskView.creating})
                             {
-                                hideBlock('taskViewForm\\:displayTclientDetails');
-                                hideBlock('taskViewForm\\:displayTworkstationDetails');
-                                hideBlock('taskViewForm\\:displayTcuserDetails');
+                                if(#{empty taskView.entityPopup.idClient})
+                                {
+                                    resetForm('taskViewForm');
+                                    $('#taskViewForm\\:ptidClient_input')[0].selectedIndex=0;
+                                    forceUpdate('taskViewForm:ptidClient','taskViewForm:ptidClient');
+                                }
+                                if($('#taskViewForm\\:ptidClient_input')[0].selectedIndex===0)
+                                {
+                                    hideBlock('taskViewForm\\:displayTclientDetails');
+                                }
+                                if($('#taskViewForm\\:ptidWorkstationFull_input')[0].selectedIndex===0)
+                                {
+                                    hideBlock('taskViewForm\\:displayTworkstationDetails');
+                                }
+                                if($('#taskViewForm\\:ptidUser_input')[0].selectedIndex===0)
+                                {
+                                    hideBlock('taskViewForm\\:displayTcuserDetails');
+                                }
                             }
                             hideBlock('taskViewForm\\:tclientDetails');
                             addConcurrentBlock('taskViewForm\\:tclientDetails',

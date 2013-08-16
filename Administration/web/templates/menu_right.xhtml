@@ -224,9 +224,8 @@
                                 value="Créer une intervention"
                                 title="Créer une intervention depuis cette tâche"
                                 update=":interventionMenuViewPopup :interventionMenuDialogHeader :interventionViewForm"
-                                icon="ui-icon-circle-plus"
+                                icon="ui-icon-new-intervention"
                                 style="white-space: nowrap;"
-                                styleClass="green_icon"
                                 oncomplete="interventionMenuViewDialog.show();"
                                 actionListener="#{interventionView.entityCreate(taskView,false)}"/>
                     <p:separator/>
@@ -328,6 +327,7 @@
                                                      styleClass="small_check"
                                                      style="vertical-align: middle !important;margin-bottom: 5px !important;">  
                                 <p:ajax update=":taskMenuDataPopupForm @form"
+                                        onstart="startAjax();"
                                         oncomplete="forceUpdate('taskMenuDataForm:checkDisplaySleepingTaskTop','taskMenuDataForm');"
                                         immediate="false"/>
                                 <script type="text/javascript">
@@ -347,6 +347,7 @@
                                                      styleClass="small_check"
                                                      style="vertical-align: middle !important;margin-bottom: 5px !important;">  
                                 <p:ajax update=":taskMenuDataPopupForm @form"
+                                        onstart="startAjax();"
                                         oncomplete="forceUpdate('taskMenuDataForm:checkDisplaySleepingTaskBottom','taskMenuDataForm');"
                                         immediate="false"/>
                                 <script type="text/javascript">

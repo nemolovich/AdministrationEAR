@@ -414,7 +414,7 @@ INSERT INTO ROOT.WORKSTATION
                                 MONITOR, VIDEO_CARD, OPERATING_SYSTEM, RAM,
                                 HARD_DRIVE) 
 	VALUES
-		(4, 'PC', 'SOCIETY4_PC2', 'ASUS', '2006-06-08',
+		(4, 'PC', 'SOCIETY4_PC1', 'ASUS', '2006-06-08',
 		'Intel Core 2 duo E8600 @2x3,30GHz', 'Philips 19"',
 		'NVIDIA GeForce 9800 GTX+ @ 1768Mo', 'UBUNTU 12.10 LTS x64',
 		'4Go - 2x2Go @ 800MHz', '320Go SEAGATE @ 7200t/m');

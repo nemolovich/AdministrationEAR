@@ -9,6 +9,8 @@ import bean.ApplicationLogger;
 import bean.Utils;
 import bean.facade.TaskFacade;
 import bean.view.periodSelection.EntityPeriodView;
+import entity.CUser;
+import entity.Client;
 import entity.Intervention;
 import entity.Task;
 import java.util.ArrayList;
@@ -76,6 +78,20 @@ public class TaskView extends EntityPeriodView<Task, TaskFacade>
             ApplicationLogger.writeError("Droits refusés pour l'instanciation"
                     + " d'un objet de la classe \""+Task.class.getName()+"\"", ex);
         }
+        return "create";
+    }
+    
+    public String entityCreateFromClient(Client client)
+    {
+        this.entityCreate();
+        this.entityPopup.setIdClient(client);
+        return "create";
+    }
+    
+    public String entityCreateFromUser(CUser user)
+    {
+        this.entityCreateFromClient(user.getIdClient());
+        this.entityPopup.setIdUser(user);
         return "create";
     }
     

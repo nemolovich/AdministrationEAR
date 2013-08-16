@@ -146,7 +146,7 @@ function getEnterKey(event)
 /**
  * Exécute un script JavaScript après un intervale donné
  * @param {String} action - Script JavaScript à exécuter
- * @param {type} secondes - Intervale en secondes
+ * @param {Number} secondes - Intervale en secondes
  * @returns {void}
  */
 function doAfterInterval(action,secondes)

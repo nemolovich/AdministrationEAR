@@ -6,6 +6,8 @@ package bean.view;
 
 import bean.facade.InterventionFacade;
 import bean.view.periodSelection.EmbdedEntityPeriodView;
+import entity.CUser;
+import entity.Client;
 import entity.Intervention;
 import entity.Task;
 import java.util.ArrayList;
@@ -32,6 +34,20 @@ public class InterventionView extends EmbdedEntityPeriodView<Task, Intervention,
         super(Intervention.class,"intervention",
                 Intervention.class.getMethod("setIdTask",
                                         new Class<?>[]{Task.class}));
+    }
+    
+    public String entityCreateFromClient(TaskView view, Client client)
+    {
+        String result = this.entityCreate(view, true);
+        this.getInstance().getIdTask().setIdClient(client);
+        return result;
+    }
+    
+    public String entityCreateFromUser(TaskView view, CUser user)
+    {
+        String result = this.entityCreateFromClient(view, user.getIdClient());
+        this.getInstance().getIdTask().setIdUser(user);
+        return result;
     }
     
     public String entityCreate(TaskView view, boolean createParent)
