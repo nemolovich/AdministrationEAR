@@ -49,7 +49,7 @@ public class FilePath implements Serializable
     @Column(name = "FILE_PATH")
     private String filePath="./";
     @OneToMany(mappedBy = "idFilePath")
-    private List<Workstation> workstationList;
+    private List<Device> deviceList;
     @OneToMany(mappedBy = "idFilePath")
     private List<Client> clientList;
     @OneToMany(mappedBy = "idFilePath")
@@ -130,12 +130,12 @@ public class FilePath implements Serializable
     }
 
     @XmlTransient
-    public List<Workstation> getWorkstationList() {
-        return workstationList;
+    public List<Device> getDeviceList() {
+        return deviceList;
     }
 
-    public void setWorkstationList(List<Workstation> workstationList) {
-        this.workstationList = workstationList;
+    public void setDeviceList(List<Device> deviceList) {
+        this.deviceList = deviceList;
     }
 
     @Override
@@ -160,7 +160,7 @@ public class FilePath implements Serializable
 
     public String getFullString()
     {
-        return "entity.FilePath{" + "workstationList=" + workstationList + ", clientList=" + clientList + ", cUserList=" + cUserList + ", id=" + id + ", filePath=" + filePath + '}';
+        return "entity.FilePath{" + "deviceList=" + deviceList + ", clientList=" + clientList + ", cUserList=" + cUserList + ", id=" + id + ", filePath=" + filePath + '}';
     }
     
     @Override

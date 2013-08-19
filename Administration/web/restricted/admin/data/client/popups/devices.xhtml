@@ -1,0 +1,298 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <p:dialog id="dialogDevice"
+                  appendToBody="true"
+                  header="Fenêtre de périphérique"
+                  widgetVar="createWorstation"
+                  resizable="false"
+                  draggable="true"
+                  modal="true"
+                  showEffect="clip"
+                  hideEffect="clip">
+            <h:form id="createDeviceForm">
+                <h:panelGrid columns="4" columnClasses="label,fields,label_30,fields"
+                             rendered="#{not empty deviceView.entity}">
+
+                    <p:outputLabel value="Type de station:" for="wwsType" />
+                    <p:inputText id="wwsType" value="#{deviceView.entity.wsType}"
+                                 title="Type de station"
+                                 maxlength="64"
+                                 rendered="#{deviceView.creating or 
+                                             deviceView.editing}"/>
+                    <h:outputText id="wwsTypeV" value="#{deviceView.entity.wsType}"
+                                  title="Type de station"
+                                  rendered="#{not deviceView.creating and
+                                              not deviceView.editing}"/>
+
+                    <p:outputLabel value="Moniteur:" for="wmonitor" />
+                    <p:inputText id="wmonitor" value="#{deviceView.entity.monitor}"
+                                 title="Moniteur"
+                                 maxlength="64"
+                                 rendered="#{deviceView.creating or 
+                                             deviceView.editing}"/>
+                    <h:outputText id="wmonitorV" value="#{deviceView.entity.monitor}"
+                                  title="Moniteur"
+                                  rendered="#{not deviceView.creating and
+                                              not deviceView.editing}"/>
+                    
+                    <p:outputLabel value="Nom machine:" for="wname"
+                                   styleClass="#{(deviceView.creating or
+                                                 deviceView.editing)?'required':''}"/>
+                    <p:inputText id="wname" value="#{deviceView.entity.name}"
+                                 title="Nom de la machine"
+                                 maxlength="64"
+                                 rendered="#{deviceView.creating or 
+                                             deviceView.editing}">
+                        <f:validator binding="#{notNullFieldValidator}"/>
+                        <f:attribute name="requiredMessage"
+                                     value="Le champs 'Nom machine' ne peut être vide"/>
+                        <f:attribute name="requiredTitle"
+                                     value="Champs 'Nom machine' vide"/>
+                    </p:inputText>
+                    <h:outputText id="wnameV" value="#{deviceView.entity.name}"
+                                  title="Nom de la machine"
+                                  rendered="#{not deviceView.creating and
+                                              not deviceView.editing}"/>
+
+                    <p:outputLabel value="Carte graphique:" for="wvideoCard" />
+                    <p:inputText id="wvideoCard" value="#{deviceView.entity.videoCard}"
+                                 title="Carte graphique"
+                                 maxlength="64"
+                                 rendered="#{deviceView.creating or 
+                                             deviceView.editing}"/>
+                    <h:outputText id="wvideoCardV" value="#{deviceView.entity.videoCard}"
+                                  title="Carte graphique"
+                                  rendered="#{not deviceView.creating and
+                                              not deviceView.editing}"/>
+                    
+                    <p:outputLabel value="Marque:" for="wbrand" />
+                    <p:inputText id="wbrand" value="#{deviceView.entity.brand}"
+                                 title="Marque de la machine"
+                                 maxlength="64"
+                                 rendered="#{deviceView.creating or 
+                                             deviceView.editing}"/>
+                    <h:outputText id="wbrandV" value="#{deviceView.entity.brand}"
+                                  title="Marque de la machine"
+                                  rendered="#{not deviceView.creating and
+                                              not deviceView.editing}"/>
+
+                    <p:outputLabel value="Système d'exploitation:" for="woperatingSystem" />
+                    <p:inputText id="woperatingSystem" value="#{deviceView.entity.operatingSystem}"
+                                 title="Système d'exploitation"
+                                 maxlength="64"
+                                 rendered="#{deviceView.creating or 
+                                             deviceView.editing}"/>
+                    <h:outputText id="woperatingSystemV" value="#{deviceView.entity.operatingSystem}"
+                                  title="Système d'exploitation"
+                                  rendered="#{not deviceView.creating and
+                                              not deviceView.editing}"/>
+                    
+                    <p:outputLabel value="Utilisateur par défaut:" for="wuser_name_default" />
+                    <p:inputText id="wuser_name_default" value="#{deviceView.entity.userNameDefault}"
+                                 title="Nom de l'utilisateur par défaut"
+                                 maxlength="30"
+                                 rendered="#{deviceView.creating or 
+                                             deviceView.editing}"/>
+                    <h:outputText id="wuser_name_defaultV" value="#{deviceView.entity.userNameDefault}"
+                                  title="Nom de l'utilisateur par défaut"
+                                  rendered="#{not deviceView.creating and
+                                              not deviceView.editing}"/>
+
+                    <p:outputLabel value="Version système:" for="wsystemVersion" />
+                    <p:inputText id="wsystemVersion" value="#{deviceView.entity.systemVersion}"
+                                 title="Version du système"
+                                 maxlength="64"
+                                 rendered="#{deviceView.creating or 
+                                             deviceView.editing}"/>
+                    <h:outputText id="wsystemVersionV" value="#{deviceView.entity.systemVersion}"
+                                  title="Version du système"
+                                  rendered="#{not deviceView.creating and
+                                              not deviceView.editing}"/>
+                    
+                    <p:outputLabel value="Adresse IP:" for="wip_address" />
+                    <p:inputText id="wip_address" value="#{deviceView.entity.ipAddress}"
+                                 title="Adresse IP de la machine"
+                                 maxlength="39"
+                                 rendered="#{deviceView.creating or 
+                                             deviceView.editing}">
+                    </p:inputText>
+                    <h:outputText id="wip_addressV" value="#{deviceView.entity.ipAddress}"
+                                  title="Adresse IP de la machine"
+                                  rendered="#{not deviceView.creating and
+                                              not deviceView.editing}"/>
+
+                    <p:outputLabel value="Licence système:" for="wsystemLicence" />
+                    <p:inputText id="wsystemLicence" value="#{deviceView.entity.systemLicense}"
+                                 title="Version du système"
+                                 maxlength="64"
+                                 rendered="#{deviceView.creating or 
+                                             deviceView.editing}"/>
+                    <h:outputText id="wsystemLicenceV" value="#{deviceView.entity.systemLicense}"
+                                  title="Version du système"
+                                  rendered="#{not deviceView.creating and
+                                              not deviceView.editing}"/>
+
+                    <p:outputLabel value="Date de mise en service:" for="wstartDate" />
+                    <p:inputMask id="wstartDate" value="#{deviceView.entity.startDate}"
+                                 title="Date de mise en service de la machine"
+                                 mask="99/99/9999"
+                                 rendered="#{deviceView.creating or 
+                                             deviceView.editing}">
+                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                    </p:inputMask>
+                    <h:outputText id="wstartDateV" value="#{utils.dayDateFormat(
+                                                            deviceView.entity.startDate)}"
+                                  title="Date de mise en service de la machine"
+                                  rendered="#{not deviceView.creating and
+                                              not deviceView.editing}"/>
+
+                    <p:outputLabel value="Mémoire vive:" for="wram" />
+                    <p:inputText id="wram" value="#{deviceView.entity.ram}"
+                                 title="Mémoire vive"
+                                 maxlength="64"
+                                 rendered="#{deviceView.creating or 
+                                             deviceView.editing}"/>
+                    <h:outputText id="wramV" value="#{deviceView.entity.ram}"
+                                  title="Mémoire vive"
+                                  rendered="#{not deviceView.creating and
+                                              not deviceView.editing}"/>
+
+                    <p:outputLabel value="Processeur:" for="wprocessor" />
+                    <p:inputText id="wprocessor" value="#{deviceView.entity.processor}"
+                                 title="Processeur"
+                                 maxlength="64"
+                                 rendered="#{deviceView.creating or 
+                                             deviceView.editing}"/>
+                    <h:outputText id="wprocessorV" value="#{deviceView.entity.processor}"
+                                  title="Processeur"
+                                  rendered="#{not deviceView.creating and
+                                              not deviceView.editing}"/>
+
+                    <p:outputLabel value="Disque dur:" for="whardDrive" />
+                    <p:inputText id="whardDrive" value="#{deviceView.entity.hardDrive}"
+                                 title="Dique dur"
+                                 maxlength="64"
+                                 rendered="#{deviceView.creating or 
+                                             deviceView.editing}"/>
+                    <h:outputText id="whardDriveV" value="#{deviceView.entity.hardDrive}"
+                                  title="Disque dur"
+                                  rendered="#{not deviceView.creating and
+                                              not deviceView.editing}"/>
+
+                </h:panelGrid>
+                <p:outputPanel>
+                    <p:outputLabel value="Observations:" for="wobservations"
+                                   styleClass="label" style="margin-right: 30px;"/>
+                    <h:inputTextarea id="wobservations" value="#{deviceView.entity.observations}"
+                                     title="Observations"
+                                     styleClass="textarea_min"
+                                     rendered="#{deviceView.creating or 
+                                                 deviceView.editing}"/>
+                    <h:inputTextarea id="wobservationsV" value="#{deviceView.entity.observations}"
+                                     title="Observations"
+                                     readonly="true"
+                                     styleClass="textarea_min"
+                                     ondblclick="this.focus();this.select();"
+                                     rendered="#{not deviceView.creating and
+                                                 not deviceView.editing}"/>
+                    <br/>
+                </p:outputPanel>
+                <p:outputPanel rendered="#{deviceView.creating or
+                                            deviceView.editing}">
+                    (<span class="red-star">*</span>: champs requis)<br />
+                </p:outputPanel>
+                <p:outputPanel rendered="#{deviceView.creating}"
+                               styleClass="buttons_panel">
+                    <p:commandButton id="createDevice" value="Ajouter"
+                                     title="Ajouter ce périphérique à la société"
+                                     type="submit"
+                                     actionListener="#{deviceView.create(clientView.entity)}"
+                                     icon="ui-icon-check"
+                                     update=":clientUpdate :growl :createDeviceForm"
+                                     styleClass="green_icon"
+                                     oncomplete="createRequest(createWorstation, xhr, status, args);clientDeviceTable.filter();"
+                                     />
+                    <p:commandButton id="backCreateDevice" value="Annuler"
+                                     title="Annuler la création"
+                                     action="javascript:void(0);"
+                                     styleClass="red_icon"
+                                     type="reset"
+                                     immediate="true"
+                                     ajax="true"
+                                     icon="ui-icon-closethick"
+                                     onclick="createWorstation.hide();"
+                                     />
+                </p:outputPanel>
+                <p:outputPanel rendered="#{deviceView.editing}"
+                               styleClass="buttons_panel">
+                    <p:commandButton  id="updateDevice" value="Mettre à jour"
+                                     title="Enregistrer les changements"
+                                     type="submit"
+                                     actionListener="#{deviceView.update(clientView.entity)}"
+                                     icon="ui-icon-disk"
+                                     update=":clientUpdate :growl :createDeviceForm"
+                                     styleClass="green_icon"
+                                     oncomplete="createRequest(createWorstation, xhr, status, args);clientDeviceTable.filter();"
+                                     />
+                    <p:commandButton id="backEditDevice" value="Annuler"
+                                     title="Annuler les changements"
+                                     action="javascript:void(0);"
+                                     styleClass="red_icon"
+                                     type="reset"
+                                     immediate="true"
+                                     ajax="true"
+                                     icon="ui-icon-closethick"
+                                     onclick="createWorstation.hide();"
+                                     />
+                </p:outputPanel>
+                <p:outputPanel rendered="#{not deviceView.creating and 
+                                            not deviceView.editing}"
+                               styleClass="buttons_panel">
+                    <center>
+                        <p:commandButton id="backDevice" value="Fermer"
+                                         title="Fermer la fenêtre"
+                                         action="javascript:void(0);"
+                                         type="reset"
+                                         immediate="true"
+                                         ajax="true"
+                                         onclick="createWorstation.hide();"
+                                         />
+                    </center>
+                </p:outputPanel>
+                <p:outputPanel id="selectionDeviceError" 
+                               rendered="#{empty deviceView.entity}">
+                    <div class="ui-messages ui-widget">
+                        <div class="ui-messages-error ui-corner-all">
+                            <span class="ui-messages-error-icon"/>
+                            <ul>
+                                <li>
+                                    <span class="ui-messages-error-summary">
+                                        Sélection incorrecte!
+                                        <script type="text/javascript">
+//                                                    createWorstation.hide();
+                                        </script>
+                                    </span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </p:outputPanel>
+                <script type="text/javascript">
+                    $(document).ready(function()
+                    {
+                        addRedStarsTorequiredFields();
+                    });
+                </script>
+            </h:form>
+        </p:dialog>
+    </h:body>
+</html>
+

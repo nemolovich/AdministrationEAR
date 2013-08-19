@@ -5,10 +5,10 @@
 
 package bean.view;
 
-import bean.facade.WorkstationFacade;
+import bean.facade.DeviceFacade;
 import bean.view.struct.EmbdedDataListView;
 import entity.Client;
-import entity.Workstation;
+import entity.Device;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
@@ -18,41 +18,41 @@ import javax.inject.Named;
  *
  * @author Brian GOHIER
  */
-@Named(value = "workstationView")
+@Named(value = "deviceView")
 @SessionScoped
-public class WorkstationView extends EmbdedDataListView<Client, Workstation, WorkstationFacade>
+public class DeviceView extends EmbdedDataListView<Client, Device, DeviceFacade>
 {
     private static final long serialVersionUID = 1L;
     @EJB
-    private WorkstationFacade workstationFacade;
+    private DeviceFacade deviceFacade;
     
-    public WorkstationView() throws NoSuchMethodException
+    public DeviceView() throws NoSuchMethodException
     {
-        super(Workstation.class,"workstation",
-                Workstation.class.getMethod("setIdClient",
+        super(Device.class,"device",
+                Device.class.getMethod("setIdClient",
                                             new Class<?>[]{Client.class}));
     }
 
     @Override
     public void setFacade()
     {
-        super.setEntityFacade(this.workstationFacade);
+        super.setEntityFacade(this.deviceFacade);
     }
 
     @Override
-    public List<Workstation> getEntries()
+    public List<Device> getEntries()
     {
         return super.findAll();
     }
 
     @Override
-    public Workstation getEntity()
+    public Device getEntity()
     {
         return super.getInstance();
     }
 
     @Override
-    public String getDeleteMessage(Workstation entity)
+    public String getDeleteMessage(Device entity)
     {
         return "Vous êtes sur le point de supprimer définitivement"
                 + " ce poste de travail ("+entity.toString()
@@ -61,14 +61,14 @@ public class WorkstationView extends EmbdedDataListView<Client, Workstation, Wor
     }
 
     @Override
-    public String deleteMessages(List<Workstation> entities)
+    public String deleteMessages(List<Device> entities)
     {
         if(entities!=null)
         {
             String out="Vous êtes sur le point de supprimer définitivement tous les "
                 + "postes de travails sélectionnés (";
             boolean first=true;
-            for(Workstation workstation:entities)
+            for(Device device:entities)
             {
                 if(first)
                 {
@@ -78,7 +78,7 @@ public class WorkstationView extends EmbdedDataListView<Client, Workstation, Wor
                 {
                     out+=", ";
                 }
-                out+=workstation.getBrand()+" id="+workstation.getId();
+                out+=device.getBrand()+" id="+device.getId();
             }
             out+="). Cette action est irreversible, "
                 + "êtes-vous certain(e) de vouloir continuer?";
@@ -88,8 +88,8 @@ public class WorkstationView extends EmbdedDataListView<Client, Workstation, Wor
     }
 
     @Override
-    public void setEntity(Workstation workstation)
+    public void setEntity(Device device)
     {
-        super.setInstance(workstation);
+        super.setInstance(device);
     }
 }

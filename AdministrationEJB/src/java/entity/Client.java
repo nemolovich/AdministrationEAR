@@ -130,7 +130,7 @@ public class Client implements Serializable
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idClient")
     private List<CUser> cUserList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idClient")
-    private List<Workstation> workstationList;
+    private List<Device> deviceList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idClient")
     private List<Mail> mailList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idClient")
@@ -340,12 +340,12 @@ public class Client implements Serializable
     }
 
     @XmlTransient
-    public List<Workstation> getWorkstationList() {
-        return workstationList;
+    public List<Device> getDeviceList() {
+        return deviceList;
     }
 
-    public void setWorkstationList(List<Workstation> workstationList) {
-        this.workstationList = workstationList;
+    public void setDeviceList(List<Device> deviceList) {
+        this.deviceList = deviceList;
     }
 
     @XmlTransient
@@ -397,7 +397,7 @@ public class Client implements Serializable
 
     public String getFullString()
     {
-        return "entity.Client{" + "id=" + id + ", name=" + name + ", address=" + address + ", postalcode=" + postalcode + ", city=" + city + ", phone=" + phone + ", fax=" + fax + ", tarif=" + tarif + ", deplacement=" + deplacement + ", mail=" + mail + ", interventionType=" + interventionType + ", internetOperator=" + internetOperator + ", internetLogin=" + internetLogin + ", internetPassword=" + internetPassword + ", internetDns=" + internetDns + ", internetDnsLogin=" + internetDnsLogin + ", internetDnsPassword=" + internetDnsPassword + ", observations=" + observations + ", sleeping=" + sleeping + ", idUser=" + idUser + ", idFilePath=" + idFilePath + ", cUserList=" + cUserList + ", workstationList=" + workstationList + ", mailList=" + mailList + ", softwareList=" + softwareList + ", taskList=" + taskList + '}';
+        return "entity.Client{" + "id=" + id + ", name=" + name + ", address=" + address + ", postalcode=" + postalcode + ", city=" + city + ", phone=" + phone + ", fax=" + fax + ", tarif=" + tarif + ", deplacement=" + deplacement + ", mail=" + mail + ", interventionType=" + interventionType + ", internetOperator=" + internetOperator + ", internetLogin=" + internetLogin + ", internetPassword=" + internetPassword + ", internetDns=" + internetDns + ", internetDnsLogin=" + internetDnsLogin + ", internetDnsPassword=" + internetDnsPassword + ", observations=" + observations + ", sleeping=" + sleeping + ", idUser=" + idUser + ", idFilePath=" + idFilePath + ", cUserList=" + cUserList + ", deviceList=" + deviceList + ", mailList=" + mailList + ", softwareList=" + softwareList + ", taskList=" + taskList + '}';
     }
 
     @Override

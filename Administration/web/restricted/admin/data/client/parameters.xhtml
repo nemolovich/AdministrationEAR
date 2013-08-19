@@ -16,7 +16,7 @@
             </ui:define>
             <ui:define name="content">
                 <f:attribute name="header" value="Modification des paramètres d'une société"/>
-                <ui:include src="/restricted/admin/data/client/popups/workstations.xhtml"/>
+                <ui:include src="/restricted/admin/data/client/popups/devices.xhtml"/>
                 <ui:include src="/restricted/admin/data/client/popups/mails.xhtml"/>
                 <ui:include src="/restricted/admin/data/client/popups/cusers.xhtml"/>
                 <ui:include src="/restricted/admin/data/client/popups/softwares.xhtml"/>
@@ -44,137 +44,137 @@
                         </div>
                         <p:tabView id="clientTabView" cache="false" dynamic="true" effect="slide"
                                    widgetVar="clientTabSelect">
-                            <p:tab id="postes" title="Postes">
+                            <p:tab id="devices" title="Périphériques">
                                 <script type="text/javascript">
                                     $(document).ready(function()
                                     {
-                                        clientWorkstationTable.filter();
+                                        clientDeviceTable.filter();
                                     });
                                 </script>
-                                <p:dataTable id="clientWorkstationList"
-                                             value="#{workstationMultiView.getData(clientView.entity.workstationList)}"
-                                             var="poste"
-                                             widgetVar="clientWorkstationTable"
+                                <p:dataTable id="clientDeviceList"
+                                             value="#{deviceMultiView.getData(clientView.entity.deviceList)}"
+                                             var="device"
+                                             widgetVar="clientDeviceTable"
                                              rowIndexVar="index"
                                              paginatorPosition="bottom"
-                                             emptyMessage="Aucun poste n'a été trouvé"
-                                             rowStyleClass="#{poste.sleeping?'sleeping_elmt':null}"
+                                             emptyMessage="Aucun périphérique n'a été trouvé"
+                                             rowStyleClass="#{device.sleeping?'sleeping_elmt':null}"
                                              paginator="true"
                                              rows="#{utils.maxDataRows}"
-                                             sortBy="#{poste.id}"
-                                             filteredValue="#{workstationMultiView.filteredEntities}"
-                                             selection="#{workstationMultiView.multiSelection}">
+                                             sortBy="#{device.id}"
+                                             filteredValue="#{deviceMultiView.filteredEntities}"
+                                             selection="#{deviceMultiView.multiSelection}">
                                     
                                     <p:ajax event="rowSelectCheckbox"
                                             process="@this"
-                                            update=":createWorkstationForm
-                                             clientWorkstationList:workstationDelete" />
+                                            update=":createDeviceForm
+                                             clientDeviceList:deviceDelete" />
                                     <p:ajax event="rowUnselectCheckbox"
                                             process="@this"
-                                            update=":createWorkstationForm
-                                             clientWorkstationList:workstationDelete" />
+                                            update=":createDeviceForm
+                                             clientDeviceList:deviceDelete" />
                                     <p:ajax event="toggleSelect"
                                             process="@this"
-                                            update=":createWorkstationForm
-                                             clientWorkstationList:workstationDelete" />
+                                            update=":createDeviceForm
+                                             clientDeviceList:deviceDelete" />
 
                                     <p:column selectionMode="multiple" style="width:2%">
                                     </p:column>
 
                                     <p:column headerText="Détails" style="width:100%;">
-                                        <h:outputText value="#{poste.toString()}"/>
+                                        <h:outputText value="#{device.toString()}"/>
                                     </p:column>
                                     
                                     <p:column headerText="Actions" style="white-space: nowrap;">
-                                        <p:commandButton actionListener="#{workstationView.entityView(poste)}"
+                                        <p:commandButton actionListener="#{deviceView.entityView(device)}"
                                                          icon="ui-icon-search"
                                                          style="font-size: 60%;"
-                                                         title="Détails de ce poste"
-                                                         update=":createWorkstationForm"
+                                                         title="Détails de ce périphérique"
+                                                         update=":createDeviceForm"
                                                          oncomplete="createWorstation.show();"/>
-                                        <p:commandButton actionListener="#{workstationView.entityUpdate(poste)}"
+                                        <p:commandButton actionListener="#{deviceView.entityUpdate(device)}"
                                                          icon="ui-icon-pencil"
                                                          style="font-size: 60%;"
-                                                         title="Modifier ce poste"
-                                                         update=":createWorkstationForm"
+                                                         title="Modifier ce périphérique"
+                                                         update=":createDeviceForm"
                                                          oncomplete="createWorstation.show();"/>
-                                        <p:commandButton actionListener="#{workstationView.entityDelete(clientView.entity, poste)}"
+                                        <p:commandButton actionListener="#{deviceView.entityDelete(clientView.entity, device)}"
                                                          action="javascipt:void(0);"
                                                          icon="ui-icon-trash"
-                                                         oncomplete="clientWorkstationTable.filter();"
-                                                         update=":clientUpdate :growl :clientUpdate:clientTabView:clientWorkstationList"
+                                                         oncomplete="clientDeviceTable.filter();"
+                                                         update=":clientUpdate :growl :clientUpdate:clientTabView:clientDeviceList"
                                                          style="font-size: 60%;"
                                                          styleClass="red_icon"
-                                                         onclick="if(!confirm('#{workstationView.getDeleteMessage(poste)}')){return false;}"
-                                                         title="Supprimer ce poste"/>
+                                                         onclick="if(!confirm('#{deviceView.getDeleteMessage(device)}')){return false;}"
+                                                         title="Supprimer ce périphérique"/>
                                     </p:column>
                                     
-                                    <p:column id="sleepingWorkstationTab"
+                                    <p:column id="sleepingDeviceTab"
                                               headerText="État"
-                                              sortBy="#{poste.sleeping}"
+                                              sortBy="#{device.sleeping}"
                                               style="width:2%;">
-                                        <p:commandButton actionListener="#{workstationView.entityWake(clientView.entity,poste)}"
+                                        <p:commandButton actionListener="#{deviceView.entityWake(clientView.entity,device)}"
                                                          action="javascript:void(0);"
                                                          icon="ui-icon-play"
-                                                         update=":growl :clientUpdate:clientTabView:clientWorkstationList"
+                                                         update=":growl :clientUpdate:clientTabView:clientDeviceList"
                                                          style="font-size: 60%;float:right;"
                                                          styleClass="blue_icon"
-                                                         title="Réactiver ce poste"
-                                                         rendered="#{poste.sleeping}"/>
-                                        <p:commandButton id="setWorkstationSleepingButton"
-                                                         actionListener="#{workstationView.entitySleep(clientView.entity,poste)}"
+                                                         title="Réactiver ce périphérique"
+                                                         rendered="#{device.sleeping}"/>
+                                        <p:commandButton id="setDeviceSleepingButton"
+                                                         actionListener="#{deviceView.entitySleep(clientView.entity,device)}"
                                                          action="javascript:void(0);"
                                                          icon="ui-icon-pause"
-                                                         oncomplete="clientWorkstationTable.filter();"
-                                                         update=":growl :clientUpdate:clientTabView:clientWorkstationList"
+                                                         oncomplete="clientDeviceTable.filter();"
+                                                         update=":growl :clientUpdate:clientTabView:clientDeviceList"
                                                          style="font-size: 60%;float:right;"
-                                                         onclick="if(!confirm('Voulez vous vraiment mettre ce poste en standby?\n'+
+                                                         onclick="if(!confirm('Voulez vous vraiment mettre ce device en standby?\n'+
                                                                         '(Vous pourrez le réactiver quand vous le souhaitez)'))
                                                                            {return false;}"
                                                          styleClass="red_icon"
-                                                         title="Mettre en standby ce poste"
-                                                         rendered="#{not poste.sleeping}"/>
+                                                         title="Mettre en standby ce périphérique"
+                                                         rendered="#{not device.sleeping}"/>
                                     </p:column>
                                     
                                     <f:facet name="footer">
                                         <p:outputPanel style="float:left">
-                                            <p:commandButton value="Ajouter un poste"
+                                            <p:commandButton value="Ajouter un périphérique"
                                                              icon="ui-icon-circle-plus"
                                                              styleClass="green_icon"
-                                                             title="Ajouter un poste à cette société"
-                                                             update=":createWorkstationForm"
-                                                             actionListener="#{workstationView.entityCreate(clientView.entity)}"
+                                                             title="Ajouter un device à cette société"
+                                                             update=":createDeviceForm"
+                                                             actionListener="#{deviceView.entityCreate(clientView.entity)}"
                                                              onclick="createWorstation.show();"/>
-                                            <p:commandButton id="workstationDelete"
+                                            <p:commandButton id="deviceDelete"
                                                              value="Supprimer"
                                                              icon="ui-icon-trash"
-                                                             widgetVar="workstationDeleteButton"
+                                                             widgetVar="deviceDeleteButton"
                                                              styleClass="red_icon"
-                                                             title="Supprimer les postes sélectionnés"
-                                                             update=":clientUpdate :growl :clientUpdate:clientTabView:clientWorkstationList @this"
-                                                             disabled="#{workstationMultiView.emptySelection}"
-                                                             actionListener="#{workstationView.remove(clientView.entity,
-                                                                               workstationMultiView.multiSelection)}"
-                                                             oncomplete="if(#{workstationMultiView.checkEmptySelection()}!='true'){
-                                                                    clientWorkstationTable.filter();}"
-                                                             onclick="if(#{workstationMultiView.emptySelection})
+                                                             title="Supprimer les devices sélectionnés"
+                                                             update=":clientUpdate :growl :clientUpdate:clientTabView:clientDeviceList @this"
+                                                             disabled="#{deviceMultiView.emptySelection}"
+                                                             actionListener="#{deviceView.remove(clientView.entity,
+                                                                               deviceMultiView.multiSelection)}"
+                                                             oncomplete="if(#{deviceMultiView.checkEmptySelection()}!='true'){
+                                                                    clientDeviceTable.filter();}"
+                                                             onclick="if(#{deviceMultiView.emptySelection})
                                                                 {return false;}
-                                                                else{if(!confirm('#{workstationView.deleteMessages(workstationMultiView.multiSelectionCast)}')){return false;}}"/>
-                                            <p:outputLabel for="checkDisplayWorkstationSleeping"
+                                                                else{if(!confirm('#{deviceView.deleteMessages(deviceMultiView.multiSelectionCast)}')){return false;}}"/>
+                                            <p:outputLabel for="checkDisplayDeviceSleeping"
                                                            value="Afficher tout"
                                                            style="font-size:75%;margin-bottom: 10px !important;margin-left: 10px;"/>
-                                            <p:selectBooleanCheckbox id="checkDisplayWorkstationSleeping"
-                                                                     value="#{workstationMultiView.displaySleepingEntities}"
+                                            <p:selectBooleanCheckbox id="checkDisplayDeviceSleeping"
+                                                                     value="#{deviceMultiView.displaySleepingEntities}"
                                                                      styleClass="small_check"
                                                                      style="vertical-align: middle !important;margin-bottom: 5px !important;">  
-                                                <p:ajax update="clientWorkstationList:workstationDelete 
-                                                        :clientUpdate:clientTabView:clientWorkstationList"
-                                                        oncomplete="clientWorkstationTable.clearSelection();
-                                                        workstationDeleteButton.disable();forceFilter(clientWorkstationTable);"
+                                                <p:ajax update="clientDeviceList:deviceDelete 
+                                                        :clientUpdate:clientTabView:clientDeviceList"
+                                                        oncomplete="clientDeviceTable.clearSelection();
+                                                        deviceDeleteButton.disable();forceFilter(clientDeviceTable);"
                                                         immediate="false"/>
                                                 <script type="text/javascript">
-                                                    addTitle("clientUpdate\\:clientTabView\\:clientWorkstationList\\:checkDisplayWorkstationSleeping",
-                                                             "Affiche les postes en sommeil en plus de ceux actifs");
+                                                    addTitle("clientUpdate\\:clientTabView\\:clientDeviceList\\:checkDisplayDeviceSleeping",
+                                                             "Affiche les devices en sommeil en plus de ceux actifs");
                                                 </script>
                                             </p:selectBooleanCheckbox>
                                         </p:outputPanel>
@@ -183,7 +183,7 @@
                                 <script type="text/javascript">
                                     $(document).ready(function()
                                     {
-                                        clientWorkstationTable.filter();
+                                        clientDeviceTable.filter();
                                     });
                                 </script>
                             </p:tab>

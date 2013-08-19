@@ -6,7 +6,7 @@ package bean.facade;
 
 import bean.facade.abstracts.AbstractEmbdedDataList;
 import entity.Client;
-import entity.Workstation;
+import entity.Device;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -17,7 +17,7 @@ import javax.persistence.PersistenceContext;
  * @author Brian GOHIER
  */
 @Stateless
-public class WorkstationFacade extends AbstractEmbdedDataList<Client,Workstation>
+public class DeviceFacade extends AbstractEmbdedDataList<Client,Device>
 {
     @PersistenceContext(unitName = "AdministrationEJBPU")
     private EntityManager em;
@@ -27,9 +27,9 @@ public class WorkstationFacade extends AbstractEmbdedDataList<Client,Workstation
         return em;
     }
 
-    public WorkstationFacade() throws NoSuchMethodException
+    public DeviceFacade() throws NoSuchMethodException
     {
-        super(Workstation.class,Client.class.getMethod("getWorkstationList"),
-                Client.class.getMethod("setWorkstationList",new Class<?>[]{List.class}));
+        super(Device.class,Client.class.getMethod("getDeviceList"),
+                Client.class.getMethod("setDeviceList",new Class<?>[]{List.class}));
     }
 }

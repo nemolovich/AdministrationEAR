@@ -4,9 +4,9 @@
  */
 package converter;
 
-import bean.facade.WorkstationFacade;
+import bean.facade.DeviceFacade;
 import converter.struct.EntityConverter;
-import entity.Workstation;
+import entity.Device;
 import javax.ejb.EJB;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -16,13 +16,13 @@ import javax.faces.convert.FacesConverter;
  *
  * @author Brian GOHIER
  */
-@FacesConverter("workstationConverter")
-public class WorkstationConverter extends EntityConverter<Workstation, WorkstationFacade>
+@FacesConverter("deviceConverter")
+public class DeviceConverter extends EntityConverter<Device, DeviceFacade>
 {
     @EJB
-    private WorkstationFacade workstationFacade;
+    private DeviceFacade deviceFacade;
 
-    public WorkstationConverter() {
+    public DeviceConverter() {
         super();
     }
     
@@ -31,7 +31,7 @@ public class WorkstationConverter extends EntityConverter<Workstation, Workstati
     public Object getAsObject(FacesContext context, UIComponent component,
         String value)
     {
-        super.entityFacade=this.workstationFacade;
+        super.entityFacade=this.deviceFacade;
         return super.getAsObject(context, component, value);
     }
 
@@ -39,7 +39,7 @@ public class WorkstationConverter extends EntityConverter<Workstation, Workstati
     public String getAsString(FacesContext context, UIComponent component,
         Object value)
     {
-        super.entityFacade=this.workstationFacade;
+        super.entityFacade=this.deviceFacade;
         return super.getAsString(context, component, value);
     }
 }

@@ -18,14 +18,14 @@ ALTER TABLE ROOT.INTERVENTION DROP CONSTRAINT intervention_task_id_fk;
 DROP TABLE ROOT.INTERVENTION;
 ALTER TABLE ROOT.TASK DROP CONSTRAINT task_c_user_id_fk;
 ALTER TABLE ROOT.TASK DROP CONSTRAINT task_client_id_fk;
-ALTER TABLE ROOT.TASK DROP CONSTRAINT task_workstation_id_fk;
+ALTER TABLE ROOT.TASK DROP CONSTRAINT task_device_id_fk;
 DROP TABLE ROOT.TASK;
 ALTER TABLE ROOT.CLIENT DROP CONSTRAINT client_c_user_id_fk;
 ALTER TABLE ROOT.MAIL DROP CONSTRAINT mail_client_id_fk;
 DROP TABLE ROOT.MAIL;
-ALTER TABLE ROOT.WORKSTATION DROP CONSTRAINT workstation_file_path_id_fk;
-ALTER TABLE ROOT.WORKSTATION DROP CONSTRAINT workstation_client_id_fk;
-DROP TABLE ROOT.WORKSTATION;
+ALTER TABLE ROOT.DEVICE DROP CONSTRAINT device_file_path_id_fk;
+ALTER TABLE ROOT.DEVICE DROP CONSTRAINT device_client_id_fk;
+DROP TABLE ROOT.DEVICE;
 ALTER TABLE ROOT.SOFTWARE DROP CONSTRAINT software_file_path_id_fk;
 ALTER TABLE ROOT.SOFTWARE DROP CONSTRAINT software_client_id_fk;
 DROP TABLE ROOT.SOFTWARE;
@@ -145,11 +145,11 @@ CREATE TABLE ROOT.MAIL (
                 FOREIGN KEY (id_client)
                 REFERENCES ROOT.CLIENT(id));
 
-------------- Création de la table WORKSTATION --------------
--- TABLE:			WORKSTATION
--- DESCRIPTION: 	Table concernant les postes de travail
+---------------- Création de la table DEVICE ----------------
+-- TABLE:			DEVICE
+-- DESCRIPTION: 	Table concernant les périphériques
 --  utilisés par les utilistaurs dans une société.
-CREATE TABLE ROOT.WORKSTATION (
+CREATE TABLE ROOT.DEVICE (
         id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY
 		(START WITH 1, INCREMENT BY 1),
 		id_client INTEGER NOT NULL,
@@ -170,10 +170,10 @@ CREATE TABLE ROOT.WORKSTATION (
 		hard_drive VARCHAR(64),
         observations VARCHAR(250),
 		sleeping BOOLEAN NOT NULL DEFAULT FALSE,
-        CONSTRAINT workstation_client_id_fk
+        CONSTRAINT device_client_id_fk
                 FOREIGN KEY (id_client)
                 REFERENCES ROOT.CLIENT(id),
-        CONSTRAINT workstation_file_path_id_fk
+        CONSTRAINT device_file_path_id_fk
                 FOREIGN KEY (id_file_path)
                 REFERENCES ROOT.FILE_PATH(id));
 
@@ -210,7 +210,7 @@ CREATE TABLE ROOT.TASK (
 		(START WITH 1, INCREMENT BY 1),
 		id_client INTEGER NOT NULL,
 		id_user INTEGER,
-		id_workstation INTEGER,
+		id_device INTEGER,
 		description VARCHAR(250),
         start_date DATE,
         intended_duration DOUBLE,
@@ -226,9 +226,9 @@ CREATE TABLE ROOT.TASK (
         CONSTRAINT task_c_user_id_fk
                 FOREIGN KEY (id_user)
                 REFERENCES ROOT.C_USER(id),
-        CONSTRAINT task_workstation_id_fk
-                FOREIGN KEY (id_workstation)
-                REFERENCES ROOT.WORKSTATION(id));
+        CONSTRAINT task_device_id_fk
+                FOREIGN KEY (id_device)
+                REFERENCES ROOT.DEVICE(id));
 
 ---------------- Création de la table FACTURE ---------------
 -- TABLE:			FACTURE

@@ -1,0 +1,119 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Poste de travail</title>
+    </h:head>
+    <h:body>
+        <f:view>
+            <h:form id="tDeviceViewForm">
+                <h:panelGrid columns="4" columnClasses="label,fields,label_30,fields">
+
+                    <h:outputText value="Type de station:"/>
+                    <h:outputText value="#{deviceView.entity.wsType}"
+                                  title="Type de station"
+                                  rendered="#{not deviceView.creating and
+                                              not deviceView.editing}"/>
+
+                    <h:outputText value="Moniteur:"/>
+                    <h:outputText value="#{deviceView.entity.monitor}"
+                                  title="Moniteur"
+                                  rendered="#{not deviceView.creating and
+                                              not deviceView.editing}"/>
+                    
+                    <h:outputText value="Nom machine:"
+                                   styleClass="#{(deviceView.creating or
+                                                 deviceView.editing)?'required':''}"/>
+                    <h:outputText value="#{deviceView.entity.name}"
+                                  title="Nom de la machine"
+                                  rendered="#{not deviceView.creating and
+                                              not deviceView.editing}"/>
+
+                    <h:outputText value="Carte graphique:"/>
+                    <h:outputText value="#{deviceView.entity.videoCard}"
+                                  title="Carte graphique"
+                                  rendered="#{not deviceView.creating and
+                                              not deviceView.editing}"/>
+                    
+                    <h:outputText value="Marque:"/>
+                    <h:outputText value="#{deviceView.entity.brand}"
+                                  title="Marque de la machine"
+                                  rendered="#{not deviceView.creating and
+                                              not deviceView.editing}"/>
+
+                    <h:outputText value="Système d'exploitation:"/>
+                    <h:outputText value="#{deviceView.entity.operatingSystem}"
+                                  title="Système d'exploitation"
+                                  rendered="#{not deviceView.creating and
+                                              not deviceView.editing}"/>
+                    
+                    <h:outputText value="Utilisateur par défaut:"/>
+                    <h:outputText value="#{deviceView.entity.userNameDefault}"
+                                  title="Nom de l'utilisateur par défaut"
+                                  rendered="#{not deviceView.creating and
+                                              not deviceView.editing}"/>
+
+                    <h:outputText value="Version système:"/>
+                    <h:outputText value="#{deviceView.entity.systemVersion}"
+                                  title="Version du système"
+                                  rendered="#{not deviceView.creating and
+                                              not deviceView.editing}"/>
+                    
+                    <h:outputText value="Adresse IP:"/>
+                    <h:outputText value="#{deviceView.entity.ipAddress}"
+                                  title="Adresse IP de la machine"
+                                  rendered="#{not deviceView.creating and
+                                              not deviceView.editing}"/>
+
+                    <h:outputText value="Licence système:"/>
+                    <h:outputText value="#{deviceView.entity.systemLicense}"
+                                  title="Version du système"
+                                  rendered="#{not deviceView.creating and
+                                              not deviceView.editing}"/>
+
+                    <h:outputText value="Date de mise en service:"/>
+                    <h:outputText value="#{utils.dayDateFormat(
+                                                            deviceView.entity.startDate)}"
+                                  title="Date de mise en service de la machine"
+                                  rendered="#{not deviceView.creating and
+                                              not deviceView.editing}"/>
+
+                    <h:outputText value="Mémoire vive:"/>
+                    <h:outputText value="#{deviceView.entity.ram}"
+                                  title="Mémoire vive"
+                                  rendered="#{not deviceView.creating and
+                                              not deviceView.editing}"/>
+
+                    <h:outputText value="Processeur:"/>
+                    <h:outputText value="#{deviceView.entity.processor}"
+                                  title="Processeur"
+                                  rendered="#{not deviceView.creating and
+                                              not deviceView.editing}"/>
+
+                    <h:outputText value="Disque dur:"/>
+                    <h:outputText value="#{deviceView.entity.hardDrive}"
+                                  title="Disque dur"
+                                  rendered="#{not deviceView.creating and
+                                              not deviceView.editing}"/>
+
+                </h:panelGrid>
+                <p:outputPanel>
+                    <h:outputText value="Observations:"
+                                   styleClass="label" style="margin-right: 30px;"/>
+                    <h:inputTextarea value="#{deviceView.entity.observations}"
+                                     title="Observations"
+                                     readonly="true"
+                                     styleClass="textarea_min"
+                                     ondblclick="this.focus();this.select();"
+                                     rendered="#{not deviceView.creating and
+                                                 not deviceView.editing}"/>
+                    <br/>
+                </p:outputPanel>
+            </h:form>
+        </f:view>
+
+    </h:body>
+</html>

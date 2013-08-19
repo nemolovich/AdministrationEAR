@@ -66,12 +66,12 @@
                     </p:column>
                     
                     <p:column headerText="Poste de travail"
-                              filterBy="#{item.idWorkstation}"
+                              filterBy="#{item.idDevice}"
                               filterMatchMode="contains">
                         <h:outputText value="#{utils.getBreakLinesString(
                                                utils.getShortString(
-                                               item.idWorkstation,20))}"
-                                      title="#{item.idWorkstation}"/>
+                                               item.idDevice,20))}"
+                                      title="#{item.idDevice}"/>
                     </p:column>
                     
                     <p:column headerText="Nom de l'utilisateur"

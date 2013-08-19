@@ -69,9 +69,9 @@ import javax.xml.bind.annotation.XmlTransient;
     private String observations;
     @Column(name = "SLEEPING")
     private Boolean sleeping=false;
-    @JoinColumn(name = "ID_WORKSTATION", referencedColumnName = "ID")
+    @JoinColumn(name = "ID_DEVICE", referencedColumnName = "ID")
     @ManyToOne
-    private Workstation idWorkstation;
+    private Device idDevice;
     @JoinColumn(name = "ID_USER", referencedColumnName = "ID")
     @ManyToOne
     private CUser idUser;
@@ -148,12 +148,12 @@ import javax.xml.bind.annotation.XmlTransient;
         this.sleeping = sleeping;
     }
 
-    public Workstation getIdWorkstation() {
-        return idWorkstation;
+    public Device getIdDevice() {
+        return idDevice;
     }
 
-    public void setIdWorkstation(Workstation idWorkstation) {
-        this.idWorkstation = idWorkstation;
+    public void setIdDevice(Device idDevice) {
+        this.idDevice = idDevice;
     }
 
     public CUser getIdUser() {
@@ -203,7 +203,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
     public String getFullString()
     {
-        return "entity.Task{" + "id=" + id + ", description=" + description + ", startDate=" + startDate + ", intendedDuration=" + intendedDuration + ", interventionType=" + interventionType + ", observations=" + observations + ", sleeping=" + sleeping + ", idWorkstation=" + idWorkstation + ", idUser=" + idUser + ", idClient=" + idClient + ", interventionList=" + interventionList + '}';
+        return "entity.Task{" + "id=" + id + ", description=" + description + ", startDate=" + startDate + ", intendedDuration=" + intendedDuration + ", interventionType=" + interventionType + ", observations=" + observations + ", sleeping=" + sleeping + ", idDevice=" + idDevice + ", idUser=" + idUser + ", idClient=" + idClient + ", interventionList=" + interventionList + '}';
     }
 
         @Override

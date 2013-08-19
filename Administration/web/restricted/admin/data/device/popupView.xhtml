@@ -8,53 +8,53 @@
     </h:head>
     <h:body>
         <f:view>
-            <h:form id="workstationViewForm">
+            <h:form id="deviceViewForm">
                 <h:panelGrid columns="2" columnClasses="label,fields">
                     
                     <h:outputText value="Société:"/>
-                    <h:outputText id="idClientV" value="#{workstationView.entity.idClient}"
-                                  title="Société à laquelle appartient ce poste de travail"/>
+                    <h:outputText id="idClientV" value="#{deviceView.entity.idClient}"
+                                  title="Société à laquelle appartient ce périphérique"/>
                     
                     <h:outputText value="Modèle:"/>
-                    <h:outputText id="brandV" value="#{workstationView.entity.brand}"
+                    <h:outputText id="brandV" value="#{deviceView.entity.brand}"
                                   title="Marque de la machine"/>
                     
                     <h:outputText value="Type de machine:"/>
-                    <h:outputText id="wsTypeV" value="#{workstationView.entity.wsType}"
+                    <h:outputText id="wsTypeV" value="#{deviceView.entity.wsType}"
                                   title="Type de la machine"/>
                     
                     <h:outputText value="Date de mise en service:"/>
-                    <h:outputText id="startDateV" value="#{workstationView.entity.startDate}"
+                    <h:outputText id="startDateV" value="#{deviceView.entity.startDate}"
                                   title="Date de mise en service de la machine" >
                         <f:convertDateTime pattern="dd/MM/yyyy"/>
                     </h:outputText>
                     
                     <h:outputText value="Processeur:"/>
-                    <h:outputText id="processorV" value="#{workstationView.entity.processor}"
+                    <h:outputText id="processorV" value="#{deviceView.entity.processor}"
                                   title="Processeur de la machine"/>
                     
                     <h:outputText value="Moniteur:"/>
-                    <h:outputText id="monitorV" value="#{workstationView.entity.monitor}"
+                    <h:outputText id="monitorV" value="#{deviceView.entity.monitor}"
                                   title="Moniteur de la machine"/>
                     
                     <h:outputText value="Carte graphique:"/>
-                    <h:outputText id="videoCardV" value="#{workstationView.entity.videoCard}"
+                    <h:outputText id="videoCardV" value="#{deviceView.entity.videoCard}"
                                   title="Carte graphique de la machine"/>
                     
                     <h:outputText value="Système d'exploitation:"/>
-                    <h:outputText id="operatingSystemV" value="#{workstationView.entity.operatingSystem}"
+                    <h:outputText id="operatingSystemV" value="#{deviceView.entity.operatingSystem}"
                                   title="Système d'exploitation de la machine"/>
                     
                     <h:outputText value="Mémoire vive:"/>
-                    <h:outputText id="ramV" value="#{workstationView.entity.ram}"
+                    <h:outputText id="ramV" value="#{deviceView.entity.ram}"
                                   title="Mémoire vive de la machine"/>
                     
                     <h:outputText value="Disque dur:"/>
-                    <h:outputText id="hardDriveV" value="#{workstationView.entity.hardDrive}"
+                    <h:outputText id="hardDriveV" value="#{deviceView.entity.hardDrive}"
                                   title="Disque dur de la machine"/>
                     
                     <h:outputText value="Observations:"/>
-                    <h:outputText id="observationsV" value="#{workstationView.entity.observations}"
+                    <h:outputText id="observationsV" value="#{deviceView.entity.observations}"
                                   title="Observations"/>
                     
                 </h:panelGrid>

@@ -4,8 +4,8 @@
  */
 package validator;
 
-import bean.facade.WorkstationFacade;
-import entity.Workstation;
+import bean.facade.DeviceFacade;
+import entity.Device;
 import javax.ejb.EJB;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -18,22 +18,22 @@ import validator.unique.struct.UniqueFieldValidator;
  *
  * @author Brian GOHIER
  */
-@FacesValidator("workstationUniqueFieldValidator")
-public class WorkstationUniqueFieldValidator extends UniqueFieldValidator<Workstation, WorkstationFacade>implements Validator
+@FacesValidator("deviceUniqueFieldValidator")
+public class DeviceUniqueFieldValidator extends UniqueFieldValidator<Device, DeviceFacade>implements Validator
 {
     @EJB
-    private WorkstationFacade workstationFacade;
+    private DeviceFacade deviceFacade;
     
-    public WorkstationUniqueFieldValidator()
+    public DeviceUniqueFieldValidator()
     {
-        super(Workstation.class);
+        super(Device.class);
     }
     
     @Override
     public void validate(FacesContext context, UIComponent component, Object value)
             throws ValidatorException
     {
-        super.entityFacade = this.workstationFacade;
+        super.entityFacade = this.deviceFacade;
         super.validate(context, component, value);
     }
 }

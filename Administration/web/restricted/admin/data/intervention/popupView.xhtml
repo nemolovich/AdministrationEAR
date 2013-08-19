@@ -64,7 +64,7 @@
                                 <f:selectItems value="#{clientView.entries}"/>
                                 <f:converter binding="#{clientConverter}"/>
                                 <p:ajax update="interventionViewForm:piidUser
-                                        interventionViewForm:piidWorkstationFull
+                                        interventionViewForm:piidDeviceFull
                                         interventionViewForm:displayIclientDetails
                                         interventionViewForm:tClientViewForm"
                                         process="@this"
@@ -87,29 +87,29 @@
                                              title="Afficher les détails de la société"/>
                         </p:outputPanel>
 
-                        <h:outputLabel value="Poste de travail:" for="piidWorkstationFull"/>
+                        <h:outputLabel value="Poste de travail:" for="piidDeviceFull"/>
                         <p:outputPanel style="white-space: nowrap;">
-                            <h:inputTextarea id="piidWorkstationFullV"
-                                             value="#{taskView.entityPopup.idWorkstation.toString()}"
+                            <h:inputTextarea id="piidDeviceFullV"
+                                             value="#{taskView.entityPopup.idDevice.toString()}"
                                              readonly="true"
                                              styleClass="textarea_min"
                                              ondblclick="this.focus();this.select();"
                                              rendered="#{not taskView.creating}">
                             </h:inputTextarea>
-                            <p:selectOneMenu id="piidWorkstationFull"
-                                             value="#{taskView.entityPopup.idWorkstation}"
+                            <p:selectOneMenu id="piidDeviceFull"
+                                             value="#{taskView.entityPopup.idDevice}"
                                              effect="fade"
                                              immediate="true"
                                              style="width:90%;"
                                              var="poste"
                                              rendered="#{taskView.creating}">
                                 <f:selectItem itemLabel="Sélectionnez&nbsp;une&nbsp;machine" itemValue=""/>
-                                <f:selectItems value="#{taskView.entityPopup.idClient.workstationList}"/>
-                                <f:converter binding="#{workstationConverter}"/>
-                                <p:ajax update="interventionViewForm:displayIworkstationDetails
-                                        interventionViewForm:tWorkstationViewForm"
+                                <f:selectItems value="#{taskView.entityPopup.idClient.deviceList}"/>
+                                <f:converter binding="#{deviceConverter}"/>
+                                <p:ajax update="interventionViewForm:displayIdeviceDetails
+                                        interventionViewForm:tDeviceViewForm"
                                         process="@this"
-                                        oncomplete="$('interventionViewForm\\\\:displayIworkstationDetails').css('display','inline');"
+                                        oncomplete="$('interventionViewForm\\\\:displayIdeviceDetails').css('display','inline');"
                                         listener="#{taskView.ajaxSelect}"/>
                                 
                                 <p:column>
@@ -117,17 +117,17 @@
                                 </p:column>
                             </p:selectOneMenu>
                             
-                            <p:commandButton id="displayIworkstationDetails"
-                                             actionListener="#{workstationView.entityView(taskView.entityPopup.idWorkstation)}"
+                            <p:commandButton id="displayIdeviceDetails"
+                                             actionListener="#{deviceView.entityView(taskView.entityPopup.idDevice)}"
                                              icon="ui-icon-search"
                                              immediate="true"
-                                             update="interventionViewForm:iworkstationDetails"
+                                             update="interventionViewForm:ideviceDetails"
                                              style="font-size: 40%;vertical-align: top !important;margin-left: 10px;"
-                                             oncomplete="displayBlock('interventionViewForm\\:iworkstationDetails');"
+                                             oncomplete="displayBlock('interventionViewForm\\:ideviceDetails');"
                                              action="javascript:void(0);"
                                              title="Afficher les détails du poste de travail"
                                              rendered="#{taskView.creating or
-                                                         not empty taskView.entityPopup.idWorkstation}"/>
+                                                         not empty taskView.entityPopup.idDevice}"/>
                         </p:outputPanel>
 
                         <h:outputLabel value="Utilisateur:" for="piidUser"/>
@@ -427,14 +427,14 @@
                                          onclick="hideBlock('interventionViewForm\\:iclientDetails');"/>
                         <ui:include src="/restricted/admin/data/task/popups/clients.xhtml"/>
                     </p:outputPanel>
-                    <p:outputPanel id="iworkstationDetails"
+                    <p:outputPanel id="ideviceDetails"
                                    styleClass="inside_dialog"
                                    style="display:none;">
                         <p:commandButton icon="ui-icon-closethick"
                                          styleClass="red_icon"
                                          title="Cacher les informations sur le poste de travail"
-                                         onclick="hideBlock('interventionViewForm\\:iworkstationDetails');"/>
-                        <ui:include src="/restricted/admin/data/task/popups/workstations.xhtml"/>
+                                         onclick="hideBlock('interventionViewForm\\:ideviceDetails');"/>
+                        <ui:include src="/restricted/admin/data/task/popups/devices.xhtml"/>
                     </p:outputPanel>
                     <p:outputPanel id="icuserDetails"
                                    styleClass="inside_dialog"
@@ -460,9 +460,9 @@
                                 {
                                     hideBlock('interventionViewForm\\:displayIclientDetails');
                                 }
-                                if($('#interventionViewForm\\:piidWorkstationFull_input')[0].selectedIndex===0)
+                                if($('#interventionViewForm\\:piidDeviceFull_input')[0].selectedIndex===0)
                                 {
-                                    hideBlock('interventionViewForm\\:displayIworkstationDetails');
+                                    hideBlock('interventionViewForm\\:displayIdeviceDetails');
                                 }
                                 if($('#interventionViewForm\\:piidUser_input')[0].selectedIndex===0)
                                 {
@@ -471,7 +471,7 @@
                             }
                             hideBlock('interventionViewForm\\:iclientDetails');
                             addConcurrentBlock('interventionViewForm\\:iclientDetails',
-                                        ['interventionViewForm\\:iworkstationDetails',
+                                        ['interventionViewForm\\:ideviceDetails',
                                             'interventionViewForm\\:icuserDetails']);
                             addRedStarsTorequiredFields();
                         });

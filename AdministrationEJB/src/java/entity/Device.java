@@ -32,28 +32,28 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Brian GOHIER
  */
 @Entity
-@Table(name = "WORKSTATION")
+@Table(name = "DEVICE")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Workstation.findAll", query = "SELECT w FROM Workstation w"),
-    @NamedQuery(name = "Workstation.findById", query = "SELECT w FROM Workstation w WHERE w.id = :id"),
-    @NamedQuery(name = "Workstation.findByWsType", query = "SELECT w FROM Workstation w WHERE w.wsType = :wsType"),
-    @NamedQuery(name = "Workstation.findByName", query = "SELECT w FROM Workstation w WHERE w.name = :name"),
-    @NamedQuery(name = "Workstation.findByUserNameDefault", query = "SELECT w FROM Workstation w WHERE w.userNameDefault = :userNameDefault"),
-    @NamedQuery(name = "Workstation.findByIpAddress", query = "SELECT w FROM Workstation w WHERE w.ipAddress = :ipAddress"),
-    @NamedQuery(name = "Workstation.findByBrand", query = "SELECT w FROM Workstation w WHERE w.brand = :brand"),
-    @NamedQuery(name = "Workstation.findByStartDate", query = "SELECT w FROM Workstation w WHERE w.startDate = :startDate"),
-    @NamedQuery(name = "Workstation.findByProcessor", query = "SELECT w FROM Workstation w WHERE w.processor = :processor"),
-    @NamedQuery(name = "Workstation.findByMonitor", query = "SELECT w FROM Workstation w WHERE w.monitor = :monitor"),
-    @NamedQuery(name = "Workstation.findByVideoCard", query = "SELECT w FROM Workstation w WHERE w.videoCard = :videoCard"),
-    @NamedQuery(name = "Workstation.findByOperatingSystem", query = "SELECT w FROM Workstation w WHERE w.operatingSystem = :operatingSystem"),
-    @NamedQuery(name = "Workstation.findBySystemVersion", query = "SELECT w FROM Workstation w WHERE w.systemVersion = :systemVersion"),
-    @NamedQuery(name = "Workstation.findBySystemLicense", query = "SELECT w FROM Workstation w WHERE w.systemLicense = :systemLicense"),
-    @NamedQuery(name = "Workstation.findByRam", query = "SELECT w FROM Workstation w WHERE w.ram = :ram"),
-    @NamedQuery(name = "Workstation.findByHardDrive", query = "SELECT w FROM Workstation w WHERE w.hardDrive = :hardDrive"),
-    @NamedQuery(name = "Workstation.findByObservations", query = "SELECT w FROM Workstation w WHERE w.observations = :observations"),
-    @NamedQuery(name = "Workstation.findBySleeping", query = "SELECT w FROM Workstation w WHERE w.sleeping = :sleeping")})
-public class Workstation implements Serializable
+    @NamedQuery(name = "Device.findAll", query = "SELECT w FROM Device w"),
+    @NamedQuery(name = "Device.findById", query = "SELECT w FROM Device w WHERE w.id = :id"),
+    @NamedQuery(name = "Device.findByWsType", query = "SELECT w FROM Device w WHERE w.wsType = :wsType"),
+    @NamedQuery(name = "Device.findByName", query = "SELECT w FROM Device w WHERE w.name = :name"),
+    @NamedQuery(name = "Device.findByUserNameDefault", query = "SELECT w FROM Device w WHERE w.userNameDefault = :userNameDefault"),
+    @NamedQuery(name = "Device.findByIpAddress", query = "SELECT w FROM Device w WHERE w.ipAddress = :ipAddress"),
+    @NamedQuery(name = "Device.findByBrand", query = "SELECT w FROM Device w WHERE w.brand = :brand"),
+    @NamedQuery(name = "Device.findByStartDate", query = "SELECT w FROM Device w WHERE w.startDate = :startDate"),
+    @NamedQuery(name = "Device.findByProcessor", query = "SELECT w FROM Device w WHERE w.processor = :processor"),
+    @NamedQuery(name = "Device.findByMonitor", query = "SELECT w FROM Device w WHERE w.monitor = :monitor"),
+    @NamedQuery(name = "Device.findByVideoCard", query = "SELECT w FROM Device w WHERE w.videoCard = :videoCard"),
+    @NamedQuery(name = "Device.findByOperatingSystem", query = "SELECT w FROM Device w WHERE w.operatingSystem = :operatingSystem"),
+    @NamedQuery(name = "Device.findBySystemVersion", query = "SELECT w FROM Device w WHERE w.systemVersion = :systemVersion"),
+    @NamedQuery(name = "Device.findBySystemLicense", query = "SELECT w FROM Device w WHERE w.systemLicense = :systemLicense"),
+    @NamedQuery(name = "Device.findByRam", query = "SELECT w FROM Device w WHERE w.ram = :ram"),
+    @NamedQuery(name = "Device.findByHardDrive", query = "SELECT w FROM Device w WHERE w.hardDrive = :hardDrive"),
+    @NamedQuery(name = "Device.findByObservations", query = "SELECT w FROM Device w WHERE w.observations = :observations"),
+    @NamedQuery(name = "Device.findBySleeping", query = "SELECT w FROM Device w WHERE w.sleeping = :sleeping")})
+public class Device implements Serializable
 {
     private static final long serialVersionUID = 1L;
     @Id
@@ -118,13 +118,13 @@ public class Workstation implements Serializable
     @JoinColumn(name = "ID_FILE_PATH", referencedColumnName = "ID")
     @ManyToOne
     private FilePath idFilePath;
-    @OneToMany(mappedBy = "idWorkstation")
+    @OneToMany(mappedBy = "idDevice")
     private List<Task> taskList;
 
-    public Workstation() {
+    public Device() {
     }
 
-    public Workstation(Integer id) {
+    public Device(Integer id) {
         this.id = id;
     }
 
@@ -299,10 +299,10 @@ public class Workstation implements Serializable
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Workstation)) {
+        if (!(object instanceof Device)) {
             return false;
         }
-        Workstation other = (Workstation) object;
+        Device other = (Device) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -311,7 +311,7 @@ public class Workstation implements Serializable
 
     public String getFullString()
     {
-        return "entity.Workstation{" + "id=" + id + ", wsType=" + wsType + ", name=" + name + ", userNameDefault=" + userNameDefault + ", ipAddress=" + ipAddress + ", brand=" + brand + ", startDate=" + startDate + ", processor=" + processor + ", monitor=" + monitor + ", videoCard=" + videoCard + ", operatingSystem=" + operatingSystem + ", systemVersion=" + systemVersion + ", systemLicense=" + systemLicense + ", ram=" + ram + ", hardDrive=" + hardDrive + ", observations=" + observations + ", sleeping=" + sleeping + ", idClient=" + idClient + ", idFilePath=" + idFilePath + ", taskList=" + taskList + '}';
+        return "entity.Device{" + "id=" + id + ", wsType=" + wsType + ", name=" + name + ", userNameDefault=" + userNameDefault + ", ipAddress=" + ipAddress + ", brand=" + brand + ", startDate=" + startDate + ", processor=" + processor + ", monitor=" + monitor + ", videoCard=" + videoCard + ", operatingSystem=" + operatingSystem + ", systemVersion=" + systemVersion + ", systemLicense=" + systemLicense + ", ram=" + ram + ", hardDrive=" + hardDrive + ", observations=" + observations + ", sleeping=" + sleeping + ", idClient=" + idClient + ", idFilePath=" + idFilePath + ", taskList=" + taskList + '}';
     }
     
     @Override
