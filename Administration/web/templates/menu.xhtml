@@ -30,7 +30,8 @@
                 </p:submenu>
                 <p:submenu label="Données"
                            rendered="#{userLogin.rights.equalsIgnoreCase(tUserView.admin_Rights)}">
-                    <p:submenu label="Sociétés">
+                    <p:submenu label="Sociétés"
+                               icon="ui-icon-contact">
                         <p:menuitem outcome="/restricted/admin/data/client/list" 
                                     value="Liste des sociétés"
                                     icon="ui-icon-copy"

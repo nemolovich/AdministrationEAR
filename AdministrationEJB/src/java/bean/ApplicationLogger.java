@@ -591,8 +591,8 @@ public class ApplicationLogger
             }
             if(nbLastLine>0)
             {
-                out.append(before+": Même ligne "+nbLastLine+" fois\r\n");
-                out.flush();
+//                out.append(before+": Même ligne "+nbLastLine+" fois\r\n");
+//                out.flush();
                 displayInfo(before+": Même ligne "+nbLastLine+" fois\n");
             }
             if(style!=null)

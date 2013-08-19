@@ -130,7 +130,8 @@ public abstract class EntitySleepingSelection<C> implements Serializable
             Exception ex=new NullPointerException("La liste des entitiés de la " +
                     "classe \""+this.entityClass.getName()+"\" filtrée pour le " +
                     "filtre \"Sleeping\" renvoi \"null\"");
-            ApplicationLogger.writeError(ex.getLocalizedMessage(), ex);
+//            ApplicationLogger.writeError(ex.getLocalizedMessage(), ex);
+            ApplicationLogger.displayError(ex.getLocalizedMessage(), ex);
             DISPLAYED_ERROR=true;
             return this.getFullList()!=null?this.getFullList():new ArrayList<C>();
         }

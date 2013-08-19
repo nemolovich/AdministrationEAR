@@ -11,7 +11,7 @@
         <p:dialog id="dialogDevice"
                   appendToBody="true"
                   header="Fenêtre de périphérique"
-                  widgetVar="createWorstation"
+                  widgetVar="createDevice"
                   resizable="false"
                   draggable="true"
                   modal="true"
@@ -21,14 +21,14 @@
                 <h:panelGrid columns="4" columnClasses="label,fields,label_30,fields"
                              rendered="#{not empty deviceView.entity}">
 
-                    <p:outputLabel value="Type de station:" for="wwsType" />
+                    <p:outputLabel value="Type de machine:" for="wwsType" />
                     <p:inputText id="wwsType" value="#{deviceView.entity.wsType}"
-                                 title="Type de station"
+                                 title="Type de machine"
                                  maxlength="64"
                                  rendered="#{deviceView.creating or 
                                              deviceView.editing}"/>
                     <h:outputText id="wwsTypeV" value="#{deviceView.entity.wsType}"
-                                  title="Type de station"
+                                  title="Type de machine"
                                   rendered="#{not deviceView.creating and
                                               not deviceView.editing}"/>
 
@@ -218,7 +218,7 @@
                                      icon="ui-icon-check"
                                      update=":clientUpdate :growl :createDeviceForm"
                                      styleClass="green_icon"
-                                     oncomplete="createRequest(createWorstation, xhr, status, args);clientDeviceTable.filter();"
+                                     oncomplete="createRequest(createDevice, xhr, status, args);clientDeviceTable.filter();"
                                      />
                     <p:commandButton id="backCreateDevice" value="Annuler"
                                      title="Annuler la création"
@@ -228,7 +228,7 @@
                                      immediate="true"
                                      ajax="true"
                                      icon="ui-icon-closethick"
-                                     onclick="createWorstation.hide();"
+                                     onclick="createDevice.hide();"
                                      />
                 </p:outputPanel>
                 <p:outputPanel rendered="#{deviceView.editing}"
@@ -240,7 +240,7 @@
                                      icon="ui-icon-disk"
                                      update=":clientUpdate :growl :createDeviceForm"
                                      styleClass="green_icon"
-                                     oncomplete="createRequest(createWorstation, xhr, status, args);clientDeviceTable.filter();"
+                                     oncomplete="createRequest(createDevice, xhr, status, args);clientDeviceTable.filter();"
                                      />
                     <p:commandButton id="backEditDevice" value="Annuler"
                                      title="Annuler les changements"
@@ -250,7 +250,7 @@
                                      immediate="true"
                                      ajax="true"
                                      icon="ui-icon-closethick"
-                                     onclick="createWorstation.hide();"
+                                     onclick="createDevice.hide();"
                                      />
                 </p:outputPanel>
                 <p:outputPanel rendered="#{not deviceView.creating and 
@@ -263,7 +263,7 @@
                                          type="reset"
                                          immediate="true"
                                          ajax="true"
-                                         onclick="createWorstation.hide();"
+                                         onclick="createDevice.hide();"
                                          />
                     </center>
                 </p:outputPanel>
@@ -277,7 +277,7 @@
                                     <span class="ui-messages-error-summary">
                                         Sélection incorrecte!
                                         <script type="text/javascript">
-//                                                    createWorstation.hide();
+//                                                    createDevice.hide();
                                         </script>
                                     </span>
                                 </li>

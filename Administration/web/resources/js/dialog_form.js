@@ -318,6 +318,20 @@ function forceFilter(table)
 }
 
 /**
+ * Utilise la valeur d'un <p:input> externe pour la rentrer dans un <p:input>
+ * d'une <p:dataTable> afin d'en effectuer un filter
+ * @param {String} fromId - Identifiant du <p:input> externe
+ * @param {String} toId - Identifiant du <p:input> de la <p:dataTabla>
+ * @returns {void}
+ */
+function filterOutFor(fromId, toId)
+{
+    var val=$('#'+fromId).val();
+    $('#'+toId).val(val);
+    $('#'+toId).keyup();
+}
+
+/**
  * Permet d'essayer de forcer la mise à jour d'un composant primefaces
  * si celui-ci existe bien
  * @param {String} source - Identifiant de l'élément source

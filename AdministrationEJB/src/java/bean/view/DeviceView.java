@@ -55,7 +55,7 @@ public class DeviceView extends EmbdedDataListView<Client, Device, DeviceFacade>
     public String getDeleteMessage(Device entity)
     {
         return "Vous êtes sur le point de supprimer définitivement"
-                + " ce poste de travail ("+entity.toString()
+                + " ce périphérique ("+entity.toString()
                 + " id="+entity.getId()+"). Cette action est irreversible,"
                 + " êtes-vous certain(e) de vouloir continuer?";
     }
@@ -66,7 +66,7 @@ public class DeviceView extends EmbdedDataListView<Client, Device, DeviceFacade>
         if(entities!=null)
         {
             String out="Vous êtes sur le point de supprimer définitivement tous les "
-                + "postes de travails sélectionnés (";
+                + "périphériques sélectionnés (";
             boolean first=true;
             for(Device device:entities)
             {

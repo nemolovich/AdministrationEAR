@@ -1,0 +1,121 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Création Facture</title>
+    </h:head>
+    <h:body>
+        
+    	<ui:composition template="/templates/page_template.xhtml">
+            <ui:define name="title">
+                | Création Facture
+            </ui:define>
+            <ui:define name="content">
+                <f:attribute name="header" value="Création d'une facture"/>
+                <f:view>
+                    <h:form id="facturePrint"
+                            enctype="multipart/form-data">
+                        <p:dataTable id="interventionDataTable"
+                                     value="#{interventionView.entries}"
+                                     var="item"
+                                     widgetVar="interventionTable"
+                                     emptyMessage="Aucune intervention n'a été trouvée"
+                                     rowStyleClass="#{item.sleeping?'sleeping_elmt':null}"
+                                     rows="#{utils.maxDataRows}"
+                                     sortBy="#{item.interventionDate}"
+                                     sortFunction="#{utils.sortByDate}"
+                                     filteredValue="#{interventionView.filteredEntities}">
+                            
+                            <p:column headerText="Durée"
+                                      filterBy="#{utils.getTimeFormat(item.duration)}"
+                                      filterMatchMode="contains"
+                                      filterStyle="display: none;width:70px;">
+                                <h:outputText value="#{utils.getTimeFormat(item.duration)}"
+                                              title="Durée de l'intervention"/>
+                            </p:column>
+                            
+                            <p:column headerText="Date"
+                                      style="width:1%;"
+                                      sortBy="#{item.interventionDate}"
+                                      sortFunction="#{utils.sortByDate}"
+                                      filterStyle="display: none;"
+                                      filterBy="#{utils.smallDateFormat(item.interventionDate)}"
+                                      filterMatchMode="contains">
+                                <h:outputText value="#{utils.smallDateFormat(item.interventionDate)}"
+                                              rendered="#{not empty item.interventionDate}"/>
+                            </p:column>
+                            
+                            <p:column headerText="Tâche à accomplir"
+                                      filterBy="#{item.idTask.toString()}"
+                                      style="white-space: nowrap;"
+                                      filterStyle="display: none;"
+                                      filterMatchMode="contains">
+                                <h:outputText style="white-space: nowrap;" value="#{item.idTask.toString()}"/>
+                                <p:commandButton actionListener="#{taskView.entityView(item.idTask)}"
+                                                 action="javascript:void(0);"
+                                                 title="Afficher les détails de cette tâche"
+                                                 icon="ui-icon-search"
+                                                 style="font-size: 40%;vertical-align: top !important;"
+                                                 update=":taskMenuViewPopup :taskMenuDialogHeader :taskViewForm"
+                                                 oncomplete="taskMenuViewDialog.show();"/>
+                            </p:column>
+                            
+                            <p:column headerText="Tarif déplacement:"
+                                      style="text-align: right;">
+                                <h:outputText value="#{not empty item.idTask.idClient.deplacement?
+                                                       item.idTask.idClient.deplacement:'0'} €"/>
+                            </p:column>
+                            
+                            <f:facet name="footer">
+                                <p:outputPanel style="float:right;">
+                                    <p:inputText id="globalFilter" onkeyup="doAfterInterval('interventionTable.filter();',1);"
+                                                 style="display: none;"
+                                                 title="Rechercher dans tous les champs de recherche">
+                                    </p:inputText>
+                                    <h:outputText value="Total:"/>
+                                </p:outputPanel>
+                            </f:facet>
+                            
+                        </p:dataTable>
+                        
+                        <p:panel styleClass="buttons_panel"
+                                 header="Actions:">
+                            <h:outputText value="Rechercher:"/>
+                            <p:inputText id="globalFilterOut" onkeyup="filterOutFor('facturePrint\\:globalFilterOut','facturePrint\\:interventionDataTable\\:globalFilter');"
+                                         style="width:150px;margin-left:20px"
+                                         title="Rechercher dans tous les champs de recherche">
+                            </p:inputText>
+<!--                            <p:commandButton value="Imprimer"
+                                             type="button"
+                                             icon="ui-icon-print">
+                                <p:printer target="interventionDataTable"/>
+                            </p:commandButton>-->
+<!--                            <p:commandButton title="Exporter en PDF"
+                                             icon="ui-icon-print">-->
+<!--                            <h:commandLink value="PDF">
+                                <p:dataExporter target="interventionDataTable"
+                                                type="pdf"
+                                                fileName="factureXXX"
+                                                preProcessor="{PDFCreatorController.preProcessPDF}"/>
+                            </h:commandLink>-->
+                            <p:commandButton icon="ui-icon-print"
+                                             title="Exporter au format PDF"
+                                             update=":growl"
+                                             actionListener="#{PDFCreatorController.createPDF(
+                                                               empty interventionView.filteredEntities?
+                                                               interventionView.entries:
+                                                               interventionView.filteredEntities)}"/>
+                            <!--</p:commandButton>-->
+                        </p:panel>
+                        
+                    </h:form>
+                </f:view>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

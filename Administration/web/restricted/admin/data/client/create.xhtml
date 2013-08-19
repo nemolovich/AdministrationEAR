@@ -6,13 +6,13 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>Création société</title>
+        <title>Création Société</title>
     </h:head>
     <h:body>
         
     	<ui:composition template="/templates/page_template.xhtml">
             <ui:define name="title">
-                | Création société
+                | Création Société
             </ui:define>
             <ui:define name="content">
                 <f:attribute name="header" value="Création d'une société"/>
@@ -265,6 +265,7 @@
                                                                           uploadLabel="Envoyer"
                                                                           cancelLabel="Annuler"
                                                                           onstart="startAjax();"
+                                                                          oncomplete="stopAjax();"
                                                                           invalidFileMessage="Type de fichier invalide"
                                                                           invalidSizeMessage="Taille du fichier invalide"
                                                                           widgetVar="fileUploadVar"

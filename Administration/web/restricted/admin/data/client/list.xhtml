@@ -48,7 +48,7 @@
                           dynamic="true"
                           appendToBody="true"
                           header="Détails de l'utilisateur"
-                          widgetVar="cuserViewDialog"
+                          widgetVar="cUserCreateDialog"
                           resizable="false"
                           draggable="true"
                           maximizable="false"
@@ -56,20 +56,13 @@
                           showEffect="clip"
                           hideEffect="clip">
                     <h:form id="cuserDialogHeader">
-                        <p:hotkey bind="esc" process="@this" handler="cuserViewDialog.hide();"/>
-                        <h3 class="tabheader">Détails de l'utilisateur #{cUserView.entity.name}:</h3>
+                        <p:hotkey bind="esc" process="@this" handler="cUserCreateDialog.hide();"/>
+                        <h3 class="tabheader">
+                            <h:outputText value="#{cUserView.editing?'Modification':'Détails'}"/>
+                            de l'utilisateur #{cUserView.entity.name}:
+                        </h3>
                     </h:form>
                     <ui:include src="/restricted/admin/data/c_user/popupView.xhtml"/>
-                    <h:form>
-                        <p:outputPanel styleClass="buttons_panel">
-                            <center>
-                                <p:commandButton title="Fermer la fenêtre"
-                                                 action="javascript:void(0);"
-                                                 onclick="cuserViewDialog.hide();"
-                                                 value="Fermer"/>
-                            </center>
-                        </p:outputPanel>
-                    </h:form>
                 </p:dialog>
                 <f:view>
                     <h:form id="clientDataForm">
@@ -116,9 +109,9 @@
                                 <p:spacer width="10px"/>
                                 <p:commandButton actionListener="#{cUserView.entityView(item.idUser)}"
                                                  icon="ui-icon-search"
-                                                 update=":cuserViewForm :cuserDialogHeader"
+                                                 update=":createUserForm :cuserDialogHeader"
                                                  style="font-size: 40%;vertical-align: top !important;float:right;"
-                                                 oncomplete="cuserViewDialog.show();"
+                                                 oncomplete="cUserCreateDialog.show();"
                                                  action="javascript:void(0);"
                                                  title="Afficher les détails de l'interlocuteur"
                                                  rendered="#{not empty item.idUser}"/>

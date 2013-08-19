@@ -91,13 +91,13 @@
                                                          style="font-size: 60%;"
                                                          title="Détails de ce périphérique"
                                                          update=":createDeviceForm"
-                                                         oncomplete="createWorstation.show();"/>
+                                                         oncomplete="createDevice.show();"/>
                                         <p:commandButton actionListener="#{deviceView.entityUpdate(device)}"
                                                          icon="ui-icon-pencil"
                                                          style="font-size: 60%;"
                                                          title="Modifier ce périphérique"
                                                          update=":createDeviceForm"
-                                                         oncomplete="createWorstation.show();"/>
+                                                         oncomplete="createDevice.show();"/>
                                         <p:commandButton actionListener="#{deviceView.entityDelete(clientView.entity, device)}"
                                                          action="javascipt:void(0);"
                                                          icon="ui-icon-trash"
@@ -128,7 +128,7 @@
                                                          oncomplete="clientDeviceTable.filter();"
                                                          update=":growl :clientUpdate:clientTabView:clientDeviceList"
                                                          style="font-size: 60%;float:right;"
-                                                         onclick="if(!confirm('Voulez vous vraiment mettre ce device en standby?\n'+
+                                                         onclick="if(!confirm('Voulez vous vraiment mettre ce périphérique en standby?\n'+
                                                                         '(Vous pourrez le réactiver quand vous le souhaitez)'))
                                                                            {return false;}"
                                                          styleClass="red_icon"
@@ -141,16 +141,16 @@
                                             <p:commandButton value="Ajouter un périphérique"
                                                              icon="ui-icon-circle-plus"
                                                              styleClass="green_icon"
-                                                             title="Ajouter un device à cette société"
+                                                             title="Ajouter un périphérique à cette société"
                                                              update=":createDeviceForm"
                                                              actionListener="#{deviceView.entityCreate(clientView.entity)}"
-                                                             onclick="createWorstation.show();"/>
+                                                             onclick="createDevice.show();"/>
                                             <p:commandButton id="deviceDelete"
                                                              value="Supprimer"
                                                              icon="ui-icon-trash"
                                                              widgetVar="deviceDeleteButton"
                                                              styleClass="red_icon"
-                                                             title="Supprimer les devices sélectionnés"
+                                                             title="Supprimer les périphériques sélectionnés"
                                                              update=":clientUpdate :growl :clientUpdate:clientTabView:clientDeviceList @this"
                                                              disabled="#{deviceMultiView.emptySelection}"
                                                              actionListener="#{deviceView.remove(clientView.entity,
@@ -174,7 +174,7 @@
                                                         immediate="false"/>
                                                 <script type="text/javascript">
                                                     addTitle("clientUpdate\\:clientTabView\\:clientDeviceList\\:checkDisplayDeviceSleeping",
-                                                             "Affiche les devices en sommeil en plus de ceux actifs");
+                                                             "Affiche les périphériques en sommeil en plus de ceux actifs");
                                                 </script>
                                             </p:selectBooleanCheckbox>
                                         </p:outputPanel>
@@ -621,6 +621,7 @@
                                                               uploadLabel="Envoyer"
                                                               cancelLabel="Annuler"
                                                               onstart="startAjax();"
+                                                              oncomplete="stopAjax();"
                                                               invalidFileMessage="Type de fichier invalide"
                                                               invalidSizeMessage="Taille du fichier invalide"
                                                               widgetVar="fileUploadVar"

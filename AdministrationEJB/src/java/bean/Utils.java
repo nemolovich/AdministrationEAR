@@ -337,7 +337,8 @@ public class Utils
             String call="Appel de la méthode \""+m.getName()+"\" "+description+" sur "
                     + "l'objet de la classe \""+target.getClass().getName()+"\" "
                     + "avec les paramètres: "+Arrays.toString(args);
-            ApplicationLogger.writeInfo(call);
+//            ApplicationLogger.writeInfo(call);
+            ApplicationLogger.displayInfo(call);
             return m.invoke(target, args);
         }
         catch (IllegalAccessException ex)

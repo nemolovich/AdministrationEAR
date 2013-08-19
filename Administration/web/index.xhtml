@@ -22,8 +22,8 @@
                     <br/>
                     <h:link outcome="restricted/admin/index" value="Panneau administrateur" title="Afficher le panneau administrateur"/>
                     <br />
-                    <p:commandLink action="tests" value="Page de tests" title="Lient temporaire"
-                                   actionListener="#{cUserView.entityCreate(clientView.entries.get(0))}"
+                    <p:commandLink action="restricted/admin/data/facture/print" value="Page de tests" title="Lient temporaire"
+                                   actionListener="#{clientView.entityView(clientView.entries.get(0))}"
                                    immediate="true"
                                    ajax="false"/>
                     <br />

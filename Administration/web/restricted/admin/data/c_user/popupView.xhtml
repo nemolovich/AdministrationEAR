@@ -9,77 +9,266 @@
     </h:head>
     <h:body>
         <f:view>
-            <h:form id="cuserViewForm">
-                <h:panelGrid columns="2" columnClasses="label,fields">
-                    
-                    <h:outputText value="Identifiant:"/>
-                    <h:outputText id="puidV" value="#{cUserView.entity.id}"
-                                  title="Identifiant de l'utilisateurs"/>
-                    
-                    <h:outputText value="Nom:"/>
+            <h:form id="createUserForm">
+                <h:panelGrid columns="2" columnClasses="label,fields"
+                         rendered="#{not empty cUserView.entity}">
+                    <p:outputLabel value="Nom:" for="puname"/>
+                    <p:inputText id="puname" value="#{cUserView.entity.name}"
+                                 maxlength="45"
+                                 title="Nom de l'utilisateur"
+                                 required="true"
+                                 requiredMessage="Le champs 'Nom' ne peut être vide"
+                                 rendered="#{cUserView.creating or 
+                                                cUserView.editing}">
+                        <f:validator binding="#{cUserUniqueFieldValidator}"/>
+                        <f:attribute name="fieldName" value="Name" />
+                        <f:attribute name="update_id" value="#{cUserView.entity.id}"/>
+                    </p:inputText>
                     <h:outputText id="punameV" value="#{cUserView.entity.name}"
-                                  title="Nom de l'utilisateur"/>
+                                  title="Nom de l'utilisateur"
+                                  rendered="#{not cUserView.creating and
+                                              not cUserView.editing}"/>
                     
-                    <h:outputText value="Téléphone direct:"/>
+                    <p:outputLabel value="Ligne directe:" for="pudirectphone"/>
+                    <p:inputMask id="pudirectphone" value="#{cUserView.entity.directPhone}" mask="99.99.99.99.99"
+                                 title="Ligne directe de l'utilisateur"
+                                 rendered="#{cUserView.creating or 
+                                                cUserView.editing}">
+                        <f:validator binding="#{phonePatternValidator}"/>
+                    </p:inputMask>
                     <h:outputText id="pudirectphoneV" value="#{cUserView.entity.directPhone}"
-                                  title="Numéro de téléphone de l'utilisateur"/>
+                                  title="Ligne directe de l'utilisateur"
+                                  rendered="#{not cUserView.creating and
+                                              not cUserView.editing}"/>
                     
-                    <h:outputText value="Référence de la société"/>
-                    <h:outputText id="puidclientV" value="#{cUserView.entity.idClient}"
-                                  title="Société pour laquelle travaille l'utilisateur"/>
+                    <p:outputLabel value="Fonction:" for="puposition"/>
+                    <p:inputText id="puposition" value="#{cUserView.entity.position}"
+                                 maxlength="30"
+                                 title="Poste occupé par l'utilisateur dans la société"
+                                 rendered="#{cUserView.creating or 
+                                                cUserView.editing}">
+                    </p:inputText>
+                    <h:outputText id="pupositionV" value="#{cUserView.entity.position}"
+                                  title="Poste occupé par l'utilisateur dans la société"
+                                  rendered="#{not cUserView.creating and
+                                              not cUserView.editing}"/>
                     
-                    <h:outputText value="Poste occupé:"/>
-                    <h:outputText value="#{cUserView.entity.position}"
-                                  title="Poste occupé par l'utilisateur dans la société"/>
+                    <p:outputLabel value="Téléphone portable:" for="puphone"/>
+                    <p:inputMask id="puphone" value="#{cUserView.entity.phone}" mask="99.99.99.99.99"
+                                 title="Numéro de téléphone portable de l'utilisateur"
+                                 rendered="#{cUserView.creating or 
+                                                cUserView.editing}">
+                        <f:validator binding="#{phonePatternValidator}"/>
+                    </p:inputMask>
+                    <h:outputText id="puphoneV" value="#{cUserView.entity.phone}"
+                                  title="Numéro de téléphone portable de l'utilisateur"
+                                  rendered="#{not cUserView.creating and
+                                              not cUserView.editing}"/>
                     
-                    <h:outputText id="puphoneV" value="Portable:"/>
-                    <h:outputText value="#{cUserView.entity.phone}"
-                                  title="Numéro de téléphone portable"/>
+                    <p:outputLabel value="Login:" for="pulogin"/>
+                    <p:inputText id="pulogin" value="#{cUserView.entity.login}"
+                                 maxlength="30"
+                                 title="Identifiant de connexion de l'utilisateur"
+                                 rendered="#{cUserView.creating or 
+                                                cUserView.editing}">
+                    </p:inputText>
+                    <h:outputText id="puloginV" value="#{cUserView.entity.login}"
+                                  title="Identifiant de connexion de l'utilisateur"
+                                  rendered="#{not cUserView.creating and
+                                              not cUserView.editing}"/>
                     
-                    <h:outputText value="Login:"/>
-                    <h:outputText value="#{cUserView.entity.login}"
-                                  title="Identifiant de connexion de l'utilisateur"/>
+                    <p:outputLabel value="Mot de passe:" for="pupassword"/>
+                    <p:inputText id="pupassword" value="#{cUserView.entity.password}"
+                                 maxlength="64"
+                                 title="Mot de passe de connexion de l'utilisateur"
+                                 rendered="#{cUserView.creating or 
+                                                cUserView.editing}">
+                    </p:inputText>
+                    <h:outputText id="pupasswordV" value="#{cUserView.entity.password}"
+                                  title="Mot de passe de connexion de l'utilisateur"
+                                  rendered="#{not cUserView.creating and
+                                              not cUserView.editing}"/>
                     
-                    <h:outputText value="Mot de passe:"/>
-                    <h:outputText value="#{cUserView.entity.password}"
-                                  title="Mot de passe de connexion de l'utilisateur"/>
-                    
-                    <h:outputText value="Mails:"/>
-                    <h:inputTextarea id="pumailsV"
-                                     value="#{cUserView.entity.mails}"
+                    <p:outputLabel value="Mails:" for="pumails"/>
+                    <h:inputTextarea id="pumails" value="#{cUserView.entity.mails}"
+                                     title="Adresses mails (séparées par le caractère ';')"
                                      styleClass="textarea_min"
+                                     rendered="#{cUserView.creating or 
+                                                 cUserView.editing}"/>
+                    <h:inputTextarea id="pumailsV" value="#{cUserView.entity.mails}"
                                      title="Adresses mail"
                                      readonly="true"
-                                     ondblclick="this.focus();this.select();"/>
-                    
-                    <h:outputText value="Observations:"/>
-                    <h:inputTextarea id="puobservationsV"
-                                     value="#{cUserView.entity.observations}"
                                      styleClass="textarea_min"
+                                     ondblclick="this.focus();this.select();"
+                                     rendered="#{not cUserView.creating and
+                                                 not cUserView.editing}"/>
+                    
+                    <p:outputLabel value="Observations:" for="puobservations"/>
+                    <h:inputTextarea id="puobservations" value="#{cUserView.entity.observations}"
+                                     title="Observations"
+                                     styleClass="textarea_min"
+                                     rendered="#{cUserView.creating or 
+                                                 cUserView.editing}"/>
+                    <h:inputTextarea id="puobservationsV" value="#{cUserView.entity.observations}"
                                      title="Observations"
                                      readonly="true"
-                                     ondblclick="this.focus();this.select();"/>
+                                     styleClass="textarea_min"
+                                     ondblclick="this.focus();this.select();"
+                                     rendered="#{not cUserView.creating and
+                                                 not cUserView.editing}"/>
+                    
                 </h:panelGrid>
-                
-                <p:dataList value="#{cUserView.entity.idFilePath.filesInPath}"
-                            var="file"
-                            paginator="true"
-                            paginatorPosition="top"
-                            rows="5"
-                            rendered="#{not empty cUserView.entity and
-                                        not empty cUserView.entity.idFilePath and
-                                        not cUserView.entity.idFilePath.emptyFilePath}">
-                    <p:column headerText="Lien">
-                        <h:outputLink value="javascript:void(0);"
-                                      onclick="window.open('#{files.getFileLink(file, cUserView.entity.idFilePath)}',
-                                            'File details','dependent=yes, menubar=no,\
-                                            toolbar=no, status=no, scrollbars=yes,\
-                                            resizable=no, width=800, height=600');return false;"
-                                      title="Ouvrir le fichier">
-                            <h:outputText value="#{file.name}"/>
-                        </h:outputLink>
-                    </p:column>
-                </p:dataList>
+                <p:outputPanel rendered="#{cUserView.creating or cUserView.editing}">
+                    <f:event type="preRenderComponent"
+                             listener="#{fileUploadController.setFilePath(
+                                         cUserView.entityFilePath)}"/>
+                    <table style="width:100%;">
+                        <tr>
+                            <td style="vertical-align:top !important;">
+                                <p:fileUpload fileUploadListener="#{fileUploadController.handleFileUpload}"
+                                              mode="advanced"
+                                              dragDropSupport="true"
+                                              multiple="true"
+                                              process="@this"
+                                              update=":growl :createUserForm:cUserFiles"
+                                              sizeLimit="800000000"
+                                              label="Parcourir..."
+                                              uploadLabel="Envoyer"
+                                              cancelLabel="Annuler"
+                                              onstart="startAjax();"
+                                              oncomplete="stopAjax();"
+                                              invalidFileMessage="Type de fichier invalide"
+                                              invalidSizeMessage="Taille du fichier invalide"
+                                              widgetVar="fileUploadVar"
+                                              allowTypes="#{utils.getTextFilesExtensions()}" >
+                                </p:fileUpload>
+                            </td>
+                            <td style="vertical-align:top !important;float:right;">
+                                <p:dataTable id="cUserFiles"
+                                             value="#{cUserView.entityFilePath.filesInPath}"
+                                             var="file"
+                                             rows="5"
+                                             emptyMessage="Aucun fichier n'est présent"
+                                             paginatorPosition="top"
+                                             sortBy="#{file.name}"
+                                             paginator="true">
+
+                                    <p:column headerText="Nom">
+                                        <h:outputText value="#{file.name}"/>
+                                    </p:column>
+
+                                    <p:column headerText="Taille">
+                                        <h:outputText value="#{files.getStringSize(file.length())}"/>
+                                    </p:column>
+
+                                    <p:column>
+                                        <p:commandButton icon="ui-icon-trash"
+                                                         styleClass="red_icon"
+                                                         style="font-size:60%;"
+                                                         onclick="if(!confirm('#{fileUploadController.getDeleteMessage(file)}'))
+                                                         {return false;}"
+                                                         actionListener="#{fileUploadController.deleteFile(file)}"
+                                                         title="Supprimer ce fichier"
+                                                         update=":growl :createUserForm:cUserFiles"/>
+                                    </p:column>
+
+                                    <f:facet name="footer">
+                                        <p:outputPanel style="float:left;">
+                                            <p:commandButton action="#{fileUploadController.deleteAllFiles()}"
+                                                             icon="ui-icon-trash"
+                                                             styleClass="red_icon"
+                                                             onclick="if(!confirm('#{fileUploadController.deleteAllMessage}'))
+                                                                        {return false;}"
+                                                             title="Supprimer tous les fichier du serveur"
+                                                             value="Tout supprimer"
+                                                             update=":growl :createUserForm:cUserFiles"
+                                                             disabled="#{fileUploadController.emptyFolder}"/>
+                                        </p:outputPanel>
+                                    </f:facet>
+
+                                </p:dataTable>
+                            </td>
+                        </tr>
+                    </table>
+                </p:outputPanel>
+                <p:outputPanel rendered="#{not cUserView.entityFilePath.emptyFilePath and
+                                           not cUserView.creating and not cUserView.editing}">
+                    <p:dataList value="#{cUserView.entityFilePath.filesInPath}"
+                                var="file"
+                                paginator="true"
+                                paginatorPosition="top"
+                                rows="5">
+                        <p:column headerText="Lien">
+                            <h:outputLink value="javascript:void(0);"
+                                          onclick="window.open('#{files.getFileLink(file, cUserView.entityFilePath)}',
+                                                'File details','dependent=yes, menubar=no,\
+                                                toolbar=no, status=no, scrollbars=yes,\
+                                                resizable=no, width=800, height=600');return false;"
+                                          title="Ouvrir le fichier">
+                                <h:outputText value="#{file.name}"/>
+                            </h:outputLink>
+                        </p:column>
+                    </p:dataList>
+                </p:outputPanel>
+                <p:outputPanel rendered="#{cUserView.creating or
+                                            cUserView.editing}">
+                    (<span class="red-star">*</span>: champs requis)<br />
+                </p:outputPanel>
+                <p:outputPanel styleClass="buttons_panel"
+                               rendered="#{cUserView.editing}">
+                    <p:commandButton  id="pupdateUser" value="Mettre à jour"
+                                     title="Enregistrer les changements"
+                                     type="submit"
+                                     actionListener="#{cUserView.update(cUserView.entity.idClient)}"
+                                     icon="ui-icon-disk"
+                                     update=":growl :createUserForm"
+                                     styleClass="green_icon"
+                                     oncomplete="createRequest(cUserCreateDialog, xhr, status, args);"
+                                     />
+                    <p:commandButton id="backEditUser" value="Annuler"
+                                     title="Annuler les changements"
+                                     action="javascript:void(0);"
+                                     actionListener="#{cUserView.cancelCreate()}"
+                                     styleClass="red_icon"
+                                     type="reset"
+                                     immediate="true"
+                                     ajax="true"
+                                     icon="ui-icon-closethick"
+                                     onclick="cUserCreateDialog.hide();"
+                                     />
+                </p:outputPanel>
+                <p:outputPanel styleClass="buttons_panel"
+                               rendered="#{not cUserView.creating and 
+                                            not cUserView.editing}">
+                    <center>
+                        <p:commandButton id="backUser" value="Fermer"
+                                         title="Fermer la fenêtre"
+                                         action="javascript:void(0);"
+                                         type="reset"
+                                         immediate="true"
+                                         ajax="true"
+                                         onclick="cUserCreateDialog.hide();"
+                                         />
+                    </center>
+                </p:outputPanel>
+                <p:outputPanel id="selectionUserError" 
+                               rendered="#{empty cUserView.entity}">
+                    <div class="ui-messages ui-widget">
+                        <div class="ui-messages-error ui-corner-all">
+                            <span class="ui-messages-error-icon"/>
+                            <ul>
+                                <li>
+                                    <span class="ui-messages-error-summary">
+                                        Sélection incorrecte!
+                                        <script type="text/javascript">
+//                                                    cUserCreateDialog.hide();
+                                        </script>
+                                    </span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </p:outputPanel>
                 
             </h:form>
         </f:view>
