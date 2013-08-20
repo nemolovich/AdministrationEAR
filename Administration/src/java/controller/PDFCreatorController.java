@@ -56,6 +56,40 @@ public class PDFCreatorController
         pdf.add(new Paragraph("Facture n°XXX:"));
     }
     
+    private void setFooter(Document doc, String beforePage, String afterPage)
+        throws DocumentException
+    {
+        PdfPTable footer=new PdfPTable(3);
+        footer.setWidthPercentage(100);
+        footer.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
+        footer.getDefaultCell().setVerticalAlignment(Element.ALIGN_TOP);
+        footer.setSpacingAfter(30);
+        Paragraph leftValue = new Paragraph(beforePage);
+        PdfPCell left=new PdfPCell(leftValue);
+        left.setHorizontalAlignment(Element.ALIGN_LEFT);
+        PdfPCell center=new PdfPCell(new Phrase("X/"));
+        Paragraph rightValue = new Paragraph(afterPage);
+        PdfPCell right=new PdfPCell(rightValue);
+        right.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        
+        left.setBorder(Rectangle.NO_BORDER);
+        left.setBorderWidthTop(1);
+        center.setBorder(Rectangle.NO_BORDER);
+        center.setBorderWidthTop(1);
+        right.setBorder(Rectangle.NO_BORDER);
+        right.setBorderWidthTop(1);
+        
+        footer.addCell(left);
+        footer.addCell(center);
+        footer.addCell(right);
+        
+        float spacing=doc.getPageSize().getHeight();
+        System.err.println("Espace: "+spacing);
+        footer.setSpacingBefore(spacing-doc.bottomMargin()-footer.getTotalHeight());
+        
+        doc.add(footer);
+    }
+    
     public void createPDF(List<Intervention> list)
     {
         Document pdf=new Document(PageSize.A4);
@@ -91,10 +125,6 @@ public class PDFCreatorController
         try
         {
             pdf.open();
-            HeaderFooter footer=new HeaderFooter(new Phrase("Détails de la facture n°XXXX"), true);
-            pdf.add(footer);
-            pdf.setFooter(footer);
-            pdf.setHeader(footer);
             
             ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
             String logo = servletContext.getRealPath("")+File.separator+
@@ -128,7 +158,9 @@ public class PDFCreatorController
 //            pdf.add(header);
             
             pdf.add(new Paragraph("List: "+Arrays.toString(list.toArray())));
+            this.setFooter(pdf, "Page","Détails de la facture n°XXX");
             
+            pdf.close();
             written=true;
         }
         catch (MalformedURLException ex)
@@ -139,10 +171,6 @@ public class PDFCreatorController
         {}
         catch (DocumentException ex)
         {}
-        finally
-        {
-            pdf.close();
-        }
         
         if(!written)
         {
