@@ -218,12 +218,20 @@ public class Client implements Serializable
         this.fax = fax;
     }
 
+    public Double getTarifValue() {
+        return this.tarif==null?0:this.tarif;
+    }
+
     public Double getTarif() {
         return tarif;
     }
 
     public void setTarif(Double tarif) {
         this.tarif = tarif;
+    }
+
+    public Double getDeplacementValue() {
+        return this.deplacement==null?0:this.deplacement;
     }
 
     public Double getDeplacement() {

@@ -36,7 +36,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Intervention.findByDuration", query = "SELECT i FROM Intervention i WHERE i.duration = :duration"),
     @NamedQuery(name = "Intervention.findByDeplacement", query = "SELECT i FROM Intervention i WHERE i.deplacement = :deplacement"),
     @NamedQuery(name = "Intervention.findBySleeping", query = "SELECT i FROM Intervention i WHERE i.sleeping = :sleeping")})
-public class Intervention implements Serializable
+public class Intervention implements Serializable, Comparable<Intervention>
 {
     private static final long serialVersionUID = 1L;
     @Id
@@ -124,6 +124,12 @@ public class Intervention implements Serializable
     }
 
     @Override
+    public int compareTo(Intervention i)
+    {
+        return -i.getInterventionDate().compareTo(this.interventionDate);
+    }
+    
+    @Override
     public int hashCode() {
         int hash = 0;
         hash += (id != null ? id.hashCode() : 0);
@@ -152,5 +158,4 @@ public class Intervention implements Serializable
     public String toString() {
         return "Intervention sur la tâche {"+this.idTask+"}";
     }
-    
 }
