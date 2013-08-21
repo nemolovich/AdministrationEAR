@@ -8,10 +8,10 @@ import controller.utilsPDF.PDFDocument;
 import bean.Files;
 import bean.Utils;
 import com.lowagie.text.BadElementException;
-import com.lowagie.text.Document;
+import com.lowagie.text.Chunk;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
-import com.lowagie.text.HeaderFooter;
+import com.lowagie.text.Font;
 import com.lowagie.text.Image;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
@@ -21,13 +21,13 @@ import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 import controller.utilsPDF.PDFTable;
+import entity.Client;
 import entity.Intervention;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import javax.faces.application.FacesMessage;
@@ -78,9 +78,15 @@ public class PDFCreatorController
                 opened=false;
             }
             catch (DocumentException ex)
-            {}
+            {
+//                ex.printStackTrace();
+                opened=true;
+            }
             catch (FileNotFoundException ex)
-            {}
+            {
+//                ex.printStackTrace();
+                opened=true;
+            }
         }
         if(opened||pdf.isOpen())
         {
@@ -128,6 +134,7 @@ public class PDFCreatorController
             
             pdf.add(header);
             PDFTable table;
+            Paragraph details = new Paragraph();
             if(list==null)
             {
                 table=new PDFTable(1);
@@ -135,11 +142,40 @@ public class PDFCreatorController
             }
             else
             {
+                Intervention item=list.get(0);
+                Client client=item.getIdTask().getIdClient();
+                String societyName=client.getName();
+                Font fontB = new Font();
+                fontB.setStyle(Font.BOLD);
+                Font font = new Font();
+                Phrase ph0=new Phrase("Facture pour la société "+
+                        societyName+"\n",fontB);
+                Phrase ph1=new Phrase(new Chunk("Tarif de l'intervention:",font));
+                Paragraph ph2=new Paragraph(String.format(" %.02f €", client.getTarifValue()),fontB);
+                Phrase ph3=new Phrase(new Chunk("Tarif déplacement:",font));
+                Paragraph ph4=new Paragraph(String.format(" %.02f €", client.getDeplacementValue()),fontB);
+                PDFTable tab1=new PDFTable(2);
+                tab1.setWidthPercentage(35);
+                final float[] sizes={70,30};
+                tab1.setWidths(sizes);
+                tab1.setHorizontalAlignment(Element.ALIGN_LEFT);
+                tab1.addSize(ph1,Element.ALIGN_LEFT, 1, 0, 0);
+                tab1.addSize(ph2,Element.ALIGN_RIGHT, 1, 0, 0);
+                tab1.addSize(ph3,Element.ALIGN_LEFT, 1, 0, 0);
+                tab1.addSize(ph4,Element.ALIGN_RIGHT, 1, 0, 0);
+                tab1.setSpacingAfter(0);
+                tab1.setSpacingBefore(0);
+                details.add(ph0);
+                details.add(tab1);
+                details.setSpacingBefore(0);
+                details.setSpacingAfter(20);
+                pdf.add(details);
                 Collections.sort(list);
-                table=new PDFTable(3);
+                table=new PDFTable(4);
                 final String[][] tableHeader={
                     {"Date:",    String.valueOf(Element.ALIGN_LEFT)},
                     {"Durée:",   String.valueOf(Element.ALIGN_LEFT)},
+                    {"Déplacement:",   String.valueOf(Element.ALIGN_RIGHT)},
                     {"Tarif:",   String.valueOf(Element.ALIGN_RIGHT)}};
                 table.setHeader(tableHeader);
                 double total=0;
@@ -151,6 +187,8 @@ public class PDFCreatorController
                     table.add(new Paragraph(Utils.getDurationString(
                             Utils.getTimeFormat(i.getDuration()))),
                             Element.ALIGN_LEFT);
+                    table.add(new Paragraph(i.getDeplacement()?"Oui":"Non"),
+                            Element.ALIGN_RIGHT);
                     double tarif=i.getIdTask().getIdClient().getTarifValue()*i.getDuration()
                             +i.getIdTask().getIdClient().getDeplacementValue();
                     total+=tarif;
@@ -166,19 +204,32 @@ public class PDFCreatorController
             
             pdf.add(table);
             
-            pdf.addFooter(header.getTotalHeight()+table.getTotalHeight()+30);
+            pdf.addFooter(header.getTotalHeight()+details.getTotalLeading()+75+
+                    table.getTotalHeight()+30);
             
             pdf.close();
             written=true;
         }
         catch (MalformedURLException ex)
-        {}
+        {
+//            ex.printStackTrace();
+            written=false;
+        }
         catch (BadElementException ex)
-        {}
+        {
+//            ex.printStackTrace();
+            written=false;
+        }
         catch (IOException ex)
-        {}
+        {
+//            ex.printStackTrace();
+            written=false;
+        }
         catch (DocumentException ex)
-        {}
+        {
+//            ex.printStackTrace();
+            written=false;
+        }
         
         if(!written||pdf.isOpen())
         {

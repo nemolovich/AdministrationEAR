@@ -66,8 +66,15 @@
                             
                             <p:column headerText="Tarif déplacement:"
                                       style="text-align: right;">
-                                <h:outputText value="#{not empty item.idTask.idClient.deplacement?
+                                <h:outputText value="#{not empty item.idTask.idClient.deplacement
+                                                       and item.deplacement?
                                                        item.idTask.idClient.deplacement:'0'} €"/>
+                            </p:column>
+                            
+                            <p:column headerText="Tarif intrervention:"
+                                      style="text-align: right;">
+                                <h:outputText value="#{not empty item.idTask.idClient.tarif?
+                                                       item.idTask.idClient.tarif*item.duration:'0'} €"/>
                             </p:column>
                             
                             <f:facet name="footer">
@@ -85,7 +92,10 @@
                         <p:panel styleClass="buttons_panel"
                                  header="Actions:">
                             <h:outputText value="Rechercher:"/>
-                            <p:inputText id="globalFilterOut" onkeyup="filterOutFor('facturePrint\\:globalFilterOut','facturePrint\\:interventionDataTable\\:globalFilter');"
+                            <p:inputText id="globalFilterOut"
+                                         onkeyup="filterOutFor('facturePrint\\:globalFilterOut',
+                                                     'facturePrint\\:interventionDataTable\\:globalFilter');"
+                                         onblur="$(this).keyup();"
                                          style="width:150px;margin-left:20px"
                                          title="Rechercher dans tous les champs de recherche">
                             </p:inputText>
