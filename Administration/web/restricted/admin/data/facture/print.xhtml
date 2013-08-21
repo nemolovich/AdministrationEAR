@@ -19,6 +19,16 @@
                 <f:view>
                     <h:form id="facturePrint"
                             enctype="multipart/form-data">
+                        <h3 class="tabheader">
+                            <h:outputText value="Facture n°#{factureView.entity.factureNumber}
+                                          pour la société #{interventionView.restrictedClient}"/>
+                        </h3>
+                        <script type="text/javascript">
+                            $(document).ready(function()
+                            {
+                                interventionTable.filter();
+                            });
+                        </script>
                         <p:dataTable id="interventionDataTable"
                                      value="#{interventionView.entries}"
                                      var="item"
@@ -99,27 +109,29 @@
                                          style="width:150px;margin-left:20px"
                                          title="Rechercher dans tous les champs de recherche">
                             </p:inputText>
-<!--                            <p:commandButton value="Imprimer"
-                                             type="button"
-                                             icon="ui-icon-print">
-                                <p:printer target="interventionDataTable"/>
-                            </p:commandButton>-->
-<!--                            <p:commandButton title="Exporter en PDF"
-                                             icon="ui-icon-print">-->
-<!--                            <h:commandLink value="PDF">
-                                <p:dataExporter target="interventionDataTable"
-                                                type="pdf"
-                                                fileName="factureXXX"
-                                                preProcessor="{PDFCreatorController.preProcessPDF}"/>
-                            </h:commandLink>-->
-                            <p:commandButton icon="ui-icon-print"
-                                             title="Exporter au format PDF"
-                                             update=":growl"
-                                             actionListener="#{PDFCreatorController.createPDF(
+                            <p:commandButton id="createFacture"
+                                             value="Valider la facture"
+                                             icon="ui-icon-disk"
+                                             styleClass="green_icon"
+                                             title="Créer la fature"
+                                             update=":growl :facturePrint"
+                                             rendered="#{factureView.creating}"
+                                             actionListener="#{factureView.create(
                                                                empty interventionView.filteredEntities?
                                                                interventionView.entries:
                                                                interventionView.filteredEntities)}"/>
-                            <!--</p:commandButton>-->
+                            
+                            <p:commandButton id="displayPDF"
+                                             value="Afficher la facture"
+                                             action="javascript:void(0);"
+                                             icon="ui-icon-pdf"
+                                             onclick="window.open('#{files.getFileLink(factureView.entity)}',
+                                                   'File details','dependent=yes, menubar=no,\
+                                                   toolbar=no, status=no, scrollbars=yes,\
+                                                   resizable=no, width=800, height=600');return false;"
+                                             title="Afficher la facture au format PDF"
+                                             rendered="#{not factureView.creating}">
+                            </p:commandButton>
                         </p:panel>
                         
                     </h:form>

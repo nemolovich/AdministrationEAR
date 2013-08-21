@@ -1,0 +1,117 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Création Facture</title>
+    </h:head>
+    <h:body>
+    	<ui:composition template="/templates/page_template.xhtml">
+            <ui:define name="title">
+                | Création Facture
+            </ui:define>
+            <ui:define name="content">
+                <f:attribute name="header" value="Création d'une facture"/>
+                <f:view>
+                    <h:form id="factureCreateForm">
+                        <h:panelGrid columns="2" columnClasses="label,fields">
+                            
+                            <p:outputLabel value="Numéro de facture:" for="factureNumber" />
+                            <p:inputText id="factureNumber"
+                                         value="#{factureView.entity.factureNumber}" 
+                                         title="Numéro de facture"
+                                         maxlength="8">
+                                <f:validator binding="#{notNullFieldValidator}"/>
+                                <f:attribute name="requiredMessage"
+                                             value="Veuillez entrer le numéro facture"/>
+                                <f:attribute name="requiredTitle"
+                                             value="Champs 'Numéro de facture' vide"/>
+                            </p:inputText>
+                            
+                            <p:outputLabel value="Société:" for="interventionRestrictedClient"/>
+                            <p:selectOneMenu id="interventionRestrictedClient"
+                                             value="#{interventionView.restrictedClient}"
+                                             effect="fade"
+                                             var="client">
+                                <f:validator binding="#{notNullFieldValidator}"/>
+                                <f:attribute name="requiredMessage"
+                                             value="Veuillez sélectionner la société pour laquelle générer une facture"/>
+                                <f:attribute name="requiredTitle"
+                                             value="Champs 'Société' invalide"/>
+                                <f:selectItem itemLabel="Sélectionnez&nbsp;une&nbsp;société" itemValue=""/>
+                                <f:selectItems value="#{clientView.entries}"/>
+                                <f:converter binding="#{clientConverter}"/>
+                                
+                                <p:column>
+                                    #{client}
+                                </p:column>
+                            </p:selectOneMenu>
+                            
+                            <p:outputLabel for="interventionPeriodeStartDate"
+                                           style="vertical-align: bottom !important;"
+                                           value="De: "/>
+                            <p:calendar id="interventionPeriodeStartDate" value="#{interventionView.startDate}"
+                                        title="Date de début de la période"
+                                        disabledWeekends="false"
+                                        effect="slideDown"
+                                        locale="fr"
+                                        navigator="true"
+                                        pattern="dd/MM/yyyy"
+                                        showButtonPanel="true"
+                                        style="vertical-align: top !important;"
+                                        widgetVar="startDateIntervention">
+                                <script type="text/javascript">
+                                    $(document).ready(function(){loadLocales();});
+                                </script>
+                                <p:ajax event="dateSelect"
+                                        update=":growl"/>
+                                <f:validator binding="#{notNullFieldValidator}"/>
+                                <f:attribute name="requiredMessage"
+                                             value="Veuillez entrer le début de la période"/>
+                                <f:attribute name="requiredTitle"
+                                             value="Champs 'Date de début' vide"/>
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </p:calendar>
+                            
+                            <p:outputLabel for="interventionPeriodeEndDate"
+                                           value="À: "/>
+                            <p:calendar id="interventionPeriodeEndDate" value="#{interventionView.endDate}"
+                                        title="Date de début de la période"
+                                        disabledWeekends="false"
+                                        effect="slideDown"
+                                        locale="fr"
+                                        navigator="true"
+                                        pattern="dd/MM/yyyy"
+                                        showButtonPanel="true"
+                                        widgetVar="endDateIntervention">
+                                <script type="text/javascript">
+                                    $(document).ready(function(){loadLocales();});
+                                </script>
+                                <p:ajax event="dateSelect"
+                                        update=":growl"/>
+                                <f:validator binding="#{notNullFieldValidator}"/>
+                                <f:attribute name="requiredMessage"
+                                             value="Veuillez entrer le fin de la période"/>
+                                <f:attribute name="requiredTitle"
+                                             value="Champs 'Date de fin' vide"/>
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </p:calendar>
+                        </h:panelGrid>
+                        <p:outputPanel styleClass="buttons_panel">
+                            <p:commandButton action="#{factureView.entityPrint(factureView.entity)}"
+                                             update=":growl"
+                                             value="Générer la facture"
+                                             title="Génère la facture pour les paramètres donnés"
+                                             styleClass="green_icon"
+                                             icon="ui-icon-arrowthick-1-e"/>
+                        </p:outputPanel>
+                    </h:form>
+                </f:view>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

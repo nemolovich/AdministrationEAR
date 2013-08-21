@@ -4,6 +4,7 @@
  */
 package bean.view.periodSelection;
 
+import bean.Utils;
 import bean.facade.abstracts.AbstractFacade;
 import bean.view.struct.EntityView;
 import java.util.Calendar;
@@ -35,7 +36,7 @@ public abstract class EntityPeriodView<C,F extends AbstractFacade<C>> extends En
     
     protected boolean verifDate(Date startDate, Date endDate)
     {
-        return startDate.before(endDate)||startDate.equals(endDate);
+        return Utils.verifDate(startDate,endDate);
     }
 
     public Date getStartDate() {

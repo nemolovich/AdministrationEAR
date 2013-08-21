@@ -124,6 +124,11 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> extends EntitySl
         this.webFolder=webFolder;
     }
     
+    protected String getWebFolder()
+    {
+        return this.webFolder;
+    }
+    
     public String create()
     {
         this.creating=false;

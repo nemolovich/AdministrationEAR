@@ -245,6 +245,14 @@ fieldset
     background-image:           url("/Administration/javax.faces.resource/images/ui-icons_cd0a0a_256x240.png.xhtml?ln=primefaces-aristo") !important;
 }
 
+.ui-icon-pdf.ui-icon
+{
+    background-image:           url("/Administration/resources/img/ui-icon-pdf.png") !important;
+    background-size:            16px, 16px;
+    background-repeat:          no-repeat;
+    background-position:        0px 1px;
+}
+
 .ui-icon-new-task.ui-icon
 {
     background-image:           url("/Administration/resources/img/ui-icon-new-task.png") !important;

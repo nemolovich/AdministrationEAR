@@ -13,6 +13,7 @@ import com.lowagie.text.Phrase;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,8 +24,8 @@ import java.util.List;
 public class PDFTable extends PdfPTable
 {
     private List<PdfPCell> cellList=new ArrayList<PdfPCell>();
-    private float borderWidthTop=0f;
-    private float bottomWidthBottom=0f;
+    private float borderWidthTop=.2f;
+    private float borderWidthBottom=.2f;
     private float borderWidthLeft=0f;
     private float borderWidthRight=0f;
     private int lines=0;
@@ -36,6 +37,7 @@ public class PDFTable extends PdfPTable
     public PDFTable(int numColumns)
     {
         super(numColumns);
+        this.setWidthPercentage(100);
     }
     
     public void add()
@@ -72,6 +74,11 @@ public class PDFTable extends PdfPTable
         this.addCol(e, align, 1, border);
     }
     
+    public void addBordered(Element e, int align, int border, Color background)
+    {
+        this.addCol(e, align, 1, border, background);
+    }
+    
     public void addCol(Element e, int columns)
     {
         this.addCol(e, Element.ALIGN_CENTER, columns, PDFTable.NO_BORDER);
@@ -79,24 +86,43 @@ public class PDFTable extends PdfPTable
     
     public void addCol(Element e, int align, int columns, int border)
     {
-        this.addSize(e, align, columns, 5, 5, border);
+        this.addSize(e, align, columns, 2, 5, border);
+    }
+    
+    public void addCol(Element e, int align, int columns, int border,
+            Color background)
+    {
+        this.addSize(e, align, columns, 2, 5, border, background);
     }
     
     public void addSize(Element e, float spacingBefore, float spacingAfter)
     {
-        this.addSize(e, Element.ALIGN_CENTER, 1, spacingBefore, spacingAfter,
-                PDFTable.NO_BORDER);
+        this.addSize(e, Element.ALIGN_CENTER, 1, spacingBefore, spacingAfter);
     }
     
     public void addSize(Element e, int align, int columns, float spacingBefore,
             float spacingAfter)
     {
-        this.addSize(e, Element.ALIGN_CENTER, columns, spacingBefore,
-                spacingAfter, PDFTable.NO_BORDER);
+        this.addSize(e, align, columns, spacingBefore,
+                spacingAfter, PDFTable.NO_BORDER, null, 1);
     }
     
     public void addSize(Element e, int align, int columns, float spacingBefore,
             float spacingAfter, int border)
+    {
+        this.addSize(e, align, columns, spacingBefore,
+                spacingAfter, border, null, 1);
+    }
+    
+    public void addSize(Element e, int align, int columns, float spacingBefore,
+            float spacingAfter, int border, Color background)
+    {
+        this.addSize(e, align, columns, spacingBefore,
+                spacingAfter, border, background, 1);
+    }
+    
+    public void addSize(Element e, int align, int columns, float spacingBefore,
+            float spacingAfter, int border, Color background, float gray)
     {
         PdfPCell cell = null;
         if(e instanceof Image)
@@ -122,27 +148,33 @@ public class PDFTable extends PdfPTable
         cell.setBorder(Rectangle.NO_BORDER);
         if(border==PDFTable.TOP_BORDER)
         {
-            cell.setBorderWidthTop(.5f);
+            cell.setBorderWidthTop(this.borderWidthTop);
         }
-        if(border==PDFTable.BOTTOM_BORDER)
+        else if(border==PDFTable.BOTTOM_BORDER)
         {
-            cell.setBorderWidthBottom(.5f);
+            cell.setBorderWidthBottom(this.borderWidthBottom);
         }
-        if(border==PDFTable.BOTH_BORDER)
-        {
-            cell.setBorderWidthTop(.5f);
-            cell.setBorderWidthBottom(.5f);
-        }
-        else
+        else if(border==PDFTable.BOTH_BORDER)
         {
             cell.setBorderWidthTop(this.borderWidthTop);
-            cell.setBorderWidthBottom(this.bottomWidthBottom);
+            cell.setBorderWidthBottom(this.borderWidthBottom);
+        }
+        else if(border!=PDFTable.NO_BORDER)
+        {
+            cell.setBorderWidthTop(this.borderWidthTop);
+            cell.setBorderWidthBottom(this.borderWidthBottom);
             cell.setBorderWidthLeft(this.borderWidthLeft);
             cell.setBorderWidthRight(this.borderWidthRight);
         }
         cell.setHorizontalAlignment(align);
+        cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
         cell.setPaddingTop(spacingBefore);
         cell.setPaddingBottom(spacingAfter);
+        cell.setGrayFill(gray);
+        if(background!=null)
+        {
+            cell.setBackgroundColor(background);
+        }
         cell.setColspan(columns);
         super.addCell(cell);
         this.cellList.add(cell);
@@ -164,7 +196,8 @@ public class PDFTable extends PdfPTable
                 throw new IndexOutOfBoundsException("Le paramètre de titre est incorrect");
             }
             Paragraph cell=new Paragraph(title[0],headerFont);
-            this.addSize(cell, Integer.valueOf(title[1]),1,5,10,PDFTable.BOTH_BORDER);
+            this.addSize(cell, Integer.valueOf(title[1]), 1, 5, 10,
+                    PDFTable.BOTH_BORDER, null, 0.9f);
         }
         this.setHeaderRows(1);
     }
@@ -175,17 +208,17 @@ public class PDFTable extends PdfPTable
             FontFactory.getFont(FontFactory.HELVETICA, 13, Font.BOLD);
         if(listFooter.length==0)
         {
-                throw new IndexOutOfBoundsException("Nombre de paramètres pour footer incorrect");
+            throw new IndexOutOfBoundsException("Nombre de paramètres pour footer incorrect");
         }
         Paragraph cell=new Paragraph(listFooter[0][0],footerFont);
         this.addSize(cell,Integer.valueOf(listFooter[0][1]),
                 this.getNumberOfColumns()-listFooter.length+1,
-                10,5,PDFTable.BOTH_BORDER);
+                5, 10, PDFTable.BOTH_BORDER, null, 0.9f);
         for(int i=1;i<listFooter.length;i++)
         {
             cell=new Paragraph(listFooter[i][0],footerFont);
             this.addSize(cell,Integer.valueOf(listFooter[i][1]),1,
-                    10,5,PDFTable.BOTH_BORDER);
+                    5, 10, PDFTable.BOTH_BORDER, null, 0.9f);
         }
     }
     
@@ -216,11 +249,11 @@ public class PDFTable extends PdfPTable
     }
 
     public float getBottomWidthBottom() {
-        return bottomWidthBottom;
+        return borderWidthBottom;
     }
 
     public void setBottomWidthBottom(float bottomWidthBottom) {
-        this.bottomWidthBottom = bottomWidthBottom;
+        this.borderWidthBottom = bottomWidthBottom;
     }
 
     public float getBorderWidthLeft() {

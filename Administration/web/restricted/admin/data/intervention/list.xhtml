@@ -16,6 +16,8 @@
             <ui:define name="content">
                 <f:attribute name="header" value="Liste des interventions"/>
                 <f:view>
+                    <f:event type="preRenderComponent"
+                             listener="#{interventionView.setRestrictedClient(null)}"/>
                     <h:form id="interventionPeriodeForm">
                         <h:panelGrid columns="5" columnClasses="fields,null,fields,null,fields">
                             <h:outputText value="Période de recherche: "/>

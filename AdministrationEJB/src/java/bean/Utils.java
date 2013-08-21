@@ -277,6 +277,18 @@ public class Utils
         }
         return 0;
     }
+
+    /**
+     * Vérifie si la première date est antérieure à la seconde
+     * @param startDate {@link Date} - Première date
+     * @param endDate {@link Date} - Seconde date
+     * @return {@link Boolean boolean} - Vrai si la première date est antérieure
+     * ou égale à la seconde
+     */
+    public static boolean verifDate(Date startDate, Date endDate)
+    {
+        return startDate.before(endDate)||startDate.equals(endDate);
+    }
     
     /**
      * Renvoi le nombre max de lignes dans une liste de données

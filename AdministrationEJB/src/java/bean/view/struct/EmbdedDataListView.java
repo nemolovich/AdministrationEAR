@@ -37,6 +37,8 @@ public abstract class EmbdedDataListView<C,O,F extends AbstractEmbdedDataList<C,
         Utils.callMethod(this.setReferenceMethod,
                 "méthode de définition de la référence",this.getInstance(),
                 entity);
+        this.setEditing(false);
+        this.setCreating(true);
         return "create";
     }
     
@@ -47,6 +49,8 @@ public abstract class EmbdedDataListView<C,O,F extends AbstractEmbdedDataList<C,
         super.setInstance(instance);
         super.getEntityFacade().removeToDataList(entity,instance);
         super.removeFilePath();
+        this.setEditing(false);
+        this.setCreating(false);
         return "list";
     }
     
@@ -55,6 +59,8 @@ public abstract class EmbdedDataListView<C,O,F extends AbstractEmbdedDataList<C,
         this.setFacade();
         super.getEntityFacade().addToDataList(entity,this.getInstance());
         super.setEntityPathFilePath();
+        this.setEditing(false);
+        this.setCreating(false);
         return "list";
     }
     
@@ -62,6 +68,8 @@ public abstract class EmbdedDataListView<C,O,F extends AbstractEmbdedDataList<C,
     {
         this.setFacade();
         super.getEntityFacade().updateToDataList(entity,this.getInstance());
+        this.setEditing(false);
+        this.setCreating(false);
         return "list";
     }
     
@@ -117,6 +125,8 @@ public abstract class EmbdedDataListView<C,O,F extends AbstractEmbdedDataList<C,
             super.setInstance(instance);
             super.removeFilePath();
         }
+        this.setEditing(false);
+        this.setCreating(false);
         return "list";
     }
     

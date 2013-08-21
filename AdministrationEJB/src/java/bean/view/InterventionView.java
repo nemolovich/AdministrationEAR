@@ -28,12 +28,23 @@ public class InterventionView extends EmbdedEntityPeriodView<Task, Intervention,
     private static final long serialVersionUID = 1L;
     @EJB
     private InterventionFacade inteventionFacade;
+    private Client restrictedClient=null;
     
     public InterventionView() throws NoSuchMethodException
     {
         super(Intervention.class,"intervention",
                 Intervention.class.getMethod("setIdTask",
                                         new Class<?>[]{Task.class}));
+    }
+
+    public Client getRestrictedClient()
+    {
+        return restrictedClient;
+    }
+
+    public void setRestrictedClient(Client restrictedClient)
+    {
+        this.restrictedClient = restrictedClient;
     }
     
     public String entityCreateFromClient(TaskView view, Client client)
@@ -112,7 +123,7 @@ public class InterventionView extends EmbdedEntityPeriodView<Task, Intervention,
             }
             for(Intervention entity:super.findAll())
             {
-                Date date=entity.getIdTask().getStartDate();
+                Date date=entity.getInterventionDate();
                 if(date==null)
                 {
                     continue;
@@ -122,6 +133,12 @@ public class InterventionView extends EmbdedEntityPeriodView<Task, Intervention,
                 boolean equals=this.getStartDate().toString().equals(
                                 date.toString());
                 if((before&&!equals)||after)
+                {
+                    list.remove(entity);
+                    continue;
+                }
+                if(this.restrictedClient!=null&&
+                        !entity.getIdTask().getIdClient().equals(this.restrictedClient))
                 {
                     list.remove(entity);
                 }

@@ -81,28 +81,27 @@ public class PDFDocument extends Document
         f.setWidthPercentage(100);
         f.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
         f.getDefaultCell().setVerticalAlignment(Element.ALIGN_TOP);
-        f.setSpacingAfter(30);
         Paragraph beforeValue = new Paragraph(this.beforeFooter, font);
         Phrase pageValue = new Phrase("Page "+this.pages, fontM);
         Paragraph afterValue = new Paragraph(this.afterFooter, font);
         
         if(footerPageAlignment==Element.ALIGN_LEFT)
         {
-            f.add(pageValue, Element.ALIGN_LEFT);
-            f.add(pageValue);
-            f.add(afterValue, Element.ALIGN_RIGHT);
+            f.addBordered(pageValue, Element.ALIGN_LEFT, PDFTable.TOP_BORDER);
+            f.addBordered(pageValue, PDFTable.TOP_BORDER);
+            f.addBordered(afterValue, Element.ALIGN_RIGHT, PDFTable.TOP_BORDER);
         }
         else if(footerPageAlignment==Element.ALIGN_RIGHT)
         {
-            f.add(beforeValue, Element.ALIGN_LEFT);
-            f.add(afterValue);
-            f.add(pageValue, Element.ALIGN_RIGHT);
+            f.addBordered(beforeValue, Element.ALIGN_LEFT, PDFTable.TOP_BORDER);
+            f.addBordered(afterValue, PDFTable.TOP_BORDER);
+            f.addBordered(pageValue, Element.ALIGN_RIGHT, PDFTable.TOP_BORDER);
         }
         else
         {
-            f.add(beforeValue, Element.ALIGN_LEFT);
-            f.add(pageValue);
-            f.add(afterValue, Element.ALIGN_RIGHT);
+            f.addBordered(beforeValue, Element.ALIGN_LEFT, PDFTable.TOP_BORDER);
+            f.addBordered(pageValue, PDFTable.TOP_BORDER);
+            f.addBordered(afterValue, Element.ALIGN_RIGHT, PDFTable.TOP_BORDER);
         }
         
         f.setSpacingBefore(this.getPageSize().getHeight()-this.marginBottom

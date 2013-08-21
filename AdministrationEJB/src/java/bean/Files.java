@@ -4,6 +4,7 @@
  */
 package bean;
 
+import entity.Facture;
 import entity.FilePath;
 import java.io.File;
 import java.io.FileInputStream;
@@ -34,6 +35,40 @@ public class Files
     }
     
     /**
+     * 
+     * @param facture
+     * @return 
+     */
+    public static String getFileLink(Facture facture)
+    {
+        if(facture==null)
+        {
+            System.err.println("Facture nulle");
+            return "#";
+        }
+        String factureNumber=facture.getFactureNumber();
+        File from=new File(Utils.getResourcesPath()+"generated"+File.separator+
+                "facture"+File.separator+"Facture_"+factureNumber+".pdf");
+        File to=new File(Utils.getRealPath()+"generated"+File.separator+
+                "facture"+File.separator+"Facture_"+factureNumber+".pdf");
+        try
+        {
+            if(!Files.copy(from, to))
+            {
+                ApplicationLogger.writeError("Erreur lors de la diffusion du fichier \""+
+                        to.getAbsolutePath()+" \"sur le serveur", null);
+            }
+        }
+        catch (IOException ex)
+        {
+            ApplicationLogger.writeError("Impossible de diffuser le fichier \""+
+                    to.getAbsolutePath()+" \"sur le serveur", ex);
+        }
+        return ("/"+Utils.APPLICATION_NAME+"/generated/"+
+                "facture/Facture_"+factureNumber+".pdf");
+    }
+    
+    /**
      * Copie un fichier depuis les ressources du serveur sur le site web
      * diffusé et retourne le lien vers ce fichier
      * @param file {@link File} - Fichier à récupérer depuis les ressources
@@ -43,26 +78,26 @@ public class Files
      */
     public static String getFileLink(File file, FilePath filePath)
     {
-            File from=new File(Utils.getResourcesPath()+Utils.getUploadsPath()+
-                    filePath.getFilePath()+File.separator+file.getName());
-            File to=new File(Utils.getRealPath()+Utils.getUploadsPath()+
-                    filePath.getFilePath()+File.separator+file.getName());
-            try
+        File from=new File(Utils.getResourcesPath()+Utils.getUploadsPath()+
+                filePath.getFilePath()+File.separator+file.getName());
+        File to=new File(Utils.getRealPath()+Utils.getUploadsPath()+
+                filePath.getFilePath()+File.separator+file.getName());
+        try
+        {
+            if(!Files.copy(from, to))
             {
-                if(!Files.copy(from, to))
-                {
-                    ApplicationLogger.writeError("Erreur lors de la diffusion du fichier \""+
-                            to.getAbsolutePath()+" \"sur le serveur", null);
-                }
+                ApplicationLogger.writeError("Erreur lors de la diffusion du fichier \""+
+                        to.getAbsolutePath()+" \"sur le serveur", null);
             }
-            catch (IOException ex)
-            {
-                ApplicationLogger.writeError("Impossible de diffuser le fichier \""+
-                        to.getAbsolutePath()+" \"sur le serveur", ex);
-            }
-            return ("/"+Utils.APPLICATION_NAME+"/"+Utils.getUploadsPath()+
-                    filePath.getFilePath()+"/"+file.getName())
-                        .replaceAll("\\\\", "/");
+        }
+        catch (IOException ex)
+        {
+            ApplicationLogger.writeError("Impossible de diffuser le fichier \""+
+                    to.getAbsolutePath()+" \"sur le serveur", ex);
+        }
+        return ("/"+Utils.APPLICATION_NAME+"/"+Utils.getUploadsPath()+
+                filePath.getFilePath()+"/"+file.getName())
+                    .replaceAll("\\\\", "/");
     }
     
     /**
