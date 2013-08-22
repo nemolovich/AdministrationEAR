@@ -85,11 +85,6 @@
                         <h:outputText value="#{item.intendedDuration}"/>
                     </p:column>
                     
-                    <p:column headerText="Déplacement"
-                              sortBy="#{item.deplacement}">
-                        <h:outputText value="#{item.deplacement?'Oui':'Non'}"/>
-                    </p:column>
-                    
                     <p:column headerText="Type d'intervention"
                               sortBy="#{item.interventionType}"
                               filterBy="#{item.interventionType}"
@@ -108,7 +103,7 @@
                     
                     <p:column headerText="État"
                               sortBy="#{item.sleeping}"
-                              style="width:2%;">
+                              style="width:4%;white-space: nowrap;">
                         <h:outputText value="#{item.sleeping?'Faite':'À faire'}"/>
                     </p:column>
                     <f:facet name="footer">
@@ -263,6 +258,7 @@
                     $(document).ready(function()
                     {
                         taskMenuTable.filter();
+                        forceSort('taskMenuDataForm\\:taskMenuDataTable');
                     });
                 </script>
                 <p:dataTable id="taskMenuDataTable"
@@ -292,7 +288,8 @@
                     <p:ajax event="filter" onstart="taskMenuTable.unselectAllRows();"
                             onerror="console.log('Erreur de filtre sur les tâches');"/>
                     
-                    <p:column headerText="Date"
+                    <p:column id="defaultSortColumn"
+                              headerText="Date"
                               style="width:1%;"
                               filterBy="#{utils.smallDateFormat(item.startDate)}"
                               sortBy="#{utils.smallDateFormat(item.startDate)}"
@@ -379,7 +376,8 @@
                                 widgetVar="startDateTask">
                         <p:ajax event="dateSelect"
                                 update=":taskMenuDataForm :growl"
-                                oncomplete="taskMenuTable.filter();"/>
+                                oncomplete="taskMenuTable.filter();
+                                forceSort('taskMenuDataForm\\\\:taskMenuDataTable');"/>
                         <script type="text/javascript">
                             $(document).ready(function(){loadLocales();});
                         </script>
@@ -403,7 +401,8 @@
                                 widgetVar="endDateTask">
                         <p:ajax event="dateSelect"
                                 update=":taskMenuDataForm :growl"
-                                oncomplete="taskMenuTable.filter();"/>
+                                oncomplete="taskMenuTable.filter();
+                                forceSort('taskMenuDataForm\\\\:taskMenuDataTable');"/>
                         <script type="text/javascript">
                             $(document).ready(function(){loadLocales();});
                         </script>

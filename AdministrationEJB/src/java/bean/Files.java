@@ -35,22 +35,22 @@ public class Files
     }
     
     /**
-     * 
-     * @param facture
-     * @return 
+     * Copie un fichier depuis les ressources du serveur sur le site web
+     * diffusé et retourne le lien vers ce fichier depuis une facture
+     * @param facture {@link Facture} - La facture à prendre en compte
+     * @return {@link String} - Le lien de téléchargement du fichier
      */
     public static String getFileLink(Facture facture)
     {
         if(facture==null)
         {
-            System.err.println("Facture nulle");
             return "#";
         }
         String factureNumber=facture.getFactureNumber();
         File from=new File(Utils.getResourcesPath()+"generated"+File.separator+
-                "facture"+File.separator+"Facture_"+factureNumber+".pdf");
+                "releves"+File.separator+"Releve_"+factureNumber+".pdf");
         File to=new File(Utils.getRealPath()+"generated"+File.separator+
-                "facture"+File.separator+"Facture_"+factureNumber+".pdf");
+                "releves"+File.separator+"Releve_"+factureNumber+".pdf");
         try
         {
             if(!Files.copy(from, to))
@@ -65,7 +65,7 @@ public class Files
                     to.getAbsolutePath()+" \"sur le serveur", ex);
         }
         return ("/"+Utils.APPLICATION_NAME+"/generated/"+
-                "facture/Facture_"+factureNumber+".pdf");
+                "releves/Releve_"+factureNumber+".pdf");
     }
     
     /**

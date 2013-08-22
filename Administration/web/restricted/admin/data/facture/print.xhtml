@@ -35,7 +35,6 @@
                                      widgetVar="interventionTable"
                                      emptyMessage="Aucune intervention n'a été trouvée"
                                      rowStyleClass="#{item.sleeping?'sleeping_elmt':null}"
-                                     rows="#{utils.maxDataRows}"
                                      sortBy="#{item.interventionDate}"
                                      sortFunction="#{utils.sortByDate}"
                                      filteredValue="#{interventionView.filteredEntities}">
@@ -64,12 +63,14 @@
                                       style="white-space: nowrap;"
                                       filterStyle="display: none;"
                                       filterMatchMode="contains">
-                                <h:outputText style="white-space: nowrap;" value="#{item.idTask.toString()}"/>
+                                <h:outputText style="white-space: nowrap;float:left;"
+                                              title="#{item.idTask.toString()}"
+                                              value="#{utils.getShortString(item.idTask.toString(),60)}"/>
                                 <p:commandButton actionListener="#{taskView.entityView(item.idTask)}"
                                                  action="javascript:void(0);"
                                                  title="Afficher les détails de cette tâche"
                                                  icon="ui-icon-search"
-                                                 style="font-size: 40%;vertical-align: top !important;"
+                                                 style="font-size: 40%;vertical-align: top !important;float: right;"
                                                  update=":taskMenuViewPopup :taskMenuDialogHeader :taskViewForm"
                                                  oncomplete="taskMenuViewDialog.show();"/>
                             </p:column>
@@ -116,6 +117,13 @@
                                              title="Créer la fature"
                                              update=":growl :facturePrint"
                                              rendered="#{factureView.creating}"
+                                             action="#{PDFCreatorController.createPDF(
+                                                       factureView.entity.factureNumber,
+                                                       empty interventionView.filteredEntities?
+                                                               interventionView.entries:
+                                                               interventionView.filteredEntities,
+                                                               interventionView.startDate,
+                                                               interventionView.endDate)}"
                                              actionListener="#{factureView.create(
                                                                empty interventionView.filteredEntities?
                                                                interventionView.entries:
@@ -128,7 +136,7 @@
                                              onclick="window.open('#{files.getFileLink(factureView.entity)}',
                                                    'File details','dependent=yes, menubar=no,\
                                                    toolbar=no, status=no, scrollbars=yes,\
-                                                   resizable=no, width=800, height=600');return false;"
+                                                   resizable=no, width=850, height=600');return false;"
                                              title="Afficher la facture au format PDF"
                                              rendered="#{not factureView.creating}">
                             </p:commandButton>

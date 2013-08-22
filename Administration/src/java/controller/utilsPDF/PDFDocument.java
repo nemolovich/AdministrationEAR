@@ -32,14 +32,13 @@ public class PDFDocument extends Document
 
     public PDFDocument(Rectangle pageSize)
     {
-        this(pageSize, 36, 36, 36, 36);
+        this(pageSize, 36, 36, 36, 10);
     }
 
     public PDFDocument(Rectangle pageSize, float marginLeft, float marginRight,
             float marginTop, float marginBottom)
     {
         super(pageSize, marginLeft, marginRight, marginTop, marginBottom);
-        this.marginBottom=10;
         this.pages=1;
     }
     
@@ -75,38 +74,38 @@ public class PDFDocument extends Document
         PDFTable f=new PDFTable(3);
         f.setBorderWidthTop(.2f);
         Font font = new Font();
-        font.setSize(9);
+        font.setSize(11);
         Font fontM = new Font();
         fontM.setSize(8.5f);
-        f.setWidthPercentage(100);
         f.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
         f.getDefaultCell().setVerticalAlignment(Element.ALIGN_TOP);
-        Paragraph beforeValue = new Paragraph(this.beforeFooter, font);
-        Phrase pageValue = new Phrase("Page "+this.pages, fontM);
-        Paragraph afterValue = new Paragraph(this.afterFooter, font);
         
         if(footerPageAlignment==Element.ALIGN_LEFT)
         {
-            f.addBordered(pageValue, Element.ALIGN_LEFT, PDFTable.TOP_BORDER);
-            f.addBordered(pageValue, PDFTable.TOP_BORDER);
-            f.addBordered(afterValue, Element.ALIGN_RIGHT, PDFTable.TOP_BORDER);
+            f.addBordered(new Phrase("Page "+this.pages,fontM), Element.ALIGN_LEFT, PDFTable.TOP_BORDER);
+            f.addBordered(new Paragraph(this.beforeFooter,font), Element.ALIGN_CENTER, PDFTable.TOP_BORDER);
+            f.addBordered(new Paragraph(this.afterFooter,fontM), Element.ALIGN_RIGHT, PDFTable.TOP_BORDER);
         }
         else if(footerPageAlignment==Element.ALIGN_RIGHT)
         {
-            f.addBordered(beforeValue, Element.ALIGN_LEFT, PDFTable.TOP_BORDER);
-            f.addBordered(afterValue, PDFTable.TOP_BORDER);
-            f.addBordered(pageValue, Element.ALIGN_RIGHT, PDFTable.TOP_BORDER);
+            f.addBordered(new Paragraph(this.beforeFooter,fontM), Element.ALIGN_LEFT, PDFTable.TOP_BORDER);
+            f.addBordered(new Paragraph(this.afterFooter,font), Element.ALIGN_CENTER, PDFTable.TOP_BORDER);
+            f.addBordered(new Phrase("Page "+this.pages,fontM), Element.ALIGN_RIGHT, PDFTable.TOP_BORDER);
         }
         else
         {
-            f.addBordered(beforeValue, Element.ALIGN_LEFT, PDFTable.TOP_BORDER);
-            f.addBordered(pageValue, PDFTable.TOP_BORDER);
-            f.addBordered(afterValue, Element.ALIGN_RIGHT, PDFTable.TOP_BORDER);
+            f.addBordered(new Paragraph(this.beforeFooter,fontM), Element.ALIGN_LEFT, PDFTable.TOP_BORDER);
+            f.addBordered(new Phrase("Page "+this.pages,font), Element.ALIGN_CENTER, PDFTable.TOP_BORDER);
+            f.addBordered(new Paragraph(this.afterFooter,fontM), Element.ALIGN_RIGHT, PDFTable.TOP_BORDER);
         }
         
-        f.setSpacingBefore(this.getPageSize().getHeight()-this.marginBottom
-                -this.marginTop-(pageSize)-f.getTotalHeight()-15);
-        
+        /**
+         * 11 (FONT la plus haute) +2 (cellSpacingBefore) +5 (cellSpacingAfter)
+         */
+        float footerSize=18;
+        float spacing=this.getPageSize().getHeight()-this.marginBottom
+                -this.marginTop-(pageSize)-footerSize;
+        f.setSpacingBefore(spacing);
         this.add(f);
     }
 }

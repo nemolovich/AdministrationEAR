@@ -112,12 +112,14 @@
                                       filterBy="#{item.idTask.toString()}"
                                       style="white-space: nowrap;" 
                                       filterMatchMode="contains">
-                                <h:outputText style="white-space: nowrap;" value="#{item.idTask.toString()}"/>
+                                <h:outputText style="white-space: nowrap;float:left;"
+                                              title="#{item.idTask.toString()}"
+                                              value="#{utils.getShortString(item.idTask.toString(),60)}"/>
                                 <p:commandButton actionListener="#{taskView.entityView(item.idTask)}"
                                                  action="javascript:void(0);"
                                                  title="Afficher les détails de cette tâche"
                                                  icon="ui-icon-search"
-                                                 style="font-size: 40%;vertical-align: top !important;"
+                                                 style="font-size: 40%;vertical-align: top !important;float: right;"
                                                  update=":taskMenuViewPopup :taskMenuDialogHeader :taskViewForm"
                                                  oncomplete="taskMenuViewDialog.show();"/>
                             </p:column>

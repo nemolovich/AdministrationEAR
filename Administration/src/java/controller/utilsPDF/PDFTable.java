@@ -28,6 +28,7 @@ public class PDFTable extends PdfPTable
     private float borderWidthBottom=.2f;
     private float borderWidthLeft=0f;
     private float borderWidthRight=0f;
+    private int cellVerticalAlignment=Element.ALIGN_MIDDLE;
     private int lines=0;
     public static final int NO_BORDER=0;
     public static final int TOP_BORDER=1;
@@ -36,8 +37,14 @@ public class PDFTable extends PdfPTable
 
     public PDFTable(int numColumns)
     {
+        this(numColumns, 100);
+    }
+    
+    public PDFTable(int numColumns, float widthPercentage)
+    {
         super(numColumns);
-        this.setWidthPercentage(100);
+        this.setWidthPercentage(widthPercentage);
+        this.getDefaultCell().setVerticalAlignment(Element.ALIGN_TOP);
     }
     
     public void add()
@@ -47,11 +54,7 @@ public class PDFTable extends PdfPTable
     
     public void add(int align)
     {
-        PdfPCell cell=new PdfPCell();
-        cell.setBorder(Rectangle.NO_BORDER);
-        cell.setHorizontalAlignment(align);
-        super.addCell(cell);
-        this.cellList.add(cell);
+        this.add(new Phrase(), align);
     }
     
     public void add(Element e)
@@ -167,7 +170,7 @@ public class PDFTable extends PdfPTable
             cell.setBorderWidthRight(this.borderWidthRight);
         }
         cell.setHorizontalAlignment(align);
-        cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        cell.setVerticalAlignment(this.cellVerticalAlignment);
         cell.setPaddingTop(spacingBefore);
         cell.setPaddingBottom(spacingAfter);
         cell.setGrayFill(gray);
@@ -196,8 +199,11 @@ public class PDFTable extends PdfPTable
                 throw new IndexOutOfBoundsException("Le paramètre de titre est incorrect");
             }
             Paragraph cell=new Paragraph(title[0],headerFont);
+            int align=this.cellVerticalAlignment;
+            this.cellVerticalAlignment=Element.ALIGN_TOP;
             this.addSize(cell, Integer.valueOf(title[1]), 1, 5, 10,
                     PDFTable.BOTH_BORDER, null, 0.9f);
+            this.cellVerticalAlignment=align;
         }
         this.setHeaderRows(1);
     }
@@ -248,12 +254,12 @@ public class PDFTable extends PdfPTable
         this.borderWidthTop = borderWidthTop;
     }
 
-    public float getBottomWidthBottom() {
+    public float getBorderWidthBottom() {
         return borderWidthBottom;
     }
 
-    public void setBottomWidthBottom(float bottomWidthBottom) {
-        this.borderWidthBottom = bottomWidthBottom;
+    public void setBorderWidthBottom(float borderWidthBottom) {
+        this.borderWidthBottom = borderWidthBottom;
     }
 
     public float getBorderWidthLeft() {
@@ -270,5 +276,13 @@ public class PDFTable extends PdfPTable
 
     public void setBorderWidthRight(float borderWidthRight) {
         this.borderWidthRight = borderWidthRight;
+    }
+
+    public int getCellVerticalAlignment() {
+        return cellVerticalAlignment;
+    }
+
+    public void setCellVerticalAlignment(int cellVerticalAlignment) {
+        this.cellVerticalAlignment = cellVerticalAlignment;
     }
 }

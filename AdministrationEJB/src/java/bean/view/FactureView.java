@@ -7,7 +7,6 @@ package bean.view;
 
 import bean.facade.FactureFacade;
 import bean.view.struct.EntityView;
-import controller.PDFCreatorController;
 import entity.Facture;
 import entity.Intervention;
 import java.util.List;
@@ -29,8 +28,6 @@ public class FactureView extends EntityView<Facture, FactureFacade>
     @EJB
     private FactureFacade factureFacade;
     @Inject
-    private PDFCreatorController pdfCreatorController;
-    @Inject
     private InterventionView interventionView;
     
     public FactureView()
@@ -50,7 +47,6 @@ public class FactureView extends EntityView<Facture, FactureFacade>
                 this.interventionView.update(i.getIdTask());
             }
         }
-        this.pdfCreatorController.createPDF(this.getInstance().getFactureNumber(),list);
         return super.create();
     }
     

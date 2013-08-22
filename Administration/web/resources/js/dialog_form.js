@@ -365,6 +365,17 @@ function forceUpdate(source,formId)
 }
 
 /**
+ * Permet de force le tri d'un <p:dataTable> sur la colonne
+ * contenant l'identifiant defaultSortColumn
+ * @param {String} tableId - Identifiant de la table
+ * @returns {void}
+ */
+function forceSort(tableId)
+{
+    $('#'+tableId+'\\:defaultSortColumn').click();
+}
+
+/**
  * Ajoute un bouton pour ouvrir une <p:dialog> dans un
  * header de menu
  * @param {String} id - Identifiant du menu
