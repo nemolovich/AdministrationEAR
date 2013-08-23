@@ -30,10 +30,10 @@ public class PDFTable extends PdfPTable
     private float borderWidthRight=0f;
     private int cellVerticalAlignment=Element.ALIGN_MIDDLE;
     private int lines=0;
-    public static final int NO_BORDER=0;
-    public static final int TOP_BORDER=1;
-    public static final int BOTTOM_BORDER=2;
-    public static final int BOTH_BORDER=3;
+    public static final int BORDER_NO=0;
+    public static final int BORDER_TOP=1;
+    public static final int BORDER_BOTTOM=2;
+    public static final int BORDER_BOTH=3;
 
     public PDFTable(int numColumns)
     {
@@ -64,7 +64,7 @@ public class PDFTable extends PdfPTable
     
     public void add(Element e, int align)
     {
-        this.addCol(e, align, 1, PDFTable.NO_BORDER);
+        this.addCol(e, align, 1, PDFTable.BORDER_NO);
     }
     
     public void addBordered(Element e, int border)
@@ -84,7 +84,7 @@ public class PDFTable extends PdfPTable
     
     public void addCol(Element e, int columns)
     {
-        this.addCol(e, Element.ALIGN_CENTER, columns, PDFTable.NO_BORDER);
+        this.addCol(e, Element.ALIGN_CENTER, columns, PDFTable.BORDER_NO);
     }
     
     public void addCol(Element e, int align, int columns, int border)
@@ -107,7 +107,7 @@ public class PDFTable extends PdfPTable
             float spacingAfter)
     {
         this.addSize(e, align, columns, spacingBefore,
-                spacingAfter, PDFTable.NO_BORDER, null, 1);
+                spacingAfter, PDFTable.BORDER_NO, null, 1);
     }
     
     public void addSize(Element e, int align, int columns, float spacingBefore,
@@ -149,20 +149,20 @@ public class PDFTable extends PdfPTable
             return;
         }
         cell.setBorder(Rectangle.NO_BORDER);
-        if(border==PDFTable.TOP_BORDER)
+        if(border==PDFTable.BORDER_TOP)
         {
             cell.setBorderWidthTop(this.borderWidthTop);
         }
-        else if(border==PDFTable.BOTTOM_BORDER)
+        else if(border==PDFTable.BORDER_BOTTOM)
         {
             cell.setBorderWidthBottom(this.borderWidthBottom);
         }
-        else if(border==PDFTable.BOTH_BORDER)
+        else if(border==PDFTable.BORDER_BOTH)
         {
             cell.setBorderWidthTop(this.borderWidthTop);
             cell.setBorderWidthBottom(this.borderWidthBottom);
         }
-        else if(border!=PDFTable.NO_BORDER)
+        else if(border!=PDFTable.BORDER_NO)
         {
             cell.setBorderWidthTop(this.borderWidthTop);
             cell.setBorderWidthBottom(this.borderWidthBottom);
@@ -202,13 +202,18 @@ public class PDFTable extends PdfPTable
             int align=this.cellVerticalAlignment;
             this.cellVerticalAlignment=Element.ALIGN_TOP;
             this.addSize(cell, Integer.valueOf(title[1]), 1, 5, 10,
-                    PDFTable.BOTH_BORDER, null, 0.9f);
+                    PDFTable.BORDER_BOTH, null, 0.9f);
             this.cellVerticalAlignment=align;
         }
         this.setHeaderRows(1);
     }
     
     public void setFooter(String[][] listFooter)
+    {
+        this.setFooter(listFooter, PDFTable.BORDER_BOTH);
+    }
+    
+    public void setFooter(String[][] listFooter, int borders)
     {
         Font footerFont = 
             FontFactory.getFont(FontFactory.HELVETICA, 13, Font.BOLD);
@@ -217,14 +222,29 @@ public class PDFTable extends PdfPTable
             throw new IndexOutOfBoundsException("Nombre de paramètres pour footer incorrect");
         }
         Paragraph cell=new Paragraph(listFooter[0][0],footerFont);
+        float before=5;
+        float after=10;
+        if(borders==PDFTable.BORDER_TOP)
+        {
+            after=2;
+        }
+        else if(borders==PDFTable.BORDER_NO)
+        {
+            before=0;
+            after=2;
+        }
+        else if(borders==PDFTable.BORDER_BOTTOM)
+        {
+            before=0;
+        }
         this.addSize(cell,Integer.valueOf(listFooter[0][1]),
                 this.getNumberOfColumns()-listFooter.length+1,
-                5, 10, PDFTable.BOTH_BORDER, null, 0.9f);
+                before, after, borders, null, 0.9f);
         for(int i=1;i<listFooter.length;i++)
         {
             cell=new Paragraph(listFooter[i][0],footerFont);
             this.addSize(cell,Integer.valueOf(listFooter[i][1]),1,
-                    5, 10, PDFTable.BOTH_BORDER, null, 0.9f);
+                    before, after, borders, null, 0.9f);
         }
     }
     

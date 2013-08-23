@@ -6,22 +6,24 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>Création Facture</title>
+        <title>Création Relevé</title>
     </h:head>
     <h:body>
         
     	<ui:composition template="/templates/page_template.xhtml">
             <ui:define name="title">
-                | Création Facture
+                | Création Relevé
             </ui:define>
             <ui:define name="content">
-                <f:attribute name="header" value="Création d'une facture"/>
+                <f:attribute name="header" value="Création d'un relevé"/>
                 <f:view>
-                    <h:form id="facturePrint"
+                    <h:form id="relevePrint"
                             enctype="multipart/form-data">
                         <h3 class="tabheader">
-                            <h:outputText value="Facture n°#{factureView.entity.factureNumber}
-                                          pour la société #{interventionView.restrictedClient}"/>
+                            <h:outputText value="Relevé pour la société
+                                          #{interventionView.restrictedClient} du
+                                          #{utils.smallDateFormat(interventionView.startDate)} au
+                                          #{utils.smallDateFormat(interventionView.endDate)}"/>
                         </h3>
                         <script type="text/javascript">
                             $(document).ready(function()
@@ -102,20 +104,28 @@
                         
                         <p:panel styleClass="buttons_panel"
                                  header="Actions:">
-                            <h:outputText value="Rechercher:"/>
-                            <p:inputText id="globalFilterOut"
-                                         onkeyup="filterOutFor('facturePrint\\:globalFilterOut',
-                                                     'facturePrint\\:interventionDataTable\\:globalFilter');"
-                                         onblur="$(this).keyup();"
+                            <p:outputLabel value="Numéro de facture:" for="factureNumber"/>
+                            <p:inputText id="factureNumber"
+                                         value="#{factureView.entity.factureNumber}"
                                          style="width:150px;margin-left:20px"
-                                         title="Rechercher dans tous les champs de recherche">
+                                         maxlength="8"
+                                         title="Numéro de la facture associée">
+                                <f:validator binding="#{factureUniqueFieldValidator}"/>
+                                <f:attribute name="fieldNsame" value="FactureNumber" />
+                                <f:attribute name="update_id" value="#{factureView.entity.id}" />
+                                <f:validator binding="#{notNullFieldValidator}"/>
+                                <f:attribute name="requiredMessage"
+                                             value="Veuillez entrer le numéro facture"/>
+                                <f:attribute name="requiredTitle"
+                                             value="Champs 'Numéro de facture' vide"/>
                             </p:inputText>
-                            <p:commandButton id="createFacture"
-                                             value="Valider la facture"
+                            <p:commandButton id="createReleve"
+                                             value="Générer la facture"
                                              icon="ui-icon-disk"
+                                             type="submit"
                                              styleClass="green_icon"
-                                             title="Créer la fature"
-                                             update=":growl :facturePrint"
+                                             title="Créer le relevé et valider la facture"
+                                             update=":growl :relevePrint"
                                              rendered="#{factureView.creating}"
                                              action="#{PDFCreatorController.createPDF(
                                                        factureView.entity.factureNumber,
@@ -130,14 +140,14 @@
                                                                interventionView.filteredEntities)}"/>
                             
                             <p:commandButton id="displayPDF"
-                                             value="Afficher la facture"
+                                             value="Afficher le relevé"
                                              action="javascript:void(0);"
                                              icon="ui-icon-pdf"
                                              onclick="window.open('#{files.getFileLink(factureView.entity)}',
-                                                   'File details','dependent=yes, menubar=no,\
+                                                   'Relevé details','dependent=yes, menubar=no,\
                                                    toolbar=no, status=no, scrollbars=yes,\
                                                    resizable=no, width=850, height=600');return false;"
-                                             title="Afficher la facture au format PDF"
+                                             title="Afficher le relevé au format PDF"
                                              rendered="#{not factureView.creating}">
                             </p:commandButton>
                         </p:panel>

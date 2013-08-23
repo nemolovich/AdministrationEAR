@@ -159,6 +159,12 @@ public class Utils
         return Utils.RIGHTS;
     }
     
+    /**
+     * Renvoi le format texte d'une durée depuis sa valeur décimale sous
+     * forme <code>HH h mm mins</code>
+     * @param time {@link Double double} - La durée en décimal
+     * @return {@link String} - Le forat texte de la durée
+     */
     public static String getTimeFormat(double time)
     {
         int hours=(int)(time/1);

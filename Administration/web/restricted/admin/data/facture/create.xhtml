@@ -6,30 +6,18 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>Création Facture</title>
+        <title>Création Relevé</title>
     </h:head>
     <h:body>
     	<ui:composition template="/templates/page_template.xhtml">
             <ui:define name="title">
-                | Création Facture
+                | Création Relevé
             </ui:define>
             <ui:define name="content">
-                <f:attribute name="header" value="Création d'une facture"/>
+                <f:attribute name="header" value="Création d'un relevé"/>
                 <f:view>
-                    <h:form id="factureCreateForm">
+                    <h:form id="releveCreateForm">
                         <h:panelGrid columns="2" columnClasses="label,fields">
-                            
-                            <p:outputLabel value="Numéro de facture:" for="factureNumber" />
-                            <p:inputText id="factureNumber"
-                                         value="#{factureView.entity.factureNumber}" 
-                                         title="Numéro de facture"
-                                         maxlength="8">
-                                <f:validator binding="#{notNullFieldValidator}"/>
-                                <f:attribute name="requiredMessage"
-                                             value="Veuillez entrer le numéro facture"/>
-                                <f:attribute name="requiredTitle"
-                                             value="Champs 'Numéro de facture' vide"/>
-                            </p:inputText>
                             
                             <p:outputLabel value="Société:" for="interventionRestrictedClient"/>
                             <p:selectOneMenu id="interventionRestrictedClient"
@@ -38,7 +26,7 @@
                                              var="client">
                                 <f:validator binding="#{notNullFieldValidator}"/>
                                 <f:attribute name="requiredMessage"
-                                             value="Veuillez sélectionner la société pour laquelle générer une facture"/>
+                                             value="Veuillez sélectionner la société pour laquelle générer un relevé"/>
                                 <f:attribute name="requiredTitle"
                                              value="Champs 'Société' invalide"/>
                                 <f:selectItem itemLabel="Sélectionnez&nbsp;une&nbsp;société" itemValue=""/>
@@ -103,8 +91,8 @@
                         <p:outputPanel styleClass="buttons_panel">
                             <p:commandButton action="#{factureView.entityPrint(factureView.entity)}"
                                              update=":growl"
-                                             value="Générer la facture"
-                                             title="Génère la facture pour les paramètres donnés"
+                                             value="Générer le relevé"
+                                             title="Génère le relevé pour les paramètres donnés"
                                              styleClass="green_icon"
                                              icon="ui-icon-arrowthick-1-e"/>
                         </p:outputPanel>

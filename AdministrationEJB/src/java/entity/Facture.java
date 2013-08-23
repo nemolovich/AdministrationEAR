@@ -59,7 +59,7 @@ public class Facture implements Serializable
     }
 
     public Integer getId() {
-        return id;
+        return this.id==null?-1:this.id;
     }
 
     public void setId(Integer id) {

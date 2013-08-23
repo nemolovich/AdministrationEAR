@@ -82,21 +82,21 @@ public class PDFDocument extends Document
         
         if(footerPageAlignment==Element.ALIGN_LEFT)
         {
-            f.addBordered(new Phrase("Page "+this.pages,fontM), Element.ALIGN_LEFT, PDFTable.TOP_BORDER);
-            f.addBordered(new Paragraph(this.beforeFooter,font), Element.ALIGN_CENTER, PDFTable.TOP_BORDER);
-            f.addBordered(new Paragraph(this.afterFooter,fontM), Element.ALIGN_RIGHT, PDFTable.TOP_BORDER);
+            f.addBordered(new Phrase("Page "+this.pages,fontM), Element.ALIGN_LEFT, PDFTable.BORDER_TOP);
+            f.addBordered(new Paragraph(this.beforeFooter,font), Element.ALIGN_CENTER, PDFTable.BORDER_TOP);
+            f.addBordered(new Paragraph(this.afterFooter,fontM), Element.ALIGN_RIGHT, PDFTable.BORDER_TOP);
         }
         else if(footerPageAlignment==Element.ALIGN_RIGHT)
         {
-            f.addBordered(new Paragraph(this.beforeFooter,fontM), Element.ALIGN_LEFT, PDFTable.TOP_BORDER);
-            f.addBordered(new Paragraph(this.afterFooter,font), Element.ALIGN_CENTER, PDFTable.TOP_BORDER);
-            f.addBordered(new Phrase("Page "+this.pages,fontM), Element.ALIGN_RIGHT, PDFTable.TOP_BORDER);
+            f.addBordered(new Paragraph(this.beforeFooter,fontM), Element.ALIGN_LEFT, PDFTable.BORDER_TOP);
+            f.addBordered(new Paragraph(this.afterFooter,font), Element.ALIGN_CENTER, PDFTable.BORDER_TOP);
+            f.addBordered(new Phrase("Page "+this.pages,fontM), Element.ALIGN_RIGHT, PDFTable.BORDER_TOP);
         }
         else
         {
-            f.addBordered(new Paragraph(this.beforeFooter,fontM), Element.ALIGN_LEFT, PDFTable.TOP_BORDER);
-            f.addBordered(new Phrase("Page "+this.pages,font), Element.ALIGN_CENTER, PDFTable.TOP_BORDER);
-            f.addBordered(new Paragraph(this.afterFooter,fontM), Element.ALIGN_RIGHT, PDFTable.TOP_BORDER);
+            f.addBordered(new Paragraph(this.beforeFooter,fontM), Element.ALIGN_LEFT, PDFTable.BORDER_TOP);
+            f.addBordered(new Phrase("Page "+this.pages,font), Element.ALIGN_CENTER, PDFTable.BORDER_TOP);
+            f.addBordered(new Paragraph(this.afterFooter,fontM), Element.ALIGN_RIGHT, PDFTable.BORDER_TOP);
         }
         
         /**

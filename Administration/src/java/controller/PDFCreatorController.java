@@ -8,10 +8,10 @@ import controller.utilsPDF.PDFDocument;
 import bean.Files;
 import bean.Utils;
 import com.lowagie.text.BadElementException;
-import com.lowagie.text.Chunk;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
 import com.lowagie.text.Font;
+import com.lowagie.text.FontFactory;
 import com.lowagie.text.Image;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
@@ -28,6 +28,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -46,10 +47,13 @@ import javax.servlet.ServletContext;
 public class PDFCreatorController implements Serializable
 {
     private static final long serialVersionUID = 1L;
+    public static int test=0;
     
-    public String createPDF(String factureNumber, List<Intervention> list,
+    public String createPDF(String factureNumbers, List<Intervention> list,
             Date startDate, Date endDate)
     {
+        List<Intervention> temp=new ArrayList<Intervention>(list);
+        String factureNumber=String.format("%08d", test);
         PDFDocument pdf=new PDFDocument(PageSize.A4.rotate());
         File pdfFile=new File(Utils.getResourcesPath()+"generated"+File.separator+
                 "releves"+File.separator+"Releve_"+factureNumber+".pdf");
@@ -107,12 +111,19 @@ public class PDFCreatorController implements Serializable
             Paragraph rightTop=new Paragraph("Facture n°"+factureNumber);
             header.addSize(rightTop, Element.ALIGN_RIGHT, 1, 0, 0);
             
-            Paragraph leftBottom=new Paragraph("8 Rue Louise WEISS\n37700 La Ville aux Dames");
+            Paragraph leftBottom=new Paragraph();
+            leftBottom.add(new Paragraph("8 Rue Louise WEISS\n"
+                    + "37700 La Ville aux Dames"));
+            Font littleFont=FontFactory.getFont(FontFactory.HELVETICA, 8.5f, Font.NORMAL);
+            Paragraph tel=new Paragraph("                            Tél: 02.47.44.71.14",littleFont);
+            leftBottom.add(tel);
             header.addSize(leftBottom, Element.ALIGN_LEFT, 1, 0, 0);
             
             Intervention item;
             Client client = null;
             String societyName = null;
+            double tarifIntervention = .0f;
+            double tarifDeplacement = .0f;
             PDFTable tab1;
             boolean none=false;
             if(list!=null&&!list.isEmpty())
@@ -120,19 +131,23 @@ public class PDFCreatorController implements Serializable
                 item=list.get(0);
                 client=item.getIdTask().getIdClient();
                 societyName=client.getName();
+                tarifIntervention=client.getTarifValue();
+                tarifDeplacement=client.getDeplacementValue();
                 Font fontB = new Font();
                 fontB.setStyle(Font.BOLD);
                 Font font = new Font();
-                Phrase ph1=new Phrase(new Chunk("Tarif de l'intervention:",font));
-                Paragraph ph2=new Paragraph(String.format(" %.02f €", client.getTarifValue()),fontB);
-                Phrase ph3=new Phrase(new Chunk("Tarif déplacement:",font));
-                Paragraph ph4=new Paragraph(String.format(" %.02f €", client.getDeplacementValue()),fontB);
-                tab1=new PDFTable(2,15);
-                final float[] sizes={70,30};
+                Phrase ph1=new Phrase("Tarif de l'intervention:",font);
+                Paragraph ph2=new Paragraph(String.format(" %.02f €", tarifIntervention),fontB);
+                Phrase ph3=new Phrase("Tarif déplacement:",font);
+                Paragraph ph4=new Paragraph(String.format(" %.02f €", tarifDeplacement),fontB);
+                tab1=new PDFTable(3,30);
+                tab1.setCellVerticalAlignment(Element.ALIGN_TOP);
+                final float[] sizes={50,35,15};
                 tab1.setWidths(sizes);
-                tab1.setHorizontalAlignment(Element.ALIGN_LEFT);
+                tab1.addSize(new Phrase(),Element.ALIGN_LEFT, 1, 0, 0);
                 tab1.addSize(ph1,Element.ALIGN_LEFT, 1, 0, 0);
                 tab1.addSize(ph2,Element.ALIGN_RIGHT, 1, 0, 0);
+                tab1.addSize(new Phrase(),Element.ALIGN_LEFT, 1, 0, 0);
                 tab1.addSize(ph3,Element.ALIGN_LEFT, 1, 0, 0);
                 tab1.addSize(ph4,Element.ALIGN_RIGHT, 1, 0, 0);
                 tab1.setSpacingAfter(0);
@@ -149,7 +164,7 @@ public class PDFCreatorController implements Serializable
             pdf.add(header);
             PDFTable table;
             Paragraph details = new Paragraph();
-            int nbLine=1;
+            int nbLine=0;
             int firstPageMaxLine=17;
             int othersPagesMaxLine=25;
             float pageSize;
@@ -186,13 +201,17 @@ public class PDFCreatorController implements Serializable
                     {"Durée",   String.valueOf(Element.ALIGN_CENTER)},
                     {"Dépl.",   String.valueOf(Element.ALIGN_CENTER)},
                     {"Montant",   String.valueOf(Element.ALIGN_CENTER)}};
-                final float tableSizes[]={10,11.5f,55,6,4.5f,13};
+                final float tableSizes[]={9.2f,12.4f,55,6,4.8f,12.6f};
                 table.setHeader(tableHeader);
                 table.setWidths(tableSizes);
                 table.setCellVerticalAlignment(Element.ALIGN_TOP);
-                double total=0;
+                double totalTarif=.0f;
+                double durations=.0f;
+                int deplacements=0;
                 int nbLineMax=firstPageMaxLine;
                 int nbLineStep=0;
+                int multiLines=0;
+                int breakedPages=0;
                 /**
                  * 30 = header.setSpacingAfter(20);
                  * 20 = details.setSpacingAfter(20);
@@ -200,6 +219,14 @@ public class PDFCreatorController implements Serializable
                  */
                 pageSize=header.getTotalHeight()+details.getTotalLeading()
                         +30+20+3;
+                int x=0;
+                list=new ArrayList<Intervention>();
+                while(list.size()<test)
+                {
+                    list.add(temp.get(x%temp.size()));
+                    x++;
+                }
+                System.err.println("Size: "+list.size());
                 for(Intervention i:list)
                 {
                     CUser user=i.getIdTask().getIdUser();
@@ -208,69 +235,113 @@ public class PDFCreatorController implements Serializable
                         user=i.getIdTask().getIdClient().getIdUser();
                     }
                     Color color=null;
-                    if(nbLine%2==0)
+                    if((nbLine+multiLines)%2!=0)
                     {
                         color=Color.decode("#F2F5F9");
                     }
-                    table.addBordered(new Paragraph(Utils.smallDateFormat(
-                            i.getInterventionDate())),
-                            Element.ALIGN_CENTER,
-                            PDFTable.BOTTOM_BORDER,
-                            color);
-                    String userName=user==null?"":user.getName();
-                    if(userName.equalsIgnoreCase("CATHERINE"))
+                    int lineSize=(1+i.getIdTask().getDescription().length()-
+                            i.getIdTask().getDescription().replaceAll("\\n", "").length());
+                    if(lineSize>1)
                     {
-                        userName="MMMMMMMMMMMMM";
+                        multiLines+=lineSize-1;
                     }
-                    if(userName.length()>9)
-                    {
-                        userName=userName.substring(0,9);
-                    }
-                    table.addBordered(new Paragraph(userName),
-                            Element.ALIGN_LEFT,
-                            PDFTable.BOTTOM_BORDER,
-                            color);
-                    table.addBordered(new Paragraph(i.getIdTask().getDescription()),
-                            Element.ALIGN_LEFT,
-                            PDFTable.BOTTOM_BORDER,
-                            color);
-                    table.addBordered(new Paragraph(Utils.getDurationString(
-                            Utils.getTimeFormat(i.getDuration()))),
-                            Element.ALIGN_RIGHT,
-                            PDFTable.BOTTOM_BORDER,
-                            color);
-                    table.addBordered(new Paragraph(i.getDeplacement()?"Oui":"Non"),
-                            Element.ALIGN_RIGHT,
-                            PDFTable.BOTTOM_BORDER,
-                            color);
-                    double deplacement=i.getDeplacement()?
-                            i.getIdTask().getIdClient().getDeplacementValue():
-                            0;
-                    double tarif=i.getIdTask().getIdClient().getTarifValue()*i.getDuration()
-                            +deplacement;
-                    total+=tarif;
-                    table.addBordered(new Paragraph(String.format("%.02f €", tarif)),
-                            Element.ALIGN_RIGHT,
-                            PDFTable.BOTTOM_BORDER,
-                            color);
-                    if((nbLine-nbLineStep)%nbLineMax==0)
+                    boolean breaked=false;
+                    System.err.println("Lines: "+nbLine+", bp: "+breakedPages+
+                            ", ml: "+multiLines+
+                            ", size: "+(nbLine+1-multiLines)+
+                            ", %: "+((nbLine+breakedPages-nbLineStep+1-multiLines)%nbLineMax)+
+                            ", %2: "+((nbLine+breakedPages-nbLineStep+1)%nbLineMax));
+                    if(((nbLine+breakedPages-nbLineStep+1)%nbLineMax==0&&lineSize>1)
+                            ||(((nbLine+breakedPages-nbLineStep+1)%nbLineMax==0||
+                            (nbLine+breakedPages-nbLineStep+1)%nbLineMax>=nbLineMax-multiLines-breakedPages)&&
+                            nbLine+1-multiLines>=list.size()))
                     {
                         pdf.add(table);
                         pdf.newPage(pageSize+table.getTotalHeight());
                         table=new PDFTable(6);
                         table.setHeader(tableHeader);
                         table.setWidths(tableSizes);
+                        table.setCellVerticalAlignment(Element.ALIGN_TOP);
+                        pageSize=0;
+                        nbLineMax=othersPagesMaxLine;
+                        nbLineStep=firstPageMaxLine;
+                        breakedPages++;
+                        breaked=true;
+                    }
+                    table.addBordered(new Paragraph(Utils.smallDateFormat(
+                            i.getInterventionDate())),
+                            Element.ALIGN_CENTER,
+                            PDFTable.BORDER_BOTTOM,
+                            color);
+                    String userName=user==null?"":user.getName();
+                    if(userName.length()>9)
+                    {
+                        userName=userName.substring(0,9);
+                    }
+                    table.addBordered(new Paragraph(userName),
+                            Element.ALIGN_LEFT,
+                            PDFTable.BORDER_BOTTOM,
+                            color);
+                    table.addBordered(new Paragraph(i.getIdTask().getDescription()),
+                            Element.ALIGN_LEFT,
+                            PDFTable.BORDER_BOTTOM,
+                            color);
+                    double duration=i.getDuration();
+                    durations+=duration;
+                    table.addBordered(new Paragraph(Utils.getDurationString(
+                            Utils.getTimeFormat(duration))),
+                            Element.ALIGN_RIGHT,
+                            PDFTable.BORDER_BOTTOM,
+                            color);
+                    deplacements+=i.getDeplacement()?1:0;
+                    table.addBordered(new Paragraph(i.getDeplacement()?"Oui":"Non"),
+                            Element.ALIGN_RIGHT,
+                            PDFTable.BORDER_BOTTOM,
+                            color);
+                    String tarif=String.format("%.02f",tarifIntervention*i.getDuration());
+                    totalTarif+=Double.valueOf("0"+tarif.replace(',', '.'));
+                    table.addBordered(new Paragraph(tarif+" €"),
+                            Element.ALIGN_RIGHT,
+                            PDFTable.BORDER_BOTTOM,
+                            color);
+                    nbLine+=lineSize;
+                    if((nbLine+breakedPages-nbLineStep)%nbLineMax==0&&
+                            !breaked)
+                    {
+                        pdf.add(table);
+                        pdf.newPage(pageSize+table.getTotalHeight());
+                        table=new PDFTable(6);
+                        table.setHeader(tableHeader);
+                        table.setWidths(tableSizes);
+                        table.setCellVerticalAlignment(Element.ALIGN_TOP);
                         pageSize=0;
                         nbLineMax=othersPagesMaxLine;
                         nbLineStep=firstPageMaxLine;
                     }
-                    nbLine++;
                 }
-                final String[][] footerList={
-                    {"Total:",String.valueOf(Element.ALIGN_RIGHT)},
-                    {String.format("%.02f €", total),String.valueOf(Element.ALIGN_RIGHT)},
+                double totalDeplacements=deplacements*tarifDeplacement;
+                String totalDuration=Utils.getDurationString(Utils.getTimeFormat(durations));
+                final String[][] footerListTop={
+                    {"Interventions:",String.valueOf(Element.ALIGN_RIGHT)},
+                    {totalDuration,String.valueOf(Element.ALIGN_RIGHT)},
+                    {"",String.valueOf(Element.ALIGN_RIGHT)},
+                    {String.format("%.02f €", totalTarif),String.valueOf(Element.ALIGN_RIGHT)},
                 };
-                table.setFooter(footerList);
+                final String[][] footerListMiddle={
+                    {"Déplacements:",String.valueOf(Element.ALIGN_RIGHT)},
+                    {"",String.valueOf(Element.ALIGN_RIGHT)},
+                    {String.format("%d", deplacements),String.valueOf(Element.ALIGN_RIGHT)},
+                    {String.format("%.02f €", totalDeplacements),String.valueOf(Element.ALIGN_RIGHT)},
+                };
+                final String[][] footerListBottom={
+                    {"Total:",String.valueOf(Element.ALIGN_RIGHT)},
+                    {"",String.valueOf(Element.ALIGN_RIGHT)},
+                    {"",String.valueOf(Element.ALIGN_RIGHT)},
+                    {String.format("%.02f €", totalDeplacements+totalTarif),String.valueOf(Element.ALIGN_RIGHT)},
+                };
+                table.setFooter(footerListTop, PDFTable.BORDER_TOP);
+                table.setFooter(footerListMiddle, PDFTable.BORDER_NO);
+                table.setFooter(footerListBottom, PDFTable.BORDER_BOTTOM);
             }
             
             pdf.add(table);
@@ -325,6 +396,11 @@ public class PDFCreatorController implements Serializable
         FacesMessage msg=new FacesMessage(FacesMessage.SEVERITY_INFO, "PDF Créé",
                 "La création du PDF s'est terminée correctement");
         FacesContext.getCurrentInstance().addMessage(null, msg);
+        test++;
+        if(test<70)
+        {
+            return this.createPDF(factureNumbers, temp, startDate, endDate);
+        }
         return "#";
     }
 }

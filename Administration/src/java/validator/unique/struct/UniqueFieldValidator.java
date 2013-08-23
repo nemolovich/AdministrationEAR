@@ -53,7 +53,7 @@ public abstract class UniqueFieldValidator<C, F extends AbstractFacade<C>> imple
             ApplicationLogger.writeWarning("Dans le validateur \""+this.getClass().getName()+
                     "\". Vous devez spécifier un attribut \"fieldName\" pour ce validateur ainsi qu'un attribut \"update_id\". "
                     + "Exemple: <f:attribute name=\"fieldName\" value=\"Mail\" /> pour un champs \"Mail\" et "
-                    + "<f:attribute name=\"update_id\" value=\"1\" /> pour la mise à jour de l'utilisateur ayant "
+                    + "<f:attribute name=\"update_id\" value=\"1\" /> pour la mise à jour de l'entité ayant "
                     + "pour identifiant 1 (-1 pour la création).");
             return;
         }
