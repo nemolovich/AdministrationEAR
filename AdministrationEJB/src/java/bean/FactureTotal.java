@@ -94,8 +94,10 @@ public class FactureTotal implements Serializable
                 }
                 this.totalDeplacements+=entity.getDeplacement()?1:0;
                 this.totalDuration+=entity.getDuration();
-                this.totalTarif+=Double.valueOf(String.format("%.02f",
-                        entity.getDuration()*this.interventionTarif).replace(',', '.'));
+                String tarifS=String.format("%.02f",
+                        entity.getDuration()*this.interventionTarif);
+                double tarif=Double.valueOf(tarifS.replace(',', '.'));
+                this.totalTarif+=tarif;
             }
         }
     }

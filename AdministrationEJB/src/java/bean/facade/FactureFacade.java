@@ -20,7 +20,7 @@ public class FactureFacade extends AbstractFacade<Facture> {
     private EntityManager em;
 
     @Override
-    protected EntityManager getEntityManager() {
+    public EntityManager getEntityManager() {
         return em;
     }
 

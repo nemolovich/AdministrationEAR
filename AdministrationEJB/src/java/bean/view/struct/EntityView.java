@@ -22,6 +22,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -131,20 +132,30 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> extends EntitySl
     
     public String create()
     {
+        return this.createSilent(false);
+    }
+    
+    public String createSilent(boolean silent)
+    {
         this.creating=false;
         this.editing=false;
         this.setFacade();
-        this.entityFacade.create(this.entity);
+        this.entityFacade.createSilent(this.entity, silent);
         this.setEntityPathFilePath();
         return this.webFolder+"list";
     }
     
     public String delete()
     {
+        return this.deleteSilent(false);
+    }
+    
+    public String deleteSilent(boolean silent)
+    {
         this.creating=false;
         this.editing=false;
         this.setFacade();
-        this.entityFacade.remove(this.entity);
+        this.entityFacade.removeSilent(this.entity, silent);
         this.removeFilePath();
         this.entity=null;
         return this.webFolder+"list";
@@ -152,10 +163,15 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> extends EntitySl
     
     public String update()
     {
+        return this.updateSilent(false);
+    }
+    
+    public String updateSilent(boolean silent)
+    {
         this.creating=false;
         this.editing=false;
         this.setFacade();
-        this.entityFacade.edit(this.entity);
+        this.entityFacade.editSilent(this.entity, silent);
         return this.webFolder+"list";
     }
     
@@ -319,19 +335,29 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> extends EntitySl
         return this.webFolder+"parameters";
     }
     
-    public String entityDelete(C entity)
+    public String entityDelele(C entity)
+    {
+        return this.entitySilentDelete(entity, false);
+    }
+    
+    public String entitySilentDelete(C entity, boolean silent)
     {
         this.creating = false;
         this.editing = false;
         this.entity = entity;
         this.setFacade();
-        this.entityFacade.remove(entity);
+        this.entityFacade.removeSilent(entity, silent);
         this.removeFilePath();
         this.entity = null;
         return this.webFolder+"list";
     }
     
     public String entitySleep(C entity)
+    {
+        return this.entitySilentSleep(entity, false);
+    }
+    
+    public String entitySilentSleep(C entity, boolean silent)
     {
         try
         {
@@ -343,11 +369,16 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> extends EntitySl
             ApplicationLogger.writeError("La méthode \"setSleeping\" n'a pas"+
                     " été trouvée pour la classe \""+this.entityClass.getName()+"\"", ex);
         }
-        this.entityFacade.edit(entity);
+        this.entityFacade.editSilent(entity, silent);
         return this.webFolder+"list";
     }
     
     public String entityWake(C entity)
+    {
+        return this.entitySilentWake(entity, false);
+    }
+    
+    public String entitySilentWake(C entity, boolean silent)
     {
         try
         {
@@ -359,7 +390,7 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> extends EntitySl
             ApplicationLogger.writeError("La méthode \"setSleeping\" n'a pas"+
                     " été trouvée pour la classe \""+this.entityClass.getName()+"\"", ex);
         }
-        this.entityFacade.edit(entity);
+        this.entityFacade.editSilent(entity, silent);
         return this.webFolder+"list";
     }
     

@@ -28,6 +28,11 @@ public abstract class AbstractFacade<T>
 
     public void create(T entity)
     {
+        this.createSilent(entity, false);
+    }
+
+    public void createSilent(T entity, boolean silent)
+    {
         getEntityManager().persist(entity);
         String details=Utils.getFullString(entity);
         details=details!=null?details:entity.toString();
@@ -37,13 +42,21 @@ public abstract class AbstractFacade<T>
         ApplicationLogger.write("\tObjet: \""+this.entityClass.getName()+"\": \""+
                 details+"\"");
         ApplicationLogger.addSmallSep();
-        FacesMessage message=new FacesMessage(FacesMessage.SEVERITY_INFO,
-                "Ajout de la donnée réussie",
-                "L'enregistrement s'est correctement déroulé");
-        FacesContext.getCurrentInstance().addMessage(null, message);
+        if(!silent)
+        {
+            FacesMessage message=new FacesMessage(FacesMessage.SEVERITY_INFO,
+                    "Ajout de la donnée réussie",
+                    "L'enregistrement s'est correctement déroulé");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }
     }
 
     public void edit(T entity)
+    {
+        this.editSilent(entity, false);
+    }
+
+    public void editSilent(T entity, boolean silent)
     {
         getEntityManager().merge(entity);
         String details=Utils.getFullString(entity);
@@ -54,13 +67,21 @@ public abstract class AbstractFacade<T>
         ApplicationLogger.write("\tObjet: \""+this.entityClass.getName()+"\": \""+
                 details+"\"");
         ApplicationLogger.addSmallSep();
-        FacesMessage message=new FacesMessage(FacesMessage.SEVERITY_INFO,
-                "Modification de la donnée réussie",
-                "La mise-à-jour s'est correctement déroulée");
-        FacesContext.getCurrentInstance().addMessage(null, message);
+        if(!silent)
+        {
+            FacesMessage message=new FacesMessage(FacesMessage.SEVERITY_INFO,
+                    "Modification de la donnée réussie",
+                    "La mise-à-jour s'est correctement déroulée");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }
     }
 
     public void remove(T entity)
+    {
+        this.removeSilent(entity, false);
+    }
+
+    public void removeSilent(T entity, boolean silent)
     {
         T temp=entity;
         String details=Utils.getFullString(temp);
@@ -72,10 +93,13 @@ public abstract class AbstractFacade<T>
         ApplicationLogger.write("\tObjet: \""+this.entityClass.getName()+"\": \""+
                 details+"\"\r");
         ApplicationLogger.addSmallSep();
-        FacesMessage message=new FacesMessage(FacesMessage.SEVERITY_INFO,
-                "Supression de la donnée réussie",
-                "La suppression s'est correctement déroulée");
-        FacesContext.getCurrentInstance().addMessage(null, message);
+        if(!silent)
+        {
+            FacesMessage message=new FacesMessage(FacesMessage.SEVERITY_INFO,
+                    "Supression de la donnée réussie",
+                    "La suppression s'est correctement déroulée");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }
     }
 
     public T find(Object id)

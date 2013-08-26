@@ -22,7 +22,9 @@
                              rendered="#{not empty softwareView.entity}">
                     
                     <p:outputLabel value="Nom:" 
-                                   for="sname"/>
+                                   for="sname"
+                                   styleClass="#{softwareView.creating or
+                                                 softwareView.editing?'required':null}"/>
                     <h:outputText id="snameV" 
                                   value="#{softwareView.entity.name}" 
                                   title="Nom du logiciel"

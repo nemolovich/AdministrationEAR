@@ -4,8 +4,6 @@
  */
 package bean.facade;
 
-import bean.ApplicationLogger;
-import bean.Utils;
 import bean.facade.abstracts.AbstractFacade;
 import entity.FilePath;
 import javax.ejb.Stateless;
@@ -51,44 +49,19 @@ public class FilePathFacade extends AbstractFacade<FilePath> {
     @Override
     public void create(FilePath entity)
     {
-        getEntityManager().persist(entity);
-        String details=Utils.getFullString(entity);
-        details=details!=null?details:entity.toString();
-        ApplicationLogger.addSmallSep();
-        ApplicationLogger.writeWarning("Création de l'entité de la classe \""+
-                FilePath.class.getName()+"\" réussie");
-        ApplicationLogger.write("\tObjet: \""+FilePath.class.getName()+"\": \""+
-                details+"\"");
-        ApplicationLogger.addSmallSep();
+        super.createSilent(entity, true);
     }
     
     @Override
     public void edit(FilePath entity)
     {
-        getEntityManager().merge(entity);
-        String details=Utils.getFullString(entity);
-        details=details!=null?details:entity.toString();
-        ApplicationLogger.addSmallSep();
-        ApplicationLogger.writeWarning("Modification de l'entité de la classe \""+
-                FilePath.class.getName()+"\" réussie");
-        ApplicationLogger.write("\tObjet: \""+FilePath.class.getName()+"\": \""+
-                details+"\"");
-        ApplicationLogger.addSmallSep();
+        super.editSilent(entity, true);
     }
     
     @Override
     public void remove(FilePath entity)
     {
-        FilePath temp=entity;
-        String details=Utils.getFullString(temp);
-        details=details!=null?details:temp.toString();
-        getEntityManager().remove(getEntityManager().merge(entity));
-        ApplicationLogger.addSmallSep();
-        ApplicationLogger.writeWarning("Suppression de l'entité de la classe \""+
-                FilePath.class.getName()+"\" réussie");
-        ApplicationLogger.write("\tObjet: \""+FilePath.class.getName()+"\": \""+
-                details+"\"\r");
-        ApplicationLogger.addSmallSep();
+        super.removeSilent(entity, true);
     }
     
 }

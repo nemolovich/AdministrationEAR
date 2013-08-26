@@ -72,6 +72,7 @@
                             </p:column>
                             
                             <p:column headerText="Durée"
+                                      style="text-align: right;"
                                       filterBy="#{utils.getTimeFormat(item.duration)}"
                                       filterMatchMode="contains"
                                       filterStyle="display: none;width:70px;">
@@ -80,12 +81,12 @@
                                               style="white-space: nowrap;"/>
                             </p:column>
                             
-                            <p:column headerText="Déplacement:"
+                            <p:column headerText="Déplacement"
                                       style="text-align: right;">
                                 <h:outputText value="#{item.deplacement?'Oui':'Non'}"/>
                             </p:column>
                             
-                            <p:column headerText="Tarif intrervention:"
+                            <p:column headerText="Tarif intrervention"
                                       style="text-align: right;">
                                 <h:outputText value="#{utils.getMonetaryValue(
                                                        item.idTask.idClient.getTarifValue()*
@@ -93,56 +94,62 @@
                             </p:column>
                             
                         </p:dataTable>
-                        <p:panel id="factureFooter"
-                                 header="Récapitulatif:"
+                        <p:panel header="Récapitulatif:"
                                  style="width:100%;">
-                            <f:event type="preRenderComponent"
-                                     listener="#{factureTotal.totalCalculate(
-                                                       empty interventionView.filteredEntities?
-                                                       interventionView.entries:
-                                                       interventionView.filteredEntities)}"/>
-                            <table class="facture_footer">
-                            <tr>
-                                <td>
-                                    <h:outputText value="Interventions:"/>
-                                </td>
-                                <td>
-                                    <h:outputText value="#{utils.getTimeFormat(
-                                                           factureTotal.totalDuration)}"/>
-                                </td>
-                                <td colspan="2">
-                                    <h:outputText value="#{utils.getMonetaryValue(
-                                                           factureTotal.totalDuration*
-                                                           factureTotal.interventionTarif)}"/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <h:outputText value="Déplacements:"/>
-                                </td>
-                                <td>
-                                </td>
-                                <td>
-                                    <h:outputText value="#{factureTotal.totalDeplacements}"/>
-                                </td>
-                                <td>
-                                    <h:outputText value="#{utils.getMonetaryValue(
-                                                           factureTotal.totalDeplacements*
-                                                           factureTotal.deplacementTarif)}"/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <h:outputText value="Total:"/>
-                                </td>
-                                <td colspan="3">
-                                    <h:outputText value="#{utils.getMonetaryValue(
-                                                           factureTotal.totalTarif+
-                                                           factureTotal.totalDeplacements*
-                                                           factureTotal.deplacementTarif)}"/>
-                                </td>
-                            </tr>
-                            </table>
+                            <p:outputPanel id="factureFooter">
+                                <f:event type="preRenderComponent"
+                                         listener="#{factureTotal.totalCalculate(
+                                                           empty interventionView.filteredEntities?
+                                                           interventionView.entries:
+                                                           interventionView.filteredEntities)}"/>
+                                <table class="facture_footer">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="2">Durée</th>
+                                            <th>Déplacements</th>
+                                            <th>Tarif</th>
+                                        </tr>
+                                    </thead>
+                                    <tr>
+                                        <td>
+                                            <h:outputText value="Interventions:"/>
+                                        </td>
+                                        <td>
+                                            <h:outputText value="#{utils.getTimeFormat(
+                                                                   factureTotal.totalDuration)}"/>
+                                        </td>
+                                        <td colspan="2">
+                                            <h:outputText value="#{utils.getMonetaryValue(factureTotal.totalTarif)}"/>
+                                        </td>
+                                    </tr>
+                                    <tr class="ui-datatable-odd">
+                                        <td>
+                                            <h:outputText value="Déplacements:"/>
+                                        </td>
+                                        <td>
+                                        </td>
+                                        <td>
+                                            <h:outputText value="#{factureTotal.totalDeplacements}"/>
+                                        </td>
+                                        <td>
+                                            <h:outputText value="#{utils.getMonetaryValue(
+                                                                   factureTotal.totalDeplacements*
+                                                                   factureTotal.deplacementTarif)}"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <h:outputText value="Total:"/>
+                                        </td>
+                                        <td colspan="3">
+                                            <h:outputText value="#{utils.getMonetaryValue(
+                                                                   factureTotal.totalTarif+
+                                                                   factureTotal.totalDeplacements*
+                                                                   factureTotal.deplacementTarif)}"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </p:outputPanel>
                         </p:panel>
                         
                         <p:panel styleClass="buttons_panel"

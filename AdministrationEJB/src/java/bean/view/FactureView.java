@@ -5,6 +5,8 @@
 
 package bean.view;
 
+import bean.ApplicationLogger;
+import bean.Utils;
 import bean.facade.FactureFacade;
 import bean.view.struct.EntityView;
 import entity.Facture;
@@ -37,17 +39,46 @@ public class FactureView extends EntityView<Facture, FactureFacade>
     
     public String create(List<Intervention> list)
     {
-        if(list!=null&&this.getInstance()!=null)
+        String result=super.create();
+        Facture entity=super.getInstance();
+        if(list!=null&&entity!=null)
         {
-            this.getInstance().setInterventionList(list);
-            for(Intervention i:list)
+            for(Intervention instance:list)
             {
-                i.setIdFacture(this.getInstance());
-                this.interventionView.setInstance(i);
-                this.interventionView.update(i.getIdTask());
+                List<Intervention> old=entity.getInterventionList();
+                instance.setIdFacture(entity);
+                this.interventionView.setInstance(instance);
+                this.interventionView.updateSilent(instance.getIdTask(),true);
+                old.add(instance);
+                entity.setInterventionList(old);
+                this.update();
+                String entity_details=instance.getFullString();
+                entity_details=entity_details!=null?entity_details:instance.toString();
+                String instance_details=Utils.getFullString(instance);
+                instance_details=instance_details!=null?instance_details:instance.toString();
+                ApplicationLogger.writeWarning("Modification de l'entité de la classe \""+
+                        Intervention.class.getName()+"\" réussie");
+                ApplicationLogger.write("\tObjet: \""+Intervention.class.getName()+"\": \""+
+                        instance_details+"\"");
+                ApplicationLogger.write("\t[INSIDE] Dans la liste de l'objet:\n"+
+                        "\tObjet: \""+Facture.class.getName()+"\": \""+
+                        entity_details+"\"");
+                ApplicationLogger.addSmallSep();
             }
+//            instance.setInterventionList(list);
+//            Task task=null;
+//            for(Intervention i:list)
+//            {
+//                if(task==null)
+//                {
+//                    task=i.getIdTask();
+//                }
+//                i.setIdFacture(instance);
+//                this.interventionView.setInstance(i);
+//                this.interventionView.updateSilent(task, true);
+//            }
         }
-        return super.create();
+        return result;
     }
     
     public String entityPrint(Facture entity)

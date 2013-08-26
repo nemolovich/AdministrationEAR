@@ -47,29 +47,10 @@ import javax.servlet.ServletContext;
 public class PDFCreatorController implements Serializable
 {
     private static final long serialVersionUID = 1L;
-    public static int test=0;
-    public static int testi=0;
-    public static int[] tests=new int[90];
-//    public static final int[] tests={32,33,34,52,53,54,55,56,74,75,76,77};
     
-    public String createPDF(String factureNumbers, List<Intervention> list,
+    public String createPDF(String factureNumber, List<Intervention> list,
             Date startDate, Date endDate)
     {
-        for(int j=0;j<tests.length;j++)
-        {
-            tests[j]=j;
-        }
-        test=tests[testi];
-        List<Intervention> temp=new ArrayList<Intervention>(list);
-        Collections.sort(temp);
-        int x=0;
-        list=new ArrayList<Intervention>();
-        while(list.size()<test)
-        {
-            list.add(temp.get(x%temp.size()));
-            x++;
-        }
-        String factureNumber=String.format("%08d", test);
         PDFDocument pdf=new PDFDocument(PageSize.A4.rotate());
         File pdfFile=new File(Utils.getResourcesPath()+"generated"+File.separator+
                 "releves"+File.separator+"Releve_"+factureNumber+".pdf");
@@ -180,9 +161,10 @@ public class PDFCreatorController implements Serializable
             pdf.add(header);
             PDFTable table;
             Paragraph details = new Paragraph();
+            int nbLinesOnPage=0;
             int multiLines=0;
-            int multiLineOnPage=0;
             int nbLines=0;
+            int breakedPages=0;
             int firstPageMaxLines=17;
             int othersPagesMaxLines=25;
             float pageSize;
@@ -210,7 +192,7 @@ public class PDFCreatorController implements Serializable
                 details.setSpacingBefore(0);
                 details.setSpacingAfter(20);
                 pdf.add(details);
-//                Collections.sort(list);
+                Collections.sort(list);
                 table=new PDFTable(6);
                 final String[][] tableHeader={
                     {"Date",    String.valueOf(Element.ALIGN_CENTER)},
@@ -227,8 +209,6 @@ public class PDFCreatorController implements Serializable
                 double durations=.0f;
                 int deplacements=0;
                 int nbLinesMax=firstPageMaxLines;
-                int nbLinesStep=0;
-                int breakedPages=0;
                 /**
                  * 30 = header.setSpacingAfter(30);
                  * 20 = details.setSpacingAfter(20);
@@ -244,27 +224,16 @@ public class PDFCreatorController implements Serializable
                         user=i.getIdTask().getIdClient().getIdUser();
                     }
                     Color color=null;
-                    if((nbLines+multiLines)%2!=0)
+                    if((nbLines-multiLines)%2!=0)
                     {
                         color=Color.decode("#F2F5F9");
                     }
                     int lineSize=(1+i.getIdTask().getDescription().length()-
                             i.getIdTask().getDescription().replaceAll("\\n", "").length());
-                    if(lineSize>1)
-                    {
-                        multiLines+=lineSize-1;
-                        multiLineOnPage+=lineSize-1;
-                    }
                     boolean breaked=false;
-                    System.err.println("Lines: "+nbLines+", bp: "+breakedPages+
-                            ", ml: "+(multiLines)+
-                            ", size: "+(nbLines+1-(multiLineOnPage))+
-                            ", %: "+((nbLines+breakedPages-nbLinesStep+1-(multiLineOnPage))%nbLinesMax)+
-                            ", %2: "+((nbLines+breakedPages-nbLinesStep+1)%nbLinesMax));
-                    if(((nbLines+breakedPages-nbLinesStep+1)%nbLinesMax==0&&lineSize>1)
-                            ||(((nbLines+breakedPages-nbLinesStep+1)%nbLinesMax==0||
-                            (nbLines+breakedPages-nbLinesStep+1)%nbLinesMax>=nbLinesMax-(multiLineOnPage)-breakedPages)&&
-                            nbLines+1-(multiLineOnPage)>=list.size()))
+                    if(nbLinesOnPage+1>=nbLinesMax&&lineSize>1||
+                            (nbLines+1-multiLines>=list.size()&&
+                            nbLinesOnPage+3>=nbLinesMax))
                     {
                         pdf.add(table);
                         pdf.newPage(pageSize+table.getTotalHeight());
@@ -274,10 +243,13 @@ public class PDFCreatorController implements Serializable
                         table.setCellVerticalAlignment(Element.ALIGN_TOP);
                         pageSize=0;
                         nbLinesMax=othersPagesMaxLines;
-                        nbLinesStep=firstPageMaxLines;
-                        multiLineOnPage=0;
+                        nbLinesOnPage=0;
                         breakedPages++;
                         breaked=true;
+                    }
+                    if(lineSize>1)
+                    {
+                        multiLines+=lineSize-1;
                     }
                     table.addBordered(new Paragraph(Utils.smallDateFormat(
                             i.getInterventionDate())),
@@ -316,8 +288,8 @@ public class PDFCreatorController implements Serializable
                             PDFTable.BORDER_BOTTOM,
                             color);
                     nbLines+=lineSize;
-                    if((nbLines+breakedPages-nbLinesStep)%nbLinesMax==0&&
-                            !breaked)
+                    nbLinesOnPage+=lineSize;
+                    if(nbLinesOnPage>=nbLinesMax&&!breaked)
                     {
                         pdf.add(table);
                         pdf.newPage(pageSize+table.getTotalHeight());
@@ -326,9 +298,8 @@ public class PDFCreatorController implements Serializable
                         table.setWidths(tableSizes);
                         table.setCellVerticalAlignment(Element.ALIGN_TOP);
                         pageSize=0;
-                        multiLineOnPage=0;
+                        nbLinesOnPage=0;
                         nbLinesMax=othersPagesMaxLines;
-                        nbLinesStep=firstPageMaxLines;
                     }
                 }
                 double totalDeplacements=deplacements*tarifDeplacement;
@@ -358,7 +329,7 @@ public class PDFCreatorController implements Serializable
             
             pdf.add(table);
             
-            if(nbLines+1>=firstPageMaxLines)
+            if(nbLines+1>=firstPageMaxLines||breakedPages>0)
             {
                 pageSize=table.getTotalHeight();
             }
@@ -408,11 +379,6 @@ public class PDFCreatorController implements Serializable
         FacesMessage msg=new FacesMessage(FacesMessage.SEVERITY_INFO, "PDF Créé",
                 "La création du PDF s'est terminée correctement");
         FacesContext.getCurrentInstance().addMessage(null, msg);
-        testi++;
-        if(testi<tests.length)
-        {
-            return this.createPDF(factureNumbers, temp, startDate, endDate);
-        }
         return "#";
     }
 }

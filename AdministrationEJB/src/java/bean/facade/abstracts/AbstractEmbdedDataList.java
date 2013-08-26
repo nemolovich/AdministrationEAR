@@ -32,8 +32,13 @@ public abstract class AbstractEmbdedDataList<C,O> extends AbstractFacade<O>
         this.setDataListMethod = setDataListMethod;
     }
     
-    @SuppressWarnings("unchecked")
     public void addToDataList(C entity, O instance)
+    {
+        this.addSilentToDataList(entity, instance, false);
+    }
+    
+    @SuppressWarnings("unchecked")
+    public void addSilentToDataList(C entity, O instance, boolean silent)
     {
         List<O> list=(List<O>) Utils.callMethod(this.getDataListMethod,
                 "méthode de récupération des données",entity);
@@ -55,13 +60,21 @@ public abstract class AbstractEmbdedDataList<C,O> extends AbstractFacade<O>
                 "\tObjet: \""+entity.getClass().getName()+"\": \""+
                 entity_details+"\"");
         ApplicationLogger.addSmallSep();
-        FacesMessage message=new FacesMessage(FacesMessage.SEVERITY_INFO,
-                "Ajout de la donnée réussi",
-                "La donnée a bien été ajoutée dans la liste");
-        FacesContext.getCurrentInstance().addMessage(null, message);
+        if(!silent)
+        {
+            FacesMessage message=new FacesMessage(FacesMessage.SEVERITY_INFO,
+                    "Ajout de la donnée réussi",
+                    "La donnée a bien été ajoutée dans la liste");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }
     }
     
     public void updateToDataList(C entity, O instance)
+    {
+        this.updateSilentToDataList(entity, instance, false);
+    }
+    
+    public void updateSilentToDataList(C entity, O instance, boolean silent)
     {
 //        List<O> list=(List<O>) Utils.callMethod(this.getDataListMethod,
 //                "méthode de récupération des données",entity);
@@ -82,14 +95,22 @@ public abstract class AbstractEmbdedDataList<C,O> extends AbstractFacade<O>
                 "\tObjet: \""+entity.getClass().getName()+"\": \""+
                 entity_details+"\"");
         ApplicationLogger.addSmallSep();
-        FacesMessage message=new FacesMessage(FacesMessage.SEVERITY_INFO,
-                "Modification de la donnée réussi",
-                "La donnée a bien été modifiée dans la liste");
-        FacesContext.getCurrentInstance().addMessage(null, message);
+        if(!silent)
+        {
+            FacesMessage message=new FacesMessage(FacesMessage.SEVERITY_INFO,
+                    "Modification de la donnée réussi",
+                    "La donnée a bien été modifiée dans la liste");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }
+    }
+    
+    public void removeToDataList(C entity, O... instances)
+    {
+        this.removeSilentToDataList(entity, false, instances);
     }
     
     @SuppressWarnings("unchecked")
-    public void removeToDataList(C entity, O... instances)
+    public void removeSilentToDataList(C entity, boolean silent, O... instances)
     {
         if(instances==null || instances.length==0)
         {
@@ -123,11 +144,14 @@ public abstract class AbstractEmbdedDataList<C,O> extends AbstractFacade<O>
             this.em.remove(this.em.merge(instance));
         }
         String s=unique?"":"s";
-        FacesMessage message=new FacesMessage(FacesMessage.SEVERITY_INFO,
-                "Suppression "+(unique?"de la":"des")+" donnée"+s+" réussie",
-                (unique?"La":"Les")+" donnée"+s+" "+(unique?"a":"ont")+
-                " bien été supprimée"+s+" de la liste");
-        FacesContext.getCurrentInstance().addMessage(null, message);
+        if(!silent)
+        {
+            FacesMessage message=new FacesMessage(FacesMessage.SEVERITY_INFO,
+                    "Suppression "+(unique?"de la":"des")+" donnée"+s+" réussie",
+                    (unique?"La":"Les")+" donnée"+s+" "+(unique?"a":"ont")+
+                    " bien été supprimée"+s+" de la liste");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }
         this.em.merge(entity);
     }
 }

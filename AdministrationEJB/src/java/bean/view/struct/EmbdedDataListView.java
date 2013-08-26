@@ -11,6 +11,7 @@ import java.lang.reflect.Method;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -41,13 +42,17 @@ public abstract class EmbdedDataListView<C,O,F extends AbstractEmbdedDataList<C,
         this.setCreating(true);
         return "create";
     }
+    public String entityDelete(C entity, O instance)
+    {
+        return this.entitySilentDelete(entity, instance, false);
+    }
     
     @SuppressWarnings("unchecked")
-    public String entityDelete(C entity, O instance)
+    public String entitySilentDelete(C entity, O instance, boolean silent)
     {
         this.setFacade();
         super.setInstance(instance);
-        super.getEntityFacade().removeToDataList(entity,instance);
+        super.getEntityFacade().removeSilentToDataList(entity,false,instance);
         super.removeFilePath();
         this.setEditing(false);
         this.setCreating(false);
@@ -56,8 +61,13 @@ public abstract class EmbdedDataListView<C,O,F extends AbstractEmbdedDataList<C,
     
     public String create(C entity)
     {
+        return this.createSilent(entity, false);
+    }
+    
+    public String createSilent(C entity, boolean silent)
+    {
         this.setFacade();
-        super.getEntityFacade().addToDataList(entity,this.getInstance());
+        super.getEntityFacade().addSilentToDataList(entity,this.getInstance(), silent);
         super.setEntityPathFilePath();
         this.setEditing(false);
         this.setCreating(false);
@@ -66,14 +76,24 @@ public abstract class EmbdedDataListView<C,O,F extends AbstractEmbdedDataList<C,
     
     public String update(C entity)
     {
+        return this.updateSilent(entity, false);
+    }
+    
+    public String updateSilent(C entity, boolean silent)
+    {
         this.setFacade();
-        super.getEntityFacade().updateToDataList(entity,this.getInstance());
+        super.getEntityFacade().updateSilentToDataList(entity, this.getInstance(), silent);
         this.setEditing(false);
         this.setCreating(false);
         return "list";
     }
     
     public String entitySleep(C entity, O instance)
+    {
+        return this.entitySilentSleep(entity, instance, false);
+    }
+    
+    public String entitySilentSleep(C entity, O instance, boolean silent)
     {
         this.setFacade();
         try
@@ -86,11 +106,16 @@ public abstract class EmbdedDataListView<C,O,F extends AbstractEmbdedDataList<C,
             ApplicationLogger.writeError("La méthode \"setSleeping\" n'a pas"+
                     " été trouvée pour la classe \""+instance.getClass().getName()+"\"", ex);
         }
-        super.getEntityFacade().updateToDataList(entity, instance);
+        super.getEntityFacade().updateSilentToDataList(entity, instance, silent);
         return "list";
     }
     
     public String entityWake(C entity, O instance)
+    {
+        return this.entitySilentWake(entity, instance, false);
+    }
+    
+    public String entitySilentWake(C entity, O instance, boolean silent)
     {
         this.setFacade();
         try
@@ -103,11 +128,16 @@ public abstract class EmbdedDataListView<C,O,F extends AbstractEmbdedDataList<C,
             ApplicationLogger.writeError("La méthode \"setSleeping\" n'a pas"+
                     " été trouvée pour la classe \""+instance.getClass().getName()+"\"", ex);
         }
-        super.getEntityFacade().updateToDataList(entity, instance);
+        super.getEntityFacade().updateSilentToDataList(entity, instance, silent);
         return "list";
     }
     
     public String remove(C entity, O... instances)
+    {
+        return this.removeSilent(entity, false, instances);
+    }
+    
+    public String removeSilent(C entity, boolean silent, O... instances)
     {
         if(instances==null)
         {
@@ -119,7 +149,7 @@ public abstract class EmbdedDataListView<C,O,F extends AbstractEmbdedDataList<C,
             return null;
         }
         this.setFacade();
-        super.getEntityFacade().removeToDataList(entity,instances);
+        super.getEntityFacade().removeSilentToDataList(entity, silent, instances);
         for(O instance:instances)
         {
             super.setInstance(instance);
