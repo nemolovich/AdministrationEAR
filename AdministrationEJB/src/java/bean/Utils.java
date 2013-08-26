@@ -338,6 +338,17 @@ public class Utils
     }
     
     /**
+     * Renvoi la valeur monétaire en chaîne de caractères depuis une
+     * valeur réelle
+     * @param value {@link Double double float} - La valeur réelle
+     * @return {@link String} - La valeur monétaire
+     */
+    public static String getMonetaryValue(Double value)
+    {
+        return String.format("%.02f €", value).replace(',', '.');
+    }
+    
+    /**
      * Appelle un méthode d'une classe sur un objet passé en paramètre
      * avec les arguments donnés
      * @param m {@link Method} - La méthode à invoquer

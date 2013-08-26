@@ -85,7 +85,7 @@
                                      rowIndexVar="index"
                                      paginatorPosition="bottom"
                                      emptyMessage="Aucune intervention n'a été trouvée"
-                                     rowStyleClass="#{item.sleeping?'sleeping_elmt':null}"
+                                     rowStyleClass="#{item.sleeping?'sleeping_elmt':null} v_top"
                                      paginator="true"
                                      rows="#{utils.maxDataRows}"
                                      sortBy="#{item.interventionDate}"
@@ -103,6 +103,7 @@
                             <p:column headerText="Date"
                                       style="width:1%;"
                                       filterBy="#{utils.smallDateFormat(item.interventionDate)}"
+                                      filterStyle="width:70px;"
                                       filterMatchMode="contains">
                                 <h:outputText value="#{utils.smallDateFormat(item.interventionDate)}"
                                               rendered="#{not empty item.interventionDate}"/>
@@ -110,16 +111,18 @@
                             
                             <p:column headerText="Tâche à accomplir"
                                       filterBy="#{item.idTask.toString()}"
+                                      filterStyle="width:90%;"
                                       style="white-space: nowrap;" 
+                                      styleClass="big_column"
                                       filterMatchMode="contains">
-                                <h:outputText style="white-space: nowrap;float:left;"
+                                <h:outputText style="float:left;white-space: nowrap;"
                                               title="#{item.idTask.toString()}"
-                                              value="#{utils.getShortString(item.idTask.toString(),60)}"/>
+                                              value="#{utils.getShortString(item.idTask.toString(),50)}"/>
                                 <p:commandButton actionListener="#{taskView.entityView(item.idTask)}"
                                                  action="javascript:void(0);"
                                                  title="Afficher les détails de cette tâche"
                                                  icon="ui-icon-search"
-                                                 style="font-size: 40%;vertical-align: top !important;float: right;"
+                                                 style="font-size: 40%;float: right;"
                                                  update=":taskMenuViewPopup :taskMenuDialogHeader :taskViewForm"
                                                  oncomplete="taskMenuViewDialog.show();"/>
                             </p:column>

@@ -4,7 +4,6 @@
  */
 package controller;
 
-import controller.utilsPDF.PDFDocument;
 import bean.Files;
 import bean.Utils;
 import com.lowagie.text.BadElementException;
@@ -17,7 +16,8 @@ import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Phrase;
 import com.lowagie.text.pdf.PdfWriter;
-import controller.utilsPDF.PDFTable;
+import controller.utils.PDFDocument;
+import controller.utils.PDFTable;
 import entity.CUser;
 import entity.Client;
 import entity.Intervention;
@@ -48,11 +48,27 @@ public class PDFCreatorController implements Serializable
 {
     private static final long serialVersionUID = 1L;
     public static int test=0;
+    public static int testi=0;
+    public static int[] tests=new int[90];
+//    public static final int[] tests={32,33,34,52,53,54,55,56,74,75,76,77};
     
     public String createPDF(String factureNumbers, List<Intervention> list,
             Date startDate, Date endDate)
     {
+        for(int j=0;j<tests.length;j++)
+        {
+            tests[j]=j;
+        }
+        test=tests[testi];
         List<Intervention> temp=new ArrayList<Intervention>(list);
+        Collections.sort(temp);
+        int x=0;
+        list=new ArrayList<Intervention>();
+        while(list.size()<test)
+        {
+            list.add(temp.get(x%temp.size()));
+            x++;
+        }
         String factureNumber=String.format("%08d", test);
         PDFDocument pdf=new PDFDocument(PageSize.A4.rotate());
         File pdfFile=new File(Utils.getResourcesPath()+"generated"+File.separator+
@@ -164,9 +180,11 @@ public class PDFCreatorController implements Serializable
             pdf.add(header);
             PDFTable table;
             Paragraph details = new Paragraph();
-            int nbLine=0;
-            int firstPageMaxLine=17;
-            int othersPagesMaxLine=25;
+            int multiLines=0;
+            int multiLineOnPage=0;
+            int nbLines=0;
+            int firstPageMaxLines=17;
+            int othersPagesMaxLines=25;
             float pageSize;
             if(none)
             {
@@ -192,7 +210,7 @@ public class PDFCreatorController implements Serializable
                 details.setSpacingBefore(0);
                 details.setSpacingAfter(20);
                 pdf.add(details);
-                Collections.sort(list);
+//                Collections.sort(list);
                 table=new PDFTable(6);
                 final String[][] tableHeader={
                     {"Date",    String.valueOf(Element.ALIGN_CENTER)},
@@ -208,25 +226,16 @@ public class PDFCreatorController implements Serializable
                 double totalTarif=.0f;
                 double durations=.0f;
                 int deplacements=0;
-                int nbLineMax=firstPageMaxLine;
-                int nbLineStep=0;
-                int multiLines=0;
+                int nbLinesMax=firstPageMaxLines;
+                int nbLinesStep=0;
                 int breakedPages=0;
                 /**
-                 * 30 = header.setSpacingAfter(20);
+                 * 30 = header.setSpacingAfter(30);
                  * 20 = details.setSpacingAfter(20);
                  * 3 = Espace inconnu
                  */
                 pageSize=header.getTotalHeight()+details.getTotalLeading()
                         +30+20+3;
-                int x=0;
-                list=new ArrayList<Intervention>();
-                while(list.size()<test)
-                {
-                    list.add(temp.get(x%temp.size()));
-                    x++;
-                }
-                System.err.println("Size: "+list.size());
                 for(Intervention i:list)
                 {
                     CUser user=i.getIdTask().getIdUser();
@@ -235,7 +244,7 @@ public class PDFCreatorController implements Serializable
                         user=i.getIdTask().getIdClient().getIdUser();
                     }
                     Color color=null;
-                    if((nbLine+multiLines)%2!=0)
+                    if((nbLines+multiLines)%2!=0)
                     {
                         color=Color.decode("#F2F5F9");
                     }
@@ -244,17 +253,18 @@ public class PDFCreatorController implements Serializable
                     if(lineSize>1)
                     {
                         multiLines+=lineSize-1;
+                        multiLineOnPage+=lineSize-1;
                     }
                     boolean breaked=false;
-                    System.err.println("Lines: "+nbLine+", bp: "+breakedPages+
-                            ", ml: "+multiLines+
-                            ", size: "+(nbLine+1-multiLines)+
-                            ", %: "+((nbLine+breakedPages-nbLineStep+1-multiLines)%nbLineMax)+
-                            ", %2: "+((nbLine+breakedPages-nbLineStep+1)%nbLineMax));
-                    if(((nbLine+breakedPages-nbLineStep+1)%nbLineMax==0&&lineSize>1)
-                            ||(((nbLine+breakedPages-nbLineStep+1)%nbLineMax==0||
-                            (nbLine+breakedPages-nbLineStep+1)%nbLineMax>=nbLineMax-multiLines-breakedPages)&&
-                            nbLine+1-multiLines>=list.size()))
+                    System.err.println("Lines: "+nbLines+", bp: "+breakedPages+
+                            ", ml: "+(multiLines)+
+                            ", size: "+(nbLines+1-(multiLineOnPage))+
+                            ", %: "+((nbLines+breakedPages-nbLinesStep+1-(multiLineOnPage))%nbLinesMax)+
+                            ", %2: "+((nbLines+breakedPages-nbLinesStep+1)%nbLinesMax));
+                    if(((nbLines+breakedPages-nbLinesStep+1)%nbLinesMax==0&&lineSize>1)
+                            ||(((nbLines+breakedPages-nbLinesStep+1)%nbLinesMax==0||
+                            (nbLines+breakedPages-nbLinesStep+1)%nbLinesMax>=nbLinesMax-(multiLineOnPage)-breakedPages)&&
+                            nbLines+1-(multiLineOnPage)>=list.size()))
                     {
                         pdf.add(table);
                         pdf.newPage(pageSize+table.getTotalHeight());
@@ -263,8 +273,9 @@ public class PDFCreatorController implements Serializable
                         table.setWidths(tableSizes);
                         table.setCellVerticalAlignment(Element.ALIGN_TOP);
                         pageSize=0;
-                        nbLineMax=othersPagesMaxLine;
-                        nbLineStep=firstPageMaxLine;
+                        nbLinesMax=othersPagesMaxLines;
+                        nbLinesStep=firstPageMaxLines;
+                        multiLineOnPage=0;
                         breakedPages++;
                         breaked=true;
                     }
@@ -304,8 +315,8 @@ public class PDFCreatorController implements Serializable
                             Element.ALIGN_RIGHT,
                             PDFTable.BORDER_BOTTOM,
                             color);
-                    nbLine+=lineSize;
-                    if((nbLine+breakedPages-nbLineStep)%nbLineMax==0&&
+                    nbLines+=lineSize;
+                    if((nbLines+breakedPages-nbLinesStep)%nbLinesMax==0&&
                             !breaked)
                     {
                         pdf.add(table);
@@ -315,8 +326,9 @@ public class PDFCreatorController implements Serializable
                         table.setWidths(tableSizes);
                         table.setCellVerticalAlignment(Element.ALIGN_TOP);
                         pageSize=0;
-                        nbLineMax=othersPagesMaxLine;
-                        nbLineStep=firstPageMaxLine;
+                        multiLineOnPage=0;
+                        nbLinesMax=othersPagesMaxLines;
+                        nbLinesStep=firstPageMaxLines;
                     }
                 }
                 double totalDeplacements=deplacements*tarifDeplacement;
@@ -346,7 +358,7 @@ public class PDFCreatorController implements Serializable
             
             pdf.add(table);
             
-            if(nbLine>firstPageMaxLine)
+            if(nbLines+1>=firstPageMaxLines)
             {
                 pageSize=table.getTotalHeight();
             }
@@ -396,8 +408,8 @@ public class PDFCreatorController implements Serializable
         FacesMessage msg=new FacesMessage(FacesMessage.SEVERITY_INFO, "PDF Créé",
                 "La création du PDF s'est terminée correctement");
         FacesContext.getCurrentInstance().addMessage(null, msg);
-        test++;
-        if(test<70)
+        testi++;
+        if(testi<tests.length)
         {
             return this.createPDF(factureNumbers, temp, startDate, endDate);
         }

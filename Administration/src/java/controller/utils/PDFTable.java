@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.utilsPDF;
+package controller.utils;
 
 import com.lowagie.text.Element;
 import com.lowagie.text.Font;

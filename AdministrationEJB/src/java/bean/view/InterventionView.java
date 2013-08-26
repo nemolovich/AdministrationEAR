@@ -141,6 +141,7 @@ public class InterventionView extends EmbdedEntityPeriodView<Task, Intervention,
                         !entity.getIdTask().getIdClient().equals(this.restrictedClient))
                 {
                     list.remove(entity);
+                    continue;
                 }
             }
         }

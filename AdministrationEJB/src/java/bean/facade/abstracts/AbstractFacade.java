@@ -83,7 +83,7 @@ public abstract class AbstractFacade<T>
         return getEntityManager().find(entityClass, id);
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked","rawtypes"})
     public List<T> findAll()
     {
         javax.persistence.criteria.CriteriaQuery cq;
@@ -92,7 +92,7 @@ public abstract class AbstractFacade<T>
         return getEntityManager().createQuery(cq).getResultList();
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked","rawtypes"})
     public List<T> findRange(int[] range)
     {
         javax.persistence.criteria.CriteriaQuery cq;
@@ -104,7 +104,7 @@ public abstract class AbstractFacade<T>
         return q.getResultList();
     }
     
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked","rawtypes"})
     public int count()
     {
         javax.persistence.criteria.CriteriaQuery cq;

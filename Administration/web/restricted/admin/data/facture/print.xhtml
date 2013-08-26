@@ -36,18 +36,12 @@
                                      var="item"
                                      widgetVar="interventionTable"
                                      emptyMessage="Aucune intervention n'a été trouvée"
-                                     rowStyleClass="#{item.sleeping?'sleeping_elmt':null}"
+                                     rowStyleClass="#{item.sleeping?'sleeping_elmt':null} v_top"
                                      sortBy="#{item.interventionDate}"
                                      sortFunction="#{utils.sortByDate}"
                                      filteredValue="#{interventionView.filteredEntities}">
-                            
-                            <p:column headerText="Durée"
-                                      filterBy="#{utils.getTimeFormat(item.duration)}"
-                                      filterMatchMode="contains"
-                                      filterStyle="display: none;width:70px;">
-                                <h:outputText value="#{utils.getTimeFormat(item.duration)}"
-                                              title="Durée de l'intervention"/>
-                            </p:column>
+                            <p:ajax event="filter"
+                                    update=":relevePrint:factureFooter"/>
                             
                             <p:column headerText="Date"
                                       style="width:1%;"
@@ -62,12 +56,12 @@
                             
                             <p:column headerText="Tâche à accomplir"
                                       filterBy="#{item.idTask.toString()}"
-                                      style="white-space: nowrap;"
+                                      styleClass="big_column"
                                       filterStyle="display: none;"
                                       filterMatchMode="contains">
                                 <h:outputText style="white-space: nowrap;float:left;"
                                               title="#{item.idTask.toString()}"
-                                              value="#{utils.getShortString(item.idTask.toString(),60)}"/>
+                                              value="#{utils.getShortString(item.idTask.toString(),50)}"/>
                                 <p:commandButton actionListener="#{taskView.entityView(item.idTask)}"
                                                  action="javascript:void(0);"
                                                  title="Afficher les détails de cette tâche"
@@ -77,33 +71,83 @@
                                                  oncomplete="taskMenuViewDialog.show();"/>
                             </p:column>
                             
-                            <p:column headerText="Tarif déplacement:"
+                            <p:column headerText="Durée"
+                                      filterBy="#{utils.getTimeFormat(item.duration)}"
+                                      filterMatchMode="contains"
+                                      filterStyle="display: none;width:70px;">
+                                <h:outputText value="#{utils.getTimeFormat(item.duration)}"
+                                              title="Durée de l'intervention"
+                                              style="white-space: nowrap;"/>
+                            </p:column>
+                            
+                            <p:column headerText="Déplacement:"
                                       style="text-align: right;">
-                                <h:outputText value="#{not empty item.idTask.idClient.deplacement
-                                                       and item.deplacement?
-                                                       item.idTask.idClient.deplacement:'0'} €"/>
+                                <h:outputText value="#{item.deplacement?'Oui':'Non'}"/>
                             </p:column>
                             
                             <p:column headerText="Tarif intrervention:"
                                       style="text-align: right;">
-                                <h:outputText value="#{not empty item.idTask.idClient.tarif?
-                                                       item.idTask.idClient.tarif*item.duration:'0'} €"/>
+                                <h:outputText value="#{utils.getMonetaryValue(
+                                                       item.idTask.idClient.getTarifValue()*
+                                                       item.duration)}"/>
                             </p:column>
                             
-                            <f:facet name="footer">
-                                <p:outputPanel style="float:right;">
-                                    <p:inputText id="globalFilter" onkeyup="doAfterInterval('interventionTable.filter();',1);"
-                                                 style="display: none;"
-                                                 title="Rechercher dans tous les champs de recherche">
-                                    </p:inputText>
-                                    <h:outputText value="Total:"/>
-                                </p:outputPanel>
-                            </f:facet>
-                            
                         </p:dataTable>
+                        <p:panel id="factureFooter"
+                                 header="Récapitulatif:"
+                                 style="width:100%;">
+                            <f:event type="preRenderComponent"
+                                     listener="#{factureTotal.totalCalculate(
+                                                       empty interventionView.filteredEntities?
+                                                       interventionView.entries:
+                                                       interventionView.filteredEntities)}"/>
+                            <table class="facture_footer">
+                            <tr>
+                                <td>
+                                    <h:outputText value="Interventions:"/>
+                                </td>
+                                <td>
+                                    <h:outputText value="#{utils.getTimeFormat(
+                                                           factureTotal.totalDuration)}"/>
+                                </td>
+                                <td colspan="2">
+                                    <h:outputText value="#{utils.getMonetaryValue(
+                                                           factureTotal.totalDuration*
+                                                           factureTotal.interventionTarif)}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h:outputText value="Déplacements:"/>
+                                </td>
+                                <td>
+                                </td>
+                                <td>
+                                    <h:outputText value="#{factureTotal.totalDeplacements}"/>
+                                </td>
+                                <td>
+                                    <h:outputText value="#{utils.getMonetaryValue(
+                                                           factureTotal.totalDeplacements*
+                                                           factureTotal.deplacementTarif)}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h:outputText value="Total:"/>
+                                </td>
+                                <td colspan="3">
+                                    <h:outputText value="#{utils.getMonetaryValue(
+                                                           factureTotal.totalTarif+
+                                                           factureTotal.totalDeplacements*
+                                                           factureTotal.deplacementTarif)}"/>
+                                </td>
+                            </tr>
+                            </table>
+                        </p:panel>
                         
                         <p:panel styleClass="buttons_panel"
-                                 header="Actions:">
+                                 header="Actions:"
+                                 style="width:100%;">
                             <p:outputLabel value="Numéro de facture:" for="factureNumber"/>
                             <p:inputText id="factureNumber"
                                          value="#{factureView.entity.factureNumber}"
