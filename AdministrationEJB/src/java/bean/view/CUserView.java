@@ -32,6 +32,17 @@ public class CUserView extends EmbdedDataListView<Client, CUser, CUserFacade>
                                         new Class<?>[]{Client.class}));
     }
     
+    public void setInterlocuteur(CUser user, Client client)
+    {
+        if(user==null||client==null)
+        {
+            return;
+        }
+        this.setInstance(user);
+        client.setIdUser(user);
+        super.update(client);
+    }
+    
     @Override
     public void setEntity(CUser entity)
     {

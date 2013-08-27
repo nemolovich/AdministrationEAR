@@ -27,7 +27,7 @@
                                  required="true"
                                  requiredMessage="Le champs 'Nom' ne peut être vide"
                                  rendered="#{cUserView.creating or 
-                                                cUserView.editing}">
+                                             cUserView.editing}">
                         <f:validator binding="#{cUserUniqueFieldValidator}"/>
                         <f:attribute name="fieldName" value="Name" />
                         <f:attribute name="update_id" value="#{cUserView.entity.id}"/>
@@ -41,7 +41,7 @@
                     <p:inputMask id="udirectphone" value="#{cUserView.entity.directPhone}" mask="99.99.99.99.99"
                                  title="Ligne directe de l'utilisateur"
                                  rendered="#{cUserView.creating or 
-                                                cUserView.editing}">
+                                             cUserView.editing}">
                         <f:validator binding="#{phonePatternValidator}"/>
                     </p:inputMask>
                     <h:outputText id="udirectphoneV" value="#{cUserView.entity.directPhone}"
@@ -54,7 +54,7 @@
                                  maxlength="30"
                                  title="Poste occupé par l'utilisateur dans la société"
                                  rendered="#{cUserView.creating or 
-                                                cUserView.editing}">
+                                             cUserView.editing}">
                     </p:inputText>
                     <h:outputText id="upositionV" value="#{cUserView.entity.position}"
                                   title="Poste occupé par l'utilisateur dans la société"
@@ -65,7 +65,7 @@
                     <p:inputMask id="uphone" value="#{cUserView.entity.phone}" mask="99.99.99.99.99"
                                  title="Numéro de téléphone portable de l'utilisateur"
                                  rendered="#{cUserView.creating or 
-                                                cUserView.editing}">
+                                             cUserView.editing}">
                         <f:validator binding="#{phonePatternValidator}"/>
                     </p:inputMask>
                     <h:outputText id="uphoneV" value="#{cUserView.entity.phone}"
@@ -78,7 +78,7 @@
                                  maxlength="30"
                                  title="Identifiant de connexion de l'utilisateur"
                                  rendered="#{cUserView.creating or 
-                                                cUserView.editing}">
+                                             cUserView.editing}">
                     </p:inputText>
                     <h:outputText id="uloginV" value="#{cUserView.entity.login}"
                                   title="Identifiant de connexion de l'utilisateur"
@@ -90,7 +90,7 @@
                                  maxlength="64"
                                  title="Mot de passe de connexion de l'utilisateur"
                                  rendered="#{cUserView.creating or 
-                                                cUserView.editing}">
+                                             cUserView.editing}">
                     </p:inputText>
                     <h:outputText id="upasswordV" value="#{cUserView.entity.password}"
                                   title="Mot de passe de connexion de l'utilisateur"
@@ -219,7 +219,7 @@
                     </p:dataList>
                 </p:outputPanel>
                 <p:outputPanel rendered="#{cUserView.creating or
-                                            cUserView.editing}">
+                                           cUserView.editing}">
                     (<span class="red-star">*</span>: champs requis)<br />
                 </p:outputPanel>
                 <p:outputPanel  styleClass="buttons_panel"
@@ -270,7 +270,7 @@
                 </p:outputPanel>
                 <p:outputPanel styleClass="buttons_panel"
                                rendered="#{not cUserView.creating and 
-                                            not cUserView.editing}">
+                                           not cUserView.editing}">
                     <center>
                         <p:commandButton id="backUser" value="Fermer"
                                          title="Fermer la fenêtre"

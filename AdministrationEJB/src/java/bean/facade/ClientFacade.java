@@ -15,7 +15,8 @@ import javax.persistence.PersistenceContext;
  * @author Brian GOHIER
  */
 @Stateless
-public class ClientFacade extends AbstractFacade<Client> {
+public class ClientFacade extends AbstractFacade<Client>
+{
     @PersistenceContext(unitName = "AdministrationEJBPU")
     private EntityManager em;
 

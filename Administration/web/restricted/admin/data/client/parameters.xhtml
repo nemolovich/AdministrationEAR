@@ -360,6 +360,18 @@
                                     <p:column headerText="Détails" style="width:100%;">
                                         <h:outputText value="#{cuser.toString()}"/>
                                     </p:column>
+
+                                    <p:column headerText="Interlocuteur" style="width:1%;">
+                                        <p:commandButton actionListener="#{cUserView.setInterlocuteur(cuser,clientView.entity)}"
+                                                         icon="ui-icon-new-cuser"
+                                                         style="font-size: 60%;"
+                                                         value="Définir interlocuteur"
+                                                         title="Définir cet utilisateur comme interlocuteur de cette société"
+                                                         update=":growl :clientUpdate:clientTabView:clientUserList"
+                                                         rendered="#{not clientView.entity.isInterlocuteur(cuser)}"/>
+                                        <h:outputText value="Interlocuteur"
+                                                      rendered="#{clientView.entity.isInterlocuteur(cuser)}"/>
+                                    </p:column>
                                     
                                     <p:column headerText="Actions" style="white-space: nowrap;">
                                         <p:commandButton actionListener="#{cUserView.entityView(cuser)}"

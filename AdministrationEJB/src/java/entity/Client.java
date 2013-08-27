@@ -325,6 +325,11 @@ public class Client implements Serializable
     public CUser getIdUser() {
         return idUser;
     }
+    
+    public boolean isInterlocuteur(CUser user)
+    {
+        return (user!=null&&this.idUser!=null&&this.idUser.equals(user));
+    }
 
     public void setIdUser(CUser idUser) {
         this.idUser = idUser;

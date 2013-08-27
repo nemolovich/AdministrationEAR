@@ -58,13 +58,13 @@
                                                  icon="ui-icon-search"
                                                  style="font-size: 60%;"
                                                  ajax="false"
-                                                 immediate="true"/>&nbsp;
+                                                 immediate="true"/>
                                 <p:commandButton action="#{tUserView.entityUpdate(item,userLogin)}"
                                                  title="Modifier cet utilisateur"
                                                  icon="ui-icon-pencil"
                                                  style="font-size: 60%;"
                                                  ajax="false"
-                                                 immediate="true"/>&nbsp;
+                                                 immediate="true"/>
                                 <p:commandButton onclick="return (confirm('#{tUserView.getDeleteMessage(item)}'));"
                                                  action="#{tUserView.entityDelete(item)}"
                                                  title="Supprimer cet utilisateur"

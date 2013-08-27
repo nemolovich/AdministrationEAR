@@ -122,7 +122,7 @@
                                             <f:attribute name="requiredTitle"
                                                          value="Champs 'Ville' vide"/>
                                             <p:column>
-                                                <h:outputText value="#{city.getPostalCode(c)} - #{c}"/>
+                                                <h:outputText value="#{city.getZipCode(city.getPostalCode(c))} - #{c}"/>
                                             </p:column>
                                         </p:autoComplete>
 

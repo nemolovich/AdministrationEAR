@@ -123,7 +123,7 @@
                                             <f:attribute name="requiredTitle"
                                                          value="Champs 'Ville' vide"/>
                                             <p:column>
-                                                <h:outputText value="#{city.getPostalCode(c)} - #{c}"/>
+                                                <h:outputText value="#{city.getZipCode(city.getPostalCode(c))} - #{c}"/>
                                             </p:column>
                                         </p:autoComplete>
 
@@ -251,7 +251,7 @@
                                     <tr>
                                         <td colspan="2">
                                             <p:fieldset legend="Fichiers">
-                                                <table style="width:100%;">
+                                                <table style="width:auto;">
                                                     <tr>
                                                         <td style="vertical-align:top !important;">
                                                             <p:fileUpload fileUploadListener="#{fileUploadController.handleFileUpload}"
@@ -296,8 +296,6 @@
                                                                     <p:commandButton icon="ui-icon-trash"
                                                                                      styleClass="red_icon"
                                                                                      style="font-size:60%;"
-                                                                                     ajax="false"
-                                                                                     immediate="true"
                                                                                      onclick="if(!confirm('#{fileUploadController.getDeleteMessage(file)}'))
                                                                                      {return false;}"
                                                                                      actionListener="#{fileUploadController.deleteFile(file)}"
@@ -310,13 +308,11 @@
                                                                         <p:commandButton action="#{fileUploadController.deleteAllFiles()}"
                                                                                          icon="ui-icon-trash"
                                                                                          styleClass="red_icon"
-                                                                                         ajax="false"
-                                                                                         immediate="true"
                                                                                          onclick="if(!confirm('#{fileUploadController.deleteAllMessage}'))
                                                                                                     {return false;}"
                                                                                          title="Supprimer tous les fichier du serveur"
                                                                                          value="Tout supprimer"
-                                                                                         update=":growlWizard :clientCreate:clientFiles"
+                                                                                         update=":growl :clientCreate:clientFiles"
                                                                                          disabled="#{fileUploadController.emptyFolder}"/>
                                                                     </p:outputPanel>
                                                                 </f:facet>

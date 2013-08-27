@@ -23,8 +23,8 @@
                     
                     <p:outputLabel value="Nom:" 
                                    for="sname"
-                                   styleClass="#{softwareView.creating or
-                                                 softwareView.editing?'required':null}"/>
+                                   styleClass="#{(softwareView.creating or
+                                                 softwareView.editing)?'required':''}"/>
                     <h:outputText id="snameV" 
                                   value="#{softwareView.entity.name}" 
                                   title="Nom du logiciel"
@@ -199,6 +199,12 @@
                         </div>
                     </div>
                 </p:outputPanel>
+                <script type="text/javascript">
+                    $(document).ready(function()
+                    {
+                        addRedStarsTorequiredFields();
+                    });
+                </script>
             </h:form>
         </p:dialog>
     </h:body>
