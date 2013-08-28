@@ -5,7 +5,7 @@
 package bean.view;
 
 import bean.facade.InterventionFacade;
-import bean.view.periodSelection.EmbeddedEntityPeriodView;
+import bean.view.periodSelection.EmbdedEntityPeriodView;
 import entity.CUser;
 import entity.Client;
 import entity.Intervention;
@@ -16,6 +16,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -23,7 +24,7 @@ import javax.inject.Named;
  */
 @Named(value = "interventionView")
 @SessionScoped
-public class InterventionView extends EmbeddedEntityPeriodView<Task, Intervention, InterventionFacade>
+public class InterventionView extends EmbdedEntityPeriodView<Task, Intervention, InterventionFacade>
 {
     private static final long serialVersionUID = 1L;
     @EJB
@@ -138,8 +139,7 @@ public class InterventionView extends EmbeddedEntityPeriodView<Task, Interventio
                     continue;
                 }
                 if(this.restrictedClient!=null&&
-                        (!entity.getIdTask().getIdClient().equals(this.restrictedClient)||
-                        entity.getSleeping()))
+                        !entity.getIdTask().getIdClient().equals(this.restrictedClient))
                 {
                     list.remove(entity);
                     continue;

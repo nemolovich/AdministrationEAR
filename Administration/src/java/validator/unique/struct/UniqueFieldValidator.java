@@ -4,7 +4,7 @@
  */
 package validator.unique.struct;
 
-import bean.log.ApplicationLogger;
+import bean.ApplicationLogger;
 import bean.facade.abstracts.AbstractFacade;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

@@ -4,7 +4,6 @@
  */
 package bean;
 
-import bean.log.ApplicationLogger;
 import bean.facade.TUserFacade;
 import entity.TUser;
 import entity.User;

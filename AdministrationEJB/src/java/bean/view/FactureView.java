@@ -5,7 +5,7 @@
 
 package bean.view;
 
-import bean.log.ApplicationLogger;
+import bean.ApplicationLogger;
 import bean.Utils;
 import bean.facade.FactureFacade;
 import bean.view.struct.EntityView;
@@ -15,8 +15,6 @@ import java.util.List;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -39,9 +37,9 @@ public class FactureView extends EntityView<Facture, FactureFacade>
         super(Facture.class,"facture");
     }
     
-    public synchronized String create(List<Intervention> list)
+    public String create(List<Intervention> list)
     {
-        String result="#";
+        String result=super.create();
         Facture entity=super.getInstance();
         if(list!=null&&entity!=null)
         {
@@ -49,12 +47,11 @@ public class FactureView extends EntityView<Facture, FactureFacade>
             {
                 List<Intervention> old=entity.getInterventionList();
                 instance.setIdFacture(entity);
-                instance.setSleeping(true);
                 this.interventionView.setInstance(instance);
                 this.interventionView.updateSilent(instance.getIdTask(),true);
                 old.add(instance);
                 entity.setInterventionList(old);
-                result=this.updateSilent(true);
+                this.update();
                 String entity_details=instance.getFullString();
                 entity_details=entity_details!=null?entity_details:instance.toString();
                 String instance_details=Utils.getFullString(instance);
@@ -68,11 +65,19 @@ public class FactureView extends EntityView<Facture, FactureFacade>
                         entity_details+"\"");
                 ApplicationLogger.addSmallSep();
             }
+//            instance.setInterventionList(list);
+//            Task task=null;
+//            for(Intervention i:list)
+//            {
+//                if(task==null)
+//                {
+//                    task=i.getIdTask();
+//                }
+//                i.setIdFacture(instance);
+//                this.interventionView.setInstance(i);
+//                this.interventionView.updateSilent(task, true);
+//            }
         }
-        FacesMessage msg=new FacesMessage(FacesMessage.SEVERITY_INFO,
-                "Numéro de facture créé",
-                "Le relevé a bien été créé et associé à un numéro de facture");
-        FacesContext.getCurrentInstance().addMessage(null, msg);
         return result;
     }
     

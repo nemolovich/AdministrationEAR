@@ -4,7 +4,7 @@
  */
 package entity;
 
-import bean.log.ApplicationLogger;
+import bean.ApplicationLogger;
 import bean.Utils;
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;

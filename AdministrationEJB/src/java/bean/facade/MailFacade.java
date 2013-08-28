@@ -4,7 +4,7 @@
  */
 package bean.facade;
 
-import bean.facade.abstracts.AbstractEmbeddedDataList;
+import bean.facade.abstracts.AbstractEmbdedDataList;
 import entity.Client;
 import entity.Mail;
 import java.util.List;
@@ -17,7 +17,7 @@ import javax.persistence.PersistenceContext;
  * @author Brian GOHIER
  */
 @Stateless
-public class MailFacade extends AbstractEmbeddedDataList<Client,Mail>
+public class MailFacade extends AbstractEmbdedDataList<Client,Mail>
 {
     @PersistenceContext(unitName = "AdministrationEJBPU")
     private EntityManager em;

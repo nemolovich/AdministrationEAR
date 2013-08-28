@@ -1,6 +1,6 @@
 package converter;
 
-import bean.log.ApplicationLogger;
+import bean.ApplicationLogger;
 import java.io.File;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;

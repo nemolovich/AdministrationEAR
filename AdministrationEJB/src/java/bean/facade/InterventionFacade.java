@@ -4,7 +4,7 @@
  */
 package bean.facade;
 
-import bean.facade.abstracts.AbstractEmbeddedDataList;
+import bean.facade.abstracts.AbstractEmbdedDataList;
 import entity.Intervention;
 import entity.Task;
 import java.util.List;
@@ -17,7 +17,7 @@ import javax.persistence.PersistenceContext;
  * @author Brian GOHIER
  */
 @Stateless
-public class InterventionFacade extends AbstractEmbeddedDataList<Task, Intervention>
+public class InterventionFacade extends AbstractEmbdedDataList<Task, Intervention>
 {
     @PersistenceContext(unitName = "AdministrationEJBPU")
     private EntityManager em;

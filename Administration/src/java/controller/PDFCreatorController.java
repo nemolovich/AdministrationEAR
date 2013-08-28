@@ -6,7 +6,6 @@ package controller;
 
 import bean.Files;
 import bean.Utils;
-import bean.view.FactureView;
 import com.lowagie.text.BadElementException;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
@@ -29,6 +28,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -48,15 +48,12 @@ public class PDFCreatorController implements Serializable
 {
     private static final long serialVersionUID = 1L;
     
-    public synchronized String createPDF(FactureView factureView, List<Intervention> list,
+    public String createPDF(String factureNumber, List<Intervention> list,
             Date startDate, Date endDate)
     {
-        factureView.create(list);
-        String factureNumber=factureView.getInstance().getFactureNumber();
         PDFDocument pdf=new PDFDocument(PageSize.A4.rotate());
         File pdfFile=new File(Utils.getResourcesPath()+"generated"+File.separator+
                 "releves"+File.separator+"Releve_"+factureNumber+".pdf");
-        Client client = null;
         if(!pdfFile.exists())
         {
             Files.createIfNotExists(pdfFile, false);
@@ -120,6 +117,7 @@ public class PDFCreatorController implements Serializable
             header.addSize(leftBottom, Element.ALIGN_LEFT, 1, 0, 0);
             
             Intervention item;
+            Client client = null;
             String societyName = null;
             double tarifIntervention = .0f;
             double tarifDeplacement = .0f;
@@ -181,7 +179,6 @@ public class PDFCreatorController implements Serializable
                 tab.setCellVerticalAlignment(Element.ALIGN_TOP);
                 final float tabSizes[]={25,50,25};
                 tab.setWidths(tabSizes);
-                societyName=societyName!=null&&societyName.length()>=25?societyName.substring(0,22)+"...":societyName;
                 tab.add(new Phrase(societyName), Element.ALIGN_LEFT);
                 tab.add(new Phrase("Relevé de prestations du "+Utils.smallDateFormat(startDate)+
                         " au "+Utils.smallDateFormat(endDate)), Element.ALIGN_CENTER);
@@ -189,9 +186,7 @@ public class PDFCreatorController implements Serializable
                 {
                     return "#";
                 }
-                String interventionType=client.getInterventionType();
-                interventionType=interventionType.length()>=25?interventionType.substring(0,22)+"...":interventionType;
-                tab.add(new Phrase(interventionType), Element.ALIGN_RIGHT);
+                tab.add(new Phrase(client.getInterventionType()), Element.ALIGN_RIGHT);
                 
                 details.add(tab);
                 details.setSpacingBefore(0);
@@ -377,32 +372,6 @@ public class PDFCreatorController implements Serializable
         {
             FacesMessage msg=new FacesMessage(FacesMessage.SEVERITY_ERROR, "PDF non créé",
                     "Erreur lors de l'écriture du PDF");
-            FacesContext.getCurrentInstance().addMessage(null, msg);
-            return "#";
-        }
-        
-        try
-        {
-            if(client==null)
-            {
-                return "#";
-            }
-            File societyFile=null;
-            if(client.getIdFilePath()!=null)
-            {
-                societyFile=new File(Utils.getResourcesPath()+Utils.getUploadsPath()+
-                        client.getIdFilePath().getFilePath()+File.separator+
-                        "Releve_"+factureNumber+".pdf");
-            }
-            if(societyFile!=null)
-            {
-                Files.copy(pdfFile, societyFile);
-            }
-        }
-        catch (IOException ex)
-        {
-            FacesMessage msg=new FacesMessage(FacesMessage.SEVERITY_ERROR, "PDF non copié",
-                    "Le PDF n'a pas pu être copié vers le dossier de cette société");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             return "#";
         }

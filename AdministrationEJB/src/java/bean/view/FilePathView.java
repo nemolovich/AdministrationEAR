@@ -5,7 +5,7 @@
 
 package bean.view;
 
-import bean.log.ApplicationLogger;
+import bean.ApplicationLogger;
 import bean.facade.FilePathFacade;
 import bean.view.struct.EntityView;
 import entity.FilePath;

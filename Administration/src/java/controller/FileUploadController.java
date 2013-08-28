@@ -4,7 +4,7 @@
  */
 package controller;
 
-import bean.log.ApplicationLogger;
+import bean.ApplicationLogger;
 import bean.Files;
 import bean.Utils;
 import bean.facade.FilePathFacade;

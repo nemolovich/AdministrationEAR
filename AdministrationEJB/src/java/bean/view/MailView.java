@@ -6,7 +6,7 @@
 package bean.view;
 
 import bean.facade.MailFacade;
-import bean.view.struct.EmbeddedDataListView;
+import bean.view.struct.EmbdedDataListView;
 import entity.Client;
 import entity.Mail;
 import java.util.List;
@@ -20,7 +20,7 @@ import javax.inject.Named;
  */
 @Named(value = "mailView")
 @SessionScoped
-public class MailView extends EmbeddedDataListView<Client, Mail, MailFacade>
+public class MailView extends EmbdedDataListView<Client, Mail, MailFacade>
 {
     private static final long serialVersionUID = 1L;
     @EJB

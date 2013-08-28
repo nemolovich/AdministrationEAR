@@ -4,7 +4,7 @@
  */
 package listener;
 
-import bean.log.ApplicationLogger;
+import bean.ApplicationLogger;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
@@ -17,6 +17,10 @@ import javax.servlet.annotation.WebListener;
 @WebListener()
 public class ApplicationListener implements ServletContextListener
 {
+    
+    /**
+     * Need add a schedule!
+     */
    
     @Override
     public void contextInitialized(ServletContextEvent sce)

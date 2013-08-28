@@ -91,8 +91,6 @@
                                      sortBy="#{item.interventionDate}"
                                      sortFunction="#{utils.sortByDate}"
                                      filteredValue="#{interventionView.filteredEntities}">
-                            <p:ajax event="filter"
-                                    oncomplete="forceSort('interventionDataForm\\\\:interventionDataTable');"/>
                             
                             <p:column headerText="Durée"
                                       filterBy="#{utils.getTimeFormat(item.duration)}"
@@ -102,11 +100,8 @@
                                               title="Durée de l'intervention"/>
                             </p:column>
                             
-                            <p:column id="defaultSortColumn"
-                                      headerText="Date"
+                            <p:column headerText="Date"
                                       style="width:1%;"
-                                      sortBy="#{item.interventionDate}"
-                                      sortFunction="#{utils.sortByDate}"
                                       filterBy="#{utils.smallDateFormat(item.interventionDate)}"
                                       filterStyle="width:70px;"
                                       filterMatchMode="contains">
@@ -133,22 +128,11 @@
                             </p:column>
                             
                             <p:column headerText="#Facture"
-                                      style="width:1%;white-space: nowrap;"
-                                      sortBy="#{item.idFacture.factureNumber}"
+                                      style="width:1%;"
                                       filterBy="#{item.idFacture.factureNumber}"
                                       filterMatchMode="contains">
                                 <h:outputText value="#{item.idFacture.factureNumber}"
-                                              style="float:left;"
                                               rendered="#{not empty item.idFacture}"/>
-                                <p:commandButton title="Afficher le relevé de cette facture"
-                                                 rendered="#{not empty item.idFacture}"
-                                                 action="javascript:void(0);"
-                                                 style="font-size: 60%;float:right;"
-                                                 icon="ui-icon-pdf"
-                                                 onclick="window.open('#{files.getFileLink(item.idFacture)}',
-                                                       'Relevé details','dependent=yes, menubar=no,\
-                                                       toolbar=no, status=no, scrollbars=yes,\
-                                                       resizable=no, width=1024, height=768');return false;"/>
                             </p:column>
                             
                             <p:column headerText="Actions"
@@ -160,6 +144,15 @@
                                                  style="font-size: 60%;"
                                                  update=":interventionMenuViewPopup :interventionMenuDialogHeader :interventionViewForm"
                                                  oncomplete="interventionMenuViewDialog.show();"/>
+                            </p:column>
+                            
+                            <p:column headerText="Facturée"
+                                      style="width:1%;"
+                                      filterBy="#{item.sleeping}"
+                                      sortBy="#{item.sleeping}"
+                                      filterMatchMode="contains"
+                                      filterStyle="width:50px;">
+                                <h:outputText value="#{item.sleeping?'Oui':'Non'}"/>
                             </p:column>
                             
                             <f:facet name="footer">
@@ -183,7 +176,6 @@
                                     <p:selectBooleanCheckbox id="checkDisplaySleeping"
                                                              value="#{interventionView.displaySleepingEntities}"
                                                              styleClass="small_check"
-                                                             onchange="startAjax();"
                                                              style="vertical-align: middle !important;margin-bottom: 5px !important;">  
                                         <p:ajax update=":interventionDataForm"
                                                 immediate="false"/>

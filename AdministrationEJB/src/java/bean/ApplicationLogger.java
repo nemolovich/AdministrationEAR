@@ -2,15 +2,13 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package bean.log;
+package bean;
 
-import bean.Files;
-import bean.Utils;
-import static bean.log.ApplicationLogger.displayError;
-import static bean.log.ApplicationLogger.displayInfo;
-import static bean.log.ApplicationLogger.displayWarning;
-import static bean.log.ApplicationLogger.startWrite;
-import static bean.log.ApplicationLogger.writeInfo;
+import static bean.ApplicationLogger.displayError;
+import static bean.ApplicationLogger.displayInfo;
+import static bean.ApplicationLogger.displayWarning;
+import static bean.ApplicationLogger.startWrite;
+import static bean.ApplicationLogger.writeInfo;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -28,13 +26,12 @@ import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.ejb.EJB;
-import javax.ejb.Singleton;
 import javax.enterprise.context.ApplicationScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.event.AjaxBehaviorEvent;
@@ -45,12 +42,9 @@ import javax.inject.Named;
  * @author Brian GOHIER
  */
 @Named(value = "logger")
-//@Singleton
 @ApplicationScoped
 public class ApplicationLogger
 {
-    @EJB
-    private LogSchedule logSchedule;
     private static final Logger log=Logger.getLogger(ApplicationLogger.class.getName());
     private static File logFile;
     private static String fileName;
@@ -67,7 +61,7 @@ public class ApplicationLogger
     private static String lastLine=null;
     private static String lastStyle=null;
     private static int nbLastLine=0;
-    private static Date lastArchived=Calendar.getInstance().getTime();
+    private static Date lastArchived=null;
 
     public ApplicationLogger()
     {

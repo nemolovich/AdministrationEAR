@@ -4,7 +4,7 @@
  */
 package validator;
 
-import bean.log.ApplicationLogger;
+import bean.ApplicationLogger;
 import bean.UserLogin;
 import bean.facade.TUserFacade;
 import entity.TUser;

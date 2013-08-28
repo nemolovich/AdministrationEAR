@@ -4,8 +4,8 @@
  */
 package bean.view.periodSelection;
 
-import bean.facade.abstracts.AbstractEmbeddedDataList;
-import bean.view.struct.EmbeddedDataListView;
+import bean.facade.abstracts.AbstractEmbdedDataList;
+import bean.view.struct.EmbdedDataListView;
 import java.lang.reflect.Method;
 import java.util.Calendar;
 import java.util.Date;
@@ -17,19 +17,19 @@ import javax.faces.context.FacesContext;
  *
  * @author Brian GOHIER
  */
-public abstract class EmbeddedEntityPeriodView<C,O,F extends AbstractEmbeddedDataList<C,O>> extends EmbeddedDataListView<C, O, F>
+public abstract class EmbdedEntityPeriodView<C,O,F extends AbstractEmbdedDataList<C,O>> extends EmbdedDataListView<C, O, F>
 {
     public static final int YEAR=0;
     public static final int MONTH=1;
     public static final int DAY=2;
     private Date startDate=this.getDay(this.getFirstDay(Calendar.getInstance().getTime()));
-    private Date endDate=this.addDate(this.startDate, EmbeddedEntityPeriodView.MONTH);
+    private Date endDate=this.addDate(this.startDate, EmbdedEntityPeriodView.MONTH);
 
-    public EmbeddedEntityPeriodView()
+    public EmbdedEntityPeriodView()
     {
     }
     
-    public EmbeddedEntityPeriodView(Class<O> entityClass, String webFolder, Method setReferenceMethod)
+    public EmbdedEntityPeriodView(Class<O> entityClass, String webFolder, Method setReferenceMethod)
     {
         super(entityClass, webFolder, setReferenceMethod);
     }
@@ -106,16 +106,16 @@ public abstract class EmbeddedEntityPeriodView<C,O,F extends AbstractEmbeddedDat
     {
         Calendar cal=Calendar.getInstance();
         cal.setTime(startDate);
-        if(elmt==EmbeddedEntityPeriodView.DAY)
+        if(elmt==EmbdedEntityPeriodView.DAY)
         {
             return this.addDate(startDate, Calendar.MONTH, 1);
         }
-        else if(elmt==EmbeddedEntityPeriodView.MONTH)
+        else if(elmt==EmbdedEntityPeriodView.MONTH)
         {
             int days=cal.getActualMaximum(Calendar.DAY_OF_MONTH);
             return this.addDate(startDate, Calendar.DAY_OF_YEAR, days-1);
         }
-        else if(elmt==EmbeddedEntityPeriodView.YEAR)
+        else if(elmt==EmbdedEntityPeriodView.YEAR)
         {
             return this.addDate(startDate, Calendar.YEAR, 1);
         }

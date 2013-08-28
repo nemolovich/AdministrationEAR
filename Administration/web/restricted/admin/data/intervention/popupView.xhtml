@@ -28,14 +28,9 @@
 
                         <h:outputLabel value="Description de l'intervention:" for="pidescription"
                                        styleClass="#{(taskView.creating)?'required':''}"/>
-                        <h:inputTextarea id="pidescriptionV"
-                                         value="#{taskView.entityPopup.description}"
-                                         title="Description de l'intervention"
-                                         readonly="true"
-                                         styleClass="textarea_min"
-                                         ondblclick="this.focus();this.select();"
-                                         rendered="#{not taskView.creating}">
-                        </h:inputTextarea>
+                        <h:outputText id="pidescriptionV" value="#{taskView.entityPopup.description}"
+                                      title="Description"
+                                      rendered="#{not taskView.creating}"/>
                         <h:inputTextarea id="pidescription"
                                          styleClass="textarea_min"
                                          value="#{taskView.entityPopup.description}"
@@ -99,11 +94,8 @@
                                              readonly="true"
                                              styleClass="textarea_min"
                                              ondblclick="this.focus();this.select();"
-                                             rendered="#{not taskView.creating and
-                                                         not empty taskView.entityPopup.idDevice}">
+                                             rendered="#{not taskView.creating}">
                             </h:inputTextarea>
-                            <h:outputText rendered="#{not taskView.creating and
-                                                      empty taskView.entityPopup.idDevice}"/>
                             <p:selectOneMenu id="piidDeviceFull"
                                              value="#{taskView.entityPopup.idDevice}"
                                              effect="fade"
@@ -360,8 +352,7 @@
                                                  icon="ui-icon-wrench"
                                                  update=":interventionViewForm :interventionMenuDialogHeader"
                                                  action="javascript:void(0);"
-                                                 actionListener="#{interventionView.entityUpdate(interventionView.entity)}"
-                                                 rendered="#{not interventionView.entity.sleeping}"/>
+                                                 actionListener="#{interventionView.entityUpdate(interventionView.entity)}"/>
                                 <p:commandButton title="Fermer la fenêtre"
                                                  action="javascript:void(0);"
                                                  icon="ui-icon-closethick"
@@ -387,13 +378,12 @@
                                                         else{return false;}"/>
                                 <p:commandButton id="pibackUTaskButton"
                                                  title="Annuler la modification"
-                                                 actionListener="#{interventionView.cancelUpdate()}"
+                                                 actionListener="#{interventionView.cancelCreate(taskView)}"
                                                  value="Annuler"
                                                  immediate="true"
                                                  styleClass="red_icon"
                                                  update=":interventionViewForm :interventionMenuDialogHeader"
                                                  icon="ui-icon-closethick"
-                                                 onstart="updateResetIntervention();"
                                                  oncomplete="resetForm('interventionViewForm');">
                                 </p:commandButton>
                             </p:outputPanel>
@@ -421,7 +411,6 @@
                                                  styleClass="red_icon"
                                                  update=":interventionViewForm :interventionMenuDialogHeader"
                                                  icon="ui-icon-closethick"
-                                                 onstart="updateResetIntervention();"
                                                  oncomplete="resetForm('interventionViewForm');interventionMenuViewDialog.hide();">
                                 </p:commandButton>
                             </p:outputPanel>
@@ -457,16 +446,6 @@
                         <ui:include src="/restricted/admin/data/task/popups/cusers.xhtml"/>
                     </p:outputPanel>
                     <script type="text/javascript">
-                        function updateResetIntervention()
-                        {
-                            if(typeof $('#interventionViewForm\\:piidClient_input')[0]!=='undefined')
-                            {
-                                $('#interventionViewForm\\:piidClient_input')[0].selectedIndex=0;
-                                $('#interventionViewForm\\:piidDeviceFull_input')[0].selectedIndex=0;
-                                $('#interventionViewForm\\:piidUser_input')[0].selectedIndex=0;
-                                forceUpdate('interventionViewForm:piidClient','interventionViewForm:piidClient');
-                            }
-                        }
                         $(document).ready(function()
                         {
                             if(#{taskView.creating})
@@ -474,7 +453,8 @@
                                 if(#{empty taskView.entityPopup.idClient})
                                 {
                                     resetForm('interventionViewForm');
-                                    updateResetIntervention();
+                                    $('#interventionViewForm\\:piidClient_input')[0].selectedIndex=0;
+                                    forceUpdate('interventionViewForm:piidClient','interventionViewForm:piidClient');
                                 }
                                 if($('#interventionViewForm\\:piidClient_input')[0].selectedIndex===0)
                                 {
