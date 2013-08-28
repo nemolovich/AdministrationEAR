@@ -45,7 +45,7 @@ import javax.inject.Named;
  * @author Brian GOHIER
  */
 @Named(value = "logger")
-//@Singleton
+@Singleton
 @ApplicationScoped
 public class ApplicationLogger
 {

@@ -30,7 +30,7 @@ public class ClientView extends EntityView<Client, ClientFacade>
     {
         super(Client.class,"client");
     }
-
+    
     @Override
     public void setFacade()
     {

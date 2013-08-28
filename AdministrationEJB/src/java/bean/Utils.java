@@ -30,7 +30,7 @@ import javax.servlet.ServletContext;
  * @author Brian GOHIER
  */
 @Named(value = "utils")
-//@Singleton
+@Singleton
 @ApplicationScoped
 public class Utils
 {

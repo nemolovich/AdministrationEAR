@@ -24,7 +24,7 @@ import javax.inject.Named;
  * @author Brian GOHIER
  */
 @Named(value="files")
-//@Singleton
+@Singleton
 @ApplicationScoped
 public class Files
 {
