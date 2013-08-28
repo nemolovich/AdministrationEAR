@@ -83,7 +83,10 @@
                                      sortBy="#{item.name}"
                                      filteredValue="#{cUserView.filteredEntities}"
                                      emptyMessage="Aucun utilisateur n'a été trouvé">
-                            <p:column headerText="Nom de l'utilisateur"
+                            <p:ajax event="filter"
+                                    oncomplete="forceSort('cUserDataForm\\\\:cUserDataTable');"/>
+                            <p:column id="defaultSortColumn"
+                                      headerText="Nom de l'utilisateur"
                                       sortBy="#{item.name}"
                                       filterBy="#{item.name}"
                                       filterMatchMode="contains">
@@ -179,6 +182,7 @@
                                     <p:selectBooleanCheckbox id="checkDisplaySleeping"
                                                              value="#{cUserView.displaySleepingEntities}"
                                                              styleClass="small_check"
+                                                             onchange="startAjax();"
                                                              style="vertical-align: middle !important;margin-bottom: 5px !important;">  
                                         <p:ajax update=":cUserDataForm"
                                                 immediate="false"/>

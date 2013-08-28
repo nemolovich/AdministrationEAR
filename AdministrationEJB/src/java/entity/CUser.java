@@ -245,5 +245,5 @@ public class CUser implements Serializable
     public String toString() {
         return this.name;
     }
-    
+
 }

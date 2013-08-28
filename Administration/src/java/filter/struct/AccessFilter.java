@@ -4,7 +4,7 @@
  */
 package filter.struct;
 
-import bean.ApplicationLogger;
+import bean.log.ApplicationLogger;
 import bean.UserLogin;
 import static filter.AdminAccessFilter.getStackTrace;
 import java.io.IOException;

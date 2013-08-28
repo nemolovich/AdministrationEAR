@@ -4,7 +4,7 @@
  */
 package validator;
 
-import bean.ApplicationLogger;
+import bean.log.ApplicationLogger;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;

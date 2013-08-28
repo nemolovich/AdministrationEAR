@@ -26,10 +26,15 @@
                         <h:outputLabel value="Description de l'intervention:" for="ptdescription"
                                        styleClass="#{(taskView.creating or
                                                      taskView.editing)?'required':''}"/>
-                        <h:outputText id="ptdescriptionV" value="#{taskView.entityPopup.description}"
-                                      title="Description de l'intervention"
-                                      rendered="#{not taskView.creating and
-                                                  not taskView.editing}"/>
+                        <h:inputTextarea id="ptdescriptionV"
+                                         value="#{taskView.entityPopup.description}"
+                                         title="Description de l'intervention"
+                                         readonly="true"
+                                         styleClass="textarea_min"
+                                         ondblclick="this.focus();this.select();"
+                                         rendered="#{not taskView.creating and
+                                                     not taskView.editing}">
+                        </h:inputTextarea>
                         <h:inputTextarea id="ptdescription"
                                          styleClass="textarea_min"
                                          value="#{taskView.entityPopup.description}"
@@ -98,8 +103,12 @@
                                              styleClass="textarea_min"
                                              ondblclick="this.focus();this.select();"
                                              rendered="#{not taskView.creating and
-                                                         not taskView.editing}">
+                                                         not taskView.editing and
+                                                         not empty taskView.entityPopup.idDevice}">
                             </h:inputTextarea>
+                            <h:outputText rendered="#{not taskView.creating and
+                                                      not taskView.editing and
+                                                      empty taskView.entityPopup.idDevice}"/>
                             <p:selectOneMenu id="ptidDeviceFull"
                                              value="#{taskView.entityPopup.idDevice}"
                                              effect="fade"
@@ -284,7 +293,8 @@
                                                      taskView.editing}">
                         </h:inputTextarea>
 
-                        <h:outputLabel value="État:" for="ptstate"/>
+                        <h:outputLabel value="État:" for="ptstate"
+                                       rendered="#{not taskView.creating}"/>
                         <h:outputText id="ptstateV" value="#{taskView.entityPopup.sleeping?'Faite':'À faire'}"
                                       title="#{taskView.entityPopup.sleeping?'La tâche est accomplie':'La tâche est à faire'}"
                                       rendered="#{not taskView.creating and
@@ -296,7 +306,7 @@
                                                offIcon="ui-icon-refresh"
                                                styleClass="yes_no_button"
                                                value="#{taskView.entityPopup.sleeping}"
-                                               rendered="#{taskView.creating or
+                                               rendered="#{not taskView.creating and
                                                            taskView.editing}">
                             <f:validator binding="#{notNullFieldValidator}"/>
                             <f:attribute name="requiredMessage"
@@ -340,12 +350,13 @@
                                                         else{return false;}"/>
                                 <p:commandButton id="ptbackUTaskButton"
                                                  title="Annuler la modification"
-                                                 actionListener="#{taskView.cancelCreate()}"
+                                                 actionListener="#{taskView.cancelUpdate()}"
                                                  value="Annuler"
                                                  immediate="true"
                                                  styleClass="red_icon"
                                                  update=":taskViewForm :taskMenuDialogHeader"
                                                  icon="ui-icon-closethick"
+                                                 onstart="updateResetTask();"
                                                  oncomplete="resetForm('taskViewForm');">
                                 </p:commandButton>
                             </p:outputPanel>
@@ -372,6 +383,7 @@
                                                  styleClass="red_icon"
                                                  update=":taskViewForm :taskMenuDialogHeader"
                                                  icon="ui-icon-closethick"
+                                                 onstart="updateResetTask();"
                                                  oncomplete="resetForm('taskViewForm');taskMenuViewDialog.hide();">
                                 </p:commandButton>
                             </p:outputPanel>
@@ -407,6 +419,16 @@
                         <ui:include src="/restricted/admin/data/task/popups/cusers.xhtml"/>
                     </p:outputPanel>
                     <script type="text/javascript">
+                        function updateResetTask()
+                        {
+                            if(typeof $('#taskViewForm\\:ptidClient_input')[0]!=='undefined')
+                            {
+                                $('#taskViewForm\\:ptidClient_input')[0].selectedIndex=0;
+                                $('#taskViewForm\\:ptidDeviceFull_input')[0].selectedIndex=0;
+                                $('#taskViewForm\\:ptidUser_input')[0].selectedIndex=0;
+                                forceUpdate('taskViewForm:ptidClient','taskViewForm:ptidClient');
+                            }
+                        }
                         $(document).ready(function()
                         {
                             if(#{taskView.creating})
@@ -414,8 +436,7 @@
                                 if(#{empty taskView.entityPopup.idClient})
                                 {
                                     resetForm('taskViewForm');
-                                    $('#taskViewForm\\:ptidClient_input')[0].selectedIndex=0;
-                                    forceUpdate('taskViewForm:ptidClient','taskViewForm:ptidClient');
+                                    updateResetTask();
                                 }
                                 if($('#taskViewForm\\:ptidClient_input')[0].selectedIndex===0)
                                 {

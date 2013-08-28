@@ -4,7 +4,7 @@
  */
 package bean.facade.abstracts;
 
-import bean.ApplicationLogger;
+import bean.log.ApplicationLogger;
 import bean.Utils;
 import java.util.List;
 import javax.faces.application.FacesMessage;

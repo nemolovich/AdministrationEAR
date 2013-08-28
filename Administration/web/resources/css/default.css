@@ -245,100 +245,82 @@ fieldset
     background-image:                   url("/Administration/javax.faces.resource/images/ui-icons_cd0a0a_256x240.png.xhtml?ln=primefaces-aristo") !important;
 }
 
-.ui-icon-pdf.ui-icon
+.ui-icon-pdf.ui-icon,
+.ui-icon-new-task.ui-icon,
+.ui-icon-new-intervention.ui-icon,
+.ui-icon-new-cuser.ui-icon,
+.ui-icon-tuser-config.ui-icon,
+.ui-icon-new-tuser.ui-icon,
+.ui-icon-admin-config.ui-icon,
+.ui-icon-task.ui-icon,
+.ui-icon-intervention.ui-icon,
+.ui-icon-cuser.ui-icon,
+.ui-icon-tuser.ui-icon,
+.ui-icon-admin.ui-icon
 {
-    background-image:                   url("/Administration/resources/img/ui-icon-pdf.png") !important;
     background-size:                    16px, 16px;
     background-repeat:                  no-repeat;
     background-position:                0px 1px;
+}
+
+.ui-icon-pdf.ui-icon
+{
+    background-image:                   url("/Administration/resources/img/ui-icon-pdf.png") !important;
 }
 
 .ui-icon-new-task.ui-icon
 {
     background-image:                   url("/Administration/resources/img/ui-icon-new-task.png") !important;
-    background-size:                    16px, 16px;
-    background-repeat:                  no-repeat;
-    background-position:                0px 1px;
 }
 
 .ui-icon-new-intervention.ui-icon
 {
     background-image:                   url("/Administration/resources/img/ui-icon-new-intervention.png") !important;
-    background-size:                    16px, 16px;
-    background-repeat:                  no-repeat;
-    background-position:                0px 1px;
 }
 
 .ui-icon-new-cuser.ui-icon
 {
     background-image:                   url("/Administration/resources/img/ui-icon-new-cuser.png") !important;
-    background-size:                    16px, 16px;
-    background-repeat:                  no-repeat;
-    background-position:                0px 1px;
 }
 
 .ui-icon-tuser-config.ui-icon
 {
     background-image:                   url("/Administration/resources/img/ui-icon-tuser-config.png") !important;
-    background-size:                    16px, 16px;
-    background-repeat:                  no-repeat;
-    background-position:                0px 1px;
 }
 
 .ui-icon-new-tuser.ui-icon
 {
     background-image:                   url("/Administration/resources/img/ui-icon-new-tuser.png") !important;
-    background-size:                    16px, 16px;
-    background-repeat:                  no-repeat;
-    background-position:                0px 1px;
 }
 
 .ui-icon-admin-config.ui-icon
 {
     background-image:                   url("/Administration/resources/img/ui-icon-admin-config.png") !important;
-    background-size:                    16px, 16px;
-    background-repeat:                  no-repeat;
-    background-position:                0px 1px;
 }
 
 .ui-icon-task.ui-icon
 {
     background-image:                   url("/Administration/resources/img/ui-icon-task.png") !important;
-    background-size:                    16px, 16px;
-    background-repeat:                  no-repeat;
-    background-position:                0px 1px;
 }
 
 .ui-icon-intervention.ui-icon
 {
     background-image:                   url("/Administration/resources/img/ui-icon-intervention.png") !important;
-    background-size:                    16px, 16px;
-    background-repeat:                  no-repeat;
-    background-position:                0px 1px;
 }
 
 .ui-icon-cuser.ui-icon
 {
     background-image:                   url("/Administration/resources/img/ui-icon-cuser.png") !important;
-    background-size:                    16px, 16px;
-    background-repeat:                  no-repeat;
-    background-position:                0px 1px;
 }
 
 .ui-icon-tuser.ui-icon
 {
     background-image:                   url("/Administration/resources/img/ui-icon-tuser.png") !important;
-    background-size:                    16px, 16px;
-    background-repeat:                  no-repeat;
-    background-position:                0px 1px;
 }
 
 .ui-icon-admin.ui-icon
 {
     background-image:                   url("/Administration/resources/img/ui-icon-admin.png") !important;
-    background-size:                    16px, 16px;
-    background-repeat:                  no-repeat;
-    background-position:                0px 1px;
 }
 
 #growl_container .ui-growl-icon-close,
@@ -576,7 +558,7 @@ fieldset
 
 .big_column div
 {
-    width:                              350px !important;
+    min-width:                          350px !important;
     white-space:                        nowrap !important;
 }
 

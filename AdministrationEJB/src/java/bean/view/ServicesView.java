@@ -2,13 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package bean.view;
 
-import bean.facade.MailFacade;
+import bean.facade.ServicesFacade;
 import bean.view.struct.EmbeddedDataListView;
 import entity.Client;
-import entity.Mail;
+import entity.Services;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
@@ -18,57 +17,63 @@ import javax.inject.Named;
  *
  * @author Brian GOHIER
  */
-@Named(value = "mailView")
+@Named(value = "servicesView")
 @SessionScoped
-public class MailView extends EmbeddedDataListView<Client, Mail, MailFacade>
+public class ServicesView extends EmbeddedDataListView<Client, Services, ServicesFacade>
 {
     private static final long serialVersionUID = 1L;
     @EJB
-    private MailFacade mailFacade;
+    private ServicesFacade servicesFacade;
     
-    public MailView() throws NoSuchMethodException
+    public ServicesView() throws NoSuchMethodException
     {
-        super(Mail.class,"mail",
-                Mail.class.getMethod("setIdClient",
+        super(Services.class,"services",
+                Services.class.getMethod("setIdClient",
                                         new Class<?>[]{Client.class}));
+    }
+    
+    @Override
+    public void setEntity(Services entity)
+    {
+        super.setInstance(entity);
     }
 
     @Override
     public void setFacade()
     {
-        super.setEntityFacade(this.mailFacade);
+        super.setEntityFacade(this.servicesFacade);
     }
 
     @Override
-    public List<Mail> getEntries()
+    public List<Services> getEntries()
     {
         return super.findAll();
     }
 
     @Override
-    public Mail getEntity()
+    public Services getEntity()
     {
         return super.getInstance();
     }
 
     @Override
-    public String getDeleteMessage(Mail entity)
+    public String getDeleteMessage(Services entity)
     {
         return "Vous êtes sur le point de supprimer définitivement"
-                + " cette adresse mail ("+entity.getMail()
-                + " id="+entity.getId()+"). Cette action est irreversible,"
-                + " êtes-vous certain(e) de vouloir continuer?";
+                    + " ce service ("+entity.getTitle()
+                    + " id="+entity.getId()+"). Cette action est irreversible,"
+                    + " êtes-vous certain(e) de vouloir continuer?";
     }
 
     @Override
-    public String deleteMessages(List<Mail> entities)
+    public String deleteMessages(List<Services> entities)
     {
         if(entities!=null)
         {
-            String out="Vous êtes sur le point de supprimer définitivement toutes"
-                + " les adresse mail sélectionnées (";
+            String out="Vous êtes sur le point de supprimer définitivement tous"
+                + " les services sélectionnés (";
             boolean first=true;
-            for(Mail mail:entities)
+            for(Services entity:entities)
             {
                 if(first)
                 {
@@ -78,18 +83,12 @@ public class MailView extends EmbeddedDataListView<Client, Mail, MailFacade>
                 {
                     out+=", ";
                 }
-                out+=mail.getMail()+" id="+mail.getId();
+                out+=entity.getTitle()+" id="+entity.getId();
             }
             out+="). Cette action est irreversible, "
                 + "êtes-vous certain(e) de vouloir continuer?";
             return out;
         }
         return "Erreur!";
-    }
-
-    @Override
-    public void setEntity(Mail mail)
-    {
-        super.setInstance(mail);
     }
 }

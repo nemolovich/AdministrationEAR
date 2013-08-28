@@ -4,6 +4,7 @@
  */
 package bean;
 
+import bean.log.ApplicationLogger;
 import entity.Facture;
 import entity.FilePath;
 import java.io.File;
@@ -14,8 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.ejb.Singleton;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 
@@ -24,6 +24,7 @@ import javax.inject.Named;
  * @author Brian GOHIER
  */
 @Named(value="files")
+//@Singleton
 @ApplicationScoped
 public class Files
 {

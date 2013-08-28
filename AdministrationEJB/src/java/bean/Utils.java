@@ -4,6 +4,7 @@
  */
 package bean;
 
+import bean.log.ApplicationLogger;
 import entity.FilePath;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
@@ -15,6 +16,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import javax.ejb.Singleton;
 import javax.enterprise.context.ApplicationScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
@@ -28,6 +30,7 @@ import javax.servlet.ServletContext;
  * @author Brian GOHIER
  */
 @Named(value = "utils")
+//@Singleton
 @ApplicationScoped
 public class Utils
 {
@@ -334,7 +337,7 @@ public class Utils
      */
     public static String getBreakLinesString(String text)
     {
-        return text.replaceAll("\n", "<br/>");
+        return text.replaceAll("\n", "<br/>").replaceAll(""+(char)13, "");
     }
     
     /**

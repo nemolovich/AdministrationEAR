@@ -137,6 +137,8 @@ public class Client implements Serializable
     private List<Software> softwareList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idClient")
     private List<Task> taskList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idClient")
+    private List<Services> servicesList;
 
     public Client() {
     }
@@ -386,6 +388,15 @@ public class Client implements Serializable
 
     public void setTaskList(List<Task> taskList) {
         this.taskList = taskList;
+    }
+
+    @XmlTransient
+    public List<Services> getServicesList() {
+        return servicesList;
+    }
+
+    public void setServicesList(List<Services> servicesList) {
+        this.servicesList = servicesList;
     }
 
     @Override

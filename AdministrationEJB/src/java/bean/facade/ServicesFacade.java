@@ -5,8 +5,8 @@
 package bean.facade;
 
 import bean.facade.abstracts.AbstractEmbeddedDataList;
-import entity.Intervention;
-import entity.Task;
+import entity.Client;
+import entity.Services;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -17,7 +17,7 @@ import javax.persistence.PersistenceContext;
  * @author Brian GOHIER
  */
 @Stateless
-public class InterventionFacade extends AbstractEmbeddedDataList<Task, Intervention>
+public class ServicesFacade extends AbstractEmbeddedDataList<Client, Services>
 {
     @PersistenceContext(unitName = "AdministrationEJBPU")
     private EntityManager em;
@@ -27,10 +27,10 @@ public class InterventionFacade extends AbstractEmbeddedDataList<Task, Intervent
         return em;
     }
 
-    public InterventionFacade() throws NoSuchMethodException
+    public ServicesFacade() throws NoSuchMethodException
     {
-        super(Intervention.class,Task.class.getMethod("getInterventionList"),
-                Task.class.getMethod("setInterventionList",new Class<?>[]{List.class}));
+        super(Services.class,Client.class.getMethod("getServicesList"),
+                Client.class.getMethod("setServicesList",new Class<?>[]{List.class}));
     }
     
 }

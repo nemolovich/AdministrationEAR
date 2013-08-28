@@ -21,32 +21,32 @@
                 <h:panelGrid columns="4" columnClasses="label,fields,label_30,fields"
                              rendered="#{not empty deviceView.entity}">
 
-                    <p:outputLabel value="Type de machine:" for="wwsType" />
-                    <p:inputText id="wwsType" value="#{deviceView.entity.wsType}"
+                    <p:outputLabel value="Type de machine:" for="dwsType" />
+                    <p:inputText id="dwsType" value="#{deviceView.entity.wsType}"
                                  title="Type de machine"
                                  maxlength="64"
                                  rendered="#{deviceView.creating or 
                                              deviceView.editing}"/>
-                    <h:outputText id="wwsTypeV" value="#{deviceView.entity.wsType}"
+                    <h:outputText id="dwsTypeV" value="#{deviceView.entity.wsType}"
                                   title="Type de machine"
                                   rendered="#{not deviceView.creating and
                                               not deviceView.editing}"/>
 
-                    <p:outputLabel value="Moniteur:" for="wmonitor" />
-                    <p:inputText id="wmonitor" value="#{deviceView.entity.monitor}"
+                    <p:outputLabel value="Moniteur:" for="dmonitor" />
+                    <p:inputText id="dmonitor" value="#{deviceView.entity.monitor}"
                                  title="Moniteur"
                                  maxlength="64"
                                  rendered="#{deviceView.creating or 
                                              deviceView.editing}"/>
-                    <h:outputText id="wmonitorV" value="#{deviceView.entity.monitor}"
+                    <h:outputText id="dmonitorV" value="#{deviceView.entity.monitor}"
                                   title="Moniteur"
                                   rendered="#{not deviceView.creating and
                                               not deviceView.editing}"/>
                     
-                    <p:outputLabel value="Nom machine:" for="wname"
+                    <p:outputLabel value="Nom machine:" for="dname"
                                    styleClass="#{(deviceView.creating or
                                                  deviceView.editing)?'required':''}"/>
-                    <p:inputText id="wname" value="#{deviceView.entity.name}"
+                    <p:inputText id="dname" value="#{deviceView.entity.name}"
                                  title="Nom de la machine"
                                  maxlength="64"
                                  rendered="#{deviceView.creating or 
@@ -57,146 +57,146 @@
                         <f:attribute name="requiredTitle"
                                      value="Champs 'Nom machine' vide"/>
                     </p:inputText>
-                    <h:outputText id="wnameV" value="#{deviceView.entity.name}"
+                    <h:outputText id="dnameV" value="#{deviceView.entity.name}"
                                   title="Nom de la machine"
                                   rendered="#{not deviceView.creating and
                                               not deviceView.editing}"/>
 
-                    <p:outputLabel value="Carte graphique:" for="wvideoCard" />
-                    <p:inputText id="wvideoCard" value="#{deviceView.entity.videoCard}"
+                    <p:outputLabel value="Carte graphique:" for="dvideoCard" />
+                    <p:inputText id="dvideoCard" value="#{deviceView.entity.videoCard}"
                                  title="Carte graphique"
                                  maxlength="64"
                                  rendered="#{deviceView.creating or 
                                              deviceView.editing}"/>
-                    <h:outputText id="wvideoCardV" value="#{deviceView.entity.videoCard}"
+                    <h:outputText id="dvideoCardV" value="#{deviceView.entity.videoCard}"
                                   title="Carte graphique"
                                   rendered="#{not deviceView.creating and
                                               not deviceView.editing}"/>
                     
-                    <p:outputLabel value="Marque:" for="wbrand" />
-                    <p:inputText id="wbrand" value="#{deviceView.entity.brand}"
+                    <p:outputLabel value="Marque:" for="dbrand" />
+                    <p:inputText id="dbrand" value="#{deviceView.entity.brand}"
                                  title="Marque de la machine"
                                  maxlength="64"
                                  rendered="#{deviceView.creating or 
                                              deviceView.editing}"/>
-                    <h:outputText id="wbrandV" value="#{deviceView.entity.brand}"
+                    <h:outputText id="dbrandV" value="#{deviceView.entity.brand}"
                                   title="Marque de la machine"
                                   rendered="#{not deviceView.creating and
                                               not deviceView.editing}"/>
 
-                    <p:outputLabel value="Système d'exploitation:" for="woperatingSystem" />
-                    <p:inputText id="woperatingSystem" value="#{deviceView.entity.operatingSystem}"
+                    <p:outputLabel value="Système d'exploitation:" for="doperatingSystem" />
+                    <p:inputText id="doperatingSystem" value="#{deviceView.entity.operatingSystem}"
                                  title="Système d'exploitation"
                                  maxlength="64"
                                  rendered="#{deviceView.creating or 
                                              deviceView.editing}"/>
-                    <h:outputText id="woperatingSystemV" value="#{deviceView.entity.operatingSystem}"
+                    <h:outputText id="doperatingSystemV" value="#{deviceView.entity.operatingSystem}"
                                   title="Système d'exploitation"
                                   rendered="#{not deviceView.creating and
                                               not deviceView.editing}"/>
                     
-                    <p:outputLabel value="Utilisateur par défaut:" for="wuser_name_default" />
-                    <p:inputText id="wuser_name_default" value="#{deviceView.entity.userNameDefault}"
+                    <p:outputLabel value="Utilisateur par défaut:" for="duser_name_default" />
+                    <p:inputText id="duser_name_default" value="#{deviceView.entity.userNameDefault}"
                                  title="Nom de l'utilisateur par défaut"
                                  maxlength="30"
                                  rendered="#{deviceView.creating or 
                                              deviceView.editing}"/>
-                    <h:outputText id="wuser_name_defaultV" value="#{deviceView.entity.userNameDefault}"
+                    <h:outputText id="duser_name_defaultV" value="#{deviceView.entity.userNameDefault}"
                                   title="Nom de l'utilisateur par défaut"
                                   rendered="#{not deviceView.creating and
                                               not deviceView.editing}"/>
 
-                    <p:outputLabel value="Version système:" for="wsystemVersion" />
-                    <p:inputText id="wsystemVersion" value="#{deviceView.entity.systemVersion}"
+                    <p:outputLabel value="Version système:" for="dsystemVersion" />
+                    <p:inputText id="dsystemVersion" value="#{deviceView.entity.systemVersion}"
                                  title="Version du système"
                                  maxlength="64"
                                  rendered="#{deviceView.creating or 
                                              deviceView.editing}"/>
-                    <h:outputText id="wsystemVersionV" value="#{deviceView.entity.systemVersion}"
+                    <h:outputText id="dsystemVersionV" value="#{deviceView.entity.systemVersion}"
                                   title="Version du système"
                                   rendered="#{not deviceView.creating and
                                               not deviceView.editing}"/>
                     
-                    <p:outputLabel value="Adresse IP:" for="wip_address" />
-                    <p:inputText id="wip_address" value="#{deviceView.entity.ipAddress}"
+                    <p:outputLabel value="Adresse IP:" for="dip_address" />
+                    <p:inputText id="dip_address" value="#{deviceView.entity.ipAddress}"
                                  title="Adresse IP de la machine"
                                  maxlength="39"
                                  rendered="#{deviceView.creating or 
                                              deviceView.editing}">
                     </p:inputText>
-                    <h:outputText id="wip_addressV" value="#{deviceView.entity.ipAddress}"
+                    <h:outputText id="dip_addressV" value="#{deviceView.entity.ipAddress}"
                                   title="Adresse IP de la machine"
                                   rendered="#{not deviceView.creating and
                                               not deviceView.editing}"/>
 
-                    <p:outputLabel value="Licence système:" for="wsystemLicence" />
-                    <p:inputText id="wsystemLicence" value="#{deviceView.entity.systemLicense}"
+                    <p:outputLabel value="Licence système:" for="dsystemLicence" />
+                    <p:inputText id="dsystemLicence" value="#{deviceView.entity.systemLicense}"
                                  title="Version du système"
                                  maxlength="64"
                                  rendered="#{deviceView.creating or 
                                              deviceView.editing}"/>
-                    <h:outputText id="wsystemLicenceV" value="#{deviceView.entity.systemLicense}"
+                    <h:outputText id="dsystemLicenceV" value="#{deviceView.entity.systemLicense}"
                                   title="Version du système"
                                   rendered="#{not deviceView.creating and
                                               not deviceView.editing}"/>
 
-                    <p:outputLabel value="Date de mise en service:" for="wstartDate" />
-                    <p:inputMask id="wstartDate" value="#{deviceView.entity.startDate}"
+                    <p:outputLabel value="Date de mise en service:" for="dstartDate" />
+                    <p:inputMask id="dstartDate" value="#{deviceView.entity.startDate}"
                                  title="Date de mise en service de la machine"
                                  mask="99/99/9999"
                                  rendered="#{deviceView.creating or 
                                              deviceView.editing}">
                         <f:convertDateTime pattern="dd/MM/yyyy" />
                     </p:inputMask>
-                    <h:outputText id="wstartDateV" value="#{utils.dayDateFormat(
+                    <h:outputText id="dstartDateV" value="#{utils.dayDateFormat(
                                                             deviceView.entity.startDate)}"
                                   title="Date de mise en service de la machine"
                                   rendered="#{not deviceView.creating and
                                               not deviceView.editing}"/>
 
-                    <p:outputLabel value="Mémoire vive:" for="wram" />
-                    <p:inputText id="wram" value="#{deviceView.entity.ram}"
+                    <p:outputLabel value="Mémoire vive:" for="dram" />
+                    <p:inputText id="dram" value="#{deviceView.entity.ram}"
                                  title="Mémoire vive"
                                  maxlength="64"
                                  rendered="#{deviceView.creating or 
                                              deviceView.editing}"/>
-                    <h:outputText id="wramV" value="#{deviceView.entity.ram}"
+                    <h:outputText id="dramV" value="#{deviceView.entity.ram}"
                                   title="Mémoire vive"
                                   rendered="#{not deviceView.creating and
                                               not deviceView.editing}"/>
 
-                    <p:outputLabel value="Processeur:" for="wprocessor" />
-                    <p:inputText id="wprocessor" value="#{deviceView.entity.processor}"
+                    <p:outputLabel value="Processeur:" for="dprocessor" />
+                    <p:inputText id="dprocessor" value="#{deviceView.entity.processor}"
                                  title="Processeur"
                                  maxlength="64"
                                  rendered="#{deviceView.creating or 
                                              deviceView.editing}"/>
-                    <h:outputText id="wprocessorV" value="#{deviceView.entity.processor}"
+                    <h:outputText id="dprocessorV" value="#{deviceView.entity.processor}"
                                   title="Processeur"
                                   rendered="#{not deviceView.creating and
                                               not deviceView.editing}"/>
 
-                    <p:outputLabel value="Disque dur:" for="whardDrive" />
-                    <p:inputText id="whardDrive" value="#{deviceView.entity.hardDrive}"
+                    <p:outputLabel value="Disque dur:" for="dhardDrive" />
+                    <p:inputText id="dhardDrive" value="#{deviceView.entity.hardDrive}"
                                  title="Dique dur"
                                  maxlength="64"
                                  rendered="#{deviceView.creating or 
                                              deviceView.editing}"/>
-                    <h:outputText id="whardDriveV" value="#{deviceView.entity.hardDrive}"
+                    <h:outputText id="dhardDriveV" value="#{deviceView.entity.hardDrive}"
                                   title="Disque dur"
                                   rendered="#{not deviceView.creating and
                                               not deviceView.editing}"/>
 
                 </h:panelGrid>
-                <p:outputPanel>
-                    <p:outputLabel value="Observations:" for="wobservations"
+                <p:outputPanel rendered="#{not empty deviceView.entity}">
+                    <p:outputLabel value="Observations:" for="dobservations"
                                    styleClass="label" style="margin-right: 30px;"/>
-                    <h:inputTextarea id="wobservations" value="#{deviceView.entity.observations}"
+                    <h:inputTextarea id="dobservations" value="#{deviceView.entity.observations}"
                                      title="Observations"
                                      styleClass="textarea_min"
                                      rendered="#{deviceView.creating or 
                                                  deviceView.editing}"/>
-                    <h:inputTextarea id="wobservationsV" value="#{deviceView.entity.observations}"
+                    <h:inputTextarea id="dobservationsV" value="#{deviceView.entity.observations}"
                                      title="Observations"
                                      readonly="true"
                                      styleClass="textarea_min"

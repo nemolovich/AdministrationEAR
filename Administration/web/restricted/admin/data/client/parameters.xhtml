@@ -20,6 +20,7 @@
                 <ui:include src="/restricted/admin/data/client/popups/mails.xhtml"/>
                 <ui:include src="/restricted/admin/data/client/popups/cusers.xhtml"/>
                 <ui:include src="/restricted/admin/data/client/popups/softwares.xhtml"/>
+                <ui:include src="/restricted/admin/data/client/popups/services.xhtml"/>
                 <f:view>
                     <h:form id="clientUpdate" enctype="multipart/form-data">
                         
@@ -166,6 +167,7 @@
                                             <p:selectBooleanCheckbox id="checkDisplayDeviceSleeping"
                                                                      value="#{deviceMultiView.displaySleepingEntities}"
                                                                      styleClass="small_check"
+                                                                     onchange="startAjax();"
                                                                      style="vertical-align: middle !important;margin-bottom: 5px !important;">  
                                                 <p:ajax update="clientDeviceList:deviceDelete 
                                                         :clientUpdate:clientTabView:clientDeviceList"
@@ -184,6 +186,99 @@
                                     $(document).ready(function()
                                     {
                                         clientDeviceTable.filter();
+                                    });
+                                </script>
+                            </p:tab>
+                            
+                            <p:tab id="services" title="Services">
+                                <p:dataTable id="clientServicesList"
+                                             value="#{servicesMultiView.getData(clientView.entity.servicesList)}"
+                                             var="services"
+                                             widgetVar="clientServicesTable"
+                                             rowIndexVar="index"
+                                             paginatorPosition="bottom"
+                                             emptyMessage="Aucun service n'a été trouvé"
+                                             rowStyleClass="v_top"
+                                             paginator="true"
+                                             rows="#{utils.maxDataRows}"
+                                             sortBy="#{services.title}"
+                                             selection="#{servicesMultiView.multiSelection}">
+                                    
+                                    <p:ajax event="rowSelectCheckbox"
+                                            process="@this"
+                                            update=":createServicesForm
+                                             clientServicesList:servicesDelete" />
+                                    <p:ajax event="rowUnselectCheckbox"
+                                            process="@this"
+                                            update=":createServicesForm
+                                             clientServicesList:servicesDelete" />
+                                    <p:ajax event="toggleSelect"
+                                            process="@this"
+                                            update=":createServicesForm
+                                             clientServicesList:servicesDelete" />
+
+                                    <p:column selectionMode="multiple" style="width:2%">
+                                    </p:column>
+
+                                    <p:column headerText="Détails" style="width:100%;">
+                                        <h:outputText value="#{services.toString()}"/>
+                                    </p:column>
+                                    
+                                    <p:column headerText="Actions" style="white-space: nowrap;">
+                                        <p:commandButton actionListener="#{servicesView.entityView(services)}"
+                                                         icon="ui-icon-search"
+                                                         style="font-size: 60%;"
+                                                         title="Détails de ce service"
+                                                         update=":createServicesForm"
+                                                         oncomplete="createServices.show();"/>
+                                        <p:commandButton actionListener="#{servicesView.entityUpdate(services)}"
+                                                         icon="ui-icon-pencil"
+                                                         style="font-size: 60%;"
+                                                         title="Modifier ce service"
+                                                         update=":createServicesForm"
+                                                         oncomplete="createServices.show();"/>
+                                        <p:commandButton actionListener="#{servicesView.entityDelete(clientView.entity, services)}"
+                                                         action="javascipt:void(0);"
+                                                         icon="ui-icon-trash"
+                                                         oncomplete="clientServicesTable.filter();"
+                                                         update=":clientUpdate :growl :clientUpdate:clientTabView:clientServicesList"
+                                                         style="font-size: 60%;"
+                                                         styleClass="red_icon"
+                                                         onclick="if(!confirm('#{servicesView.getDeleteMessage(services)}')){return false;}"
+                                                         title="Supprimer ce service"/>
+                                    </p:column>
+                                    
+                                    <f:facet name="footer">
+                                        <p:outputPanel style="float:left">
+                                            <p:commandButton value="Ajouter un service"
+                                                             icon="ui-icon-circle-plus"
+                                                             styleClass="green_icon"
+                                                             title="Ajouter un service à cette société"
+                                                             update=":createServicesForm"
+                                                             actionListener="#{servicesView.entityCreate(clientView.entity)}"
+                                                             onclick="createServices.show();"/>
+                                            <p:commandButton id="servicesDelete"
+                                                             value="Supprimer"
+                                                             icon="ui-icon-trash"
+                                                             widgetVar="servicesDeleteButton"
+                                                             styleClass="red_icon"
+                                                             title="Supprimer les services sélectionnés"
+                                                             update=":clientUpdate :growl :clientUpdate:clientTabView:clientServicesList @this"
+                                                             disabled="#{servicesMultiView.emptySelection}"
+                                                             actionListener="#{servicesView.remove(clientView.entity,
+                                                                               servicesMultiView.multiSelection)}"
+                                                             oncomplete="if(#{servicesMultiView.checkEmptySelection()}!='true'){
+                                                                    clientServicesTable.filter();}"
+                                                             onclick="if(#{servicesMultiView.emptySelection})
+                                                                {return false;}
+                                                                else{if(!confirm('#{servicesView.deleteMessages(servicesMultiView.multiSelectionCast)}')){return false;}}"/>
+                                        </p:outputPanel>
+                                    </f:facet>
+                                </p:dataTable>
+                                <script type="text/javascript">
+                                    $(document).ready(function()
+                                    {
+                                        forceFilter(clientServicesTable);
                                     });
                                 </script>
                             </p:tab>
@@ -304,6 +399,7 @@
                                             <p:selectBooleanCheckbox id="checkDisplayMailSleeping"
                                                                      value="#{mailMultiView.displaySleepingEntities}"
                                                                      styleClass="small_check"
+                                                                     onchange="startAjax();"
                                                                      style="vertical-align: middle !important;margin-bottom: 5px !important;">  
                                                 <p:ajax update="clientMailList:mailDelete 
                                                         :clientUpdate:clientTabView:clientMailList"
@@ -364,13 +460,19 @@
                                     <p:column headerText="Interlocuteur" style="width:1%;">
                                         <p:commandButton actionListener="#{cUserView.setInterlocuteur(cuser,clientView.entity)}"
                                                          icon="ui-icon-new-cuser"
-                                                         style="font-size: 60%;"
+                                                         style="font-size:70%;width:125px;height:25px;white-space:nowrap;"
                                                          value="Définir interlocuteur"
                                                          title="Définir cet utilisateur comme interlocuteur de cette société"
                                                          update=":growl :clientUpdate:clientTabView:clientUserList"
                                                          rendered="#{not clientView.entity.isInterlocuteur(cuser)}"/>
-                                        <h:outputText value="Interlocuteur"
-                                                      rendered="#{clientView.entity.isInterlocuteur(cuser)}"/>
+                                        <p:commandButton value="Interlocuteur"
+                                                         icon="ui-icon-check"
+                                                         style="font-size:80%;width:125px;height:25px;white-space:nowrap;"
+                                                         disabled="true"
+                                                         styleClass="green_icon"
+                                                         title="Est interlocuteur"
+                                                         onclick="return false;"
+                                                         rendered="#{clientView.entity.isInterlocuteur(cuser)}"/>
                                     </p:column>
                                     
                                     <p:column headerText="Actions" style="white-space: nowrap;">
@@ -454,6 +556,7 @@
                                             <p:selectBooleanCheckbox id="checkDisplayUserSleeping"
                                                                      value="#{cUserMultiView.displaySleepingEntities}"
                                                                      styleClass="small_check"
+                                                                     onchange="startAjax();"
                                                                      style="vertical-align: middle !important;margin-bottom: 5px !important;">  
                                                 <p:ajax update="clientUserList:userDelete 
                                                         :clientUpdate:clientTabView:clientUserList"
@@ -592,6 +695,7 @@
                                             <p:selectBooleanCheckbox id="checkDisplaySoftwareSleeping"
                                                                      value="#{softwareMultiView.displaySleepingEntities}"
                                                                      styleClass="small_check"
+                                                                     onchange="startAjax();"
                                                                      style="vertical-align: middle !important;margin-bottom: 5px !important;">  
                                                 <p:ajax update="clientSoftwareList:softwareDelete 
                                                         :clientUpdate:clientTabView:clientSoftwareList"
