@@ -23,7 +23,7 @@ public abstract class EntityPeriodView<C,F extends AbstractFacade<C>> extends En
     public static final int MONTH=1;
     public static final int DAY=2;
     private Date startDate=this.getDay(this.getFirstDay(Calendar.getInstance().getTime()));
-    private Date endDate=this.addDate(this.startDate, EmbdedEntityPeriodView.MONTH);
+    private Date endDate=this.addDate(this.startDate, EmbeddedEntityPeriodView.MONTH);
 
     public EntityPeriodView()
     {
@@ -106,16 +106,16 @@ public abstract class EntityPeriodView<C,F extends AbstractFacade<C>> extends En
     {
         Calendar cal=Calendar.getInstance();
         cal.setTime(startDate);
-        if(elmt==EmbdedEntityPeriodView.DAY)
+        if(elmt==EmbeddedEntityPeriodView.DAY)
         {
             return this.addDate(startDate, Calendar.MONTH, 1);
         }
-        else if(elmt==EmbdedEntityPeriodView.MONTH)
+        else if(elmt==EmbeddedEntityPeriodView.MONTH)
         {
             int days=cal.getActualMaximum(Calendar.DAY_OF_MONTH);
             return this.addDate(startDate, Calendar.DAY_OF_YEAR, days-1);
         }
-        else if(elmt==EmbdedEntityPeriodView.YEAR)
+        else if(elmt==EmbeddedEntityPeriodView.YEAR)
         {
             return this.addDate(startDate, Calendar.YEAR, 1);
         }

@@ -1,0 +1,148 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <p:dialog id="dialogServices"
+                  appendToBody="true"
+                  header="Fenêtre de service"
+                  widgetVar="createServices"
+                  resizable="false"
+                  draggable="true"
+                  modal="true"
+                  showEffect="clip"
+                  hideEffect="clip">
+            <h:form id="createServicesForm">
+                <h:panelGrid columns="2" columnClasses="label,fields"
+                             rendered="#{not empty servicesView.entity}">
+                            
+                    <h:outputLabel value="Titre:" for="title"
+                                   styleClass="#{servicesView.creating or
+                                             servicesView.editing?'required':''}"/>
+                    <p:inputText id="title"
+                                 value="#{servicesView.entity.title}"
+                                 title="Title"
+                                 maxlength="64"
+                                 rendered="#{servicesView.creating or
+                                             servicesView.editing}">
+                        <f:validator binding="#{notNullFieldValidator}"/>
+                        <f:attribute name="requiredMessage"
+                                     value="Le champs 'Titre' ne peut être vide"/>
+                        <f:attribute name="requiredTitle"
+                                     value="Champs 'Titre' vide"/>
+                    </p:inputText>
+                    <h:outputText value="#{servicesView.entity.title}"
+                                  rendered="#{not servicesView.creating and
+                                              not servicesView.editing}"/>
+
+                    <h:outputLabel value="Description:" for="description" />
+                    <h:inputTextarea id="description"
+                                     value="#{servicesView.entity.description}"
+                                     styleClass="textarea_min"
+                                     title="Description"
+                                     rendered="#{servicesView.creating or
+                                                 servicesView.editing}"/>
+                    <h:inputTextarea value="#{servicesView.entity.description}"
+                                     readonly="true"
+                                     styleClass="textarea_min"
+                                     ondblclick="this.focus();this.select();"
+                                     rendered="#{not servicesView.creating and
+                                                 not servicesView.editing}"/>
+                            
+                </h:panelGrid>
+                <p:outputPanel rendered="#{servicesView.creating or
+                                            servicesView.editing}">
+                    (<span class="red-star">*</span>: champs requis)<br />
+                </p:outputPanel>
+                <p:outputPanel rendered="#{servicesView.creating}"
+                               styleClass="buttons_panel">
+                    <p:commandButton id="createServices" value="Ajouter"
+                                     title="Ajouter ce service à la société"
+                                     type="submit"
+                                     actionListener="#{servicesView.create(clientView.entity)}"
+                                     icon="ui-icon-check"
+                                     update=":clientUpdate :growl :createServicesForm"
+                                     styleClass="green_icon"
+                                     oncomplete="createRequest(createServices, xhr, status, args);clientServicesTable.filter();"
+                                     />
+                    <p:commandButton id="backCreateServices" value="Annuler"
+                                     title="Annuler la création"
+                                     action="javascript:void(0);"
+                                     styleClass="red_icon"
+                                     type="reset"
+                                     immediate="true"
+                                     ajax="true"
+                                     icon="ui-icon-closethick"
+                                     onclick="createServices.hide();"
+                                     />
+                </p:outputPanel>
+                <p:outputPanel rendered="#{servicesView.editing}"
+                               styleClass="buttons_panel">
+                    <p:commandButton  id="updateServices" value="Mettre à jour"
+                                     title="Enregistrer les changements"
+                                     type="submit"
+                                     actionListener="#{servicesView.update(clientView.entity)}"
+                                     icon="ui-icon-disk"
+                                     update=":clientUpdate :growl :createServicesForm"
+                                     styleClass="green_icon"
+                                     oncomplete="createRequest(createServices, xhr, status, args);clientServicesTable.filter();"
+                                     />
+                    <p:commandButton id="backEditServices" value="Annuler"
+                                     title="Annuler les changements"
+                                     action="javascript:void(0);"
+                                     styleClass="red_icon"
+                                     type="reset"
+                                     immediate="true"
+                                     ajax="true"
+                                     icon="ui-icon-closethick"
+                                     onclick="createServices.hide();"
+                                     />
+                </p:outputPanel>
+                <p:outputPanel rendered="#{not servicesView.creating and 
+                                            not servicesView.editing}"
+                               styleClass="buttons_panel">
+                    <center>
+                        <p:commandButton id="backServices" value="Fermer"
+                                         title="Fermer la fenêtre"
+                                         action="javascript:void(0);"
+                                         type="reset"
+                                         immediate="true"
+                                         ajax="true"
+                                         onclick="createServices.hide();"
+                                         />
+                    </center>
+                </p:outputPanel>
+                <p:outputPanel id="selectionServicesError" 
+                               rendered="#{empty servicesView.entity}">
+                    <div class="ui-messages ui-widget">
+                        <div class="ui-messages-error ui-corner-all">
+                            <span class="ui-messages-error-icon"/>
+                            <ul>
+                                <li>
+                                    <span class="ui-messages-error-summary">
+                                        Sélection incorrecte!
+                                        <script type="text/javascript">
+//                                                    createServices.hide();
+                                        </script>
+                                    </span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </p:outputPanel>
+                <script type="text/javascript">
+                    $(document).ready(function()
+                    {
+                        addRedStarsTorequiredFields();
+                    });
+                </script>
+            </h:form>
+        </p:dialog>
+    </h:body>
+</html>
+

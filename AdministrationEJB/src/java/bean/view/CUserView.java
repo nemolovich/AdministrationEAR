@@ -5,7 +5,7 @@
 package bean.view;
 
 import bean.facade.CUserFacade;
-import bean.view.struct.EmbdedDataListView;
+import bean.view.struct.EmbeddedDataListView;
 import entity.CUser;
 import entity.Client;
 import java.util.List;
@@ -19,7 +19,7 @@ import javax.inject.Named;
  */
 @Named(value = "cUserView")
 @SessionScoped
-public class CUserView extends EmbdedDataListView<Client, CUser, CUserFacade>
+public class CUserView extends EmbeddedDataListView<Client, CUser, CUserFacade>
 {
     private static final long serialVersionUID = 1L;
     @EJB
@@ -41,6 +41,16 @@ public class CUserView extends EmbdedDataListView<Client, CUser, CUserFacade>
         this.setInstance(user);
         client.setIdUser(user);
         super.update(client);
+    }
+    
+    @Override
+    public String entityDelete(Client client, CUser user)
+    {
+        if(client.isInterlocuteur(user))
+        {
+            client.setIdUser(null);
+        }
+        return super.entityDelete(client, user);
     }
     
     @Override

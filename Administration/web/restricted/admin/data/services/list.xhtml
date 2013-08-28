@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/page_template.xhtml">
+            <ui:define name="title">
+                | Création Services
+            </ui:define>
+            <ui:define name="content">
+                <f:attribute name="header" value="Création d'un service"/>
+                <f:view>
+                    <h:form>
+                        <p:dataTable id="servicesDataTable"
+                                     value="#{servicesView.entries}"
+                                     var="item"
+                                     widgetVar="servicesTable"
+                                     paginator="true"
+                                     paginatorPosition="bottom"
+                                     rows="#{utils.maxDataRows}"
+                                     rowStyleClass="v_top"
+                                     sortBy="#{item.title}"
+                                     emptyMessage="Aucun service n'a été trouvée">
+                            <p:column headerText="Identifiant"
+                                      sortBy="#{item.id}"
+                                      filterBy="#{item.id}"
+                                      filterMatchMode="exact">
+                                <h:outputText value="#{item.id}"/>
+                            </p:column>
+                            <p:column headerText="Titre"
+                                      sortBy="#{item.title}"
+                                      filterBy="#{item.title}"
+                                      filterMatchMode="contains">
+                                <h:outputText value="#{item.title}"/>
+                            </p:column>
+                            <p:column headerText="Description"
+                                      filterBy="#{item.description}"
+                                      filterMatchMode="contains">
+                                <h:outputText value="#{item.description}"/>
+                            </p:column>
+                            <p:column headerText="Société"
+                                      filterBy="#{item.idClient}"
+                                      filterMatchMode="contains">
+                                <h:outputText value="#{item.idClient}"/>
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton value="Ajouter un service"
+                                         action="#{servicesView.entityCreate(clientView.entries.get(0))}"
+                                         title="Ajouter un service"
+                                         icon="ui-icon-circle-plus"
+                                         styleClass="green_icon"
+                                         immediate="true"
+                                         ajax="false"/>
+                    </h:form>
+                </f:view>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

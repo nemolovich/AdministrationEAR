@@ -5,7 +5,7 @@
 
 package bean.view;
 
-import bean.ApplicationLogger;
+import bean.log.ApplicationLogger;
 import bean.Utils;
 import bean.facade.TaskFacade;
 import bean.view.periodSelection.EntityPeriodView;
@@ -93,6 +93,19 @@ public class TaskView extends EntityPeriodView<Task, TaskFacade>
         this.entityCreateFromClient(user.getIdClient());
         this.entityPopup.setIdUser(user);
         return "create";
+    }
+    
+    @Override
+    public String cancelCreate()
+    {
+        Task entity=this.getEntityPopup();
+        if(entity!=null)
+        {
+            entity.setIdClient(null);
+            entity.setIdDevice(null);
+            entity.setIdUser(null);
+        }
+        return super.cancelCreate();
     }
     
     public String getAccomplishedTime(Task entity)

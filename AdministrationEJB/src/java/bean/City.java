@@ -4,6 +4,7 @@
  */
 package bean;
 
+import bean.log.ApplicationLogger;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -16,7 +17,7 @@ import java.io.UnsupportedEncodingException;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
-import javax.faces.bean.ViewScoped;
+import javax.enterprise.context.ApplicationScoped;
 import javax.faces.component.UIInput;
 import javax.faces.event.ValueChangeEvent;
 import javax.inject.Named;
@@ -26,7 +27,7 @@ import javax.inject.Named;
  * @author Brian GOHIER
  */
 @Named(value = "city")
-@ViewScoped
+@ApplicationScoped
 public class City
 {
     private static ArrayList<String[]> LIST=new ArrayList<String[]>();

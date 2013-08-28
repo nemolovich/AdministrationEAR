@@ -6,7 +6,7 @@
 package bean.view;
 
 import bean.facade.SoftwareFacade;
-import bean.view.struct.EmbdedDataListView;
+import bean.view.struct.EmbeddedDataListView;
 import entity.Client;
 import entity.Software;
 import java.util.List;
@@ -20,7 +20,7 @@ import javax.inject.Named;
  */
 @Named(value = "softwareView")
 @SessionScoped
-public class SoftwareView extends EmbdedDataListView<Client, Software, SoftwareFacade>
+public class SoftwareView extends EmbeddedDataListView<Client, Software, SoftwareFacade>
 {
     private static final long serialVersionUID = 1L;
     @EJB

@@ -4,7 +4,7 @@
  */
 package bean.view.struct;
 
-import bean.ApplicationLogger;
+import bean.log.ApplicationLogger;
 import bean.City;
 import bean.Files;
 import bean.Utils;
@@ -182,6 +182,13 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> extends EntitySl
         return this.webFolder+"view";
     }
     
+    public String cancelUpdate()
+    {
+        this.creating = false;
+        this.editing = false;
+        return this.webFolder+"view";
+    }
+    
     protected void removeFilePath()
     {
         FilePath filePath=this.getEntityFilePath();
@@ -334,7 +341,7 @@ public abstract class EntityView<C,F extends AbstractFacade<C>> extends EntitySl
         return this.webFolder+"parameters";
     }
     
-    public String entityDelele(C entity)
+    public String entityDelete(C entity)
     {
         return this.entitySilentDelete(entity, false);
     }

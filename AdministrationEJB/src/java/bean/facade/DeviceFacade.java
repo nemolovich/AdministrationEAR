@@ -4,7 +4,7 @@
  */
 package bean.facade;
 
-import bean.facade.abstracts.AbstractEmbdedDataList;
+import bean.facade.abstracts.AbstractEmbeddedDataList;
 import entity.Client;
 import entity.Device;
 import java.util.List;
@@ -17,7 +17,7 @@ import javax.persistence.PersistenceContext;
  * @author Brian GOHIER
  */
 @Stateless
-public class DeviceFacade extends AbstractEmbdedDataList<Client,Device>
+public class DeviceFacade extends AbstractEmbeddedDataList<Client,Device>
 {
     @PersistenceContext(unitName = "AdministrationEJBPU")
     private EntityManager em;

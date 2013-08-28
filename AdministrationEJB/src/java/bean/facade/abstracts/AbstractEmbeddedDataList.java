@@ -4,7 +4,7 @@
  */
 package bean.facade.abstracts;
 
-import bean.ApplicationLogger;
+import bean.log.ApplicationLogger;
 import bean.Utils;
 import java.lang.reflect.Method;
 import java.util.List;
@@ -17,14 +17,14 @@ import javax.persistence.PersistenceContext;
  *
  * @author Brian GOHIER
  */
-public abstract class AbstractEmbdedDataList<C,O> extends AbstractFacade<O>
+public abstract class AbstractEmbeddedDataList<C,O> extends AbstractFacade<O>
 {
     @PersistenceContext(unitName = "AdministrationEJBPU")
     private EntityManager em;
     private Method getDataListMethod;
     private Method setDataListMethod;
     
-    public AbstractEmbdedDataList(Class<O> objectClass,
+    public AbstractEmbeddedDataList(Class<O> objectClass,
             Method getDataListMethod, Method setDataListMethod)
     {
         super(objectClass);

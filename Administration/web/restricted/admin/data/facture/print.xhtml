@@ -41,7 +41,9 @@
                                      sortFunction="#{utils.sortByDate}"
                                      filteredValue="#{interventionView.filteredEntities}">
                             <p:ajax event="filter"
-                                    update=":relevePrint:factureFooter"/>
+                                    update=":relevePrint:factureFooter"
+                                    onstart="startAjax();"
+                                    oncomplete="forceSort('relevePrint\\\\:interventionDataTable');stopAjax();"/>
                             
                             <p:column headerText="Date"
                                       style="width:1%;"
@@ -162,7 +164,7 @@
                                          maxlength="8"
                                          title="Numéro de la facture associée">
                                 <f:validator binding="#{factureUniqueFieldValidator}"/>
-                                <f:attribute name="fieldNsame" value="FactureNumber" />
+                                <f:attribute name="fieldName" value="FactureNumber" />
                                 <f:attribute name="update_id" value="#{factureView.entity.id}" />
                                 <f:validator binding="#{notNullFieldValidator}"/>
                                 <f:attribute name="requiredMessage"
@@ -179,16 +181,13 @@
                                              update=":growl :relevePrint"
                                              rendered="#{factureView.creating}"
                                              action="#{PDFCreatorController.createPDF(
-                                                       factureView.entity.factureNumber,
+                                                       factureView,
                                                        empty interventionView.filteredEntities?
                                                                interventionView.entries:
                                                                interventionView.filteredEntities,
                                                                interventionView.startDate,
                                                                interventionView.endDate)}"
-                                             actionListener="#{factureView.create(
-                                                               empty interventionView.filteredEntities?
-                                                               interventionView.entries:
-                                                               interventionView.filteredEntities)}"/>
+                                             actionListener="#{factureView.create()}"/>
                             
                             <p:commandButton id="displayPDF"
                                              value="Afficher le relevé"
@@ -197,7 +196,7 @@
                                              onclick="window.open('#{files.getFileLink(factureView.entity)}',
                                                    'Relevé details','dependent=yes, menubar=no,\
                                                    toolbar=no, status=no, scrollbars=yes,\
-                                                   resizable=no, width=850, height=600');return false;"
+                                                   resizable=no, width=1024, height=768');return false;"
                                              title="Afficher le relevé au format PDF"
                                              rendered="#{not factureView.creating}">
                             </p:commandButton>

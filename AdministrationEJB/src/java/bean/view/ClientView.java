@@ -7,7 +7,6 @@ package bean.view;
 
 import bean.facade.ClientFacade;
 import bean.view.struct.EntityView;
-import entity.CUser;
 import entity.Client;
 import java.util.List;
 

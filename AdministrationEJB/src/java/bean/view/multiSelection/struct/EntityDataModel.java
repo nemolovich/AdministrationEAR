@@ -4,7 +4,7 @@
  */
 package bean.view.multiSelection.struct;
 
-import bean.ApplicationLogger;
+import bean.log.ApplicationLogger;
 import bean.Utils;
 import java.lang.reflect.Method;
 import java.util.List;

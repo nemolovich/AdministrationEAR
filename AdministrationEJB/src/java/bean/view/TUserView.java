@@ -49,11 +49,6 @@ public class TUserView extends EntityView<TUser, TUserFacade>
         return "/restricted/user/user/update";
     }
     
-    public String entityDelete(TUser entity)
-    {
-        return super.entityDelele(entity);
-    }
-    
     public String update(UserLogin currentUser)
     {
         this.setEntity(this.tUserFacade.update(this.getEntity()));

@@ -48,13 +48,14 @@
                               filterStyle="width:60px;">
                         <h:outputText value="#{utils.smallDateFormat(item.startDate)}"/>
                     </p:column>
+                    <p:ajax event="filter" onstart="taskMenuTable.unselectAllRows();"
+                            oncomplete="forceSort('taskMenuDataPopup\\\\:taskMenuDataTablePopup');"/>
                     
                     <p:column headerText="Description"
                               filterBy="#{item.description}"
                               filterMatchMode="contains"
                               filterStyle="width:70px;">
-                        <h:outputText value="#{utils.getBreakLinesString(
-                                               utils.getShortString(item.description,20))}"
+                        <h:outputText value="#{utils.getShortString(item.description,20)}"
                                       title="#{item.description}"/>
                     </p:column>
                     
@@ -82,7 +83,7 @@
                     </p:column>
                     
                     <p:column headerText="Durée prévue">
-                        <h:outputText value="#{item.intendedDuration}"/>
+                        <h:outputText value="#{utils.getTimeFormat(item.intendedDuration)}"/>
                     </p:column>
                     
                     <p:column headerText="Type d'intervention"
@@ -167,7 +168,7 @@
                     <h:outputText value="#{interventionView.creating?'Création':
                                             (interventionView.editing?'Modification':
                                             'Détails')}"/>
-                    <h:outputText value=" de la intervention n°#{interventionView.entity.id}"
+                    <h:outputText value=" de l'intervention n°#{interventionView.entity.id}"
                                   rendered="#{not interventionView.creating}"/>
                     <h:outputText value=" d'une nouvelle intervention"
                                   rendered="#{interventionView.creating}"/>
@@ -184,7 +185,7 @@
             <h:form id="taskMenuDataForm">
                 <p:outputPanel id="deleteMessageScript">
                     <script type="text/javascript">
-                        var taskDeleteMessage='#{taskView.getDeleteMessage(taskView.entity)}';
+                        var taskDeleteMessage='#{utils.getBreakLinesString(taskView.getDeleteMessage(taskView.entity))}';
                         switchState('taskMenuDataForm\\:taskWakeContextMenu',
                                     'taskMenuDataForm\\:taskSleepContextMenu',
                                     '#{taskView.entity.sleeping}');
@@ -258,7 +259,6 @@
                     $(document).ready(function()
                     {
                         taskMenuTable.filter();
-                        forceSort('taskMenuDataForm\\:taskMenuDataTable');
                     });
                 </script>
                 <p:dataTable id="taskMenuDataTable"
@@ -286,7 +286,8 @@
                             listener="#{taskView.entityView(taskView.entity)}"
                             oncomplete="taskMenuViewDialog.show();"/>
                     <p:ajax event="filter" onstart="taskMenuTable.unselectAllRows();"
-                            onerror="console.log('Erreur de filtre sur les tâches');"/>
+                            onerror="console.log('Erreur de filtre sur les tâches');"
+                            oncomplete="forceSort('taskMenuDataForm\\\\:taskMenuDataTable');"/>
                     
                     <p:column id="defaultSortColumn"
                               headerText="Date"
@@ -322,9 +323,9 @@
                             <p:selectBooleanCheckbox id="checkDisplaySleepingTaskTop"
                                                      value="#{taskMultiView.displaySleepingEntities}"
                                                      styleClass="small_check"
+                                                     onchange="startAjax();"
                                                      style="vertical-align: middle !important;margin-bottom: 5px !important;">  
                                 <p:ajax update=":taskMenuDataPopupForm @form"
-                                        onstart="startAjax();"
                                         oncomplete="forceUpdate('taskMenuDataForm:checkDisplaySleepingTaskTop','taskMenuDataForm');"
                                         immediate="false"/>
                                 <script type="text/javascript">
@@ -342,9 +343,9 @@
                             <p:selectBooleanCheckbox id="checkDisplaySleepingTaskBottom"
                                                      value="#{taskMultiView.displaySleepingEntities}"
                                                      styleClass="small_check"
+                                                     onchange="startAjax();"
                                                      style="vertical-align: middle !important;margin-bottom: 5px !important;">  
                                 <p:ajax update=":taskMenuDataPopupForm @form"
-                                        onstart="startAjax();"
                                         oncomplete="forceUpdate('taskMenuDataForm:checkDisplaySleepingTaskBottom','taskMenuDataForm');"
                                         immediate="false"/>
                                 <script type="text/javascript">
@@ -376,8 +377,7 @@
                                 widgetVar="startDateTask">
                         <p:ajax event="dateSelect"
                                 update=":taskMenuDataForm :growl"
-                                oncomplete="taskMenuTable.filter();
-                                forceSort('taskMenuDataForm\\\\:taskMenuDataTable');"/>
+                                oncomplete="taskMenuTable.filter();"/>
                         <script type="text/javascript">
                             $(document).ready(function(){loadLocales();});
                         </script>
@@ -401,8 +401,7 @@
                                 widgetVar="endDateTask">
                         <p:ajax event="dateSelect"
                                 update=":taskMenuDataForm :growl"
-                                oncomplete="taskMenuTable.filter();
-                                forceSort('taskMenuDataForm\\\\:taskMenuDataTable');"/>
+                                oncomplete="taskMenuTable.filter();"/>
                         <script type="text/javascript">
                             $(document).ready(function(){loadLocales();});
                         </script>

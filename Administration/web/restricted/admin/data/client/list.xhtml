@@ -83,7 +83,10 @@
                                      sortBy="#{item.name}"
                                      filteredValue="#{clientView.filteredEntities}"
                                      emptyMessage="Aucune société n'a été trouvée">
-                            <p:column headerText="Nom de la société"
+                            <p:ajax event="filter"
+                                    oncomplete="forceSort('clientDataForm\\\\:clientDataTable');"/>
+                            <p:column id="defaultSortColumn"
+                                      headerText="Nom de la société"
                                       sortBy="#{item.name}"
                                       filterBy="#{item.name}"
                                       filterMatchMode="contains">
@@ -152,7 +155,7 @@
                                                  oncomplete="interventionMenuViewDialog.show();"
                                                  action="javascript:void(0);"
                                                  title="Créer une intervention pour cette société"/>
-                                <p:commandButton actionListener="#{clientView.entityDelele(item)}"
+                                <p:commandButton actionListener="#{clientView.entityDelete(item)}"
                                                  action="javascript:void(0);"
                                                  immediate="true"
                                                  ajax="false"
@@ -208,6 +211,7 @@
                                     <p:selectBooleanCheckbox id="checkDisplaySleeping"
                                                              value="#{clientView.displaySleepingEntities}"
                                                              styleClass="small_check"
+                                                             onchange="startAjax();"
                                                              style="vertical-align: middle !important;margin-bottom: 5px !important;">  
                                         <p:ajax update=":clientDataForm"
                                                 immediate="false"/>

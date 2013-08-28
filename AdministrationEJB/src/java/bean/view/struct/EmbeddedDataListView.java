@@ -4,9 +4,9 @@
  */
 package bean.view.struct;
 
-import bean.ApplicationLogger;
+import bean.log.ApplicationLogger;
 import bean.Utils;
-import bean.facade.abstracts.AbstractEmbdedDataList;
+import bean.facade.abstracts.AbstractEmbeddedDataList;
 import java.lang.reflect.Method;
 import java.util.List;
 import javax.faces.application.FacesMessage;
@@ -16,15 +16,15 @@ import javax.faces.context.FacesContext;
  *
  * @author Brian GOHIER
  */
-public abstract class EmbdedDataListView<C,O,F extends AbstractEmbdedDataList<C,O>> extends EntityView<O,F>
+public abstract class EmbeddedDataListView<C,O,F extends AbstractEmbeddedDataList<C,O>> extends EntityView<O,F>
 {
     private Method setReferenceMethod;
 
-    public EmbdedDataListView()
+    public EmbeddedDataListView()
     {
     }    
 
-    public EmbdedDataListView(Class<O> entityClass,String webFolder,
+    public EmbeddedDataListView(Class<O> entityClass,String webFolder,
             Method setReferenceMethod)
     {
         super(entityClass, webFolder);
@@ -41,6 +41,7 @@ public abstract class EmbdedDataListView<C,O,F extends AbstractEmbdedDataList<C,
         this.setCreating(true);
         return "create";
     }
+    
     public String entityDelete(C entity, O instance)
     {
         return this.entitySilentDelete(entity, instance, false);
