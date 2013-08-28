@@ -12,6 +12,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.enterprise.context.ApplicationScoped;
@@ -282,6 +284,29 @@ public class Files
             }
         }
         return false;
+    }
+    
+    /**
+     * Renvoi la liste des fichiers présent dans un dossier donné
+     * @param path {@link String} - Le chemin dans lequel rechercher
+     * @return {@link List}<{@link File}> - La liste des fichiers présents
+     * dans le dossier donné
+     */
+    public static List<File> getFilesInPath(String path)
+    {
+        List<File> files = new ArrayList<File>();
+        File[] list = new File(path).listFiles();
+        if(list!=null)
+        {
+            for(int i=0;i<list.length;i++)
+            {
+                if(list[i].isFile())
+                {
+                    files.add(list[i]);
+                }
+            }
+        }
+        return files;
     }
     
     /**

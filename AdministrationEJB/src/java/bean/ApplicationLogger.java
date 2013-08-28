@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -22,11 +23,18 @@ import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.enterprise.context.ApplicationScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Named;
 
 /**
@@ -39,6 +47,9 @@ public class ApplicationLogger
 {
     private static final Logger log=Logger.getLogger(ApplicationLogger.class.getName());
     private static File logFile;
+    private static String fileName;
+    private static String logPath="log"+File.separator;
+    private static File selectedFile;
     private static PrintWriter out;
     private static final String INFO_TAG="INFO";
     private static final String WARNING_TAG="WARNING";
@@ -50,8 +61,34 @@ public class ApplicationLogger
     private static String lastLine=null;
     private static String lastStyle=null;
     private static int nbLastLine=0;
+    private static Date lastArchived=null;
 
     public ApplicationLogger()
+    {
+        lastArchived=Calendar.getInstance().getTime();
+    }
+
+    public File getLogFile()
+    {
+        return logFile;
+    }
+
+    public void setLogFile(File logFile)
+    {
+        ApplicationLogger.logFile = logFile;
+    }
+
+    public File getSelectedFile()
+    {
+        return selectedFile;
+    }
+
+    public void setSelectedFile(File selectedFile)
+    {
+        ApplicationLogger.selectedFile = selectedFile;
+    }
+    
+    public void ajaxSelect(AjaxBehaviorEvent e)
     {
     }
     
@@ -183,7 +220,8 @@ public class ApplicationLogger
         boolean inDetails=false;    // Si on est dans un élément détaillable
         try
         {
-            FileInputStream fileReader=new FileInputStream(logFile);
+            selectedFile=selectedFile==null?logFile:selectedFile;
+            FileInputStream fileReader=new FileInputStream(selectedFile);
             reader=new BufferedReader(new InputStreamReader(fileReader,"UTF8"));
             int c;
             while((c=reader.read())!=-1)
@@ -262,6 +300,11 @@ public class ApplicationLogger
                             }
                             if(inTab)
                             {
+                                if(field.equalsIgnoreCase("Date de création")&&
+                                        selectedFile.equals(logFile))
+                                {
+                                    lastArchived=Utils.parseDate(value);
+                                }
                                 logHTML+=
                                     "    <TR>\n" +
                                     "        <TD class=\"label\">"+field+":</TD>\n" +
@@ -407,18 +450,121 @@ public class ApplicationLogger
      */
     public static void start(String fileName)
     {
-        logFile=new File(Utils.getResourcesPath()+fileName);
+        ApplicationLogger.fileName=fileName;
+        logFile=new File(Utils.getResourcesPath()+logPath+fileName+".log");
+        selectedFile=logFile;
         displayInfo("Début d'enregistrement du journal");
         if(!startWrite())
         {
             displayError("Impossible d'écrire dans le journal",null);
         }
-        else
+    }
+    
+    /**
+     * Renvoi la liste des fichiers présents dans le dossier de journal sans
+     * compter le journal courant
+     * @return {@link List}<{@link File}> - La liste des fichir dans le dossier
+     * du journal sans compter le journal courant
+     */
+    public static List<File> getFilesInPath()
+    {
+        String path=Utils.getResourcesPath()+logPath;
+        List<File> files=Files.getFilesInPath(path);
+        if(files.contains(logFile))
         {
-            write("\r\n"+BIG_SEPARATOR);
-            writeInfo("Début des écritures dans le journal");
-            write(SEPARATOR+"\r\n");
+            files.remove(logFile);
         }
+        List<File> fs=new ArrayList<File>(files);
+        for(File f:fs)
+        {
+            if(!f.getName().startsWith(fileName))
+            {
+                files.remove(f);
+            }
+        }
+        Collections.sort(files, Collections.reverseOrder());
+        return files;
+    }
+    
+    /**
+     * Renvoi le format <code>Journal du dd:MM:yyyy à HH:mm:ss</code>
+     * à partir du nom du fichier
+     * @param fileName {@link String} - Nom du fichier
+     * @return {@link String} - <code>Journal du dd:MM:yyyy à HH:mm:ss</code>
+     */
+    public static String getFileNameAndDate(String fileName)
+    {
+        int fileNameLen=ApplicationLogger.fileName.length();
+        if(fileName.length()!=fileNameLen+24||
+                !fileName.startsWith(fileName))
+        {
+            return fileName;
+        }
+        String result="Journal du ";
+        int year=Integer.valueOf(fileName.substring(fileNameLen+1,fileNameLen+5));
+        int month=Integer.valueOf(fileName.substring(fileNameLen+6,fileNameLen+8));
+        int day=Integer.valueOf(fileName.substring(fileNameLen+9,fileNameLen+11));
+        int h=Integer.valueOf(fileName.substring(fileNameLen+12,fileNameLen+14));
+        int m=Integer.valueOf(fileName.substring(fileNameLen+15,fileNameLen+17));
+        int s=Integer.valueOf(fileName.substring(fileNameLen+18,fileNameLen+20));
+        SimpleDateFormat format=new SimpleDateFormat("dd MMM yyyy à HH:mm:ss");
+        Calendar cal=Calendar.getInstance();
+        cal.set(year, (month-1), day, h, m, s);
+        return result+=format.format(cal.getTime());
+    }
+    
+    /**
+     * Archive le journal courant et va le vider
+     * @return {@link Boolean boolean} - Vrai si l'archive s'est correctement
+     * déroulée et que le nouveau journal s'est correctement mis en route
+     */
+    public static synchronized boolean archive()
+    {
+        stopWrite();
+        SimpleDateFormat format=new SimpleDateFormat("_yyyy_MM_dd_HH_mm_ss");
+        String todayString=format.format(lastArchived);
+        File archiveFile=new File(Utils.getResourcesPath()+logPath+
+                fileName+todayString+".log");
+        boolean ok=true;
+        try
+        {
+            Files.copy(logFile, archiveFile);
+            writeInfo("Archivage du journal");
+        }
+        catch (IOException ex)
+        {
+            displayError("Impossible de créer une archive du journal courant", ex);
+            ok=false;
+        }
+        if(ok)
+        {
+            FileWriter fooWriter;
+            try
+            {
+                fooWriter = new FileWriter(logFile, false);
+                fooWriter.close();
+            }
+            catch (IOException ex)
+            {
+                displayError("Impossible de vider l'ancien journal", ex);
+                ok=false;
+            }
+        }
+        if(ok)
+        {
+            writeInfo("Création d'un nouveau journal");
+            ok=startWrite();
+        }
+        if(!ok)
+        {
+            Utils.displayMessage(FacesMessage.SEVERITY_ERROR,
+                    "Journal non archivé", "Le journal n'a pas pu être archivé");
+            return false;
+        }
+        lastArchived=Calendar.getInstance().getTime();
+        Utils.displayMessage(FacesMessage.SEVERITY_INFO,
+                "Journal archivé", "Le journal a bien été archivé");
+        return true;
     }
     
     /**
@@ -478,7 +624,7 @@ public class ApplicationLogger
         
         if(logFile.canRead()&&logFile.canWrite())
         {
-            if(created)
+            if(created||logFile.length()==0)
             {
                 addHeader();
             }
@@ -490,6 +636,9 @@ public class ApplicationLogger
 //            {
 //                writeError("Un test d'erreur", ex);
 //            }
+            write("\r\n"+BIG_SEPARATOR);
+            writeInfo("Début des écritures dans le journal");
+            write(SEPARATOR+"\r\n");
             return true;
         }
         return false;

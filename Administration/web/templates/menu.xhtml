@@ -11,6 +11,16 @@
         <h:form id="menu_Form">
             <p:panelMenu styleClass="menu"
                          widgetVar="menu_admin">
+                <p:submenu label="Connexion"
+                           rendered="#{userLogin.rights.equalsIgnoreCase(tUserView.unknown_Rights)}">
+                    <p:menuitem action="/restricted/login"
+                                icon="ui-icon-key"
+                                immediate="true"
+                                ajax="false"
+                                styleClass="blue_icon"
+                                value="Se connecter"
+                                title="Se connecter"/>
+                </p:submenu>
                 <p:submenu label="Tâches"
                            rendered="#{userLogin.rights.equalsIgnoreCase(tUserView.admin_Rights)}">
                     <p:menuitem actionListener="#{taskView.entityCreate()}"

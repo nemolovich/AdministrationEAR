@@ -4,6 +4,7 @@
  */
 package entity;
 
+import bean.Files;
 import bean.Utils;
 import java.io.File;
 import java.io.Serializable;
@@ -94,21 +95,9 @@ public class FilePath implements Serializable
     
     public List<File> getFilesInPath()
     {
-        List<File> files = new ArrayList<File>();
         String path = Utils.getResourcesPath()+Utils.getUploadsPath()+
                 this.filePath+File.separator;
-        File[] list = new File(path).listFiles();
-        if(list!=null)
-        {
-            for(int i=0;i<list.length;i++)
-            {
-                if(list[i].isFile())
-                {
-                    files.add(list[i]);
-                }
-            }
-        }
-        return files;
+        return Files.getFilesInPath(path);
     }
 
     @XmlTransient

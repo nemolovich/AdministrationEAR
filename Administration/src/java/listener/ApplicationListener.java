@@ -22,7 +22,7 @@ public class ApplicationListener implements ServletContextListener
     public void contextInitialized(ServletContextEvent sce)
     {
         ApplicationLogger.displayInfo("Démarrage de l'application");
-        ApplicationLogger.start("application.log");
+        ApplicationLogger.start("application");
     }
 
     @Override
