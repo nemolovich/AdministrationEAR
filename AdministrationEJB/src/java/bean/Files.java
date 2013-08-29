@@ -16,6 +16,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Singleton;
+import javax.ejb.Startup;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 
@@ -25,6 +26,7 @@ import javax.inject.Named;
  */
 @Named(value="files")
 @Singleton
+@Startup
 @ApplicationScoped
 public class Files
 {

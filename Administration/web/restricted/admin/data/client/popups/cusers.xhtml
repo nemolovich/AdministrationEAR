@@ -20,14 +20,19 @@
             <h:form id="createUserForm">
                 <h:panelGrid columns="2" columnClasses="label,fields"
                          rendered="#{not empty cUserView.entity}">
-                    <p:outputLabel value="Nom:" for="uname"/>
+                    <p:outputLabel value="Nom:" for="uname"
+                                   styleClass="#{(cUserView.creating or
+                                                 cUserView.editing)?'required':''}"/>
                     <p:inputText id="uname" value="#{cUserView.entity.name}"
                                  maxlength="45"
                                  title="Nom de l'utilisateur"
-                                 required="true"
-                                 requiredMessage="Le champs 'Nom' ne peut être vide"
                                  rendered="#{cUserView.creating or 
                                              cUserView.editing}">
+                        <f:validator binding="#{notNullFieldValidator}"/>
+                        <f:attribute name="requiredMessage"
+                                     value="Le champs 'Nom' ne peut être vide"/>
+                        <f:attribute name="requiredTitle"
+                                     value="Champs 'Nom' vide"/>
                         <f:validator binding="#{cUserUniqueFieldValidator}"/>
                         <f:attribute name="fieldName" value="Name" />
                         <f:attribute name="update_id" value="#{cUserView.entity.id}"/>
@@ -259,7 +264,7 @@
                     <p:commandButton id="backEditUser" value="Annuler"
                                      title="Annuler les changements"
                                      action="javascript:void(0);"
-                                     actionListener="#{cUserView.cancelCreate()}"
+                                     actionListener="#{cUserView.cancelUpdate()}"
                                      styleClass="red_icon"
                                      type="reset"
                                      immediate="true"
@@ -300,6 +305,12 @@
                         </div>
                     </div>
                 </p:outputPanel>
+                <script type="text/javascript">
+                    $(document).ready(function()
+                    {
+                        addRedStarsTorequiredFields();
+                    });
+                </script>
             </h:form>
         </p:dialog>
     </h:body>

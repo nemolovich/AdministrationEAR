@@ -27,7 +27,7 @@
                 <p:hotkey bind="esc" handler="logViewDialog.hide();"/>
                 <p:outputPanel>
                     <p:commandButton id="archiveLog"
-                                     actionListener="#{logger.archive()}"
+                                     actionListener="#{logger.archive(false)}"
                                      value="Archiver"
                                      update=":growl :displayLogForm:logContainerPanel :displayLogForm:fileSelection"
                                      style="float:left;"

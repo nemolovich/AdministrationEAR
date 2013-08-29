@@ -134,7 +134,9 @@
                                      styleClass="green_icon"
                                      oncomplete="createRequest(createSoftware, xhr, status, args);forceFilter(clientSoftwareTable);"
                                      />
-                    <p:commandButton id="backCreateSoftware" value="Annuler"
+                    <p:commandButton id="backCreateSoftware"
+                                     actionListener="#{softwareView.cancelCreate()}"
+                                     value="Annuler"
                                      title="Annuler la création"
                                      action="javascript:void(0);"
                                      styleClass="red_icon"
@@ -156,7 +158,9 @@
                                      styleClass="green_icon"
                                      oncomplete="createRequest(createSoftware, xhr, status, args);forceFilter(clientSoftwareTable);"
                                      />
-                    <p:commandButton id="backEditSoftware" value="Annuler"
+                    <p:commandButton id="backEditSoftware"
+                                     actionListener="#{softwareView.cancelUpdate()}"
+                                     value="Annuler"
                                      title="Annuler les changements"
                                      action="javascript:void(0);"
                                      styleClass="red_icon"

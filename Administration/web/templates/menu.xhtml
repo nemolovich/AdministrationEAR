@@ -100,9 +100,10 @@
                 <p:submenu label="Journal"
                            rendered="#{userLogin.rights.equalsIgnoreCase(tUserView.admin_Rights)}">
                     <p:menuitem value="Afficher"
-                                     icon="ui-icon-document"
-                                     title="Afficher le journal du serveur"
-                                     onclick="logViewDialog.show();"/>
+                                icon="ui-icon-document"
+                                title="Afficher le journal du serveur"
+                                update=":displayLogForm"
+                                onclick="logViewDialog.show();"/>
                 </p:submenu>
             </p:panelMenu>
             <script type="text/javascript">

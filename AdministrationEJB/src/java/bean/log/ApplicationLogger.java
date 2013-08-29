@@ -33,8 +33,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.ejb.EJB;
 import javax.ejb.Singleton;
+import javax.ejb.Startup;
 import javax.enterprise.context.ApplicationScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.event.AjaxBehaviorEvent;
@@ -46,11 +46,10 @@ import javax.inject.Named;
  */
 @Named(value = "logger")
 @Singleton
+@Startup
 @ApplicationScoped
 public class ApplicationLogger
 {
-    @EJB
-    private LogSchedule logSchedule;
     private static final Logger log=Logger.getLogger(ApplicationLogger.class.getName());
     private static File logFile;
     private static String fileName;
@@ -68,6 +67,7 @@ public class ApplicationLogger
     private static String lastStyle=null;
     private static int nbLastLine=0;
     private static Date lastArchived=Calendar.getInstance().getTime();
+    private static final long MAX_LOGFILE_SIZE=300000;
 
     public ApplicationLogger()
     {
@@ -521,11 +521,21 @@ public class ApplicationLogger
     
     /**
      * Archive le journal courant et va le vider
+     * @param auto {@link Boolean} - Définit si l'archivage est automatique
+     * ou non
      * @return {@link Boolean boolean} - Vrai si l'archive s'est correctement
      * déroulée et que le nouveau journal s'est correctement mis en route
      */
-    public static synchronized boolean archive()
+    public static synchronized boolean archive(boolean auto)
     {
+        if(logFile.length()<MAX_LOGFILE_SIZE&&auto)
+        {
+            return false;
+        }
+        if(auto)
+        {
+            writeWarning("Archivage automatique du journal");
+        }
         stopWrite();
         SimpleDateFormat format=new SimpleDateFormat("_yyyy_MM_dd_HH_mm_ss");
         String todayString=format.format(lastArchived);
@@ -583,26 +593,17 @@ public class ApplicationLogger
         
         if(!logFile.exists())
         {
-            try
+            displayInfo("Création du fichier '"+
+                    logFile.getAbsolutePath()+"'");
+            if(Files.createIfNotExists(logFile,false))
             {
-                displayInfo("Création du fichier '"+
-                        logFile.getAbsolutePath()+"'");
-                if(logFile.createNewFile())
-                {
-                    displayInfo("Fichier '"+
-                            logFile.getAbsolutePath()+"' créé");
-                    created=true;
-                }
-                else
-                {
-                    displayError("Le fichier '"+logFile.getAbsolutePath()+"' n'a pa pu être créé",null);
-                    return false;
-                }
+                displayInfo("Fichier '"+
+                        logFile.getAbsolutePath()+"' créé");
+                created=true;
             }
-            catch (IOException ex)
+            else
             {
-                displayError("Erreur lors de la création du fichier '"+
-                        logFile.getAbsolutePath()+"'", ex);
+                displayError("Le fichier '"+logFile.getAbsolutePath()+"' n'a pa pu être créé",null);
                 return false;
             }
         }

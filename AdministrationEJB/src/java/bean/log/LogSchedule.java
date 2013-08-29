@@ -27,20 +27,27 @@ public class LogSchedule
     private TimerService service;
     private long start;
     
+    public LogSchedule()
+    {
+        System.out.println("Le timer pour le journal est lancé");
+    }
+    
     @PostConstruct
     public void init()
     {
         this.start=(new Date()).getTime();
         ScheduleExpression exp=new ScheduleExpression();
-        exp.dayOfMonth("*").hour("0").minute("0").second("0");
+        exp.dayOfMonth("*").hour("*").minute("*/5").second("0");
         service.createCalendarTimer(exp);
     }
     
     @Timeout
     public void timeOut()
     {
-        ApplicationLogger.writeWarning("Archivage automatique du journal");
-        ApplicationLogger.archive();
+        long act=(new Date()).getTime();
+        System.out.println("Vérification de l'état du journal: "+((act-this.start)/1000)+" secondes");
+        this.start=act;
+        ApplicationLogger.archive(true);
     }
     
 }

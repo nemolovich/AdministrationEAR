@@ -70,7 +70,9 @@
                                      styleClass="green_icon"
                                      oncomplete="createRequest(createServices, xhr, status, args);clientServicesTable.filter();"
                                      />
-                    <p:commandButton id="backCreateServices" value="Annuler"
+                    <p:commandButton id="backCreateServices"
+                                     actionListener="#{servicesView.cancelCreate()}"
+                                     value="Annuler"
                                      title="Annuler la création"
                                      action="javascript:void(0);"
                                      styleClass="red_icon"
@@ -92,7 +94,9 @@
                                      styleClass="green_icon"
                                      oncomplete="createRequest(createServices, xhr, status, args);clientServicesTable.filter();"
                                      />
-                    <p:commandButton id="backEditServices" value="Annuler"
+                    <p:commandButton id="backEditServices"
+                                     actionListener="#{servicesView.cancelUpdate()}"
+                                     value="Annuler"
                                      title="Annuler les changements"
                                      action="javascript:void(0);"
                                      styleClass="red_icon"

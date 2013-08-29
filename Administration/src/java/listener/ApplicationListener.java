@@ -4,6 +4,7 @@
  */
 package listener;
 
+import bean.City;
 import bean.log.ApplicationLogger;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -23,6 +24,7 @@ public class ApplicationListener implements ServletContextListener
     {
         ApplicationLogger.displayInfo("Démarrage de l'application");
         ApplicationLogger.start("application");
+        City.load();
     }
 
     @Override

@@ -17,6 +17,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import javax.ejb.Singleton;
+import javax.ejb.Startup;
 import javax.enterprise.context.ApplicationScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
@@ -31,6 +32,7 @@ import javax.servlet.ServletContext;
  */
 @Named(value = "utils")
 @Singleton
+@Startup
 @ApplicationScoped
 public class Utils
 {
