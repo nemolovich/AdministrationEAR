@@ -21,12 +21,20 @@
                 <h:panelGrid columns="4" columnClasses="label,fields,label_30,fields"
                              rendered="#{not empty deviceView.entity}">
 
-                    <p:outputLabel value="Type de machine:" for="dwsType" />
+                    <p:outputLabel value="Type de machine:" for="dwsType"
+                                   styleClass="#{(deviceView.creating or
+                                                 deviceView.editing)?'required':''}"/>
                     <p:inputText id="dwsType" value="#{deviceView.entity.wsType}"
                                  title="Type de machine"
                                  maxlength="64"
                                  rendered="#{deviceView.creating or 
-                                             deviceView.editing}"/>
+                                             deviceView.editing}">
+                        <f:validator binding="#{notNullFieldValidator}"/>
+                        <f:attribute name="requiredMessage"
+                                     value="Le champs 'Type de machine' ne peut être vide"/>
+                        <f:attribute name="requiredTitle"
+                                     value="Champs 'Type de machine' vide"/>
+                    </p:inputText>
                     <h:outputText id="dwsTypeV" value="#{deviceView.entity.wsType}"
                                   title="Type de machine"
                                   rendered="#{not deviceView.creating and
@@ -140,13 +148,20 @@
                                   rendered="#{not deviceView.creating and
                                               not deviceView.editing}"/>
 
-                    <p:outputLabel value="Date de mise en service:" for="dstartDate" />
+                    <p:outputLabel value="Date de mise en service:" for="dstartDate"
+                                   styleClass="#{(deviceView.creating or
+                                                 deviceView.editing)?'required':''}"/>
                     <p:inputMask id="dstartDate" value="#{deviceView.entity.startDate}"
                                  title="Date de mise en service de la machine"
                                  mask="99/99/9999"
                                  rendered="#{deviceView.creating or 
                                              deviceView.editing}">
                         <f:convertDateTime pattern="dd/MM/yyyy" />
+                        <f:validator binding="#{notNullFieldValidator}"/>
+                        <f:attribute name="requiredMessage"
+                                     value="Le champs 'Date de mise en service' ne peut être vide"/>
+                        <f:attribute name="requiredTitle"
+                                     value="Champs 'Date de mise en service' vide"/>
                     </p:inputMask>
                     <h:outputText id="dstartDateV" value="#{utils.dayDateFormat(
                                                             deviceView.entity.startDate)}"

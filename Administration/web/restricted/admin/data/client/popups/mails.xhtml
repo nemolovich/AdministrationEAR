@@ -89,13 +89,13 @@
                     <p:outputLabel value="Observations:" for="mobservations"/>
                     <h:inputTextarea id="mobservations" value="#{mailView.entity.observations}"
                                      title="Observations"
-                                     styleClass="textarea_min"
+                                     styleClass="textarea_max"
                                      rendered="#{mailView.creating or 
                                                  mailView.editing}"/>
                     <h:inputTextarea id="mobservationsV" value="#{mailView.entity.observations}"
                                      title="Observations"
                                      readonly="true"
-                                     styleClass="textarea_min"
+                                     styleClass="textarea_max"
                                      ondblclick="this.focus();this.select();"
                                      rendered="#{not mailView.creating and
                                                  not mailView.editing}"/>

@@ -24,6 +24,10 @@
                 <f:view>
                     <h:form id="clientUpdate" enctype="multipart/form-data">
                         
+                        <h3 class="tabheader">
+                            <h:outputText value="Paramétrage de la société #{clientView.entity.name}"/>
+                        </h3>
+                        
                         <p:commandButton action="list"
                                          value="Retour à la liste des sociétés"
                                          title="Retourner à la liste des sociétés"
@@ -62,10 +66,13 @@
                                              rowStyleClass="#{device.sleeping?'sleeping_elmt':null}"
                                              paginator="true"
                                              rows="#{utils.maxDataRows}"
-                                             sortBy="#{device.id}"
+                                             sortBy="#{utils.sortByDate}"
+                                             sortFunction="#{utils.sortByDate}"
                                              filteredValue="#{deviceMultiView.filteredEntities}"
                                              selection="#{deviceMultiView.multiSelection}">
                                     
+                                    <p:ajax event="filter"
+                                            oncomplete="forceSort('clientUpdate\\\\:clientTabView\\\\:clientDeviceList');"/>
                                     <p:ajax event="rowSelectCheckbox"
                                             process="@this"
                                             update=":createDeviceForm
@@ -84,6 +91,21 @@
 
                                     <p:column headerText="Détails" style="width:100%;">
                                         <h:outputText value="#{device.toString()}"/>
+                                    </p:column>
+
+                                    <p:column headerText="Utilisateur"
+                                              style="width:2%;"
+                                              filterBy="#{device.userNameDefault}"
+                                              sortBy="#{device.userNameDefault}">
+                                        <h:outputText value="#{device.userNameDefault}"/>
+                                    </p:column>
+
+                                    <p:column id="defaultSortColumn"
+                                              headerText="Date"
+                                              style="width:2%;"
+                                              sortBy="#{device.startDate}"
+                                              sortFunction="#{utils.sortByDate}">
+                                        <h:outputText value="#{utils.smallDateFormat(device.startDate)}"/>
                                     </p:column>
                                     
                                     <p:column headerText="Actions" style="white-space: nowrap;">
@@ -179,6 +201,31 @@
                                                              "Affiche les périphériques en sommeil en plus de ceux actifs");
                                                 </script>
                                             </p:selectBooleanCheckbox>
+                                            <p:commandButton id="createPDF"
+                                                             icon="ui-icon-disk"
+                                                             type="submit"
+                                                             styleClass="green_icon"
+                                                             title="Générer la liste au format PDF"
+                                                             update=":growl"
+                                                             action="#{PDFCreatorController.createDevicePDF(
+                                                                       clientView.entity,
+                                                                       empty deviceMultiView.filteredEntities?
+                                                                        clientView.entity.deviceList:
+                                                                        deviceMultiView.filteredEntities)}"
+                                                             rendered="#{not empty clientView.entity.deviceList}"/>
+                                            <!-- :clientUpdate:clientTabView:clientDeviceList:displayPDF"-->
+
+<!--                                            <p:commandButton id="displayPDF"
+                                                             value="Afficher le relevé"
+                                                             action="javascript:void(0);"
+                                                             icon="ui-icon-pdf"
+                                                             onclick="window.open('{files.getDevicesFileLink(clientView.entity)}',
+                                                                   'Relevé details','dependent=yes, menubar=no,\
+                                                                   toolbar=no, status=no, scrollbars=yes,\
+                                                                   resizable=no, width=1024, height=768');return false;"
+                                                             title="Afficher la liste des périphériques au format PDF"
+                                                             rendered="{not empty deviceMultiView.filteredEntities and
+                                                                         not empty clientView.entity.deviceList}"/>-->
                                         </p:outputPanel>
                                     </f:facet>
                                 </p:dataTable>
@@ -314,8 +361,12 @@
                                     <p:column selectionMode="multiple" style="width:2%">
                                     </p:column>
 
-                                    <p:column headerText="Détails" style="width:100%;">
+                                    <p:column headerText="Détails">
                                         <h:outputText value="#{mail.toString()}"/>
+                                    </p:column>
+
+                                    <p:column headerText="Observations" style="width:100%;">
+                                        <h:outputText value="#{utils.getShortString(mail.observations,100)}"/>
                                     </p:column>
                                     
                                     <p:column headerText="Actions" style="white-space: nowrap;">

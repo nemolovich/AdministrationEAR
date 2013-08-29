@@ -53,7 +53,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Device.findByHardDrive", query = "SELECT w FROM Device w WHERE w.hardDrive = :hardDrive"),
     @NamedQuery(name = "Device.findByObservations", query = "SELECT w FROM Device w WHERE w.observations = :observations"),
     @NamedQuery(name = "Device.findBySleeping", query = "SELECT w FROM Device w WHERE w.sleeping = :sleeping")})
-public class Device implements Serializable
+public class Device implements Serializable, Comparable<Device>
 {
     private static final long serialVersionUID = 1L;
     @Id
@@ -290,6 +290,12 @@ public class Device implements Serializable
     }
 
     @Override
+    public int compareTo(Device d)
+    {
+        return -d.getStartDate().compareTo(this.startDate);
+    }
+
+    @Override
     public int hashCode() {
         int hash = 0;
         hash += (id != null ? id.hashCode() : 0);
@@ -316,14 +322,13 @@ public class Device implements Serializable
     
     @Override
     public String toString() {
-        String out=this.name+" ["+this.brand+"] on "+this.operatingSystem+" [P:"+
-                (this.processor!=null&&!this.processor.isEmpty()?this.processor:"null")+
-                "|RAM:"+(this.ram!=null&&!this.ram.isEmpty()?this.ram:"null")+"][";
-        if(this.startDate!=null)
-        {
-            out+=DateFormat.getDateInstance().format(this.startDate)+"][";
-        }
-        out+=this.idClient+"]";
+        String out="["+this.wsType;
+        String br=this.brand!=null&&!this.brand.isEmpty()?(":"+this.brand):"";
+        String os=this.operatingSystem!=null&&!this.operatingSystem.isEmpty()?(" on "+this.operatingSystem):"";
+        String proc=this.processor!=null&&!this.processor.isEmpty()?(" [P:"+this.processor):"";
+        String rm=this.ram!=null&&!this.ram.isEmpty()?((!proc.isEmpty()?"|":" [")+"RAM:"+this.ram):"";
+        rm+=(!rm.isEmpty()||!proc.isEmpty())?"]":"";
+        out+=br+"] "+this.name+os+proc+rm;
         return out;
     }
 }

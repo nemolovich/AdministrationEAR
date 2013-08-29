@@ -43,13 +43,13 @@
                     <h:outputLabel value="Description:" for="description" />
                     <h:inputTextarea id="description"
                                      value="#{servicesView.entity.description}"
-                                     styleClass="textarea_min"
+                                     styleClass="textarea_max"
                                      title="Description"
                                      rendered="#{servicesView.creating or
                                                  servicesView.editing}"/>
                     <h:inputTextarea value="#{servicesView.entity.description}"
                                      readonly="true"
-                                     styleClass="textarea_min"
+                                     styleClass="textarea_max"
                                      ondblclick="this.focus();this.select();"
                                      rendered="#{not servicesView.creating and
                                                  not servicesView.editing}"/>

@@ -5,6 +5,7 @@
 package bean;
 
 import bean.log.ApplicationLogger;
+import entity.Client;
 import entity.Facture;
 import entity.FilePath;
 import java.io.File;
@@ -37,6 +38,41 @@ public class Files
     public static String separator()
     {
         return File.separator;
+    }
+    
+    /**
+     * Copie un fichier depuis les ressources du serveur sur le site web
+     * diffusé et retourne le lien vers ce fichier depuis un client
+     * @param client {@link Facture} - Le client duquel récupérer lea liste
+     * des périphériques
+     * @return {@link String} - Le lien de téléchargement du fichier
+     */
+    public static String getDevicesFileLink(Client client)
+    {
+        if(client==null)
+        {
+            return "#";
+        }
+        String clientId=String.format("%08d", client.getId());
+        File from=new File(Utils.getResourcesPath()+"generated"+File.separator+
+                "devices"+File.separator+"Devices_Client_"+clientId+".pdf");
+        File to=new File(Utils.getRealPath()+"generated"+File.separator+
+                "devices"+File.separator+"Devices_Client_"+clientId+".pdf");
+        try
+        {
+            if(!Files.copy(from, to))
+            {
+                ApplicationLogger.writeError("Erreur lors de la diffusion du fichier \""+
+                        to.getAbsolutePath()+" \"sur le serveur", null);
+            }
+        }
+        catch (IOException ex)
+        {
+            ApplicationLogger.writeError("Impossible de diffuser le fichier \""+
+                    to.getAbsolutePath()+" \"sur le serveur", ex);
+        }
+        return ("/"+Utils.APPLICATION_NAME+"/generated/"+
+                "devices/Devices_Client_"+clientId+".pdf");
     }
     
     /**

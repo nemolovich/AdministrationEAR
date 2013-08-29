@@ -180,7 +180,7 @@
                                              title="Créer le relevé et valider la facture"
                                              update=":growl :relevePrint"
                                              rendered="#{factureView.creating}"
-                                             action="#{PDFCreatorController.createPDF(
+                                             action="#{PDFCreatorController.createFacturePDF(
                                                        factureView,
                                                        empty interventionView.filteredEntities?
                                                                interventionView.entries:

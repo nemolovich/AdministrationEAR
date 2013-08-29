@@ -17,10 +17,12 @@ import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Phrase;
 import com.lowagie.text.pdf.PdfWriter;
+import com.sun.xml.ws.policy.privateutil.PolicyUtils;
 import controller.utils.PDFDocument;
 import controller.utils.PDFTable;
 import entity.CUser;
 import entity.Client;
+import entity.Device;
 import entity.Intervention;
 import java.awt.Color;
 import java.io.File;
@@ -29,6 +31,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -47,8 +50,314 @@ import javax.servlet.ServletContext;
 public class PDFCreatorController implements Serializable
 {
     private static final long serialVersionUID = 1L;
+    private static int testi=0;
+    private static int tests[]=new int[100];
+    private static int test=0;
+	
+    public synchronized String createDevicePDF(Client client, List<Device> list)
+    {
+        for(int i=0;i<tests.length;i++)
+        {
+            tests[i]=i;
+        }
+        test=tests[testi];
+        List<Device> temp=new ArrayList<Device>(list);
+        Collections.sort(temp, Collections.reverseOrder());
+        list.clear();
+        for(int i=0;i<test;i++)
+        {
+            list.add(temp.get(i%temp.size()));
+        }
+		if(client==null||list==null)
+		{
+			return "#";
+		}
+        String clientId=String.format("%08d", client.getId());
+        clientId=String.format("%08d", test);
+        String clientName=client.getName();
+        clientName=clientName!=null&&clientName.length()>=25?clientName.substring(0,22)+"...":clientName;
+        PDFDocument pdf=new PDFDocument(PageSize.A4.rotate());
+        File pdfFile=new File(Utils.getResourcesPath()+"generated"+File.separator+
+                "devices"+File.separator+"Devices_Client_"+clientId+".pdf");
+        if(!pdfFile.exists())
+        {
+            Files.createIfNotExists(pdfFile, false);
+        }
+        boolean opened=!pdfFile.canWrite();
+        if(!opened)
+        {
+            try
+            {
+                PdfWriter.getInstance(pdf, new FileOutputStream(pdfFile));
+                opened=false;
+            }
+            catch (DocumentException ex)
+            {
+//                ex.printStackTrace();
+                opened=true;
+            }
+            catch (FileNotFoundException ex)
+            {
+//                ex.printStackTrace();
+                opened=true;
+            }
+        }
+        if(opened||pdf.isOpen())
+        {
+            FacesMessage msg=new FacesMessage(FacesMessage.SEVERITY_ERROR, "PDF non créé",
+                    "Le fichier que vous tentez de créé est déjà ouvert par une autre instance, "
+                    + "veuillez le fermer avant de continuer");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            return "#";
+        }
+        
+        boolean written;
+        try
+        {
+            pdf.open();
+            pdf.setFooter("Périphériques pour "+clientName, "ADMIN Services", Element.ALIGN_RIGHT);
+            
+            ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+            String logo = servletContext.getRealPath("")+File.separator+
+                    "resources"+File.separator+"img"+File.separator+"logoAS.png";
+            Image logoImg = Image.getInstance(logo);
+            logoImg.scaleAbsolute(100, 57);
+            
+            PDFTable header = new PDFTable(2);
+            header.setCellVerticalAlignment(Element.ALIGN_TOP);
+            header.setSpacingAfter(30);
+            
+            logoImg.setAlignment(Element.ALIGN_LEFT);
+            header.addSize(logoImg, Element.ALIGN_LEFT, 1, 0, 0);
+            
+            Paragraph rightTop=new Paragraph("Périphériques de la société "+clientName);
+            header.addSize(rightTop, Element.ALIGN_RIGHT, 1, 0, 0);
+            
+            Paragraph leftBottom=new Paragraph();
+            leftBottom.add(new Paragraph("8 Rue Louise WEISS\n"
+                    + "37700 La Ville aux Dames"));
+            Font littleFont=FontFactory.getFont(FontFactory.HELVETICA, 8.5f, Font.NORMAL);
+            Paragraph tel=new Paragraph("                            Tél: 02.47.44.71.14",littleFont);
+            leftBottom.add(tel);
+            header.addSize(leftBottom, Element.ALIGN_LEFT, 1, 0, 0);
+            header.addSize(new Phrase(), Element.ALIGN_RIGHT, 1, 0, 0);
+            
+            boolean none=list.isEmpty();
+            
+            pdf.add(header);
+            PDFTable table;
+            Paragraph details = new Paragraph();
+            int nbLinesOnPage=0;
+            int multiLines=0;
+            int nbLines=0;
+            int breakedPages=0;
+            int firstPageMaxLines=17;
+            int othersPagesMaxLines=25;
+            float pageSize;
+            if(none)
+            {
+                table=new PDFTable(1);
+                table.add(new Paragraph("Aucun périphérique"));
+            }
+            else
+            {
+                PDFTable tab=new PDFTable(3);
+                tab.setCellVerticalAlignment(Element.ALIGN_TOP);
+                final float tabSizes[]={25,50,25};
+                tab.setWidths(tabSizes);
+                tab.add(new Phrase(clientName), Element.ALIGN_LEFT);
+                tab.add(new Phrase("Liste des périphériques de la société"), Element.ALIGN_CENTER);
+                tab.add(new Phrase(), Element.ALIGN_CENTER);
+                
+                details.add(tab);
+                details.setSpacingBefore(0);
+                details.setSpacingAfter(20);
+                pdf.add(details);
+//                Collections.sort(list, Collections.reverseOrder());
+                table=new PDFTable(6);
+                final String[][] tableHeader={
+                    {"Date",                    String.valueOf(Element.ALIGN_CENTER)},
+                    {"Type",                    String.valueOf(Element.ALIGN_LEFT)},
+                    {"Marque",                  String.valueOf(Element.ALIGN_LEFT)},
+                    {"Système d'exploitation",  String.valueOf(Element.ALIGN_CENTER)},
+                    {"Processeur",              String.valueOf(Element.ALIGN_CENTER)},
+                    {"Nom",                     String.valueOf(Element.ALIGN_LEFT)}};
+                final float tableSizes[]={9.2f,9.2f,9.2f,25,30,17.4f};
+                table.setHeader(tableHeader);
+                table.setWidths(tableSizes);
+                table.setCellVerticalAlignment(Element.ALIGN_TOP);
+                int nbLinesMax=firstPageMaxLines;
+                /**
+                 * 30 = header.setSpacingAfter(30);
+                 * 20 = details.setSpacingAfter(20);
+                 * 3 = Espace inconnu
+                 */
+                pageSize=header.getTotalHeight()+details.getTotalLeading()
+                        +30+20+3;
+                for(Device d:list)
+                {
+                    Color color=null;
+                    if((nbLines-multiLines)%2!=0)
+                    {
+                        color=Color.decode("#F2F5F9");
+                    }
+                    int lineSize=1;
+                    boolean breaked=false;
+                    if(nbLinesOnPage+1>=nbLinesMax&&lineSize>1||
+                            (nbLines+1-multiLines>=list.size()&&
+                            nbLinesOnPage>=nbLinesMax))
+                    {
+                        pdf.add(table);
+                        pdf.newPage(pageSize+table.getTotalHeight());
+                        table=new PDFTable(6);
+                        table.setHeader(tableHeader);
+                        table.setWidths(tableSizes);
+                        table.setCellVerticalAlignment(Element.ALIGN_TOP);
+                        pageSize=0;
+                        nbLinesMax=othersPagesMaxLines;
+                        nbLinesOnPage=0;
+                        breakedPages++;
+                        breaked=true;
+                    }
+                    if(lineSize>1)
+                    {
+                        multiLines+=lineSize-1;
+                    }
+                    table.addBordered(new Paragraph(Utils.smallDateFormat(
+                            d.getStartDate())),
+                            Element.ALIGN_CENTER,
+                            PDFTable.BORDER_BOTTOM,
+                            color);
+                    String type=d.getWsType();
+                    type=(type==null)?"":type;
+                    table.addBordered(new Paragraph(type),
+                            Element.ALIGN_LEFT,
+                            PDFTable.BORDER_BOTTOM,
+                            color);
+                    String brand=d.getBrand();
+                    brand=(brand==null)?"":brand;
+                    table.addBordered(new Paragraph(brand),
+                            Element.ALIGN_LEFT,
+                            PDFTable.BORDER_BOTTOM,
+                            color);
+                    String os=d.getOperatingSystem();
+                    os=(os==null)?"":os;
+                    table.addBordered(new Paragraph(os),
+                            Element.ALIGN_CENTER,
+                            PDFTable.BORDER_BOTTOM,
+                            color);
+                    String proc=d.getProcessor();
+                    proc=(proc==null)?"":proc;
+                    table.addBordered(new Paragraph(proc),
+                            Element.ALIGN_CENTER,
+                            PDFTable.BORDER_BOTTOM,
+                            color);
+                    String name=d.getName();
+                    name=(name==null)?"":name;
+                    table.addBordered(new Paragraph(name),
+                            Element.ALIGN_LEFT,
+                            PDFTable.BORDER_BOTTOM,
+                            color);
+                    nbLines+=lineSize;
+                    nbLinesOnPage+=lineSize;
+                    if(nbLinesOnPage>=nbLinesMax&&!breaked)
+                    {
+                        pdf.add(table);
+                        pdf.newPage(pageSize+table.getTotalHeight());
+                        table=new PDFTable(6);
+                        table.setHeader(tableHeader);
+                        table.setWidths(tableSizes);
+                        table.setCellVerticalAlignment(Element.ALIGN_TOP);
+                        pageSize=0;
+                        nbLinesOnPage=0;
+                        nbLinesMax=othersPagesMaxLines;
+                    }
+                }
+            }
+            
+            pdf.add(table);
+            
+            if(nbLines+1>=firstPageMaxLines||breakedPages>0)
+            {
+                pageSize=table.getTotalHeight();
+            }
+            else
+            {
+                pageSize=header.getTotalHeight()+table.getTotalHeight()+
+                        details.getTotalLeading()+10+4;
+                if(!none)
+                {
+                    pageSize+=30+6+3;
+                }
+            }
+            pdf.addFooter(pageSize);
+            
+            pdf.close();
+            written=true;
+        }
+        catch (MalformedURLException ex)
+        {
+//            ex.printStackTrace();
+            written=false;
+        }
+        catch (BadElementException ex)
+        {
+//            ex.printStackTrace();
+            written=false;
+        }
+        catch (IOException ex)
+        {
+//            ex.printStackTrace();
+            written=false;
+        }
+        catch (DocumentException ex)
+        {
+//            ex.printStackTrace();
+            written=false;
+        }
+        
+        if(!written||pdf.isOpen())
+        {
+            FacesMessage msg=new FacesMessage(FacesMessage.SEVERITY_ERROR, "PDF non créé",
+                    "Erreur lors de l'écriture du PDF");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            return "#";
+        }
+        
+        try
+        {
+            File societyFile=null;
+            if(client.getIdFilePath()!=null)
+            {
+                societyFile=new File(Utils.getResourcesPath()+Utils.getUploadsPath()+
+                        client.getIdFilePath().getFilePath()+File.separator+
+                        "Devices_Client_"+clientId+".pdf");
+            }
+            if(societyFile!=null)
+            {
+                Files.copy(pdfFile, societyFile);
+            }
+        }
+        catch (IOException ex)
+        {
+            FacesMessage msg=new FacesMessage(FacesMessage.SEVERITY_ERROR, "PDF non copié",
+                    "Le PDF n'a pas pu être copié vers le dossier de cette société");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            return "#";
+        }
+        
+        FacesMessage msg=new FacesMessage(FacesMessage.SEVERITY_INFO, "PDF Créé",
+                "La création du PDF s'est terminée correctement");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+        if(test<tests[tests.length-1])
+        {
+            testi++;
+            return this.createDevicePDF(client, temp);
+        }
+        return "#";
+    }
     
-    public synchronized String createPDF(FactureView factureView, List<Intervention> list,
+    public synchronized String createFacturePDF(FactureView factureView, List<Intervention> list,
             Date startDate, Date endDate)
     {
         factureView.create(list);
