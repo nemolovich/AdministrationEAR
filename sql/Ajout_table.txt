@@ -1,0 +1,111 @@
+Ajout d’une table
+
+Depuis la base de données:
+Créer la table en Derby (SQL pour java)
+CREATE TABLE ROOT.SERVICES (
+		id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY
+		(START WITH 1, INCREMENT BY 1),
+		id_client INTEGER NOT NULL,
+		title VARCHAR(64),
+		description VARCHAR(1024),
+		CONSTRAINT services_client_id_pk
+		FOREIGN KEY(id_client)
+		REFERENCES ROOT.CLIENT(id));
+Utiliser l'outil 'IJ' depuis le shell ('ij' pour windows, 'derby_ij' pour ubuntu)
+Connexion : "connect 'jdbc :derby://localhost :1527/administration_db' ;"
+Exécution : Coller le script Derby
+
+
+Ajout dans le projet java : "Services.java"
+Dans le package "entity" du projet EJB :
+"New > Entity Classes from Database…"
+Sélectionner  la table à ajouter (ici ‘SERVICES‘)
+"Suivant" jusque "Mapping Options" :
+Sélectionner "java.util.List" pour "Collection Type"
+Valider
+Modifier si besoin est les champs mal convertis (Les boolean qui apparaissent en tant que Serializable doivent être replacés par Boolean)
++ Voir getFullString et toString
+
+
+Création de la facade permettant la modification des données : "ServicesFacade.java"
+Positionner dans le package "bean.facade" du projet EJB
+Créer classe suivant le type de table (comme table parent ou table fille, avec ClientFacade ou DeviceFacade) 
+Préciser la classe qui référence la table (ici Services) et celle de la classe parent le cas échéant (ici Client)
+Donner les noms des accesseurs pour les tables filles dans le constructeur de la facade
+
+
+
+
+
+
+Création d’une vue simple : "ServicesView.java"
+Positionner dans le package "bean.view" du projet EJB
+Créer classe suivant le type de table (comme table parent  ou table fille, avec ClientView ou DeviceView
+Préciser la classe qui référence la table (ici Services) ainsi que sa facade (ici ServicesFacade) et la table si parent le cas échéant (ici Client)
+Modifier l’EJB de manière à référencer la facade de cette table
+Donner le nom du setter permettant de définir l’objet mentionné depuis la classe parent le cas échéant dans le constructeur
+Donner le nom du dossier web dans lequel se trouvent les pages traitant de cette table (ici "services" dans le projet WAR)
+Modifier la méthode "getDeleteMessage" pour la faire coïncider à la table, et "deleteMessages" pour une classe fille
+
+
+Création d’une vue multiple pour les tables filles : "ServicesMultiView"
+Positionner dans le package "bean.view.multiSelection" du projet EJB
+Créer classe (comme DeviceMultiView)
+Préciser la classe qui référence la table (ici Services) dans la déclaration de la classe et dans le constructeur
+
+
+Création d’une page web permettant d’afficher la liste des entités de cette table : "list.xhtml"
+Positionner dans le dossier "restricted/admin/data" du projet WAR
+Créer le dossier référencé depuis la vue simple (ici "services")
+Se déplacer dedans
+Créer une nouvelle page web nommée "list"
+Voir "Création d’une page avec template"
+Insérer une table de donnée :
+Se positionner entre les balise <h :form>
+Souris : Click droit "Insert Code"
+Clavier : ALT+Inser
+Sélectionner "JSF Data Table From Entity"
+Supprimer les colonnes inutiles (fullString par exemple)
+Modifier le <h :dataTable> en :
+                        <p:dataTable id="servicesDataTable"
+                                     value="#{servicesView.entries}"
+                                     var="item"
+                                     widgetVar="servicesTable"
+                                     paginator="true"
+                                     paginatorPosition="bottom"
+                                     rows="#{utils.maxDataRows}"
+                                     rowStyleClass="v_top"
+                                     sortBy="#{item.title}"
+                                     emptyMessage="Aucun service n'a été trouvée">
+Modifier les <h :column> en <p :column>
+Supprimer les <f :facet name="header" et remplacer par des attributs  'headerText="<HEADER_NAME>" dans les <p:column>'
+Y ajouter des attributs pour les filtre ou le tri comme:
+                                      sortBy="#{item.title}"
+                                      filterBy="#{item.title}"
+                                      filterMatchMode="contains"
+
+Création d’un formulaire de création: "create.xhtml"
+Positionner dans le dossier où se trouve la page dans le projet WAR
+Dans le dossier : 
+Créer une nouvelle page web nommée "create"
+Voir "Création d’une page avec template"
+Insérer un formulaire :
+Se positionner entre les balise <h :form>
+Souris : Click droit "Insert Code"
+Clavier : ALT+Inser
+Sélectionner "JSF Form From Entity"
+
+
+Création d’une page avec template :
+Positionner dans le dossier où se trouve la page dans le projet WAR
+Dans la page :
+Ajouter entre <h :body> et <f :view> au début :
+ <ui:composition template="/templates/page_template.xhtml">
+            <ui:define name="title">
+                | Création Services
+            </ui:define>
+            <ui:define name="content">
+                <f:attribute name="header" value="Création d'un service"/>
+Ajouter entre </f :view> et </h :body> à la fin : 
+            </ui:define>
+        </ui:composition>

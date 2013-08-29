@@ -177,6 +177,20 @@ CREATE TABLE ROOT.DEVICE (
                 FOREIGN KEY (id_file_path)
                 REFERENCES ROOT.FILE_PATH(id));
 
+--------------- Création de la table SERVICES ---------------
+-- TABLE:			SERVICES
+-- DESCRIPTION: 	Table concernant les services
+--  associés à une société.
+CREATE TABLE ROOT.SERVICES (
+		id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY
+		(START WITH 1, INCREMENT BY 1),
+		id_client INTEGER NOT NULL,
+		title VARCHAR(64),
+		description VARCHAR(1024),
+		CONSTRAINT services_client_id_pk
+		FOREIGN KEY(id_client)
+		REFERENCES ROOT.CLIENT(id));
+
 --------------- Création de la table SOFTWARE ---------------
 -- TABLE:			SOFTWARE
 -- DESCRIPTION: 	Table concernant les logiciels utilisés

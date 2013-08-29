@@ -32,7 +32,7 @@ public class LogSchedule
     {
         this.start=(new Date()).getTime();
         ScheduleExpression exp=new ScheduleExpression();
-        exp.dayOfMonth("*").hour("*").minute("*/55").second("0");
+        exp.dayOfMonth("*").hour("0").minute("0").second("0");
         service.createCalendarTimer(exp);
     }
     

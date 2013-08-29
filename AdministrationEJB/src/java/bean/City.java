@@ -17,6 +17,7 @@ import java.io.UnsupportedEncodingException;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Singleton;
 import javax.enterprise.context.ApplicationScoped;
 import javax.faces.component.UIInput;
@@ -28,7 +29,6 @@ import javax.inject.Named;
  * @author Brian GOHIER
  */
 @Named(value = "city")
-@Singleton
 @ApplicationScoped
 public class City
 {
