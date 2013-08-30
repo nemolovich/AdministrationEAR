@@ -17,6 +17,7 @@ import com.lowagie.text.Image;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Phrase;
+import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfWriter;
 import controller.utils.PDFDocument;
 import controller.utils.PDFTable;
@@ -31,6 +32,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -49,14 +51,24 @@ import javax.servlet.ServletContext;
 public class PDFCreatorController implements Serializable
 {
     private static final long serialVersionUID = 1L;
+//    private static int test=0;
+//    private static int testi=100;
 	
     public synchronized String createDevicePDF(Client client, List<Device> list)
     {
-        if(client==null||list==null)
-        {
-                return "#";
-        }
+//        List<Device> temp=new ArrayList<Device>(list);
+//        Collections.sort(temp, Collections.reverseOrder());
+//        list.clear();
+//        for(int i=0;i<test;i++)
+//        {
+//            list.add(temp.get(i%temp.size()));
+//        }
+//        if(client==null||list==null)
+//        {
+//                return "#";
+//        }
         String clientId=String.format("%08d", client.getId());
+//        clientId=String.format("%08d", test);
         String clientName=client.getName();
         clientName=clientName!=null&&clientName.length()>=25?clientName.substring(0,22)+"...":clientName;
         PDFDocument pdf=new PDFDocument(PageSize.A4.rotate());
@@ -136,8 +148,8 @@ public class PDFCreatorController implements Serializable
             int multiLines=0;
             int nbLines=0;
             int breakedPages=0;
-            int firstPageMaxLines=17;
-            int othersPagesMaxLines=25;
+            int firstPageMaxLines=19;
+            int othersPagesMaxLines=28;
             float pageSize;
             if(none)
             {
@@ -150,7 +162,7 @@ public class PDFCreatorController implements Serializable
                 tab.setCellVerticalAlignment(Element.ALIGN_TOP);
                 final float tabSizes[]={25,50,25};
                 tab.setWidths(tabSizes);
-                tab.add(new Phrase(clientName), Element.ALIGN_LEFT);
+                tab.add(new Phrase(), Element.ALIGN_LEFT);
                 tab.add(new Phrase("Liste des périphériques de la société"), Element.ALIGN_CENTER);
                 tab.add(new Phrase("Total périphériques: "+list.size()), Element.ALIGN_CENTER);
                 
@@ -159,18 +171,21 @@ public class PDFCreatorController implements Serializable
                 details.setSpacingAfter(20);
                 pdf.add(details);
                 Collections.sort(list, Collections.reverseOrder());
-                table=new PDFTable(6);
+                table=new PDFTable(7);
                 final String[][] tableHeader={
                     {"Date",                    String.valueOf(Element.ALIGN_CENTER)},
                     {"Type",                    String.valueOf(Element.ALIGN_LEFT)},
                     {"Marque",                  String.valueOf(Element.ALIGN_LEFT)},
-                    {"Système d'exploitation",  String.valueOf(Element.ALIGN_CENTER)},
-                    {"Processeur",              String.valueOf(Element.ALIGN_CENTER)},
-                    {"Nom",                     String.valueOf(Element.ALIGN_LEFT)}};
-                final float tableSizes[]={9.2f,9.2f,9.2f,25,30,17.4f};
+                    {"Nom",                     String.valueOf(Element.ALIGN_LEFT)},
+                    {"Processeur",              String.valueOf(Element.ALIGN_LEFT)},
+                    {"Système d'exploitation",  String.valueOf(Element.ALIGN_LEFT)},
+                    {"Utilisateur",  String.valueOf(Element.ALIGN_LEFT)}};
+                final float tableSizes[]={9.2f,12.4f,14,17.4f,18,20,10};
                 table.setHeader(tableHeader);
                 table.setWidths(tableSizes);
                 table.setCellVerticalAlignment(Element.ALIGN_TOP);
+                Font cellFont=FontFactory.getFont(FontFactory.HELVETICA, 10, Font.NORMAL);
+                BaseFont bf=cellFont.getBaseFont();
                 int nbLinesMax=firstPageMaxLines;
                 /**
                  * 30 = header.setSpacingAfter(30);
@@ -192,37 +207,97 @@ public class PDFCreatorController implements Serializable
                         multiLines+=lineSize-1;
                     }
                     table.addBordered(new Paragraph(Utils.smallDateFormat(
-                            d.getStartDate())),
+                            d.getStartDate()), cellFont),
                             Element.ALIGN_CENTER,
                             PDFTable.BORDER_BOTTOM,
                             color);
                     String type=d.getWsType();
                     type=(type==null)?"":type;
-                    table.addBordered(new Paragraph(type),
+                    //82.82
+                    if(bf.getWidthPointKerned(type, 10)>82.82)
+                    {
+                        while(bf.getWidthPointKerned(type, 10)>82.82)
+                        {
+                            type=type.substring(0,type.length()-1);
+                        }
+                        type+=".";
+                    }
+                    table.addBordered(new Paragraph(type, cellFont),
                             Element.ALIGN_LEFT,
                             PDFTable.BORDER_BOTTOM,
                             color);
                     String brand=d.getBrand();
                     brand=(brand==null)?"":brand;
-                    table.addBordered(new Paragraph(brand),
+                    //96.16
+                    if(bf.getWidthPointKerned(brand, 10)>96.16)
+                    {
+                        while(bf.getWidthPointKerned(brand, 10)>96.16)
+                        {
+                            brand=brand.substring(0,brand.length()-1);
+                        }
+                        brand+=".";
+                    }
+                    table.addBordered(new Paragraph(brand, cellFont),
+                            Element.ALIGN_LEFT,
+                            PDFTable.BORDER_BOTTOM,
+                            color);
+                    String name=d.getName();
+                    name=(name==null)?"":name;
+                    //122.84
+                    if(bf.getWidthPointKerned(name, 10)>122.84)
+                    {
+                        while(bf.getWidthPointKerned(name, 10)>122.84)
+                        {
+                            name=name.substring(0,name.length()-1);
+                        }
+                        name+=".";
+                    }
+                    table.addBordered(new Paragraph(name, cellFont),
+                            Element.ALIGN_LEFT,
+                            PDFTable.BORDER_BOTTOM,
+                            color);
+                    String proc=d.getProcessor();
+                    proc=(proc==null)?"":proc;
+                    //122.84
+                    if(bf.getWidthPointKerned(proc, 10)>122.84)
+                    {
+                        while(bf.getWidthPointKerned(proc, 10)>122.84)
+                        {
+                            proc=proc.substring(0,proc.length()-1);
+                        }
+                        proc+=".";
+                    }
+                    table.addBordered(new Paragraph(proc, cellFont),
                             Element.ALIGN_LEFT,
                             PDFTable.BORDER_BOTTOM,
                             color);
                     String os=d.getOperatingSystem();
                     os=(os==null)?"":os;
-                    table.addBordered(new Paragraph(os),
-                            Element.ALIGN_CENTER,
+                    //142.85
+                    if(bf.getWidthPointKerned(os, 10)>142.85)
+                    {
+                        while(bf.getWidthPointKerned(os, 10)>142.85)
+                        {
+                            os=os.substring(0,os.length()-1);
+                        }
+                        os+=".";
+                    }
+                    table.addBordered(new Paragraph(os, cellFont),
+                            Element.ALIGN_LEFT,
                             PDFTable.BORDER_BOTTOM,
                             color);
-                    String proc=d.getProcessor();
-                    proc=(proc==null)?"":proc;
-                    table.addBordered(new Paragraph(proc),
-                            Element.ALIGN_CENTER,
-                            PDFTable.BORDER_BOTTOM,
-                            color);
-                    String name=d.getName();
-                    name=(name==null)?"":name;
-                    table.addBordered(new Paragraph(name),
+                    String user=d.getUserNameDefault();
+                    user=(user==null)?"":user;
+                    //62.81
+                    if(bf.getWidthPointKerned(user, 10)>62.81)
+                    {
+                        while(bf.getWidthPointKerned(user, 10)>62.81)
+                        {
+                            user=user.substring(0,user.length()-1);
+                        }
+                        user+=".";
+                    }
+                    table.addBordered(new Paragraph(user, cellFont),
                             Element.ALIGN_LEFT,
                             PDFTable.BORDER_BOTTOM,
                             color);
@@ -233,7 +308,7 @@ public class PDFCreatorController implements Serializable
                     {
                         pdf.add(table);
                         pdf.newPage(pageSize+table.getTotalHeight());
-                        table=new PDFTable(6);
+                        table=new PDFTable(7);
                         table.setHeader(tableHeader);
                         table.setWidths(tableSizes);
                         table.setCellVerticalAlignment(Element.ALIGN_TOP);
@@ -266,22 +341,22 @@ public class PDFCreatorController implements Serializable
         }
         catch (MalformedURLException ex)
         {
-//            ex.printStackTrace();
+            ex.printStackTrace();
             written=ex;
         }
         catch (BadElementException ex)
         {
-//            ex.printStackTrace();
+            ex.printStackTrace();
             written=ex;
         }
         catch (IOException ex)
         {
-//            ex.printStackTrace();
+            ex.printStackTrace();
             written=ex;
         }
         catch (DocumentException ex)
         {
-//            ex.printStackTrace();
+            ex.printStackTrace();
             written=ex;
         }
         
@@ -320,6 +395,11 @@ public class PDFCreatorController implements Serializable
         FacesMessage msg=new FacesMessage(FacesMessage.SEVERITY_INFO, "PDF Créé",
                 "La création du PDF s'est terminée correctement");
         FacesContext.getCurrentInstance().addMessage(null, msg);
+//        if(test<testi)
+//        {
+//            test++;
+//            return this.createDevicePDF(client, temp);
+//        }
         return "#";
     }
     
@@ -514,7 +594,7 @@ public class PDFCreatorController implements Serializable
                             i.getIdTask().getDescription().replaceAll("\\n", "").length());
                     boolean breaked=false;
                     if(nbLinesOnPage+1>=nbLinesMax&&lineSize>1||
-                            (nbLines+1-multiLines>=list.size()&&
+                            (list!=null&&nbLines+1-multiLines>=list.size()&&
                             nbLinesOnPage+3>=nbLinesMax))
                     {
                         pdf.add(table);

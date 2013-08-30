@@ -5,7 +5,6 @@
 package entity;
 
 import java.io.Serializable;
-import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;

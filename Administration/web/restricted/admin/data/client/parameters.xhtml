@@ -89,7 +89,7 @@
                                     <p:column selectionMode="multiple" style="width:2%">
                                     </p:column>
 
-                                    <p:column headerText="Détails" style="width:100%;">
+                                    <p:column headerText="Détails" style="width:80%;">
                                         <h:outputText value="#{device.toString()}"/>
                                     </p:column>
 
@@ -160,7 +160,8 @@
                                     </p:column>
                                     
                                     <f:facet name="footer">
-                                        <p:outputPanel style="float:left">
+                                        <p:outputPanel id="devicesFooter"
+                                                       style="float:left">
                                             <p:commandButton value="Ajouter un périphérique"
                                                              icon="ui-icon-circle-plus"
                                                              styleClass="green_icon"
@@ -183,6 +184,29 @@
                                                              onclick="if(#{deviceMultiView.emptySelection})
                                                                 {return false;}
                                                                 else{if(!confirm('#{deviceView.deleteMessages(deviceMultiView.multiSelectionCast)}')){return false;}}"/>
+                                            <p:commandButton id="createPDF"
+                                                             value="Générer PDF"
+                                                             icon="ui-icon-disk"
+                                                             type="submit"
+                                                             styleClass="green_icon"
+                                                             title="Générer la liste au format PDF"
+                                                             update=":growl :clientUpdate:clientTabView:clientDeviceList:devicesFooter"
+                                                             action="#{PDFCreatorController.createDevicePDF(
+                                                                       clientView.entity,
+                                                                       empty deviceMultiView.filteredEntities?
+                                                                        clientView.entity.deviceList:
+                                                                        deviceMultiView.filteredEntities)}"
+                                                             rendered="#{not empty clientView.entity.deviceList}"/>
+                                            <p:commandButton id="displayPDF"
+                                                             value="Afficher PDF"
+                                                             action="javascript:void(0);"
+                                                             icon="ui-icon-pdf"
+                                                             onclick="window.open('#{files.getDevicesFileLink(clientView.entity)}',
+                                                                   'Relevé details','dependent=yes, menubar=no,\
+                                                                   toolbar=no, status=no, scrollbars=yes,\
+                                                                   resizable=no, width=1024, height=768');return false;"
+                                                             title="Afficher la liste des périphériques au format PDF"
+                                                             rendered="#{'#' ne files.getDevicesFileLink(clientView.entity)}"/>
                                             <p:outputLabel for="checkDisplayDeviceSleeping"
                                                            value="Afficher tout"
                                                            style="font-size:75%;margin-bottom: 10px !important;margin-left: 10px;"/>
@@ -201,30 +225,6 @@
                                                              "Affiche les périphériques en sommeil en plus de ceux actifs");
                                                 </script>
                                             </p:selectBooleanCheckbox>
-                                            <p:commandButton id="createPDF"
-                                                             value="Générer PDF"
-                                                             icon="ui-icon-disk"
-                                                             type="submit"
-                                                             styleClass="green_icon"
-                                                             title="Générer la liste au format PDF"
-                                                             update=":growl :clientUpdate:clientTabView:clientDeviceList:displayPDF"
-                                                             action="#{PDFCreatorController.createDevicePDF(
-                                                                       clientView.entity,
-                                                                       empty deviceMultiView.filteredEntities?
-                                                                        clientView.entity.deviceList:
-                                                                        deviceMultiView.filteredEntities)}"
-                                                             rendered="#{not empty clientView.entity.deviceList}"/>
-
-                                            <p:commandButton id="displayPDF"
-                                                             value="Afficher PDF"
-                                                             action="javascript:void(0);"
-                                                             icon="ui-icon-pdf"
-                                                             onclick="window.open('#{files.getDevicesFileLink(clientView.entity)}',
-                                                                   'Relevé details','dependent=yes, menubar=no,\
-                                                                   toolbar=no, status=no, scrollbars=yes,\
-                                                                   resizable=no, width=1024, height=768');return false;"
-                                                             title="Afficher la liste des périphériques au format PDF"
-                                                             rendered="#{'#' ne files.getDevicesFileLink(clientView.entity)}"/>
                                         </p:outputPanel>
                                     </f:facet>
                                 </p:dataTable>
