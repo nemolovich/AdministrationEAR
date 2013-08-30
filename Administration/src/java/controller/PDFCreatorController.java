@@ -6,6 +6,7 @@ package controller;
 
 import bean.Files;
 import bean.Utils;
+import bean.log.ApplicationLogger;
 import bean.view.FactureView;
 import com.lowagie.text.BadElementException;
 import com.lowagie.text.DocumentException;
@@ -17,7 +18,6 @@ import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Phrase;
 import com.lowagie.text.pdf.PdfWriter;
-import com.sun.xml.ws.policy.privateutil.PolicyUtils;
 import controller.utils.PDFDocument;
 import controller.utils.PDFTable;
 import entity.CUser;
@@ -31,7 +31,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.MalformedURLException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -50,30 +49,14 @@ import javax.servlet.ServletContext;
 public class PDFCreatorController implements Serializable
 {
     private static final long serialVersionUID = 1L;
-    private static int testi=0;
-    private static int tests[]=new int[100];
-    private static int test=0;
 	
     public synchronized String createDevicePDF(Client client, List<Device> list)
     {
-        for(int i=0;i<tests.length;i++)
+        if(client==null||list==null)
         {
-            tests[i]=i;
+                return "#";
         }
-        test=tests[testi];
-        List<Device> temp=new ArrayList<Device>(list);
-        Collections.sort(temp, Collections.reverseOrder());
-        list.clear();
-        for(int i=0;i<test;i++)
-        {
-            list.add(temp.get(i%temp.size()));
-        }
-		if(client==null||list==null)
-		{
-			return "#";
-		}
         String clientId=String.format("%08d", client.getId());
-        clientId=String.format("%08d", test);
         String clientName=client.getName();
         clientName=clientName!=null&&clientName.length()>=25?clientName.substring(0,22)+"...":clientName;
         PDFDocument pdf=new PDFDocument(PageSize.A4.rotate());
@@ -83,27 +66,29 @@ public class PDFCreatorController implements Serializable
         {
             Files.createIfNotExists(pdfFile, false);
         }
-        boolean opened=!pdfFile.canWrite();
-        if(!opened)
+        Exception opened=null;
+        if(pdfFile.canWrite())
         {
             try
             {
                 PdfWriter.getInstance(pdf, new FileOutputStream(pdfFile));
-                opened=false;
+                opened=null;
             }
             catch (DocumentException ex)
             {
 //                ex.printStackTrace();
-                opened=true;
+                opened=ex;
             }
             catch (FileNotFoundException ex)
             {
 //                ex.printStackTrace();
-                opened=true;
+                opened=ex;
             }
         }
-        if(opened||pdf.isOpen())
+        if(opened!=null||pdf.isOpen())
         {
+            ApplicationLogger.writeError("Le fichier \""+pdfFile.getAbsolutePath()+
+                    "\" est déjà ouvert par une autre instance", opened);
             FacesMessage msg=new FacesMessage(FacesMessage.SEVERITY_ERROR, "PDF non créé",
                     "Le fichier que vous tentez de créé est déjà ouvert par une autre instance, "
                     + "veuillez le fermer avant de continuer");
@@ -111,7 +96,7 @@ public class PDFCreatorController implements Serializable
             return "#";
         }
         
-        boolean written;
+        Exception written;
         try
         {
             pdf.open();
@@ -167,13 +152,13 @@ public class PDFCreatorController implements Serializable
                 tab.setWidths(tabSizes);
                 tab.add(new Phrase(clientName), Element.ALIGN_LEFT);
                 tab.add(new Phrase("Liste des périphériques de la société"), Element.ALIGN_CENTER);
-                tab.add(new Phrase(), Element.ALIGN_CENTER);
+                tab.add(new Phrase("Total périphériques: "+list.size()), Element.ALIGN_CENTER);
                 
                 details.add(tab);
                 details.setSpacingBefore(0);
                 details.setSpacingAfter(20);
                 pdf.add(details);
-//                Collections.sort(list, Collections.reverseOrder());
+                Collections.sort(list, Collections.reverseOrder());
                 table=new PDFTable(6);
                 final String[][] tableHeader={
                     {"Date",                    String.valueOf(Element.ALIGN_CENTER)},
@@ -202,23 +187,6 @@ public class PDFCreatorController implements Serializable
                         color=Color.decode("#F2F5F9");
                     }
                     int lineSize=1;
-                    boolean breaked=false;
-                    if(nbLinesOnPage+1>=nbLinesMax&&lineSize>1||
-                            (nbLines+1-multiLines>=list.size()&&
-                            nbLinesOnPage>=nbLinesMax))
-                    {
-                        pdf.add(table);
-                        pdf.newPage(pageSize+table.getTotalHeight());
-                        table=new PDFTable(6);
-                        table.setHeader(tableHeader);
-                        table.setWidths(tableSizes);
-                        table.setCellVerticalAlignment(Element.ALIGN_TOP);
-                        pageSize=0;
-                        nbLinesMax=othersPagesMaxLines;
-                        nbLinesOnPage=0;
-                        breakedPages++;
-                        breaked=true;
-                    }
                     if(lineSize>1)
                     {
                         multiLines+=lineSize-1;
@@ -260,7 +228,8 @@ public class PDFCreatorController implements Serializable
                             color);
                     nbLines+=lineSize;
                     nbLinesOnPage+=lineSize;
-                    if(nbLinesOnPage>=nbLinesMax&&!breaked)
+                    if(nbLinesOnPage>=nbLinesMax&&
+                            nbLines-multiLines<list.size())
                     {
                         pdf.add(table);
                         pdf.newPage(pageSize+table.getTotalHeight());
@@ -277,7 +246,7 @@ public class PDFCreatorController implements Serializable
             
             pdf.add(table);
             
-            if(nbLines+1>=firstPageMaxLines||breakedPages>0)
+            if(nbLines>firstPageMaxLines||breakedPages>0)
             {
                 pageSize=table.getTotalHeight();
             }
@@ -293,31 +262,33 @@ public class PDFCreatorController implements Serializable
             pdf.addFooter(pageSize);
             
             pdf.close();
-            written=true;
+            written=null;
         }
         catch (MalformedURLException ex)
         {
 //            ex.printStackTrace();
-            written=false;
+            written=ex;
         }
         catch (BadElementException ex)
         {
 //            ex.printStackTrace();
-            written=false;
+            written=ex;
         }
         catch (IOException ex)
         {
 //            ex.printStackTrace();
-            written=false;
+            written=ex;
         }
         catch (DocumentException ex)
         {
 //            ex.printStackTrace();
-            written=false;
+            written=ex;
         }
         
-        if(!written||pdf.isOpen())
+        if(written!=null||pdf.isOpen())
         {
+            ApplicationLogger.writeError("Erreur lors de la création du PDF \""+
+                    pdfFile.getAbsolutePath()+"\"", written);
             FacesMessage msg=new FacesMessage(FacesMessage.SEVERITY_ERROR, "PDF non créé",
                     "Erreur lors de l'écriture du PDF");
             FacesContext.getCurrentInstance().addMessage(null, msg);
@@ -349,11 +320,6 @@ public class PDFCreatorController implements Serializable
         FacesMessage msg=new FacesMessage(FacesMessage.SEVERITY_INFO, "PDF Créé",
                 "La création du PDF s'est terminée correctement");
         FacesContext.getCurrentInstance().addMessage(null, msg);
-        if(test<tests[tests.length-1])
-        {
-            testi++;
-            return this.createDevicePDF(client, temp);
-        }
         return "#";
     }
     
@@ -370,27 +336,29 @@ public class PDFCreatorController implements Serializable
         {
             Files.createIfNotExists(pdfFile, false);
         }
-        boolean opened=!pdfFile.canWrite();
-        if(!opened)
+        Exception opened=null;
+        if(pdfFile.canWrite())
         {
             try
             {
                 PdfWriter.getInstance(pdf, new FileOutputStream(pdfFile));
-                opened=false;
+                opened=null;
             }
             catch (DocumentException ex)
             {
 //                ex.printStackTrace();
-                opened=true;
+                opened=ex;
             }
             catch (FileNotFoundException ex)
             {
 //                ex.printStackTrace();
-                opened=true;
+                opened=ex;
             }
         }
-        if(opened||pdf.isOpen())
+        if(opened!=null||pdf.isOpen())
         {
+            ApplicationLogger.writeError("Le fichier \""+pdfFile.getAbsolutePath()+
+                    "\" est déjà ouvert par une autre instance", opened);
             FacesMessage msg=new FacesMessage(FacesMessage.SEVERITY_ERROR, "PDF non créé",
                     "Le fichier que vous tentez de créé est déjà ouvert par une autre instance, "
                     + "veuillez le fermer avant de continuer");
@@ -398,7 +366,7 @@ public class PDFCreatorController implements Serializable
             return "#";
         }
         
-        boolean written;
+        Exception written;
         try
         {
             pdf.open();
@@ -659,31 +627,33 @@ public class PDFCreatorController implements Serializable
             pdf.addFooter(pageSize);
             
             pdf.close();
-            written=true;
+            written=null;
         }
         catch (MalformedURLException ex)
         {
 //            ex.printStackTrace();
-            written=false;
+            written=ex;
         }
         catch (BadElementException ex)
         {
 //            ex.printStackTrace();
-            written=false;
+            written=ex;
         }
         catch (IOException ex)
         {
 //            ex.printStackTrace();
-            written=false;
+            written=ex;
         }
         catch (DocumentException ex)
         {
 //            ex.printStackTrace();
-            written=false;
+            written=ex;
         }
         
-        if(!written||pdf.isOpen())
+        if(written!=null||pdf.isOpen())
         {
+            ApplicationLogger.writeError("Erreur lors de la création du PDF \""+
+                    pdfFile.getAbsolutePath()+"\"", written);
             FacesMessage msg=new FacesMessage(FacesMessage.SEVERITY_ERROR, "PDF non créé",
                     "Erreur lors de l'écriture du PDF");
             FacesContext.getCurrentInstance().addMessage(null, msg);

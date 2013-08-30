@@ -202,30 +202,29 @@
                                                 </script>
                                             </p:selectBooleanCheckbox>
                                             <p:commandButton id="createPDF"
+                                                             value="Générer PDF"
                                                              icon="ui-icon-disk"
                                                              type="submit"
                                                              styleClass="green_icon"
                                                              title="Générer la liste au format PDF"
-                                                             update=":growl"
+                                                             update=":growl :clientUpdate:clientTabView:clientDeviceList:displayPDF"
                                                              action="#{PDFCreatorController.createDevicePDF(
                                                                        clientView.entity,
                                                                        empty deviceMultiView.filteredEntities?
                                                                         clientView.entity.deviceList:
                                                                         deviceMultiView.filteredEntities)}"
                                                              rendered="#{not empty clientView.entity.deviceList}"/>
-                                            <!-- :clientUpdate:clientTabView:clientDeviceList:displayPDF"-->
 
-<!--                                            <p:commandButton id="displayPDF"
-                                                             value="Afficher le relevé"
+                                            <p:commandButton id="displayPDF"
+                                                             value="Afficher PDF"
                                                              action="javascript:void(0);"
                                                              icon="ui-icon-pdf"
-                                                             onclick="window.open('{files.getDevicesFileLink(clientView.entity)}',
+                                                             onclick="window.open('#{files.getDevicesFileLink(clientView.entity)}',
                                                                    'Relevé details','dependent=yes, menubar=no,\
                                                                    toolbar=no, status=no, scrollbars=yes,\
                                                                    resizable=no, width=1024, height=768');return false;"
                                                              title="Afficher la liste des périphériques au format PDF"
-                                                             rendered="{not empty deviceMultiView.filteredEntities and
-                                                                         not empty clientView.entity.deviceList}"/>-->
+                                                             rendered="#{'#' ne files.getDevicesFileLink(clientView.entity)}"/>
                                         </p:outputPanel>
                                     </f:facet>
                                 </p:dataTable>

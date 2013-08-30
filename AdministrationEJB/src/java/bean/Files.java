@@ -63,13 +63,15 @@ public class Files
             if(!Files.copy(from, to))
             {
                 ApplicationLogger.writeError("Erreur lors de la diffusion du fichier \""+
-                        to.getAbsolutePath()+" \"sur le serveur", null);
+                        to.getAbsolutePath()+"\" sur le serveur", null);
+                return "#";
             }
         }
         catch (IOException ex)
         {
             ApplicationLogger.writeError("Impossible de diffuser le fichier \""+
-                    to.getAbsolutePath()+" \"sur le serveur", ex);
+                    to.getAbsolutePath()+"\" sur le serveur", ex);
+                return "#";
         }
         return ("/"+Utils.APPLICATION_NAME+"/generated/"+
                 "devices/Devices_Client_"+clientId+".pdf");
@@ -97,13 +99,13 @@ public class Files
             if(!Files.copy(from, to))
             {
                 ApplicationLogger.writeError("Erreur lors de la diffusion du fichier \""+
-                        to.getAbsolutePath()+" \"sur le serveur", null);
+                        to.getAbsolutePath()+"\" sur le serveur", null);
             }
         }
         catch (IOException ex)
         {
             ApplicationLogger.writeError("Impossible de diffuser le fichier \""+
-                    to.getAbsolutePath()+" \"sur le serveur", ex);
+                    to.getAbsolutePath()+"\" sur le serveur", ex);
         }
         return ("/"+Utils.APPLICATION_NAME+"/generated/"+
                 "releves/Releve_"+factureNumber+".pdf");
@@ -128,13 +130,13 @@ public class Files
             if(!Files.copy(from, to))
             {
                 ApplicationLogger.writeError("Erreur lors de la diffusion du fichier \""+
-                        to.getAbsolutePath()+" \"sur le serveur", null);
+                        to.getAbsolutePath()+"\" sur le serveur", null);
             }
         }
         catch (IOException ex)
         {
             ApplicationLogger.writeError("Impossible de diffuser le fichier \""+
-                    to.getAbsolutePath()+" \"sur le serveur", ex);
+                    to.getAbsolutePath()+"\" sur le serveur", ex);
         }
         return ("/"+Utils.APPLICATION_NAME+"/"+Utils.getUploadsPath()+
                 filePath.getFilePath()+"/"+file.getName())
