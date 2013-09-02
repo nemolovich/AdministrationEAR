@@ -14,7 +14,17 @@
                 | Page introuvable
             </ui:define>
             <ui:define name="content">
-                Page non trouvée :(
+                <f:attribute name="header" value="Page introuvable"/>
+                <h:form>
+                    <f:view>
+                        <center>
+                            <img alt="404 Page non trouvée!"
+                                 width="400"
+                                 title="La page n'a pas été trouvée"
+                                 src="${request.contextPath}/resources/img/404.png"/>
+                        </center>
+                    </f:view>
+                </h:form>
             </ui:define>
         </ui:composition>
     </h:body>

@@ -13,6 +13,67 @@ var debug=false;
  * @type Boolean
  */
 var displayAjaxStatus=true;
+var loaded=false;
+var hideTimer;
+
+/**
+ * Redéfinit la taille de l'en-tête
+ * @param {Number} size - La hauteur de l'en-tête
+ * @returns {void}
+ */
+function setHeaderSize(size)
+{
+    displayAjaxStatus=false;
+    fullPageLayout.layout.sizePane('north',size);
+    displayAjaxStatus=true;
+}
+
+/**
+ * Cache l'en-tête
+ * @returns {void}
+ */
+function hideHeader()
+{
+    clearTimeout(hideTimer);
+    if(!loaded)
+    {
+        $('#header').slideUp(490,'linear');
+        var hideTimer=setTimeout(function()
+        {
+            setHeaderSize(8);
+        }, 500);
+        $('#header').fadeIn(5,'linear');
+        loaded=true;
+    }
+}
+
+/**
+ * Affiche l'en-tête
+ * @returns {void}
+ */
+function showHeader()
+{
+    clearTimeout(hideTimer);
+    setHeaderSize(92);
+    loaded=false;
+}
+
+/**
+ * Définit les actions à effectuer lors de l'entrée ou de la sortie
+ * de la souris sur l'en-tête
+ * @returns {void}
+ */
+function initHeader()
+{
+    $('#header').mouseenter(function()
+    {
+        showHeader();
+    });
+    $('#header').mouseleave(function()
+    {
+        hideTimer=setTimeout(hideHeader,3000);
+    });
+}
 
 /**
  * Affiche une fenêtre modale pour le chargement des requêtes ajax

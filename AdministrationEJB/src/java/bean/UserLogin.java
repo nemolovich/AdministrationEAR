@@ -58,15 +58,33 @@ public class UserLogin implements Serializable
      */
     private static final String menuRightID="menu_right";
     /**
-     * Identifiant du menu de droite
+     * Identifiant de l'en-tête
+     */
+    private static final String headerID="header";
+    /**
+     * Taille du menu de droite
+     */
+    private int menuRightSize=370;
+    /**
+     * Taille du menu de gauche
      */
     private int menuLeftSize=230;
     /**
-     * Identifiant du menu de droite
+     * Taille de l'en-tête
      */
-    private int menuRightSize=370;
+    private int headerSize=92;
+    /**
+     * Définit si le menu de gauche est caché
+     */
     private boolean menuLeftClosed=false;
+    /**
+     * Définit si le menu de droite est caché
+     */
     private boolean menuRightClosed=false;
+    /**
+     * Définit si l'en-tête est caché
+     */
+    private boolean headerClosed=false;
     /**
      * URL demandée
      */
@@ -74,6 +92,21 @@ public class UserLogin implements Serializable
     
     public UserLogin()
     {
+    }
+
+    public String getMenuLeftID()
+    {
+        return UserLogin.menuLeftID;
+    }
+
+    public String getMenuRightID()
+    {
+        return UserLogin.menuRightID;
+    }
+
+    public String getHeaderID()
+    {
+        return UserLogin.headerID;
     }
     
     /**
@@ -91,7 +124,7 @@ public class UserLogin implements Serializable
             this.menuRightClosed=event.getVisibility().equals(Visibility.HIDDEN);
         }
     }
-    
+
     /**
      * Action au redimensionnement d'un menu
      * @param event {@link ResizeEvent} - Evénement déclencheur
@@ -107,6 +140,11 @@ public class UserLogin implements Serializable
             else if(event.getComponent().getAttributes().get("id").equals(UserLogin.menuRightID))
             {
                 this.menuRightSize=Integer.valueOf((String)event.getComponent().getAttributes().get("size"))+5;
+            }
+            else if(event.getComponent().getAttributes().get("id").equals(UserLogin.headerID))
+            {
+                this.headerSize=Integer.valueOf((String)event.getComponent().getAttributes().get("size"))+5;
+                this.headerClosed=this.headerSize<10;
             }
         }
         catch(NumberFormatException nfe)
@@ -145,6 +183,16 @@ public class UserLogin implements Serializable
         this.menuRightSize = menuRightSize;
     }
 
+    public int getHeaderSize()
+    {
+        return headerSize;
+    }
+
+    public void setHeaderSize(int headerSize)
+    {
+        this.headerSize = headerSize;
+    }
+
     public boolean isMenuLeftClosed()
     {
         return this.menuLeftClosed;
@@ -163,6 +211,16 @@ public class UserLogin implements Serializable
     public void setMenuRightClosed(boolean menuRightClosed)
     {
         this.menuRightClosed = menuRightClosed;
+    }
+
+    public boolean isHeaderClosed()
+    {
+        return this.headerClosed;
+    }
+
+    public void setHeaderClosed(boolean headerClosed)
+    {
+        this.headerClosed = headerClosed;
     }
     
     public String getKonami()

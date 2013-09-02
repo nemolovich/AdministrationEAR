@@ -160,10 +160,10 @@ public class PDFCreatorController implements Serializable
             {
                 PDFTable tab=new PDFTable(3);
                 tab.setCellVerticalAlignment(Element.ALIGN_TOP);
-                final float tabSizes[]={25,50,25};
+                final float tabSizes[]={50,25,25};
                 tab.setWidths(tabSizes);
-                tab.add(new Phrase(), Element.ALIGN_LEFT);
-                tab.add(new Phrase("Liste des périphériques de la société"), Element.ALIGN_CENTER);
+                tab.add(new Phrase("Liste des périphériques de la société"), Element.ALIGN_LEFT);
+                tab.add(new Phrase(), Element.ALIGN_CENTER);
                 tab.add(new Phrase("Total périphériques: "+list.size()), Element.ALIGN_CENTER);
                 
                 details.add(tab);
