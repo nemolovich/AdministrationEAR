@@ -441,6 +441,37 @@ fieldset
     vertical-align:                     top !important;
 }
 
+th.tr_padding
+{
+    padding:                            5px !important;
+    border:                             0 !important;
+    border-bottom:                      1px solid #A8A8A8 !important;
+}
+
+.tr_padding td
+{
+    padding:                            0 !important;
+    padding-top:                        5px !important;
+}
+
+.tr_padding td span
+{
+    display:                            block !important;
+    padding:                            5px !important;
+    border:                             0 !important;
+}
+
+.tr_padding td span.separate
+{
+    border-bottom:                      1px solid #A8A8A8 !important;
+    display:                            block !important;
+}
+
+.right_value
+{
+    text-align:                         right !important;
+}
+
 .textarea_primefaces_display,
 .textarea_auto,
 .textarea_max,

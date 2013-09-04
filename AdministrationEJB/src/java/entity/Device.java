@@ -302,13 +302,60 @@ public class Device implements Serializable, Comparable<Device>
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Device)) {
+    public boolean equals(Object obj) {
+        if (obj == null) {
             return false;
         }
-        Device other = (Device) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Device other = (Device) obj;
+        if ((this.wsType == null) ? (other.wsType != null) : !this.wsType.equals(other.wsType)) {
+            return false;
+        }
+        if ((this.name == null) ? (other.name != null) : !this.name.equals(other.name)) {
+            return false;
+        }
+        if ((this.userNameDefault == null) ? (other.userNameDefault != null) : !this.userNameDefault.equals(other.userNameDefault)) {
+            return false;
+        }
+        if ((this.ipAddress == null) ? (other.ipAddress != null) : !this.ipAddress.equals(other.ipAddress)) {
+            return false;
+        }
+        if ((this.brand == null) ? (other.brand != null) : !this.brand.equals(other.brand)) {
+            return false;
+        }
+        if (this.startDate != other.startDate && (this.startDate == null || !this.startDate.equals(other.startDate))) {
+            return false;
+        }
+        if ((this.processor == null) ? (other.processor != null) : !this.processor.equals(other.processor)) {
+            return false;
+        }
+        if ((this.monitor == null) ? (other.monitor != null) : !this.monitor.equals(other.monitor)) {
+            return false;
+        }
+        if ((this.videoCard == null) ? (other.videoCard != null) : !this.videoCard.equals(other.videoCard)) {
+            return false;
+        }
+        if ((this.operatingSystem == null) ? (other.operatingSystem != null) : !this.operatingSystem.equals(other.operatingSystem)) {
+            return false;
+        }
+        if ((this.systemVersion == null) ? (other.systemVersion != null) : !this.systemVersion.equals(other.systemVersion)) {
+            return false;
+        }
+        if ((this.systemLicense == null) ? (other.systemLicense != null) : !this.systemLicense.equals(other.systemLicense)) {
+            return false;
+        }
+        if ((this.ram == null) ? (other.ram != null) : !this.ram.equals(other.ram)) {
+            return false;
+        }
+        if ((this.hardDrive == null) ? (other.hardDrive != null) : !this.hardDrive.equals(other.hardDrive)) {
+            return false;
+        }
+        if ((this.observations == null) ? (other.observations != null) : !this.observations.equals(other.observations)) {
+            return false;
+        }
+        if (this.sleeping != other.sleeping && (this.sleeping == null || !this.sleeping.equals(other.sleeping))) {
             return false;
         }
         return true;

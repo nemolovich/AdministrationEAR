@@ -135,13 +135,15 @@ public class FilePath implements Serializable
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof FilePath)) {
+    public boolean equals(Object obj) {
+        if (obj == null) {
             return false;
         }
-        FilePath other = (FilePath) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final FilePath other = (FilePath) obj;
+        if ((this.filePath == null) ? (other.filePath != null) : !this.filePath.equals(other.filePath)) {
             return false;
         }
         return true;

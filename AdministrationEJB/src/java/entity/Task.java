@@ -24,7 +24,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -189,18 +188,35 @@ import javax.xml.bind.annotation.XmlTransient;
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Task)) {
+    public boolean equals(Object obj) {
+        if (obj == null) {
             return false;
         }
-        Task other = (Task) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Task other = (Task) obj;
+        if ((this.description == null) ? (other.description != null) : !this.description.equals(other.description)) {
+            return false;
+        }
+        if (this.startDate != other.startDate && (this.startDate == null || !this.startDate.equals(other.startDate))) {
+            return false;
+        }
+        if (this.intendedDuration != other.intendedDuration && (this.intendedDuration == null || !this.intendedDuration.equals(other.intendedDuration))) {
+            return false;
+        }
+        if ((this.interventionType == null) ? (other.interventionType != null) : !this.interventionType.equals(other.interventionType)) {
+            return false;
+        }
+        if ((this.observations == null) ? (other.observations != null) : !this.observations.equals(other.observations)) {
+            return false;
+        }
+        if (this.sleeping != other.sleeping && (this.sleeping == null || !this.sleeping.equals(other.sleeping))) {
             return false;
         }
         return true;
     }
-
+    
     public String getFullString()
     {
         return "entity.Task{" + "id=" + id + ", description=" + description + ", startDate=" + startDate + ", intendedDuration=" + intendedDuration + ", interventionType=" + interventionType + ", observations=" + observations + ", sleeping=" + sleeping + ", idDevice=" + idDevice + ", idUser=" + idUser + ", idClient=" + idClient + ", interventionList=" + interventionList + '}';

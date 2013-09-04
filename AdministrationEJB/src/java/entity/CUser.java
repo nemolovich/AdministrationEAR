@@ -224,13 +224,39 @@ public class CUser implements Serializable
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof CUser)) {
+    public boolean equals(Object obj) {
+        if (obj == null) {
             return false;
         }
-        CUser other = (CUser) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final CUser other = (CUser) obj;
+        if ((this.name == null) ? (other.name != null) : !this.name.equals(other.name)) {
+            return false;
+        }
+        if ((this.directPhone == null) ? (other.directPhone != null) : !this.directPhone.equals(other.directPhone)) {
+            return false;
+        }
+        if ((this.position == null) ? (other.position != null) : !this.position.equals(other.position)) {
+            return false;
+        }
+        if ((this.login == null) ? (other.login != null) : !this.login.equals(other.login)) {
+            return false;
+        }
+        if ((this.password == null) ? (other.password != null) : !this.password.equals(other.password)) {
+            return false;
+        }
+        if ((this.mails == null) ? (other.mails != null) : !this.mails.equals(other.mails)) {
+            return false;
+        }
+        if ((this.phone == null) ? (other.phone != null) : !this.phone.equals(other.phone)) {
+            return false;
+        }
+        if ((this.observations == null) ? (other.observations != null) : !this.observations.equals(other.observations)) {
+            return false;
+        }
+        if (this.sleeping != other.sleeping && (this.sleeping == null || !this.sleeping.equals(other.sleeping))) {
             return false;
         }
         return true;

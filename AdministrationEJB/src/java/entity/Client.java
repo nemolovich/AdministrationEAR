@@ -407,13 +407,66 @@ public class Client implements Serializable
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Client)) {
+    public boolean equals(Object obj) {
+        if (obj == null) {
             return false;
         }
-        Client other = (Client) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Client other = (Client) obj;
+        if ((this.name == null) ? (other.name != null) : !this.name.equals(other.name)) {
+            return false;
+        }
+        if ((this.address == null) ? (other.address != null) : !this.address.equals(other.address)) {
+            return false;
+        }
+        if (this.postalcode != other.postalcode) {
+            return false;
+        }
+        if ((this.city == null) ? (other.city != null) : !this.city.equals(other.city)) {
+            return false;
+        }
+        if ((this.phone == null) ? (other.phone != null) : !this.phone.equals(other.phone)) {
+            return false;
+        }
+        if ((this.fax == null) ? (other.fax != null) : !this.fax.equals(other.fax)) {
+            return false;
+        }
+        if (this.tarif != other.tarif && (this.tarif == null || !this.tarif.equals(other.tarif))) {
+            return false;
+        }
+        if (this.deplacement != other.deplacement && (this.deplacement == null || !this.deplacement.equals(other.deplacement))) {
+            return false;
+        }
+        if ((this.mail == null) ? (other.mail != null) : !this.mail.equals(other.mail)) {
+            return false;
+        }
+        if ((this.interventionType == null) ? (other.interventionType != null) : !this.interventionType.equals(other.interventionType)) {
+            return false;
+        }
+        if ((this.internetOperator == null) ? (other.internetOperator != null) : !this.internetOperator.equals(other.internetOperator)) {
+            return false;
+        }
+        if ((this.internetLogin == null) ? (other.internetLogin != null) : !this.internetLogin.equals(other.internetLogin)) {
+            return false;
+        }
+        if ((this.internetPassword == null) ? (other.internetPassword != null) : !this.internetPassword.equals(other.internetPassword)) {
+            return false;
+        }
+        if ((this.internetDns == null) ? (other.internetDns != null) : !this.internetDns.equals(other.internetDns)) {
+            return false;
+        }
+        if ((this.internetDnsLogin == null) ? (other.internetDnsLogin != null) : !this.internetDnsLogin.equals(other.internetDnsLogin)) {
+            return false;
+        }
+        if ((this.internetDnsPassword == null) ? (other.internetDnsPassword != null) : !this.internetDnsPassword.equals(other.internetDnsPassword)) {
+            return false;
+        }
+        if ((this.observations == null) ? (other.observations != null) : !this.observations.equals(other.observations)) {
+            return false;
+        }
+        if (this.sleeping != other.sleeping && (this.sleeping == null || !this.sleeping.equals(other.sleeping))) {
             return false;
         }
         return true;
