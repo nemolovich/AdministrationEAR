@@ -1,0 +1,36 @@
+### BEGIN INIT INFO
+# Required-Start: 
+# Required-Stop: 
+# Default-Start:	 2 3 4 5
+# Default-Stop:		 
+# Provides:          glassfish_startup
+# Short-Description: Stop tomcat and start glassfish
+# Description:       This script stop the tomcat server and start java database and administration domain
+### END INIT INFO
+
+#!/bin/bash
+
+echo 'Démarrage de la base de donnée Java...'
+sudo /opt/glassfish3/glassfish/bin/asadmin start-database
+echo -en '\rLe programme va continuer dans 10 secondes   '
+sleep 1
+echo -en '\rLe programme va continuer dans  9 secondes.  '
+sleep 1
+echo -en '\rLe programme va continuer dans  8 secondes.. '
+sleep 1
+echo -en '\rLe programme va continuer dans  7 secondes...'
+sleep 1
+echo -en '\rLe programme va continuer dans  6 secondes   '
+sleep 1
+echo -en '\rLe programme va continuer dans  5 secondes.  '
+sleep 1
+echo -en '\rLe programme va continuer dans  4 secondes.. '
+sleep 1
+echo -en '\rLe programme va continuer dans  3 secondes...'
+sleep 1
+echo -en '\rLe programme va continuer dans  2 secondes   '
+sleep 1
+echo -e '\rLe programme va continuer dans  1 seconde!    '
+sleep 1
+echo 'Démarrage du domaine administration...         '
+sudo /opt/glassfish3/glassfish/bin/asadmin start-domain administration

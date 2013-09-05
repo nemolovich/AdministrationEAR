@@ -17,6 +17,8 @@
                 <f:attribute name="header" value="Modification des données de la base de données"/>
                 <f:view>
                     <h:form id="dataBaseForm">
+                        <f:event type="preRenderView"
+                                 listener="#{dataManager.resetCounters()}"/>
                         <h:panelGrid columns="2" columnClasses="label, label">
                             <h:panelGrid columns="2" columnClasses="label, fields right_value"
                                          rowClasses="ui-datatable-even tr_padding,ui-datatable-odd tr_padding"
@@ -98,12 +100,34 @@
                                                  update=":growl :dataBaseForm"
                                                  styleClass="green_icon"/>
 
-                                <p:commandButton value="Charger les données"
+                                
+                                <p:selectOneMenu id="saveFileSelection"
+                                                 style="margin:2px 15px !important;"
+                                                 effect="fade"
+                                                 immediate="true"
+                                                 var="saveFile"
+                                                 value="#{dataManager.currentFileToRead}">
+                                    <p:ajax process="@this"
+                                            update=":dataBaseForm:loadSave"
+                                            listener="#{dataManager.ajaxSelect}"/>
+                                    <f:selectItem itemValue=""
+                                                  itemLabel="Sélectionnez un fichier à charger"/>
+                                    <f:selectItems value="#{dataManager.getFilesInPath()}"/>
+                                    <f:converter binding="#{saveFileConverter}"/>
+                                    <p:column>
+                                        #{dataManager.getFileNameAndDate(saveFile.name)}
+                                    </p:column>
+                                </p:selectOneMenu>
+                                <p:commandButton id="loadSave"
+                                                 value="Charger les données"
                                                  actionListener="#{dataManager.loadData(false)}"
                                                  title="Charge la base de données depuis une sauvegarde"
                                                  icon="ui-icon-refresh"
                                                  style="width:100%;"
                                                  update=":growl :dataBaseForm"
+                                                 disabled="#{empty dataManager.currentFileToRead}"
+                                                 onclick="if(confirm('Vous êtes sur le point de charger des données qui vont effacer \
+toutes les anciennes données,\nil est préférable de faire une sauvegarde avant. Êtes-vous certain(e) de vouloir continuer?')){startAjax();}else{return false;}"
                                                  styleClass="blue_icon"/>
 
                                 <p:commandButton value="Supprimer toutes les données"
@@ -112,6 +136,7 @@
                                                  icon="ui-icon-trash"
                                                  style="width:100%;"
                                                  update=":growl :dataBaseForm"
+                                                 onclick="if(confirm('Vous êtes sur le point de supprimer définitivement toutes les données de la base de données.\nCette action est irreversible, êtes-vous certain(e) de vouloir continuer?')){startAjax();}else{return false;}"
                                                  styleClass="red_icon"/>
                             </h:panelGrid>
                         </h:panelGrid>

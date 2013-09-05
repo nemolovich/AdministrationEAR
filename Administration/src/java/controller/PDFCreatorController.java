@@ -32,7 +32,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.MalformedURLException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -547,6 +546,7 @@ public class PDFCreatorController implements Serializable
                     return "#";
                 }
                 String interventionType=client.getInterventionType();
+                interventionType=interventionType.replaceAll("\n", " ").replaceAll("\r", "");
                 interventionType=interventionType.length()>=25?interventionType.substring(0,22)+"...":interventionType;
                 tab.add(new Phrase(interventionType), Element.ALIGN_RIGHT);
                 
@@ -578,6 +578,10 @@ public class PDFCreatorController implements Serializable
                  */
                 pageSize=header.getTotalHeight()+details.getTotalLeading()
                         +30+20+3;
+                
+//                Font cellFont=FontFactory.getFont(FontFactory.HELVETICA, 12, Font.NORMAL);
+//                BaseFont bf=cellFont.getBaseFont();
+                
                 for(Intervention i:list)
                 {
                     CUser user=i.getIdTask().getIdUser();

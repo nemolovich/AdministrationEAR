@@ -221,8 +221,8 @@ import javax.xml.bind.annotation.XmlTransient;
     {
         return "entity.Task{" + "id=" + id + ", description=" + description + ", startDate=" + startDate + ", intendedDuration=" + intendedDuration + ", interventionType=" + interventionType + ", observations=" + observations + ", sleeping=" + sleeping + ", idDevice=" + idDevice + ", idUser=" + idUser + ", idClient=" + idClient + ", interventionList=" + interventionList + '}';
     }
-
-        @Override
+    
+    @Override
     public String toString()
     {
         return this.description+" pour la société "+this.idClient;

@@ -99,13 +99,18 @@ public class Facture implements Serializable
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Facture)) {
+    public boolean equals(Object obj) {
+        if (obj == null) {
             return false;
         }
-        Facture other = (Facture) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Facture other = (Facture) obj;
+        if ((this.factureNumber == null) ? (other.factureNumber != null) : !this.factureNumber.equals(other.factureNumber)) {
+            return false;
+        }
+        if (this.sleeping != other.sleeping && (this.sleeping == null || !this.sleeping.equals(other.sleeping))) {
             return false;
         }
         return true;

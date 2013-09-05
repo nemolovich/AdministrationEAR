@@ -1,0 +1,10 @@
+### BEGIN INIT INFO
+# Provides:          glassfish_startup
+# Short-Description: Stop tomcat and start glassfish
+# Description:       This script stop the tomcat server and start java database and administration domain
+### END INIT INFO
+
+#!/bin/bash
+
+echo 'Démarrage du domaine administration...'
+sudo /opt/glassfish3/glassfish/bin/asadmin start-domain administration

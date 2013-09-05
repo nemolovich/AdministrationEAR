@@ -136,13 +136,24 @@ public class Intervention implements Serializable, Comparable<Intervention>
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Intervention)) {
+    public boolean equals(Object obj) {
+        if (obj == null) {
             return false;
         }
-        Intervention other = (Intervention) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Intervention other = (Intervention) obj;
+        if (this.interventionDate != other.interventionDate && (this.interventionDate == null || !this.interventionDate.equals(other.interventionDate))) {
+            return false;
+        }
+        if (this.duration != other.duration && (this.duration == null || !this.duration.equals(other.duration))) {
+            return false;
+        }
+        if (this.deplacement != other.deplacement && (this.deplacement == null || !this.deplacement.equals(other.deplacement))) {
+            return false;
+        }
+        if (this.sleeping != other.sleeping && (this.sleeping == null || !this.sleeping.equals(other.sleeping))) {
             return false;
         }
         return true;
@@ -152,7 +163,7 @@ public class Intervention implements Serializable, Comparable<Intervention>
     {
         return "entity.Intervention{" + "id=" + id + ", interventionDate=" + interventionDate + ", duration=" + duration + ", deplacement=" + deplacement + ", sleeping=" + sleeping + ", idTask=" + idTask + ", idFacture=" + idFacture + '}';
     }
-
+    
     @Override
     public String toString() {
         return "Intervention sur la tâche {"+this.idTask+"}";

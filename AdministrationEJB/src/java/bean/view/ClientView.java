@@ -32,6 +32,13 @@ public class ClientView extends EntityView<Client, ClientFacade>
     }
     
     @Override
+    public String entityDelete(Client entity)
+    {
+        entity.setIdUser(null);
+        return this.entitySilentDelete(entity, false);
+    }
+    
+    @Override
     public void setFacade()
     {
         super.setEntityFacade(this.clientFacade);

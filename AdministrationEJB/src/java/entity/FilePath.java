@@ -151,7 +151,7 @@ public class FilePath implements Serializable
 
     public String getFullString()
     {
-        return "entity.FilePath{" + "deviceList=" + deviceList + ", clientList=" + clientList + ", cUserList=" + cUserList + ", id=" + id + ", filePath=" + filePath + '}';
+        return "entity.FilePath{" + "id=" + id + ", filePath=" + filePath + ", deviceList=" + deviceList + ", clientList=" + clientList + ", cUserList=" + cUserList + '}';
     }
     
     @Override

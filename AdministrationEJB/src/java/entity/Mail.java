@@ -163,13 +163,33 @@ public class Mail implements Serializable
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Mail)) {
+    public boolean equals(Object obj) {
+        if (obj == null) {
             return false;
         }
-        Mail other = (Mail) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Mail other = (Mail) obj;
+        if ((this.mail == null) ? (other.mail != null) : !this.mail.equals(other.mail)) {
+            return false;
+        }
+        if ((this.pop == null) ? (other.pop != null) : !this.pop.equals(other.pop)) {
+            return false;
+        }
+        if ((this.popPassword == null) ? (other.popPassword != null) : !this.popPassword.equals(other.popPassword)) {
+            return false;
+        }
+        if ((this.smtp == null) ? (other.smtp != null) : !this.smtp.equals(other.smtp)) {
+            return false;
+        }
+        if ((this.smtpPassword == null) ? (other.smtpPassword != null) : !this.smtpPassword.equals(other.smtpPassword)) {
+            return false;
+        }
+        if ((this.observations == null) ? (other.observations != null) : !this.observations.equals(other.observations)) {
+            return false;
+        }
+        if (this.sleeping != other.sleeping && (this.sleeping == null || !this.sleeping.equals(other.sleeping))) {
             return false;
         }
         return true;

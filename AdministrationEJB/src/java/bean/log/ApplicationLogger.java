@@ -469,7 +469,7 @@ public class ApplicationLogger
     /**
      * Renvoi la liste des fichiers présents dans le dossier de journal sans
      * compter le journal courant
-     * @return {@link List}<{@link File}> - La liste des fichir dans le dossier
+     * @return {@link List}<{@link File}> - La liste des fichiers dans le dossier
      * du journal sans compter le journal courant
      */
     public static List<File> getFilesInPath()
@@ -502,7 +502,7 @@ public class ApplicationLogger
     {
         int fileNameLen=ApplicationLogger.fileName.length();
         if(fileName.length()!=fileNameLen+24||
-                !fileName.startsWith(fileName))
+                !fileName.startsWith(ApplicationLogger.fileName))
         {
             return fileName;
         }

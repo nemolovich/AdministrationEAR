@@ -41,12 +41,11 @@
                                      value="#{logger.selectedFile}">
                         <p:ajax update=":displayLogForm:logContainerPanel"
                                 process="@this"
-                                oncomplete="console.log('changed');"
                                 listener="#{logger.ajaxSelect}"/>
                         <f:selectItem itemValue=""
                                       itemLabel="Journal courant"/>
                         <f:selectItems value="#{logger.getFilesInPath()}"/>
-                        <f:converter binding="#{fileConverter}"/>
+                        <f:converter binding="#{logFileConverter}"/>
                         <p:column>
                             #{logger.getFileNameAndDate(logFile.name)}
                         </p:column>

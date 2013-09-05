@@ -181,26 +181,54 @@ public class Software implements Serializable
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Software)) {
+    public boolean equals(Object obj) {
+        if (obj == null) {
             return false;
         }
-        Software other = (Software) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Software other = (Software) obj;
+        if ((this.name == null) ? (other.name != null) : !this.name.equals(other.name)) {
+            return false;
+        }
+        if ((this.version == null) ? (other.version != null) : !this.version.equals(other.version)) {
+            return false;
+        }
+        if ((this.license == null) ? (other.license != null) : !this.license.equals(other.license)) {
+            return false;
+        }
+        if ((this.serialNumber == null) ? (other.serialNumber != null) : !this.serialNumber.equals(other.serialNumber)) {
+            return false;
+        }
+        if (this.startDate != other.startDate && (this.startDate == null || !this.startDate.equals(other.startDate))) {
+            return false;
+        }
+        if ((this.editor == null) ? (other.editor != null) : !this.editor.equals(other.editor)) {
+            return false;
+        }
+        if ((this.observations == null) ? (other.observations != null) : !this.observations.equals(other.observations)) {
+            return false;
+        }
+        if (this.sleeping != other.sleeping && (this.sleeping == null || !this.sleeping.equals(other.sleeping))) {
             return false;
         }
         return true;
     }
-
+    
     public String getFullString()
     {
         return "entity.Software{" + "id=" + id + ", name=" + name + ", version=" + version + ", license=" + license + ", serialNumber=" + serialNumber + ", startDate=" + startDate + ", editor=" + editor + ", observations=" + observations + ", sleeping=" + sleeping + ", idClient=" + idClient + ", idFilePath=" + idFilePath + '}';
     }
     
     @Override
-    public String toString() {
-        return this.name+" ["+this.version+" by "+this.editor+"]";
+    public String toString()
+    {
+        String out=this.name;
+        String v=this.version!=null&&!this.version.isEmpty()?this.version:"";;
+        String e=this.editor!=null&&!this.editor.isEmpty()?"by "+this.editor:"";
+        out+=!e.isEmpty()||!v.isEmpty()?" ["+e+v+"]":"";
+        return out;
     }
-    
+
 }

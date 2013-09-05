@@ -474,9 +474,9 @@ public class Client implements Serializable
 
     public String getFullString()
     {
-        return "entity.Client{" + "id=" + id + ", name=" + name + ", address=" + address + ", postalcode=" + postalcode + ", city=" + city + ", phone=" + phone + ", fax=" + fax + ", tarif=" + tarif + ", deplacement=" + deplacement + ", mail=" + mail + ", interventionType=" + interventionType + ", internetOperator=" + internetOperator + ", internetLogin=" + internetLogin + ", internetPassword=" + internetPassword + ", internetDns=" + internetDns + ", internetDnsLogin=" + internetDnsLogin + ", internetDnsPassword=" + internetDnsPassword + ", observations=" + observations + ", sleeping=" + sleeping + ", idUser=" + idUser + ", idFilePath=" + idFilePath + ", cUserList=" + cUserList + ", deviceList=" + deviceList + ", mailList=" + mailList + ", softwareList=" + softwareList + ", taskList=" + taskList + '}';
+        return "entity.Client{" + "id=" + id + ", name=" + name + ", address=" + address + ", postalcode=" + postalcode + ", city=" + city + ", phone=" + phone + ", fax=" + fax + ", tarif=" + tarif + ", deplacement=" + deplacement + ", mail=" + mail + ", interventionType=" + interventionType + ", internetOperator=" + internetOperator + ", internetLogin=" + internetLogin + ", internetPassword=" + internetPassword + ", internetDns=" + internetDns + ", internetDnsLogin=" + internetDnsLogin + ", internetDnsPassword=" + internetDnsPassword + ", observations=" + observations + ", sleeping=" + sleeping + ", idUser=" + idUser + ", idFilePath=" + idFilePath + ", cUserList=" + cUserList + ", deviceList=" + deviceList + ", mailList=" + mailList + ", softwareList=" + softwareList + ", taskList=" + taskList + ", servicesList=" + servicesList + '}';
     }
-
+    
     @Override
     public String toString() {
         return this.name;
