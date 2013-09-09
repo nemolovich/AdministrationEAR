@@ -152,7 +152,7 @@
                             </p:column>
                             
                             <p:column headerText="Actions"
-                                      style="width:1%;">
+                                      style="width:2%;white-space:nowrap;">
                                 <p:commandButton actionListener="#{interventionView.entityView(taskView,item)}"
                                                  action="javascript:void(0);"
                                                  title="Afficher les détails de cette tâche"
@@ -160,6 +160,15 @@
                                                  style="font-size: 60%;"
                                                  update=":interventionMenuViewPopup :interventionMenuDialogHeader :interventionViewForm"
                                                  oncomplete="interventionMenuViewDialog.show();"/>
+                                <p:commandButton actionListener="#{interventionView.entityDelete(item.idTask,
+                                                                   item)}"
+                                                 action="javascript:void(0);"
+                                                 icon="ui-icon-trash"
+                                                 update=":growl :interventionDataForm"
+                                                 style="font-size: 60%;"
+                                                 styleClass="red_icon"
+                                                 onclick="return (confirm('#{interventionView.getDeleteMessage(item)}'));"
+                                                 title="Supprimer cette intervention"/>
                             </p:column>
                             
                             <f:facet name="footer">
