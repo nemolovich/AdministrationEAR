@@ -175,11 +175,18 @@ public class Software implements Serializable
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        int hash = 3;
+        hash = 17 * hash + (this.name != null ? this.name.hashCode() : 0);
+        hash = 17 * hash + (this.version != null ? this.version.hashCode() : 0);
+        hash = 17 * hash + (this.license != null ? this.license.hashCode() : 0);
+        hash = 17 * hash + (this.serialNumber != null ? this.serialNumber.hashCode() : 0);
+        hash = 17 * hash + (this.startDate != null ? this.startDate.hashCode() : 0);
+        hash = 17 * hash + (this.editor != null ? this.editor.hashCode() : 0);
+        hash = 17 * hash + (this.observations != null ? this.observations.hashCode() : 0);
+        hash = 17 * hash + (this.sleeping != null ? this.sleeping.hashCode() : 0);
         return hash;
     }
-
+    
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {

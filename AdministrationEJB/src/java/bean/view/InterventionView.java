@@ -61,6 +61,14 @@ public class InterventionView extends EmbeddedEntityPeriodView<Task, Interventio
         return result;
     }
     
+    public String reactivate(Task task, Intervention entity)
+    {
+        entity.setIdFacture(null);
+        entity.setSleeping(false);
+        this.inteventionFacade.updateToDataList(task, entity);
+        return "list";
+    }
+    
     public String entityCreate(TaskView view, boolean createParent)
     {
         if(createParent)
