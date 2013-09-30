@@ -218,8 +218,16 @@ public class CUser implements Serializable
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        int hash = 5;
+        hash = 59 * hash + (this.name != null ? this.name.hashCode() : 0);
+        hash = 59 * hash + (this.directPhone != null ? this.directPhone.hashCode() : 0);
+        hash = 59 * hash + (this.position != null ? this.position.hashCode() : 0);
+        hash = 59 * hash + (this.login != null ? this.login.hashCode() : 0);
+        hash = 59 * hash + (this.password != null ? this.password.hashCode() : 0);
+        hash = 59 * hash + (this.mails != null ? this.mails.hashCode() : 0);
+        hash = 59 * hash + (this.phone != null ? this.phone.hashCode() : 0);
+        hash = 59 * hash + (this.observations != null ? this.observations.hashCode() : 0);
+        hash = 59 * hash + (this.sleeping != null ? this.sleeping.hashCode() : 0);
         return hash;
     }
 

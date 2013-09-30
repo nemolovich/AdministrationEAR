@@ -401,8 +401,25 @@ public class Client implements Serializable
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        int hash = 7;
+        hash = 59 * hash + (this.name != null ? this.name.hashCode() : 0);
+        hash = 59 * hash + (this.address != null ? this.address.hashCode() : 0);
+        hash = 59 * hash + this.postalcode;
+        hash = 59 * hash + (this.city != null ? this.city.hashCode() : 0);
+        hash = 59 * hash + (this.phone != null ? this.phone.hashCode() : 0);
+        hash = 59 * hash + (this.fax != null ? this.fax.hashCode() : 0);
+        hash = 59 * hash + (this.tarif != null ? this.tarif.hashCode() : 0);
+        hash = 59 * hash + (this.deplacement != null ? this.deplacement.hashCode() : 0);
+        hash = 59 * hash + (this.mail != null ? this.mail.hashCode() : 0);
+        hash = 59 * hash + (this.interventionType != null ? this.interventionType.hashCode() : 0);
+        hash = 59 * hash + (this.internetOperator != null ? this.internetOperator.hashCode() : 0);
+        hash = 59 * hash + (this.internetLogin != null ? this.internetLogin.hashCode() : 0);
+        hash = 59 * hash + (this.internetPassword != null ? this.internetPassword.hashCode() : 0);
+        hash = 59 * hash + (this.internetDns != null ? this.internetDns.hashCode() : 0);
+        hash = 59 * hash + (this.internetDnsLogin != null ? this.internetDnsLogin.hashCode() : 0);
+        hash = 59 * hash + (this.internetDnsPassword != null ? this.internetDnsPassword.hashCode() : 0);
+        hash = 59 * hash + (this.observations != null ? this.observations.hashCode() : 0);
+        hash = 59 * hash + (this.sleeping != null ? this.sleeping.hashCode() : 0);
         return hash;
     }
 
@@ -471,7 +488,7 @@ public class Client implements Serializable
         }
         return true;
     }
-
+    
     public String getFullString()
     {
         return "entity.Client{" + "id=" + id + ", name=" + name + ", address=" + address + ", postalcode=" + postalcode + ", city=" + city + ", phone=" + phone + ", fax=" + fax + ", tarif=" + tarif + ", deplacement=" + deplacement + ", mail=" + mail + ", interventionType=" + interventionType + ", internetOperator=" + internetOperator + ", internetLogin=" + internetLogin + ", internetPassword=" + internetPassword + ", internetDns=" + internetDns + ", internetDnsLogin=" + internetDnsLogin + ", internetDnsPassword=" + internetDnsPassword + ", observations=" + observations + ", sleeping=" + sleeping + ", idUser=" + idUser + ", idFilePath=" + idFilePath + ", cUserList=" + cUserList + ", deviceList=" + deviceList + ", mailList=" + mailList + ", softwareList=" + softwareList + ", taskList=" + taskList + ", servicesList=" + servicesList + '}';

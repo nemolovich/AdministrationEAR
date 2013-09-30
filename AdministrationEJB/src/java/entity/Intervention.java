@@ -127,14 +127,17 @@ public class Intervention implements Serializable, Comparable<Intervention>
     {
         return -i.getInterventionDate().compareTo(this.interventionDate);
     }
-    
+
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        int hash = 7;
+        hash = 37 * hash + (this.interventionDate != null ? this.interventionDate.hashCode() : 0);
+        hash = 37 * hash + (this.duration != null ? this.duration.hashCode() : 0);
+        hash = 37 * hash + (this.deplacement != null ? this.deplacement.hashCode() : 0);
+        hash = 37 * hash + (this.sleeping != null ? this.sleeping.hashCode() : 0);
         return hash;
     }
-
+    
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {

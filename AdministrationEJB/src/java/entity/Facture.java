@@ -93,8 +93,9 @@ public class Facture implements Serializable
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        int hash = 7;
+        hash = 53 * hash + (this.factureNumber != null ? this.factureNumber.hashCode() : 0);
+        hash = 53 * hash + (this.sleeping != null ? this.sleeping.hashCode() : 0);
         return hash;
     }
 
