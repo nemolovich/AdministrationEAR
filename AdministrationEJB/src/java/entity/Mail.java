@@ -157,14 +157,8 @@ public class Mail implements Serializable
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 67 * hash + (this.mail != null ? this.mail.hashCode() : 0);
-        hash = 67 * hash + (this.pop != null ? this.pop.hashCode() : 0);
-        hash = 67 * hash + (this.popPassword != null ? this.popPassword.hashCode() : 0);
-        hash = 67 * hash + (this.smtp != null ? this.smtp.hashCode() : 0);
-        hash = 67 * hash + (this.smtpPassword != null ? this.smtpPassword.hashCode() : 0);
-        hash = 67 * hash + (this.observations != null ? this.observations.hashCode() : 0);
-        hash = 67 * hash + (this.sleeping != null ? this.sleeping.hashCode() : 0);
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 

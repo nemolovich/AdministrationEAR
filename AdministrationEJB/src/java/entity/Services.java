@@ -90,9 +90,8 @@ public class Services implements Serializable
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 97 * hash + (this.title != null ? this.title.hashCode() : 0);
-        hash = 97 * hash + (this.description != null ? this.description.hashCode() : 0);
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 

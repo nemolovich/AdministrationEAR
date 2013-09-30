@@ -8,6 +8,7 @@ import bean.Files;
 import bean.Utils;
 import java.io.File;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -128,11 +129,11 @@ public class FilePath implements Serializable
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 97 * hash + (this.filePath != null ? this.filePath.hashCode() : 0);
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {

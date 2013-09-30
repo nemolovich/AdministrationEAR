@@ -4,6 +4,7 @@
  */
 package entity;
 
+import entity.TUser;
 import java.io.Serializable;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;

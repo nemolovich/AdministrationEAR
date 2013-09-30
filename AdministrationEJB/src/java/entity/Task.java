@@ -182,13 +182,8 @@ import javax.xml.bind.annotation.XmlTransient;
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 67 * hash + (this.description != null ? this.description.hashCode() : 0);
-        hash = 67 * hash + (this.startDate != null ? this.startDate.hashCode() : 0);
-        hash = 67 * hash + (this.intendedDuration != null ? this.intendedDuration.hashCode() : 0);
-        hash = 67 * hash + (this.interventionType != null ? this.interventionType.hashCode() : 0);
-        hash = 67 * hash + (this.observations != null ? this.observations.hashCode() : 0);
-        hash = 67 * hash + (this.sleeping != null ? this.sleeping.hashCode() : 0);
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
